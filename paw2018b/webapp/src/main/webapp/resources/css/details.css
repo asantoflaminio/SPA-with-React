@@ -1,0 +1,419 @@
+@charset "UTF-8";
+
+html{
+    position:relative; 
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Rubik', sans-serif !important;
+    margin-bottom:100px;
+    background-size:100% auto;
+    background-color: #eee !important;    
+}
+
+h1 {
+    font: bold 1.9em 'Rubik', sans-serif !important;
+}
+
+div.polaroid {
+  margin-top: 10px;
+  margin-left: 30%;
+  width: 35%;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 25px;
+  max-height: 100%;
+  min-width:  450px; 
+  min-height: 200px; 
+}
+
+.size_div{
+	height: 280px;
+	width: 100%;
+}
+
+.mySlides{
+    height: 100%;
+    width: 100%;
+}
+
+div.polaroid_price {
+  margin-top: 10px;
+  width: 30%;
+  margin-left: 7%;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 25px;
+  min-width: 380px;
+  min-height: 70px;
+}
+
+div.container {
+  text-align: center;
+  padding: 10px 20px;
+}
+
+div.container2 {
+  text-align: center;
+  padding: 10px 10px;
+}
+
+.polaroid_img{
+	display: block;
+	padding-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    height: auto; 
+    width: auto; 
+    max-width: 300px; 
+    max-height: 300px; 
+}
+
+.favorite-icon {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	height: 30px;
+	width: 30px;
+}
+
+
+.direction {
+    font-family: 'Rubik', sans-serif !important;
+    font-size: 16px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+	color: #555;
+	font-style: italic;
+}
+
+.price_text {
+    margin: 3px 0 3px 0;
+}
+
+#rent_sale {
+	font-family: 'Rubik', sans-serif !important;
+    font-size: 18px;
+    color: #999;
+    margin-bottom: 3px;
+    text-align: left;
+    margin-left: 20px;
+}
+
+#price_tag {
+	font-family: 'Rubik', sans-serif !important;
+    font-size: 25px;
+    color: #555;
+    margin-bottom: 2px;
+    text-align: left;
+    margin-left: 20px;
+    
+}
+
+
+div.polaroid_agency {
+  margin-top: 30px; 
+  width: 30%;
+  margin-left: 7%;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 25px;
+  min-width: 380px;
+}
+
+div.container3 {
+  text-align: center;
+  padding: 10px 20px;
+}
+
+.polaroid_img_agency{
+	float: left;
+	display: block;
+	margin-top: 5px;
+	margin-bottom: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    height: auto; 
+    width: auto; 
+    max-width: 120px; 
+    max-height: 200px;
+}
+
+div.polaroid_des {
+  margin-top: 15px;
+  position: relative;
+  float: left;
+  margin-left: 190px;
+  width: 69%;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 50px;
+}
+
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    height: 35px;
+}
+
+textarea {
+    width: 100%;
+    padding: 12px 20px;
+    margin-bottom: 8px;
+    margin-top: 0px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+div.fillers {
+  text-align: left;
+  padding: 5px 10px;
+}
+ 
+label {
+    display: inline-block;
+    margin-bottom: .0rem;
+}
+
+div.polaroid_overview {
+  margin-left: 30%;
+  width: 35%;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 25px;
+  min-width:  450px; 
+  margin-top: 20px;
+  
+}
+
+.polaroid_title {
+    font-family: 'Rubik', sans-serif !important;
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+div.container4 {
+  text-align: left;
+  padding: 15px 25px;
+}
+
+.fillers .button {
+    background-color: #FD8907;
+    border: none;
+    color: white;
+    width:100%;
+    height:300px;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.mySlides {
+	display:none
+}
+
+.w3-left, .w3-right, .w3-badge{
+ cursor:pointer
+ }
+ 
+.w3-badge {
+	height:13px;
+	width:13px;
+	padding:0;
+}
+
+#message {
+	max-height: 150px;
+	min-height: 60px;
+}
+
+.button-contact {
+	background-color: #FD8907;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    width:100%;
+    height: 45px;
+    padding: 5px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 13px 2px 7px 2px;
+    cursor: pointer;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 1px;
+  margin-left: 2px;
+}
+
+input[type=text] {
+    width: 100%;
+    height: 35px;
+    padding: 12px 20px;
+    margin-top: 2px;
+    display: inline-block;
+    border: 1px solid;
+    border-color:#aaa;
+    border-radius: 2px;
+    box-sizing: border-box;
+    color: #888;
+}
+
+.contact-title{
+	font-size: 15px;
+	color: #777;
+	padding-top: 10px;
+}
+
+.agency_text_contact {
+	font-size: 21px;
+	color: #666;
+	margin-top: 10px;
+	text-align: left;
+	margin-left: 10px;
+}
+
+#tel-container {
+	text-align: left;
+	display: flex;
+}
+
+.tel-num {
+	text-align: left;
+	margin-left: 10px;
+	color: #999;
+}
+
+.tel-text {
+	margin-left: 10px;
+	font-style: italic;
+}
+
+/* Notice style */
+
+.notice{
+	text-align:center;
+}
+
+.msg-sent-container {
+    padding: 1px 5px 1px 5px;
+    background-color: black;
+    border-radius:8px;
+    -moz-border-radius:8px; 
+    -webkit-border-radius:8px;
+    opacity: 0.7;
+    display:inline-block;
+    margin-bottom: 10px;
+}
+
+#msg-sent {
+    color: white;
+    font-size: 12px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+/* End of style */
+
+/* Columns style */
+
+#cols {
+	display: flex;
+	width: 100vw;
+}
+
+#right-col {
+	width:50vw;
+	min-width: 630px;
+}
+
+#left-col {
+	width: 50vw;
+	min-width: 630px;
+	
+}
+
+/* End of style */
+
+/* Breadcrumb style */
+
+/* Style the list */
+.breadcrumb {
+    background-color: #eee !important;
+    margin-bottom: 10px !important;
+}
+
+/* Add a color to all links inside the list */
+.breadcrumb a {
+    color: #FD8907;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Add a color on mouse-over */
+.breadcrumb a:hover {
+    color: #555;
+    text-decoration: underline;
+}
+
+/* End of style */
+
+/* Notice style */
+
+.notice{
+  text-align:center;
+}
+
+.msg-sent-container {
+    padding: 1px 5px 1px 5px;
+    background-color: black;
+    border-radius:8px;
+    -moz-border-radius:8px; 
+    -webkit-border-radius:8px;
+    opacity: 0.7;
+    display:inline-block;
+    margin-bottom: 10px;
+}
+
+#msg-sent {
+    color: white;
+    font-size: 12px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.pointer{
+  cursor: pointer;
+}
+
+/* End of style */
+
+.w3-right.w3-hover-text-khaki {
+	margin-bottom: 25%;	
+}

@@ -1,0 +1,57 @@
+@charset "UTF-8";
+
+html{
+    position:relative; 
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Rubik', sans-serif !important;
+    margin-bottom:100px;
+    background-size:100% auto;
+    background-color: #eee !important;    
+}
+
+#error-container {
+	width: 90%;
+	margin-left: 40px;
+	margin-top: 40px;
+}
+
+#error-title {
+	color: #FD8907;
+}
+
+#error-message {
+	color: #888;
+	font-size: 18px;
+}
+
+#error-status {
+	color: #888;
+	font-size: 18px;
+}
+
+#error-link1 {
+	color: #FD8907;
+	font-style: italic;
+}
+
+#error-link2 {
+	color: #FD8907;
+	font-style: italic;
+}
+
+#link1-container {
+	margin-left: 40px;
+	margin-top: 40px;
+}
+
+#link2-container {
+	margin-left: 40px;
+	margin-top: 10px;
+}

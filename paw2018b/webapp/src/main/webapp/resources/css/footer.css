@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+#footer {
+    clear: both;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height:auto;
+    margin-top: 550px;
+    background-color: #ddd;
+}
+
+footer p {
+    font: 0.7em monaco, sans-serif;
+    color: #777;
+    text-align: center;
+    margin: 5px;
+}
