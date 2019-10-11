@@ -1,0 +1,20 @@
+{
+    "signUp": {
+      "registry": "Registry",
+      "firstName": "NAME*",
+      "firstNameHolder": "Name...",
+      "lastName": "LASTNAME*",
+      "lastNameHolder": "Lastname...",
+      "email": "E-MAIL*",
+      "emailHolder": "example@domain.com",
+      "password": "PASSWORD*",
+      "passwordHolder": "Password...",
+      "repeatPassword": "REPEAT PASSWORD*",
+      "phoneNumber": "CELLPHONE",
+      "phoneNumberHolder": "Cellphone...",
+      "submit": "Submit"
+    },
+    "home": {
+      "title": "Weather forecast"
+    }
+  }
