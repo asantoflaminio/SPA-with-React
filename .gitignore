@@ -20,3 +20,5 @@ paw2018b/services/\.project
 paw2018b/webapp/\.classpath
 
 paw2018b/webapp/\.project
+
+frontend/node_modules/*
