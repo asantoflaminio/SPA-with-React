@@ -15,6 +15,12 @@
       "submit": "Enviar"
     },
     "home": {
-      "title": "Weather forecast"
+      "title": "MeinHaus",
+      "buy": "Comprar",
+      "rent": "Alquilar",
+      "house": "Casa",
+      "apartment": "Departamento",
+      "search": "Buscar...",
+      "searhBtn": "Buscar"
     }
   }

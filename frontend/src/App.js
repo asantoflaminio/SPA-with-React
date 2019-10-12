@@ -1,14 +1,22 @@
 import React, { Suspense } from 'react';
-import './App.css';
+import {BrowserRouter} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 import SignUp from './pages/SignUp';
+import SignUpReact from './pages/SignUpReact'
+import Home from './pages/Home'
+import HomeReal from './pages/HomeReal'
+
 
 
 function App() {
   return (
     <div className="App">
-     <Suspense fallback={(<div>Loading</div>)}>
-     <SignUp></SignUp>
-     </Suspense>
+      <BrowserRouter>
+        <Suspense fallback={(<div>Loading</div>)}>
+          <Route exact path="/" component={HomeReal} />
+          <Route path="/SignUp" component={SignUpReact} />
+        </Suspense>
+     </BrowserRouter>
     </div>
   );
 }
