@@ -1,9 +1,5 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -24,6 +20,8 @@ public class UserController {
 	@Autowired
 	private UserService us;
 	
+
+	
     @POST
     @Path("/signUp")
     @Produces(value = { MediaType.APPLICATION_JSON, })
@@ -31,10 +29,10 @@ public class UserController {
     public Response createUser (final UserDTO userDTO) {
     	System.out.println("Called!");
     	us.create(userDTO.getFirstName(), userDTO.getLastName(), 
-    			userDTO.getEmail(), userDTO.getPassword(), userDTO.getPhoneNumber(), "asd");
+    			userDTO.getEmail(), userDTO.getPassword(), userDTO.getPhoneNumber(), "ADMIN");
     	
         return Response.ok().build();
     }
-    
+
 
 }
