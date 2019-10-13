@@ -9,7 +9,7 @@ import axios from 'axios';
 
 
 
-class FormExample extends React.Component {
+class SignUp extends React.Component {
     handleFormSubmit(event) {
         event.preventDefault();
         const data = {
@@ -160,4 +160,4 @@ class FormExample extends React.Component {
     }
 }
 
-export default withTranslation()(FormExample);
+export default withTranslation()(SignUp);
