@@ -1,153 +1,163 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
+import { Form, Button, Col, InputGroup } from 'react-bootstrap';
+import { Formik } from 'formik';
+import * as yup from 'yup';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../css/SignUp.css';
 import axios from 'axios';
 
-class SignUp extends React.Component {
 
 
-
-  handleSubmit(event) {
-    event.preventDefault();
-    const data = {
-      firstName: event.target[0].value,
-      lastName: event.target[1].value,
-      email: event.target[2].value,
-      password: event.target[3].value,
-      repeatPassword: event.target[4].value,
-      phoneNumber: event.target[5].value
-    }
-
-    var postData = JSON.stringify(data)
-    alert(postData)
-    
-    axios({
-      method: 'post',
-      url: 'users/signUp',
-      data: data
-    })
-    .then(function (response) {
-      alert(response.status);
-    })
-    .catch(function (error) {
-      alert(error);
-    });
-    
-    
-    
-    
-    /*
-    fetch('users/signUp', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: postData,
-    }).then(response => {
-      alert("Response!")
-      if (response.status >= 200 && response.status < 300) {
-          alert("Succesful post!");
-        } else {
-          alert("Unsuccesful post! -- response code: " + response.status);
+class FormExample extends React.Component {
+    handleFormSubmit(event) {
+        event.preventDefault();
+        const data = {
+          firstName: event.target[0].value,
+          lastName: event.target[1].value,
+          email: event.target[2].value,
+          password: event.target[3].value,
+          repeatPassword: event.target[4].value,
+          phoneNumber: event.target[5].value
         }
-  })*/
-  }
+    
+        var postData = JSON.stringify(data)
+        alert(postData)
+        
+        axios({
+          method: 'post',
+          url: 'users/signUp',
+          data: data
+        })
+        .then(function (response) {
+          alert(response.status);
+        })
+        .catch(function (error) {
+          alert(error);
+        });
+    }
 
+    render() {
 
-
-    render(){
-      const { t } = this.props;
-        return (
+    const { t } = this.props;
+    const schema = yup.object({
+    firstName: yup.string().required( t('errors.requiredField') ),
+    lastName: yup.string().required( t('errors.requiredField') ),
+    email: yup.string().required( t('errors.requiredField') ),
+    password: yup.string().required( t('errors.requiredField') ),
+    repeatPassword: yup.string().required( t('errors.requiredField') ),
+    phoneNumber: yup.number( t('errors.phoneField') )
+    });
+    return (
+        <div className="box_form">
             <div>
-              <div style={formSignUp}>
-                  <div>
-                    <h3 style={title}>{t('signUp.registry')}</h3>
-                    <hr></hr>
-                  </div>
-                  <form onSubmit={this.handleSubmit}>
-                    <div style={itemForm}>
-                      <label style={label}>{t('signUp.firstName')}</label><br/>
-                      <input style={input} placeholder={t('signUp.firstNameHolder')} id="firstName" name="firstName"/><br/>
-                    </div>
-                    <div style={itemForm}>
-                      <label style={label}>{t('signUp.lastName')}</label><br/>
-                      <input style={input} placeholder={t('signUp.lastNameHolder')} id="lastName" name="lastName"/><br/>
-                    </div>
-                    <div style={itemForm}>
-                      <label style={label}>{t('signUp.email')}</label><br/>
-                      <input style={input} placeholder={t('signUp.emailHolder')} id="email" name="email"/><br/>
-                    </div>
-                    <div style={itemForm}>
-                      <label style={label}>{t('signUp.password')}</label><br/>
-                      <input style={input} placeholder={t('signUp.passwordHolder')} id="password" name="password"/><br/>
-                    </div>
-                    <div style={itemForm}>
-                      <label style={label}>{t('signUp.repeatPassword')}</label><br/>
-                      <input style={input} placeholder={t('signUp.passwordHolder')} id="repeatPassword" name="repeatPassword"/><br/>
-                    </div>
-                    <div style={itemForm}>
-                      <label style={label}>{t('signUp.phoneNumber')}</label><br/>
-                      <input style={input} placeholder={t('signUp.phoneNumber')} id="phoneNumber" name="phoneNumber"/><br/>
-                    </div>
-                    <button style={submit}>{t('signUp.submit')}</button>
-                  </form>
-              </div>
+                <h3>{t('signUp.registry')}</h3>
             </div>
-          );
+            <hr/>
+            <Formik
+            validationSchema={schema}
+            >
+            {({
+                handleSubmit,
+                handleChange,
+                values,
+                touched,
+                errors,
+            }) => (
+                <Form noValidate onSubmit={handleSubmit,this.handleFormSubmit}>
+                    <Form.Group as={Col} md="12" controlId="validationFormik01">
+                        <Form.Label>{t('signUp.firstName')}</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="firstName"
+                            placeholder={t('signUp.firstNameHolder')}
+                            value={values.firstName}
+                            onChange={handleChange}
+                            isInvalid={!!errors.firstName}
+                        />
+                         <Form.Control.Feedback type="invalid">
+                            {errors.firstName}
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group as={Col} md="12" controlId="validationFormik02">
+                        <Form.Label>{t('signUp.lastName')}</Form.Label>
+                        <Form.Control
+                            type="text"
+                            placeholder={t('signUp.lastNameHolder')}
+                            name="lastName"
+                            value={values.lastName}
+                            onChange={handleChange}
+                            isInvalid={!!errors.lastName}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {errors.lastName}
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group as={Col} md="12" controlId="validationFormikUsername">
+                        <Form.Label>{t('signUp.email')}</Form.Label>
+                        <InputGroup>
+                            <Form.Control
+                            type="text"
+                            placeholder={t('signUp.emailHolder')}
+                            name="email"
+                            value={values.email}
+                            onChange={handleChange}
+                            isInvalid={!!errors.email}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                            {errors.email}
+                            </Form.Control.Feedback>
+                        </InputGroup>
+                    </Form.Group>
+                    <Form.Group as={Col} md="12" controlId="validationFormik03">
+                        <Form.Label>{t('signUp.password')}</Form.Label>
+                        <Form.Control
+                            type="password"
+                            placeholder={t('signUp.passwordHolder')}
+                            name="password"
+                            value={values.password}
+                            onChange={handleChange}
+                            isInvalid={!!errors.password}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {errors.password}
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group as={Col} md="12" controlId="validationFormik04">
+                        <Form.Label>{t('signUp.repeatPassword')}</Form.Label>
+                        <Form.Control
+                            type="password"
+                            placeholder={t('signUp.passwordHolder')}
+                            name="repeatPassword"
+                            value={values.repeatPassword}
+                            onChange={handleChange}
+                            isInvalid={!!errors.repeatPassword}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {errors.repeatPassword}
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group as={Col} md="12" controlId="validationFormik05">
+                        <Form.Label>{t('signUp.phoneNumber')}</Form.Label>
+                        <Form.Control
+                            type="text"
+                            placeholder={t('signUp.phoneNumberHolder')}
+                            name="phoneNumber"
+                            value={values.phoneNumber}
+                            onChange={handleChange}
+                            isInvalid={!!errors.phoneNumber}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {errors.phoneNumber}
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                <Button type="submit">{t('signUp.submit')}</Button>
+                </Form>
+            )}
+            </Formik>
+        </div>
+    );
     }
 }
 
-const formSignUp = {
-  marginTop: "10px",
-  float: "left",
-  marginLeft: "5%",
-  width: "25%",
-  height: "auto",
-  minWidth: "200px",
-  backgroundColor: "white",
-  boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-  marginBottom: "50px",
-}
-
-const title = {
-  marginTop: "15px !important",
-	textAlign: "center",
-	fontSize: "18px !important",
-  color: "#82817f",
-}
-
-const label = {
-  marginLeft: "5%",
-  color: "#82817f",
-}
-
-const itemForm = {
-  marginTop: "5px",
-}
-
-const input = {
-  width: "90%",
-  height: "35px",
-  padding: "12px 20px",
-  marginTop: "2px",
-  marginLeft: "20px",
-  display: "inline-block",
-  border: "1px solid",
-  borderColor: "#aaa",
-  borderRadius: "2px",
-  boxSizing: "border-box",
-  color: "#888",
-}
-
-const submit = {
-    width: "20%",
-    backgroundColor: "#FD8907",
-    color: "white",
-    padding: "14px 20px",
-    margin: "8px 8px",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-    float: "right",
-};
-
-export default withTranslation()(SignUp);
+export default withTranslation()(FormExample);

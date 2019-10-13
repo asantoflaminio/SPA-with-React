@@ -22,5 +22,9 @@
       "apartment": "Departamento",
       "search": "Buscar...",
       "searhBtn": "Buscar"
+    },
+    "errors": {
+      "requiredField": "Debe completarse el campo",
+      "phoneField": "Debe ser un numero de celular"
     }
   }

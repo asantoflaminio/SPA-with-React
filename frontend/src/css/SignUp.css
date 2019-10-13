@@ -14,3 +14,10 @@
 .example {
     background-color: aqua;
 }
+
+h3 {
+	margin-top: 15px !important;
+	text-align: center !important;
+	font-size: 30px !important;
+	color: #666 !important;
+}

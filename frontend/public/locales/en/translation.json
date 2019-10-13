@@ -22,5 +22,9 @@
       "apartment": "Apartment",
       "search": "Search...",
       "searhBtn": "Search"
+    },
+    "errors": {
+      "requiredField": "The field is required",
+      "phoneField": "Must be a phone number"
     }
   }
