@@ -2,11 +2,24 @@ import React from 'react';
 import { withTranslation } from 'react-i18next';
 import '../css/home.css';
 import Navbar from '../components/Navbar'
+import ImgsViewer from 'react-images-viewer'
+import image1 from '../resources/examples/1.jpg'
+import image2 from '../resources/examples/2.jpg'
 
 class HomeReal extends React.Component {
-    
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            isOpen : false,
+        };
+      }
+
     render(){
         const { t } = this.props;
+        const state = {
+            isOpen : false,
+        }
 
         return(
             <div>
@@ -56,6 +69,15 @@ class HomeReal extends React.Component {
                     </form>
                 </div>
             </header>
+            <div>
+            <ImgsViewer
+                imgs={[{ src: image1 }, { src: image2 }]}
+                isOpen={this.state.isOpen}
+                onClickPrev={this.gotoPrevious}
+                onClickNext={this.gotoNext}
+                onClose={this.closeImgsViewer}
+            />
+            </div>
         </div>
         );
     }

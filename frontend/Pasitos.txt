@@ -28,3 +28,6 @@ npm install react-material-ui-form-validator
 
 Para las request:
 npm install axios --save
+
+Para la interconexion:
+npm install --save react-router-dom

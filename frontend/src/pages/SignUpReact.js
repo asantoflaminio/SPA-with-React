@@ -35,13 +35,60 @@ class SignUpReact extends React.Component {
   }
 
   render(){
+      const { t } = this.props;
+
       return(
         <div className="box_form">
         <ValidatorForm
             onSubmit={this.handleSubmit}
         >
+          <div>
+            <label>{t('signUp.firstName')}</label>
+            <br/>
             <TextValidator
-                placeholder="Password..."
+                placeholder={t('signUp.firstNameHolder')}
+                onChange={this.handleChange}
+                name="firstName"
+                type="text"
+                validators={['required']}
+                errorMessages={['this field is required']}
+                value=""
+            />
+          </div>
+          <br/>
+          <div>
+            <label>{t('signUp.lastName')}</label>
+            <br/>
+            <TextValidator
+                placeholder={t('signUp.lastNameHolder')}
+                onChange={this.handleChange}
+                name="lastName"
+                type="text"
+                validators={['required']}
+                errorMessages={['this field is required']}
+                value=""
+            />
+          </div>
+          <br/>
+          <div>
+            <label>{t('signUp.email')}</label>
+            <br/>
+            <TextValidator
+                placeholder={t('signUp.emailHolder')}
+                onChange={this.handleChange}
+                name="email"
+                type="email"
+                validators={['required']}
+                errorMessages={['this field is required']}
+                value=""
+            />
+          </div>
+          <br/>
+          <div>
+            <label>{t('signUp.password')}</label>
+            <br/>
+            <TextValidator
+                placeholder={t('signUp.passwordHolder')}
                 onChange={this.handleChange}
                 name="password"
                 type="password"
@@ -49,10 +96,13 @@ class SignUpReact extends React.Component {
                 errorMessages={['this field is required']}
                 value=""
             />
+          </div>
+          <br/>
+          <div>
+            <label>{t('signUp.repeatPassword')}</label>
             <br/>
             <TextValidator
-                label="Repeat password"
-                className="example"
+                placeholder={t('signUp.passwordHolder')}
                 onChange={this.handleChange}
                 name="repeatPassword"
                 type="password"
@@ -60,6 +110,20 @@ class SignUpReact extends React.Component {
                 errorMessages={['password mismatch', 'this field is required']}
                 value=""
             />
+          </div>
+          <br/>
+          <div>
+            <label>{t('signUp.phoneNumber')}</label>
+            <br/>
+            <TextValidator
+                placeholder={t('signUp.phoneNumberHolder')}
+                onChange={this.handleChange}
+                name="phoneNumber"
+                type="text"
+                value=""
+            />
+          </div>
+          <br/>
             <Button type="submit">Submit</Button>
         </ValidatorForm>
     </div>
