@@ -25,7 +25,8 @@
     },
     "errors": {
       "requiredField": "Debe completarse el campo",
-      "phoneField": "Debe ser un numero de celular"
+      "phoneField": "Debe ser un numero de celular",
+      "shortMin": "El campo debe tener almenos 3 caracteres"
     },
     "navbar": {
       "remember": "Recordarme",
