@@ -15,7 +15,7 @@
       "submit": "Submit"
     },
     "home": {
-      "title": "MeinHaus",
+      "title": "Find your new home",
       "buy": "Buy",
       "rent": "Rent",
       "house": "House",
@@ -26,5 +26,10 @@
     "errors": {
       "requiredField": "The field is required",
       "phoneField": "Must be a phone number"
+    },
+    "navbar": {
+      "remember": "Remember me",
+      "signIn": "Sign In",
+      "signUp": "Sign Up"
     }
   }

@@ -15,7 +15,7 @@
       "submit": "Enviar"
     },
     "home": {
-      "title": "MeinHaus",
+      "title": "Encuentre su nuevo hogar",
       "buy": "Comprar",
       "rent": "Alquilar",
       "house": "Casa",
@@ -26,5 +26,10 @@
     "errors": {
       "requiredField": "Debe completarse el campo",
       "phoneField": "Debe ser un numero de celular"
+    },
+    "navbar": {
+      "remember": "Recordarme",
+      "signIn": "Ingresar",
+      "signUp": "Registrarse"
     }
   }
