@@ -26,7 +26,8 @@
     },
     "errors": {
       "requiredField": "The field is required",
-      "phoneField": "Must be a phone number"
+      "phoneField": "Must be a phone number",
+      "shortMin": "The field must have at least 3 characters"
     },
     "navbar": {
       "remember": "Remember me",

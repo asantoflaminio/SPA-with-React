@@ -20,28 +20,28 @@ class SignUp extends React.Component {
           repeatPassword: event.target[4].value,
           phoneNumber: event.target[5].value
         }
-    
-        var postData = JSON.stringify(data)
-        alert(postData)
-        
         axios({
           method: 'post',
           url: 'users/signUp',
           data: data
         })
         .then(function (response) {
-          alert(response.status);
+            alert(response.status)
         })
         .catch(function (error) {
-          alert(error);
         });
+    }
+
+    checkErrors(errors){
+        alert(Object.keys(errors))
+        return false;
     }
 
     render() {
 
     const { t } = this.props;
     const schema = yup.object({
-    firstName: yup.string().required( t('errors.requiredField') ),
+    firstName: yup.string().required( t('errors.requiredField') ).min( t('errors.shortMin') ),
     lastName: yup.string().required( t('errors.requiredField') ),
     email: yup.string().required( t('errors.requiredField') ),
     password: yup.string().required( t('errors.requiredField') ),
@@ -64,7 +64,11 @@ class SignUp extends React.Component {
                 touched,
                 errors,
             }) => (
-                <Form noValidate onSubmit={handleSubmit,this.handleFormSubmit}>
+                <Form noValidate onSubmit={event => {
+                    handleSubmit(event);
+                    if(this.checkErrors(errors))
+                        this.handleFormSubmit(event);
+                  }}>
                     <Form.Group as={Col} md="12" controlId="validationFormik01">
                         <Form.Label>{t('signUp.firstName')}</Form.Label>
                         <Form.Control
@@ -102,7 +106,7 @@ class SignUp extends React.Component {
                             name="email"
                             value={values.email}
                             onChange={handleChange}
-                            isInvalid={!!errors.email}
+                            isInvalid={!!errors.email && !! touched.email}
                             />
                             <Form.Control.Feedback type="invalid">
                             {errors.email}
