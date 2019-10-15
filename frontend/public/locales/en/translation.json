@@ -21,7 +21,8 @@
       "house": "House",
       "apartment": "Apartment",
       "search": "Search...",
-      "searhBtn": "Search"
+      "searhBtn": "Search",
+      "newPropsOnSale": "New properties on sale"
     },
     "errors": {
       "requiredField": "The field is required",

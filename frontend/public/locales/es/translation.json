@@ -21,7 +21,8 @@
       "house": "Casa",
       "apartment": "Departamento",
       "search": "Buscar...",
-      "searhBtn": "Buscar"
+      "searhBtn": "Buscar",
+      "newPropsOnSale": "Nuevas propiedades a la venta"
     },
     "errors": {
       "requiredField": "Debe completarse el campo",
