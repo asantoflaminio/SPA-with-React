@@ -22,6 +22,7 @@
       "apartment": "Departamento",
       "search": "Buscar...",
       "searhBtn": "Buscar",
+      "newPropsOnRent": "Nuevas propiedades en alquiler",
       "newPropsOnSale": "Nuevas propiedades a la venta"
     },
     "errors": {

@@ -22,6 +22,7 @@
       "apartment": "Apartment",
       "search": "Search...",
       "searhBtn": "Search",
+      "newPropsOnRent": "New properties for rent",
       "newPropsOnSale": "New properties on sale"
     },
     "errors": {
