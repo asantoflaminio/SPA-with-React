@@ -9,7 +9,7 @@ public class UserDTO {
 	private String repeatPassword;
 	private String phoneNumber;
 	
-	public UserDTO(long userid, String firstName, String lastName, String email, 
+	public UserDTO(String firstName, String lastName, String email, 
 			String password, String repeatPassword, String phoneNumber) {
 		this.firstName = firstName;
 		this.lastName = lastName;

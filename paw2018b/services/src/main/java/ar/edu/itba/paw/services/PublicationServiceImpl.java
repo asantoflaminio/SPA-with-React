@@ -43,7 +43,6 @@ public class PublicationServiceImpl implements PublicationService{
 			return null;
 		
 		LOGGER.debug("Creating publication with title {}", title);
-		
 		return publicationDao.create(title, address, neighborhood, city, province, operation, price,
 				   description, propertyType, bedrooms,
 				   bathrooms, floorSize, parking, userid);
