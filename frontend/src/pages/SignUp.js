@@ -20,6 +20,7 @@ class SignUp extends React.Component {
           repeatPassword: event.target[4].value,
           phoneNumber: event.target[5].value
         }
+        alert(JSON.stringify(data))
         axios({
           method: 'post',
           url: 'users/signUp',
@@ -50,7 +51,7 @@ class SignUp extends React.Component {
     phoneNumber: yup.number( t('errors.phoneField') )
     });
     return (
-        <div className="box_form">
+        <div className="box_form_signUp">
             <div>
                 <h3>{t('signUp.registry')}</h3>
             </div>

@@ -1,9 +1,10 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import { Form, Button, Col, InputGroup } from 'react-bootstrap';
+import { Form, Button, Col } from 'react-bootstrap';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {getJSON} from '../util/function'
 import '../css/Publish.css';
 import axios from 'axios';
 
@@ -11,31 +12,42 @@ class Publish extends React.Component {
 
     handleFormSubmit(event) {
         event.preventDefault();
-        const data = {
-          firstName: event.target[0].value,
-          lastName: event.target[1].value,
-          email: event.target[2].value,
-          password: event.target[3].value,
-          repeatPassword: event.target[4].value,
-          phoneNumber: event.target[5].value
-        }
+        const data = getJSON(event.target,13)
+        const jsonObject = JSON.parse(data);
         axios({
           method: 'post',
           url: 'users/publish',
-          data: data
+          data: jsonObject
         })
         .then(function (response) {
             alert(response.status)
         })
         .catch(function (error) {
+            alert(error)
         });
+    }
+
+    checkErrors(){
+        return true;
     }
 
     render() {
 
         const { t } = this.props;
         const schema = yup.object({
-        firstName: yup.string().required( t('errors.requiredField') ).min( t('errors.shortMin') ),
+        title: yup.string().required( t('errors.requiredField') ),
+        province: yup.string().required(t('errors.requiredField')),
+        city: yup.string().required(t('errors.requiredField')),
+        neighborhood: yup.string().required(t('errors.requiredField')),
+        address: yup.string().required(t('errors.requiredField')),
+        price: yup.number().required(t('errors.requiredField')).positive(),
+        description: yup.string().required(t('errors.requiredField')),
+        bedrooms: yup.number().required(t('errors.requiredField')).positive(),
+        bathrooms: yup.number().required(t('errors.requiredField')).positive(),
+        dimention: yup.number().required(t('errors.requiredField')).positive(),
+        parking: yup.number().required(t('errors.requiredField')).positive()
+
+
         });
 
         return (
@@ -49,10 +61,10 @@ class Publish extends React.Component {
                 >
                 {({
                     values,
-                    touched,
+                    handleChange,
                     errors,
                 }) => (
-                    <Form noValidate onSubmit={event => {
+                    <Form noValidate id="asd" onSubmit={event => {
                         if(this.checkErrors(schema))
                             this.handleFormSubmit(event);
                       }}>
@@ -64,6 +76,7 @@ class Publish extends React.Component {
                                     name="title"
                                     placeholder={t('publish.titleHolder')}
                                     value={values.firstName}
+                                    onChange={handleChange}
                                     id="title"
                                     isInvalid={!!errors.title}
                                 />
@@ -133,14 +146,14 @@ class Publish extends React.Component {
                                     type="radio"
                                     label={t('publish.buy')}
                                     name="operation"
-                                    value="buy"
+                                    value="FSale"
                                     checked
                                 />
                                 <Form.Check
                                     type="radio"
                                     label={t('publish.rent')}
                                     name="operation"
-                                    value="rent"
+                                    value="FRent"
                                 />
                             </Form.Group>
                             <Form.Group as={Col} md="12" controlId="validationFormik07">
@@ -173,32 +186,32 @@ class Publish extends React.Component {
                                         </Form.Control.Feedback>
                                 </Form.Group>
                                 <Form.Group as={Col} md="12" controlId="validationFormik09">
-                                    <Form.Label>{t('publish.type')}</Form.Label>
+                                    <Form.Label>{t('publish.propertyType')}</Form.Label>
                                     <Form.Check
                                         type="radio"
                                         label={t('publish.house')}
-                                        name="type"
-                                        value="house"
+                                        name="propertyType"
+                                        value="House"
                                         checked
                                     />
                                     <Form.Check
                                         type="radio"
                                         label={t('publish.apartment')}
-                                        name="type"
-                                        value="apartment"
+                                        name="propertyType"
+                                        value="Apartment"
                                     />
                             </Form.Group>
                             <Form.Group as={Col} md="12" controlId="validationFormik10">
-                                <Form.Label>{t('publish.rooms')}</Form.Label>
+                                <Form.Label>{t('publish.bedrooms')}</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    placeholder={t('publish.roomsHolder')}
-                                    name="rooms"
-                                    value={values.rooms}
-                                    isInvalid={!!errors.rooms}
+                                    placeholder={t('publish.bedroomsHolder')}
+                                    name="bedrooms"
+                                    value={values.bedrooms}
+                                    isInvalid={!!errors.bedrooms}
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                    {errors.rooms}
+                                    {errors.bedrooms}
                                 </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group as={Col} md="12" controlId="validationFormik11">
