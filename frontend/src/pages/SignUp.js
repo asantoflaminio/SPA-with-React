@@ -32,9 +32,10 @@ class SignUp extends React.Component {
         });
     }
 
-    checkErrors(errors){
-        alert(Object.keys(errors))
-        return false;
+    checkErrors(){
+        let firstName = document.getElementById("firstName")
+        alert(firstName) 
+        return true;
     }
 
     render() {
@@ -58,15 +59,12 @@ class SignUp extends React.Component {
             validationSchema={schema}
             >
             {({
-                handleSubmit,
-                handleChange,
                 values,
                 touched,
                 errors,
             }) => (
                 <Form noValidate onSubmit={event => {
-                    handleSubmit(event);
-                    if(this.checkErrors(errors))
+                    if(this.checkErrors(schema))
                         this.handleFormSubmit(event);
                   }}>
                     <Form.Group as={Col} md="12" controlId="validationFormik01">
@@ -76,7 +74,7 @@ class SignUp extends React.Component {
                             name="firstName"
                             placeholder={t('signUp.firstNameHolder')}
                             value={values.firstName}
-                            onChange={handleChange}
+                            id="firstName"
                             isInvalid={!!errors.firstName}
                         />
                          <Form.Control.Feedback type="invalid">
@@ -90,7 +88,6 @@ class SignUp extends React.Component {
                             placeholder={t('signUp.lastNameHolder')}
                             name="lastName"
                             value={values.lastName}
-                            onChange={handleChange}
                             isInvalid={!!errors.lastName}
                         />
                         <Form.Control.Feedback type="invalid">
@@ -105,7 +102,6 @@ class SignUp extends React.Component {
                             placeholder={t('signUp.emailHolder')}
                             name="email"
                             value={values.email}
-                            onChange={handleChange}
                             isInvalid={!!errors.email && !! touched.email}
                             />
                             <Form.Control.Feedback type="invalid">
@@ -120,7 +116,6 @@ class SignUp extends React.Component {
                             placeholder={t('signUp.passwordHolder')}
                             name="password"
                             value={values.password}
-                            onChange={handleChange}
                             isInvalid={!!errors.password}
                         />
                         <Form.Control.Feedback type="invalid">
@@ -134,7 +129,6 @@ class SignUp extends React.Component {
                             placeholder={t('signUp.passwordHolder')}
                             name="repeatPassword"
                             value={values.repeatPassword}
-                            onChange={handleChange}
                             isInvalid={!!errors.repeatPassword}
                         />
                         <Form.Control.Feedback type="invalid">
@@ -148,7 +142,6 @@ class SignUp extends React.Component {
                             placeholder={t('signUp.phoneNumberHolder')}
                             name="phoneNumber"
                             value={values.phoneNumber}
-                            onChange={handleChange}
                             isInvalid={!!errors.phoneNumber}
                         />
                         <Form.Control.Feedback type="invalid">
