@@ -68,6 +68,7 @@
       "titleImages": "Imagenes de la propiedad",
       "uploadImagesText": "Subí imágenes para tu publicación!!",
       "uploadImages": "Subir imágenes",
+      "uploadImagesTitle": "Maximo peso: 5mb. Acepta: JPG",
       "submit": "Publicar"
     }
   }

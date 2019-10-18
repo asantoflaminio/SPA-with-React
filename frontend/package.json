@@ -16,6 +16,7 @@
     "react-dom": "^16.10.1",
     "react-form-validator-core": "^0.6.4",
     "react-i18next": "^10.13.1",
+    "react-images-upload": "^1.2.7",
     "react-images-viewer": "^1.6.2",
     "react-material-ui-form-validator": "^2.0.9",
     "react-router-dom": "^5.1.2",

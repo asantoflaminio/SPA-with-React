@@ -7,8 +7,40 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {getJSON} from '../util/function'
 import '../css/Publish.css';
 import axios from 'axios';
+import ImageUploader from 'react-images-upload';
 
 class Publish extends React.Component {
+
+    constructor(props) {
+        super(props);
+         this.state = { pictures: [] };
+         this.onDrop = this.onDrop.bind(this);
+    }
+
+    onDrop(picture) {
+        this.setState({
+            pictures: this.state.pictures.concat(picture),
+        });
+        var file = new File(picture, "", {
+            type: "image/jpg",
+          });
+        this.createPicture(file)
+    }
+
+    createPicture(picture){
+        let wrapper = document.getElementById("imageViewer");
+        if(wrapper.childNodes[0].tagName === "P")
+            wrapper.removeChild(wrapper.childNodes[0]);
+
+        var reader = new FileReader();
+            reader.onload = function(){
+              var dataURL = reader.result;
+              var img = document.createElement("img")
+              img.src = dataURL;
+              wrapper.appendChild(img)
+            };
+        reader.readAsDataURL(picture);
+    }
 
     handleFormSubmit(event) {
         event.preventDefault();
@@ -256,10 +288,17 @@ class Publish extends React.Component {
                             </div>
                             <div class="down_box">
                                 <h4>{t('publish.titleImages')}</h4>
-                                <div className="imageViewer">
+                                <div className="imageViewer" id="imageViewer">
                                     <p id="imageText">{t('publish.uploadImagesText')}</p>
                                 </div>
-                                <button id="uploadButton">{t('publish.uploadImages')}</button>
+                                <ImageUploader
+                                    withIcon={true}
+                                    buttonText={t('publish.uploadImages')}
+                                    label= {t('publish.uploadImagesTitle')}
+                                    onChange={this.onDrop}
+                                    imgExtension={['.jpg']}
+                                    maxFileSize={5242880}
+                                />
                                 <Button type="submit" id="submitButton">{t('publish.submit')}</Button>
                             </div>
                     </Form>

@@ -10,6 +10,5 @@ export const getJSON = (array,quantity) => {
         }
     }
     result += "}"
-    alert(result)
     return result;
 }
