@@ -13,34 +13,76 @@ class Publish extends React.Component {
 
     constructor(props) {
         super(props);
-         this.state = { pictures: [] };
+         this.state = { 
+             pictures: [],
+             actualImage: 0
+        };
          this.onDrop = this.onDrop.bind(this);
+         this.previousImage = this.previousImage.bind(this);
+         this.nextImage = this.nextImage.bind(this);
     }
 
     onDrop(picture) {
-        this.setState({
-            pictures: this.state.pictures.concat(picture),
-        });
-        var file = new File(picture, "", {
-            type: "image/jpg",
-          });
-        this.createPicture(file)
+         this.setState({
+            pictures: picture,
+            actualImage: 0,
+            }, () => {
+                var file = new File([picture[0]], "", { type: "image/jpg",});
+                this.createPicture(file)
+                document.getElementById("imageText").classList.add("hidden");
+                let count = document.getElementById("countImage")
+                count.innerHTML = this.state.actualImage + 1 + "/" + this.state.pictures.length;
+                count.classList.remove("hidden");
+                count.classList.add("countImagesText");
+            });
     }
 
-    createPicture(picture){
-        let wrapper = document.getElementById("imageViewer");
-        if(wrapper.childNodes[0].tagName === "P")
-            wrapper.removeChild(wrapper.childNodes[0]);
-
+    createPicture(picture, index){
         var reader = new FileReader();
             reader.onload = function(){
               var dataURL = reader.result;
-              var img = document.createElement("img")
+              var img = document.getElementById("image");
               img.src = dataURL;
-              img.classList.add("imageStyle");
-              wrapper.appendChild(img)
+              img.classList.remove("hidden")
             };
         reader.readAsDataURL(picture);
+    }
+
+    previousImage(){
+        let index = this.state.actualImage;
+        let newIndex;
+        if(this.state.pictures.length <= 1)
+            return;
+        if(index - 1 < 0)
+            newIndex = this.state.pictures.length - 1
+        else
+            newIndex = index - 1;
+        var file = new File([this.state.pictures[newIndex]], "", { type: "image/jpg",});
+        this.createPicture(file);
+        let count = document.getElementById("countImage")
+        count.innerHTML = newIndex + 1 + "/" + this.state.pictures.length;
+        this.setState({
+            actualImage: newIndex,
+        });
+        
+    }
+
+    nextImage(){
+        let index = this.state.actualImage;
+        let newIndex;
+        if(this.state.pictures.length <= 1)
+            return;
+        if(index + 1 === this.state.pictures.length)
+            newIndex = 0
+        else
+            newIndex = index + 1;
+        var file = new File([this.state.pictures[newIndex]], "", { type: "image/jpg",});
+        this.createPicture(file);
+        let count = document.getElementById("countImage")
+        count.innerHTML = newIndex + 1 + "/" + this.state.pictures.length;
+        this.setState({
+            actualImage: newIndex,
+        });
     }
 
     handleFormSubmit(event) {
@@ -289,8 +331,18 @@ class Publish extends React.Component {
                             </div>
                             <div class="down_box">
                                 <h4>{t('publish.titleImages')}</h4>
-                                <div className="imageViewer" id="imageViewer">
-                                    <p id="imageText">{t('publish.uploadImagesText')}</p>
+                                <div className="image_wrapper">
+                                    <div className="wrapper_arrows">
+                                        <span className="arrows" onClick={this.previousImage}>&#8656;</span>
+                                    </div>
+                                    <div className="imageViewer" id="imageViewer">
+                                        <p id="imageText">{t('publish.uploadImagesText')}</p>
+                                        <img id="image" className="imageStyle hidden"></img>
+                                        <p id="countImage" classList="countImagesText hidden"></p>
+                                    </div>
+                                    <div className="wrapper_arrows">
+                                        <span className="arrows" onClick={this.nextImage}>&#8658;</span>
+                                    </div>
                                 </div>
                                 <ImageUploader
                                     withIcon={true}
