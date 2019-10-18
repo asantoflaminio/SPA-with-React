@@ -37,6 +37,7 @@ class Publish extends React.Component {
               var dataURL = reader.result;
               var img = document.createElement("img")
               img.src = dataURL;
+              img.classList.add("imageStyle");
               wrapper.appendChild(img)
             };
         reader.readAsDataURL(picture);

@@ -42,6 +42,8 @@ h4 {
     height: 600px;
     margin: auto;
     margin-top: 20px;
+    display: flex;
+    justify-content: center;
 }
 
 #uploadButton{
@@ -63,4 +65,11 @@ h4 {
     text-align: center;
     vertical-align: middle;
     line-height: 600px;
+}
+
+.imageStyle{
+    display: block;
+    margin:auto;
+    max-width: 95%;
+    height: auto;
 }
