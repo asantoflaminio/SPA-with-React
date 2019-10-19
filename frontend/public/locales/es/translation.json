@@ -70,5 +70,10 @@
       "uploadImages": "Subir imágenes",
       "uploadImagesTitle": "Maximo peso: 5mb. Acepta: JPG",
       "submit": "Publicar"
+    },
+    "admin": {
+      "locations": "UBICACIONES",
+      "users": "USUARIOS",
+      "publications": "PUBLICACIONES"
     }
   }
