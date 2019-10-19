@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import ar.edu.itba.paw.interfaces.LocationService;
+import ar.edu.itba.paw.models.dto.CityDTO;
+import ar.edu.itba.paw.models.dto.NeighborhoodDTO;
 import ar.edu.itba.paw.models.dto.ProvinceDTO;
 import ar.edu.itba.paw.models.dto.ProvincesDTO;
 
@@ -27,7 +29,22 @@ public class AdminController {
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response createProvince (final ProvinceDTO provinceDTO) {
     	ls.createProvince(provinceDTO.getProvince());
-    	
+        return Response.ok().build();
+    }
+    
+    @POST
+    @Path("/city")
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response createCity (final CityDTO cityDTO) {
+    	ls.createCity(cityDTO.getCity(),cityDTO.getProvinceID());
+        return Response.ok().build();
+    }
+    
+    @POST
+    @Path("/neighborhood")
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response createNeighborhood (final NeighborhoodDTO neighborhoodDTO) {
+    	ls.createNeighborhood(neighborhoodDTO.getNeighborhood(),neighborhoodDTO.getCityID());
         return Response.ok().build();
     }
     
