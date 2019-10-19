@@ -1,6 +1,6 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import { Form, Button, Col } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from '../components/Navbar'
 import axios from 'axios';
@@ -16,6 +16,7 @@ class AdminGenerator extends React.Component {
         super(props);
          this.state = { 
              provinces: [],
+             cities: []
         };
     }
 
@@ -41,15 +42,26 @@ class AdminGenerator extends React.Component {
           .get('admin/getProvinces')
           .then(({ data })=> {
             this.setState({
-                provinces: data,
-            });
-            alert(JSON.stringify(data))
-          })
+                provinces: data.provinces,
+            })})
           .catch((err)=> {})
+
+        axios
+          .get('admin/getCities')
+          .then(({ data })=> {
+            this.setState({
+                provinces: data.cities,
+            })})
+          .catch((err)=> {})
+          
       }
+
 
     render(){
         const { t } = this.props;
+        const provinces = this.state.provinces.map(function(item){
+            return <option value={item.provinceID}>  {item.province} </option>;
+          });
         const schemaProvince = yup.object({
             province: yup.string().required(t('errors.requiredField'))
         });
@@ -116,7 +128,9 @@ class AdminGenerator extends React.Component {
                                             value={values.province}
                                             onChange={handleChange}
                                             isInvalid={!!errors.province}
-                                        />
+                                        >
+                                            {provinces}
+                                        </Form.Control>
                                     </Form.Group>
                                     <Form.Group controlId="validationFormik03">
                                         <Form.Label className="location-label">{t('admin.city')}</Form.Label>

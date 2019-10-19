@@ -1,10 +1,11 @@
 .signup-list-item {
 	font-size: 20px;
 	color: #777;
-  padding: 10px 10px;
+  padding: 20px 10px;
   border-style: solid;
   border-color: #777;
   border-width: 3px;
+  margin-top: 50px;
 }
 
 div.polaroid {
