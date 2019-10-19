@@ -1,7 +1,10 @@
 .signup-list-item {
-	font-size: 15px;
+	font-size: 20px;
 	color: #777;
-	padding: 5px 10px;
+  padding: 10px 10px;
+  border-style: solid;
+  border-color: #777;
+  border-width: 3px;
 }
 
 div.polaroid {
@@ -32,18 +35,45 @@ div.polaroid {
 	color: #666 !important;
 }
 
+.legendTag{
+  display: block;
+  padding-left: 4px;
+  padding-right: 4px;
+  border: none;
+  width: auto;
+  font-size: 16px;
+}
+
+.location-label{
+  margin: 5px 10px 5px 0;
+}
+
 .location-input {
-	width: 130px;
-	height: 25px;
+  vertical-align: middle;
+  margin: 5px 10px 5px 0;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  width: 200px !important;
+}
+
+.location-select{
+  vertical-align: middle;
+  margin: 5px 10px 5px 0;
+  padding: 10px;
+  width: 40%;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  width: 200px !important;
 }
 
 .signup-submit {
-	height: 30px !important;
-    width: 80px !important;
-    padding: 3px !important;
-    font-size: 15px !important;
-    margin-left: 10px !important;
-    margin-top: 10px !important;
-    margin-bottom: 20px !important;
+  padding: 7px 25px;
+  background-color: dodgerblue;
+  border: 1px solid #ddd;
+  color: white;
+  cursor: pointer;
 }
+
+
 

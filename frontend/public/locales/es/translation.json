@@ -74,6 +74,14 @@
     "admin": {
       "locations": "UBICACIONES",
       "users": "USUARIOS",
-      "publications": "PUBLICACIONES"
+      "publications": "PUBLICACIONES",
+      "province": "Provincia:",
+      "provinceHolder": "Provincia...",
+      "create": "Crear",
+      "locationTitle": "Administración de ubicaciones",
+      "provinceLegend": "Creación de provincia",
+      "cityLegend": "Creación de ciudad",
+      "cityHolder": "Ciudad...",
+      "city": "Ciudad:"
     }
   }
