@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import ar.edu.itba.paw.interfaces.LocationService;
 import ar.edu.itba.paw.models.City;
 import ar.edu.itba.paw.models.Neighborhood;
 import ar.edu.itba.paw.models.Province;
+import ar.edu.itba.paw.models.dto.ProvinceDTO;
 
 @Service
 public class LocationServiceImpl implements LocationService{
@@ -50,8 +52,14 @@ public class LocationServiceImpl implements LocationService{
 	}
 
 	@Override
-	public List<Province> getProvinces() {
-		return locationDao.getProvinces();
+	public List<ProvinceDTO> getProvinces() {
+		List<ProvinceDTO> returnList = new ArrayList<ProvinceDTO>();
+		
+		for(Province province: locationDao.getProvinces()) {
+			returnList.add(new ProvinceDTO(province.getProvince(),province.getProvinceid()));
+		}
+		
+		return returnList;
 	}
 
 	@Override
