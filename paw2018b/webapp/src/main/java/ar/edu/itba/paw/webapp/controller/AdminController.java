@@ -32,19 +32,12 @@ public class AdminController {
     }
     
     @GET
-    @Path("/getProvinces")
+    @Path("/getLocations")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getProvinces () {
-    	ProvincesDTO provinces = new ProvincesDTO(ls.getProvinces());
+    	ProvincesDTO provinces = new ProvincesDTO(ls.getLocations());
     	return Response.ok().entity(provinces).build();
     }
     
-    @GET
-    @Path("/getCities")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getCities () {
-    	CitiesDTO cities = new CitiesDTO(ls.getCities());
-    	return Response.ok().entity(cities).build();
-    }
 
 }

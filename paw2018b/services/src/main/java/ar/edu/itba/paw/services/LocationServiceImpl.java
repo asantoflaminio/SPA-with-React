@@ -14,6 +14,7 @@ import ar.edu.itba.paw.models.City;
 import ar.edu.itba.paw.models.Neighborhood;
 import ar.edu.itba.paw.models.Province;
 import ar.edu.itba.paw.models.dto.CityDTO;
+import ar.edu.itba.paw.models.dto.NeighborhoodDTO;
 import ar.edu.itba.paw.models.dto.ProvinceDTO;
 
 @Service
@@ -53,30 +54,46 @@ public class LocationServiceImpl implements LocationService{
 	}
 
 	@Override
-	public List<ProvinceDTO> getProvinces() {
-		List<ProvinceDTO> returnList = new ArrayList<ProvinceDTO>();
-		
-		for(Province province: locationDao.getProvinces()) {
-			returnList.add(new ProvinceDTO(province.getProvince(),province.getProvinceid()));
-		}
-		
-		return returnList;
+	public List<Province> getProvinces() {
+		return locationDao.getProvinces();
 	}
 
 	@Override
-	public List<CityDTO> getCities() {
-		List<CityDTO> returnList = new ArrayList<CityDTO>();
-		
-		for(City city: locationDao.getCities()) {
-			returnList.add(new CityDTO(city.getCity(),city.getCityid(),city.getProvince().getProvinceid()));
-		}
-		
-		return returnList;
+	public List<City> getCities() {
+		return locationDao.getCities();
 	}
 	
 	@Override
 	public List<Neighborhood> getNeighborhoods() {
 		return locationDao.getNeighborhoods();
+	}
+	
+
+	@Override
+	public List<ProvinceDTO> getLocations() {
+		List<ProvinceDTO> provinces = new ArrayList<ProvinceDTO>();
+		List<CityDTO> cities;
+		List<NeighborhoodDTO> neighborhoods;
+		ProvinceDTO provinceDTO;
+		CityDTO cityDTO;
+		NeighborhoodDTO neighborhoodDTO;
+		
+		for(Province province: locationDao.getProvinces()) {
+			cities = new ArrayList<CityDTO>();
+			for(City city: province.getCities()) {
+				neighborhoods = new ArrayList<NeighborhoodDTO>();
+				for(Neighborhood neighborhood: locationDao.getNeighborhoodsByCity(city.getCityid())) {
+					neighborhoodDTO = new NeighborhoodDTO(neighborhood.getNeighborhood(),neighborhood.getNeighborhoodid());
+					neighborhoods.add(neighborhoodDTO);
+				}
+				cityDTO = new CityDTO(city.getCity(), city.getCityid(),neighborhoods);
+				cities.add(cityDTO);
+			}
+			provinceDTO = new ProvinceDTO(province.getProvince(), province.getProvinceid(), cities);
+			provinces.add(provinceDTO);
+		}
+		
+		return provinces;
 	}
 
 }

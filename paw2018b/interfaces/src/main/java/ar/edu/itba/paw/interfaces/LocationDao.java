@@ -19,5 +19,7 @@ public interface LocationDao {
 	public List<City> getCities();
 	
 	public List<Neighborhood> getNeighborhoods();
+	
+	public List<Neighborhood> getNeighborhoodsByCity(long cityid);
 
 }

@@ -1,15 +1,17 @@
 package ar.edu.itba.paw.models.dto;
 
+import java.util.List;
+
 public class CityDTO {
 	
 	private String city;
 	private long cityID;
-	private long provinceID;
+	private List<NeighborhoodDTO> neighborhoods;
 	
-	public CityDTO(String city, long cityID, long provinceID) {
+	public CityDTO(String city, long cityID, List<NeighborhoodDTO> neighborhoods) {
 		this.setCity(city);
 		this.setCityID(cityID);
-		this.setProvinceID(provinceID);
+		this.setNeighborhoods(neighborhoods);
 	}
 	
 	public CityDTO(){}
@@ -30,12 +32,13 @@ public class CityDTO {
 		this.cityID = cityID;
 	}
 
-	public long getProvinceID() {
-		return provinceID;
+	public List<NeighborhoodDTO> getNeighborhoods() {
+		return neighborhoods;
 	}
 
-	public void setProvinceID(long provinceID) {
-		this.provinceID = provinceID;
+	public void setNeighborhoods(List<NeighborhoodDTO> neighborhoods) {
+		this.neighborhoods = neighborhoods;
 	}
+
 
 }
