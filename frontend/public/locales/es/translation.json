@@ -82,6 +82,9 @@
       "provinceLegend": "Creación de provincia",
       "cityLegend": "Creación de ciudad",
       "cityHolder": "Ciudad...",
-      "city": "Ciudad:"
+      "city": "Ciudad:",
+      "neighborhoodLegend": "Creación de barrio",
+      "neighborhoodHolder": "Barrio...",
+      "neighborhood": "Barrio:"
     }
   }

@@ -9,23 +9,64 @@ import { Formik } from 'formik';
 import '../css/AdminGenerator.css';
 import AdminManagment from '../components/AdminManagment';
 import {getJSON} from '../util/function'
+import { isTSImportEqualsDeclaration } from '@babel/types';
 
 class AdminGenerator extends React.Component {
 
     constructor(props) {
         super(props);
          this.state = { 
-            locations: []
+            locations: [],
+            province_cityID: 0,
+            province_neighborhoodID: 0,
+            city_neighborhoodID: 0
         };
+        this.updateCity = this.updateCity.bind(this);
     }
 
-    handleFormSubmit(event) {
+    handleProvinceSubmit(event) {
         event.preventDefault();
         const data = getJSON(event.target,1)
         const jsonObject = JSON.parse(data);
         axios({
           method: 'post',
           url: 'admin/province',
+          data: jsonObject
+        })
+        .then(function (response) {
+            alert(response.status)
+        })
+        .catch(function (error) {
+            alert(error)
+        });
+    }
+
+    handleCitySubmit(event) {
+        event.preventDefault();
+        const data = getJSON(event.target,2)
+        alert(data)
+        const jsonObject = JSON.parse(data);
+        axios({
+          method: 'post',
+          url: 'admin/city',
+          data: jsonObject
+        })
+        .then(function (response) {
+            alert(response.status)
+        })
+        .catch(function (error) {
+            alert(error)
+        });
+    }
+
+    handleNeighborhoodSubmit(event) {
+        event.preventDefault();
+        const data = getJSON(event.target,3)
+        alert(data)
+        const jsonObject = JSON.parse(data);
+        axios({
+          method: 'post',
+          url: 'admin/neighborhood',
           data: jsonObject
         })
         .then(function (response) {
@@ -47,12 +88,35 @@ class AdminGenerator extends React.Component {
           
       }
 
+      updateCity(event){
+        let provinceIndex;
+        for(let i = 0 ; i < this.state.locations.length; i++){
+            if(this.state.locations[i].provinceID == event.target.value){
+                provinceIndex = i;
+                break;
+            }
+        }
+        let province = this.state.locations[provinceIndex]
+        let selectCity = document.getElementById("city_neighborhood")
+        let newOption;
+        while (selectCity.firstChild) {
+            selectCity.removeChild(selectCity.firstChild);
+        }
+        for(let i = 0; i < province.cities.length; i++){
+            newOption = document.createElement("option");
+            newOption.value = province.cities[i].cityID
+            newOption.innerHTML = province.cities[i].city
+            selectCity.appendChild(newOption)
+        }
+    }
+
 
     render(){
         const { t } = this.props;
         const provinces = this.state.locations.map(function(item){
             return <option value={item.provinceID}>  {item.province} </option>;
           });
+        const cities = 1
         const schemaProvince = yup.object({
             province: yup.string().required(t('errors.requiredField'))
         });
@@ -77,7 +141,7 @@ class AdminGenerator extends React.Component {
                             errors,
                             }) => (
                                 <Form noValidate className="form-inline" onSubmit={event => {
-                                    this.handleFormSubmit(event);
+                                    this.handleProvinceSubmit(event);
                                 }}>
                                     <Form.Group controlId="validationFormik01">
                                         <Form.Label className="location-label">{t('admin.province')}</Form.Label>
@@ -107,18 +171,18 @@ class AdminGenerator extends React.Component {
                             errors,
                             }) => (
                                 <Form noValidate className="form-inline" onSubmit={event => {
-                                    this.handleFormSubmit(event);
+                                    this.handleCitySubmit(event);
                                 }}>
                                     <Form.Group controlId="validationFormik02">
                                         <Form.Label className="location-label">{t('admin.province')}</Form.Label>
                                         <Form.Control
                                             as="select"
                                             type="text"
-                                            name="province"
+                                            name="provinceID"
                                             className="location-select"
-                                            value={values.province}
+                                            value={values.provinceID}
                                             onChange={handleChange}
-                                            isInvalid={!!errors.province}
+                                            isInvalid={!!errors.provinceID}
                                         >
                                             {provinces}
                                         </Form.Control>
@@ -133,6 +197,62 @@ class AdminGenerator extends React.Component {
                                             value={values.city}
                                             onChange={handleChange}
                                             isInvalid={!!errors.city}
+                                        />
+                                    <Button type="submit" className="signup-submit">{t('admin.create')}</Button>
+                                    </Form.Group>
+                                </Form>
+                                    )}
+                            </Formik>
+                        </fieldset>
+                        <fieldset className="signup-list-item">
+                        <legend className="legendTag">{t('admin.neighborhoodLegend')}</legend>
+                        <Formik validationSchema={schemacity}>{({
+                            values,
+                            handleChange,
+                            errors,
+                            }) => (
+                                <Form noValidate className="form-inline" onSubmit={event => {
+                                    this.handleNeighborhoodSubmit(event);
+                                }}>
+                                    <Form.Group controlId="validationFormik04">
+                                        <Form.Label className="location-label">{t('admin.province')}</Form.Label>
+                                        <Form.Control
+                                            as="select"
+                                            type="text"
+                                            name="provinceID"
+                                            className="location-select"
+                                            value={values.provinceID}
+                                            onChange={(event) => handleChange && this.updateCity(event)}
+                                            isInvalid={!!errors.provinceID}
+                                        >
+                                            {provinces}
+                                        </Form.Control>
+                                    </Form.Group>
+                                    <Form.Group controlId="validationFormik05">
+                                        <Form.Label className="location-label">{t('admin.city')}</Form.Label>
+                                        <Form.Control
+                                            as="select"
+                                            type="text"
+                                            name="cityID"
+                                            id="city_neighborhood"
+                                            className="location-select"
+                                            value={values.cityID}
+                                            onChange={handleChange}
+                                            isInvalid={!!errors.cityID}
+                                        >
+                                            {cities}
+                                        </Form.Control>
+                                    </Form.Group>
+                                    <Form.Group controlId="validationFormik06">
+                                        <Form.Label className="location-label">{t('admin.neighborhood')}</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="neighborhood"
+                                            className="location-input"
+                                            placeholder={t('admin.neighborhoodHolder')}
+                                            value={values.neighborhood}
+                                            onChange={handleChange}
+                                            isInvalid={!!errors.neighborhood}
                                         />
                                     <Button type="submit" className="signup-submit">{t('admin.create')}</Button>
                                     </Form.Group>
