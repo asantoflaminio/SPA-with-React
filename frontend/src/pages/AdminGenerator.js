@@ -15,8 +15,7 @@ class AdminGenerator extends React.Component {
     constructor(props) {
         super(props);
          this.state = { 
-             provinces: [],
-             cities: []
+            locations: []
         };
     }
 
@@ -39,18 +38,10 @@ class AdminGenerator extends React.Component {
 
     componentDidMount(){
         axios
-          .get('admin/getProvinces')
+          .get('admin/getLocations')
           .then(({ data })=> {
             this.setState({
-                provinces: data.provinces,
-            })})
-          .catch((err)=> {})
-
-        axios
-          .get('admin/getCities')
-          .then(({ data })=> {
-            this.setState({
-                provinces: data.cities,
+                locations: data.provinces,
             })})
           .catch((err)=> {})
           
@@ -59,7 +50,7 @@ class AdminGenerator extends React.Component {
 
     render(){
         const { t } = this.props;
-        const provinces = this.state.provinces.map(function(item){
+        const provinces = this.state.locations.map(function(item){
             return <option value={item.provinceID}>  {item.province} </option>;
           });
         const schemaProvince = yup.object({
