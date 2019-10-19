@@ -13,6 +13,7 @@ import ar.edu.itba.paw.interfaces.LocationService;
 import ar.edu.itba.paw.models.City;
 import ar.edu.itba.paw.models.Neighborhood;
 import ar.edu.itba.paw.models.Province;
+import ar.edu.itba.paw.models.dto.CityDTO;
 import ar.edu.itba.paw.models.dto.ProvinceDTO;
 
 @Service
@@ -63,8 +64,14 @@ public class LocationServiceImpl implements LocationService{
 	}
 
 	@Override
-	public List<City> getCities() {
-		return locationDao.getCities();
+	public List<CityDTO> getCities() {
+		List<CityDTO> returnList = new ArrayList<CityDTO>();
+		
+		for(City city: locationDao.getCities()) {
+			returnList.add(new CityDTO(city.getCity(),city.getCityid(),city.getProvince().getProvinceid()));
+		}
+		
+		return returnList;
 	}
 	
 	@Override

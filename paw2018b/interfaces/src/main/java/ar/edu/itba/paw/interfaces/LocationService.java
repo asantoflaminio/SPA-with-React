@@ -5,6 +5,7 @@ import java.util.List;
 import ar.edu.itba.paw.models.City;
 import ar.edu.itba.paw.models.Neighborhood;
 import ar.edu.itba.paw.models.Province;
+import ar.edu.itba.paw.models.dto.CityDTO;
 import ar.edu.itba.paw.models.dto.ProvinceDTO;
 
 public interface LocationService {
@@ -17,7 +18,7 @@ public interface LocationService {
 	
 	public List<ProvinceDTO> getProvinces();
 	
-	public List<City> getCities();
+	public List<CityDTO> getCities();
 	
 	public List<Neighborhood> getNeighborhoods();
 

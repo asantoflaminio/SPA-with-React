@@ -26,7 +26,6 @@ public class AdminController {
     @Path("/province")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response createProvince (final ProvinceDTO provinceDTO) {
-    	System.out.println("Called!");
     	ls.createProvince(provinceDTO.getProvince());
     	
         return Response.ok().build();
@@ -36,9 +35,16 @@ public class AdminController {
     @Path("/getProvinces")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getProvinces () {
-    	System.out.println("Called!");
     	ProvincesDTO provinces = new ProvincesDTO(ls.getProvinces());
     	return Response.ok().entity(provinces).build();
+    }
+    
+    @GET
+    @Path("/getCities")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response getCities () {
+    	CitiesDTO cities = new CitiesDTO(ls.getCities());
+    	return Response.ok().entity(cities).build();
     }
 
 }
