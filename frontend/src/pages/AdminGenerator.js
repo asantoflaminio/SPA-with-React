@@ -3,13 +3,12 @@ import { withTranslation } from 'react-i18next';
 import { Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from '../components/Navbar'
-import axios from 'axios';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import '../css/AdminGenerator.css';
 import AdminManagment from '../components/AdminManagment';
-import {getJSON, getJSONSingle} from '../util/function'
-import { isTSImportEqualsDeclaration } from '@babel/types';
+import {appendSelectElement} from '../util/function'
+import * as axiosRequest from '../util/axiosRequest'
 
 class AdminGenerator extends React.Component {
 
@@ -20,105 +19,46 @@ class AdminGenerator extends React.Component {
             cities: [],
             neighborhoods: []
         };
-        this.updateCity = this.updateCity.bind(this);
     }
 
     handleProvinceSubmit(event) {
         event.preventDefault();
-        const data = getJSON(event.target,1)
-        const jsonObject = JSON.parse(data);
-        axios({
-          method: 'post',
-          url: 'admin/province',
-          data: jsonObject
-        })
-        .then(function (response) {
-            alert(response.status)
-        })
-        .catch(function (error) {
-            alert(error)
-        });
+        axiosRequest.postProvince(event);
     }
 
     handleCitySubmit(event) {
         event.preventDefault();
-        const data = getJSON(event.target,2)
-        const jsonObject = JSON.parse(data);
-        axios({
-          method: 'post',
-          url: 'admin/city',
-          data: jsonObject
-        })
-        .then(function (response) {
-            alert(response.status)
-        })
-        .catch(function (error) {
-            alert(error)
-        });
+        axiosRequest.postCity(event);
     }
 
     handleNeighborhoodSubmit(event) {
         event.preventDefault();
-        const data = getJSON(event.target,3)
-        const jsonObject = JSON.parse(data);
-        axios({
-          method: 'post',
-          url: 'admin/neighborhood',
-          data: jsonObject
-        })
-        .then(function (response) {
-            alert(response.status)
-        })
-        .catch(function (error) {
-            alert(error)
-        });
+        axiosRequest.postNeighborhood(event);
     }
 
     componentDidMount(){
-        axios
-          .get('admin/getProvinces')
-          .then(({ data })=> {
-            this.setState({
-                provinces: data.provinces,
-            })})
-          .catch((err)=> {})
+        let currentComponent = this
+        axiosRequest.getProvinces().then(function (provincesList){
+            currentComponent.setState({
+                provinces: provincesList,
+            })
+        })
       }
 
-
-
-    async getCities(event){
-        event.preventDefault();
-        const data = getJSONSingle(event.target)
-        const jsonObject = JSON.parse(data);
-        return await axios({
-            method: 'post',
-            url: 'admin/getCities',
-            data: jsonObject
-          })
-          .then(function (response) {
-              return response.data.provinces
-          })
-          .catch(function (error) {
-              alert(error)
-          });
-    }
-
     updateCity(event){
-        this.getCities(event).then(function (cities){
-            let selectCity = document.getElementById("city_neighborhood")
-            let newOption;
-            while (selectCity.firstChild) {
-                selectCity.removeChild(selectCity.firstChild);
+        event.preventDefault();
+        axiosRequest.getCities(event).then(function (cities){
+            let select = document.getElementById("city_neighborhood")
+            select.selectedIndex = 0;
+            while (select.childNodes[1]) {
+                select.removeChild(select.childNodes[1]); 
             }
             for(let i = 0; i < cities.length; i++){
-                newOption = document.createElement("option");
-                newOption.value = cities[i].cityID
-                newOption.innerHTML = cities[i].city
-                selectCity.appendChild(newOption)
+                appendSelectElement(select,cities[i].city,cities[i].cityID)
             }
         })
-
     }
+
 
 
     render(){
@@ -132,6 +72,11 @@ class AdminGenerator extends React.Component {
         const schemacity = yup.object({
             province: yup.string().required(t('errors.requiredField')),
             city: yup.string().required(t('errors.requiredField'))
+        });
+        const schemaNeighborhood = yup.object({
+            province: yup.string().required(t('errors.requiredField')),
+            city: yup.string().required(t('errors.requiredField')),
+            neighborhood: yup.string().required(t('errors.requiredField'))
         });
 
         return(
@@ -193,6 +138,7 @@ class AdminGenerator extends React.Component {
                                             onChange={handleChange}
                                             isInvalid={!!errors.provinceID}
                                         >
+                                            <option disabled selected value="">{t('publish.provinceHolder')}</option>
                                             {provinces}
                                         </Form.Control>
                                     </Form.Group>
@@ -215,7 +161,7 @@ class AdminGenerator extends React.Component {
                         </fieldset>
                         <fieldset className="signup-list-item">
                         <legend className="legendTag">{t('admin.neighborhoodLegend')}</legend>
-                        <Formik validationSchema={schemacity}>{({
+                        <Formik validationSchema={schemaNeighborhood}>{({
                             values,
                             handleChange,
                             errors,
@@ -234,6 +180,7 @@ class AdminGenerator extends React.Component {
                                             onChange={(event) => handleChange && this.updateCity(event)}
                                             isInvalid={!!errors.provinceID}
                                         >
+                                            <option disabled selected value="">{t('publish.provinceHolder')}</option>
                                             {provinces}
                                         </Form.Control>
                                     </Form.Group>
@@ -249,6 +196,7 @@ class AdminGenerator extends React.Component {
                                             onChange={handleChange}
                                             isInvalid={!!errors.cityID}
                                         >
+                                            <option disabled selected value="">{t('publish.cityHolder')}</option>
                                         </Form.Control>
                                     </Form.Group>
                                     <Form.Group controlId="validationFormik06">

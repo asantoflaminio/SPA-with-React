@@ -1,21 +1,7 @@
-export const getJSON = (array,quantity) => {
-    let result = "{";
-    for(var i = 0; i < quantity; i++){
-        if(array[i].type === "radio" && array[i].checked === false){
-            quantity = quantity + 1;
-        }else{
-            result += '"' + array[i].name + '"' + ":" + '"' + array[i].value + '"' ;
-            if(i !== quantity - 1)
-                result += ",";
-        }
-    }
-    result += "}"
-    return result;
-}
+export const appendSelectElement = (selectCity,text,value) => {
+    let option = document.createElement("option");
+    option.value = value;
+    option.innerHTML = text;
+    selectCity.appendChild(option)
 
-export const getJSONSingle = (target) => {
-    let result = "{"
-    result += '"' + target.name + '"' + ":" + '"' + target.value + '"';
-    result += "}";
-    return result;
 }

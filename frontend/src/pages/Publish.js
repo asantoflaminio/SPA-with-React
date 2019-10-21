@@ -4,9 +4,9 @@ import { Form, Button, Col } from 'react-bootstrap';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {getJSON} from '../util/function'
+import * as axiosRequest from '../util/axiosRequest'
 import '../css/Publish.css';
-import axios from 'axios';
+import {appendSelectElement} from '../util/function'
 import ImageUploader from 'react-images-upload';
 
 class Publish extends React.Component {
@@ -15,12 +15,23 @@ class Publish extends React.Component {
         super(props);
          this.state = { 
              pictures: [],
-             actualImage: 0
+             actualImage: 0,
+             provinces: []
         };
          this.onDrop = this.onDrop.bind(this);
          this.previousImage = this.previousImage.bind(this);
          this.nextImage = this.nextImage.bind(this);
+         this.handleFormSubmit = this.handleFormSubmit.bind(this)
     }
+
+    componentDidMount(){
+        let currentComponent = this
+        axiosRequest.getProvinces().then(function (provincesList){
+            currentComponent.setState({
+                provinces: provincesList,
+            })
+        })
+      }
 
     onDrop(picture) {
          this.setState({
@@ -86,20 +97,42 @@ class Publish extends React.Component {
     }
 
     handleFormSubmit(event) {
+        let currentComponent = this
         event.preventDefault();
-        const data = getJSON(event.target,13)
-        const jsonObject = JSON.parse(data);
-        axios({
-          method: 'post',
-          url: 'users/publish',
-          data: jsonObject
+        axiosRequest.postPublication(event).then(function (publicationID){
+            axiosRequest.postImages(publicationID,currentComponent.state.pictures);
         })
-        .then(function (response) {
-            alert(response.status)
+
+    }
+
+    updateCity(event){
+        event.preventDefault();
+        axiosRequest.getCities(event).then(function (cities){
+            let select = document.getElementById("city-Select")
+            let selectNeighborhood = document.getElementById("neighborhood-Select")
+            select.selectedIndex = 0;
+            selectNeighborhood.selectedIndex = 0;
+            while (select.childNodes[1]) {
+                select.removeChild(select.childNodes[1]); 
+            }
+            for(let i = 0; i < cities.length; i++){
+                appendSelectElement(select,cities[i].city,cities[i].cityID)
+            }
         })
-        .catch(function (error) {
-            alert(error)
-        });
+    }
+
+    updateNeighborhood(event){
+        event.preventDefault();
+        axiosRequest.getNeighborhoods(event).then(function (neighborhoods){
+            let select = document.getElementById("neighborhood-Select")
+            select.selectedIndex = 0;
+            while (select.childNodes[1]) {
+                select.removeChild(select.childNodes[1]); 
+            }
+            for(let i = 0; i < neighborhoods.length; i++){
+                appendSelectElement(select,neighborhoods[i].neighborhood,neighborhoods[i].neighborhoodID)
+            }
+        })
     }
 
     checkErrors(){
@@ -107,8 +140,10 @@ class Publish extends React.Component {
     }
 
     render() {
-
         const { t } = this.props;
+        const provinces = this.state.provinces.map(function(item){
+            return <option value={item.provinceID}>  {item.province} </option>;
+          });
         const schema = yup.object({
         title: yup.string().required( t('errors.requiredField') ),
         province: yup.string().required(t('errors.requiredField')),
@@ -121,8 +156,6 @@ class Publish extends React.Component {
         bathrooms: yup.number().required(t('errors.requiredField')).positive(),
         dimention: yup.number().required(t('errors.requiredField')).positive(),
         parking: yup.number().required(t('errors.requiredField')).positive()
-
-
         });
 
         return (
@@ -164,11 +197,13 @@ class Publish extends React.Component {
                                 <Form.Control
                                     as="select"
                                     placeholder={t('publish.provinceHolder')}
-                                    name="province"
+                                    name="provinceID"
+                                    onChange={(event) => handleChange && this.updateCity(event)}
                                     value={values.province}
                                     isInvalid={!!errors.province}
                                 >
                                     <option disabled selected value="">{t('publish.provinceHolder')}</option>
+                                    {provinces}
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">
                                     {errors.province}
@@ -178,7 +213,9 @@ class Publish extends React.Component {
                                 <Form.Label>{t('publish.city')}</Form.Label>
                                     <Form.Control
                                     as="select"
-                                    name="city"
+                                    name="cityID"
+                                    id="city-Select"
+                                    onChange={(event) => handleChange && this.updateNeighborhood(event)}
                                     value={values.city}
                                     isInvalid={!!errors.city}
                                     >
@@ -192,7 +229,8 @@ class Publish extends React.Component {
                                 <Form.Label>{t('publish.neighborhood')}</Form.Label>
                                 <Form.Control
                                     as="select"
-                                    name="neighborhood"
+                                    name="neighborhoodID"
+                                    id="neighborhood-Select"
                                     value={values.neighborhood}
                                     isInvalid={!!errors.neighborhood}
                                 >
