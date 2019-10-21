@@ -3,9 +3,9 @@ package ar.edu.itba.paw.models.dto;
 public class PublicationDTO {
 	
 	private String title;
-	private String province;
-	private String city;
-	private String neighborhood;
+	private String provinceID;
+	private String cityID;
+	private String neighborhoodID;
 	private String address;
 	private String operation;
 	private String price;
@@ -15,15 +15,16 @@ public class PublicationDTO {
 	private String bathrooms;
 	private String dimention;
 	private String parking;
+	private long publicationID;
 	
-	public PublicationDTO(String title, String province, String city, String neighborhood,
+	public PublicationDTO(String title, String provinceID, String cityID, String neighborhoodID,
 							String address, String operation, String price, String description,
 							String propertyType, String bedrooms, String bathrooms, String dimention,
 							String parking) {
 		this.title = title;
-		this.province = province;
-		this.city = city;
-		this.neighborhood = neighborhood;
+		this.setProvinceID(provinceID);
+		this.setCityID(cityID);
+		this.setNeighborhoodID(neighborhoodID);
 		this.address = address;
 		this.operation = operation;
 		this.price = price;
@@ -43,30 +44,6 @@ public class PublicationDTO {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getProvince() {
-		return province;
-	}
-
-	public void setProvince(String province) {
-		this.province = province;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getNeighborhood() {
-		return neighborhood;
-	}
-
-	public void setNeighborhood(String neighborhood) {
-		this.neighborhood = neighborhood;
 	}
 
 	public String getAddress() {
@@ -140,6 +117,38 @@ public class PublicationDTO {
 
 	public void setParking(String parking) {
 		this.parking = parking;
+	}
+
+	public String getProvinceID() {
+		return provinceID;
+	}
+
+	public void setProvinceID(String provinceID) {
+		this.provinceID = provinceID;
+	}
+
+	public String getCityID() {
+		return cityID;
+	}
+
+	public void setCityID(String cityID) {
+		this.cityID = cityID;
+	}
+
+	public String getNeighborhoodID() {
+		return neighborhoodID;
+	}
+
+	public void setNeighborhoodID(String neighborhoodID) {
+		this.neighborhoodID = neighborhoodID;
+	}
+
+	public long getPublicationID() {
+		return publicationID;
+	}
+
+	public void setPublicationID(long publicationID) {
+		this.publicationID = publicationID;
 	}
 
 }

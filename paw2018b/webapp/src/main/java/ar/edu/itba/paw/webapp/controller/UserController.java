@@ -3,14 +3,19 @@ package ar.edu.itba.paw.webapp.controller;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.Publication;
+import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.UserDTO;
 
@@ -30,7 +35,6 @@ public class UserController {
     @Path("/signUp")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response createUser (final UserDTO userDTO) {
-    	System.out.println("Called!");
     	us.create(userDTO.getFirstName(), userDTO.getLastName(), 
     			userDTO.getEmail(), userDTO.getPassword(), userDTO.getPhoneNumber(), "ADMIN");
     	
@@ -40,15 +44,23 @@ public class UserController {
     @POST
     @Path("/publish")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response createPublication (final PublicationDTO publicationDTO) {
-    	System.out.println("Called publication!");
-    	
-    	ps.create(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhood(), 
-    			publicationDTO.getCity(), publicationDTO.getProvince(), publicationDTO.getOperation(), 
+    	/*Publication pub = ps.create(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodID(), 
+    			publicationDTO.getCityID(), publicationDTO.getProvinceID(), publicationDTO.getOperation(), 
     			publicationDTO.getPrice(), publicationDTO.getDescription(), publicationDTO.getPropertyType(), 
     			publicationDTO.getBedrooms(), publicationDTO.getBathrooms(), publicationDTO.getDimention(), 
-    			publicationDTO.getParking(), 1);
+    			publicationDTO.getParking(), 1);*/
     	
+    	
+        return Response.ok().entity(new IDResponseDTO(1)).build();
+    }
+    
+    @POST
+    @Path("/images")
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA} )
+    public Response uploadImages (@RequestParam CommonsMultipartFile[] filesUpload) {
+    	//System.out.println(files.length);
         return Response.ok().build();
     }
 

@@ -13,7 +13,7 @@ public class CitiesDTO {
 	
 	public CitiesDTO() {}
 
-	public List<CityDTO> getProvinces() {
+	public List<CityDTO> getCities() {
 		return cities;
 	}
 

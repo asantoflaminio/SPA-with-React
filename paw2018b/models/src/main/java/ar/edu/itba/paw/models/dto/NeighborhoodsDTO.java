@@ -13,11 +13,11 @@ public class NeighborhoodsDTO {
 	
 	public NeighborhoodsDTO() {}
 
-	public List<NeighborhoodDTO> getProvinces() {
+	public List<NeighborhoodDTO> getNeighborhoods() {
 		return neighborhoods;
 	}
 
-	public void setProvinces(List<NeighborhoodDTO> neighborhoods) {
+	public void setNeighborhoods(List<NeighborhoodDTO> neighborhoods) {
 		this.neighborhoods = neighborhoods;
 	}
 	
