@@ -63,8 +63,8 @@ class HomeReal extends React.Component {
                     </div>                    
                     <div class="line_separator"></div>
                     <div class="description_box">
-                        <label class="price">U$S {this.state.publicationsSale[i].title}</label>
-                        <label  class="expenses">title</label>
+                        <label class="price">U$S {this.state.publicationsSale[i].price}</label>
+                        <label  class="expenses">{this.state.publicationsSale[i].title}</label>
                         <label>address</label>
                         <a class="more-info" href="%"> mas info </a>
                     </div>
@@ -94,7 +94,7 @@ class HomeReal extends React.Component {
         
         return(
             <div>
-                <Navbar t />
+                <Navbar t={t} />
                 <header>
                 <div className="header">
                     <div className="title">

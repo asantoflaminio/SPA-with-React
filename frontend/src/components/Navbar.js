@@ -1,14 +1,16 @@
 import React from 'react';
 import '../css/Navbar.css';
+import { withTranslation } from 'react-i18next';
 import logo from '../resources/Logo4.png';
 
-const Navbar = () => (
+const Navbar = ({ t }) => (
+    
     <nav>
     <a href="/">
            <img src={logo} alt="Home" id="logo"/>
     </a>
     <div className="dropdown" id="sign_in">
-        <a className="navbar_item" href="#" onclick="showSignIn()">Sign In</a>
+        <a className="navbar_item" href="#" onclick="showSignIn()">{t('navbar.signIn')}</a>
         <form>
         <div className="dropdown-content-p dropdown-padding get-this" id="sign-in">
                 <div className="email">
@@ -21,7 +23,7 @@ const Navbar = () => (
                     <label></label>
                 </div>
                 <div className="check_box">
-                    <label><input type="checkbox" name="j_rememberme" />Remember me</label>
+                    <label><input type="checkbox" name="j_rememberme" />{t('navbar.remember')}</label>
                 </div>
                 <div className="sign_b">
                     <input type="submit" className="btn" value="Sign In" />
@@ -30,7 +32,7 @@ const Navbar = () => (
         </form>
     </div>
     <div>
-        <a className="navbar_item" id="sign_up" href="./SignUp">Sign Up</a>
+        <a className="navbar_item" id="sign_up" href="./SignUp">{t('navbar.signUp')}</a>
     </div>
 </nav>
 )
