@@ -16,10 +16,8 @@ public interface LocationDao {
 	
 	public List<Province> getProvinces();
 	
-	public List<City> getCities();
+	public List<City> getCities(long provinceID);
 	
-	public List<Neighborhood> getNeighborhoods();
-	
-	public List<Neighborhood> getNeighborhoodsByCity(long cityid);
+	public List<Neighborhood> getNeighborhoods(long cityID);
 
 }

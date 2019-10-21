@@ -54,46 +54,29 @@ public class LocationServiceImpl implements LocationService{
 	}
 
 	@Override
-	public List<Province> getProvinces() {
-		return locationDao.getProvinces();
-	}
-
-	@Override
-	public List<City> getCities() {
-		return locationDao.getCities();
-	}
-	
-	@Override
-	public List<Neighborhood> getNeighborhoods() {
-		return locationDao.getNeighborhoods();
-	}
-	
-
-	@Override
-	public List<ProvinceDTO> getLocations() {
+	public List<ProvinceDTO> getProvinces() {
 		List<ProvinceDTO> provinces = new ArrayList<ProvinceDTO>();
-		List<CityDTO> cities;
-		List<NeighborhoodDTO> neighborhoods;
-		ProvinceDTO provinceDTO;
-		CityDTO cityDTO;
-		NeighborhoodDTO neighborhoodDTO;
-		
 		for(Province province: locationDao.getProvinces()) {
-			cities = new ArrayList<CityDTO>();
-			for(City city: province.getCities()) {
-				neighborhoods = new ArrayList<NeighborhoodDTO>();
-				for(Neighborhood neighborhood: locationDao.getNeighborhoodsByCity(city.getCityid())) {
-					neighborhoodDTO = new NeighborhoodDTO(neighborhood.getNeighborhood(),neighborhood.getNeighborhoodid());
-					neighborhoods.add(neighborhoodDTO);
-				}
-				cityDTO = new CityDTO(city.getCity(), city.getCityid(),neighborhoods);
-				cities.add(cityDTO);
-			}
-			provinceDTO = new ProvinceDTO(province.getProvince(), province.getProvinceid(), cities);
-			provinces.add(provinceDTO);
+			provinces.add(new ProvinceDTO(province.getProvince(),province.getProvinceid()));
 		}
-		
 		return provinces;
 	}
 
+	@Override
+	public List<CityDTO> getCities(long provinceID) {
+		List<CityDTO> cities = new ArrayList<CityDTO>();
+		for(City city: locationDao.getCities(provinceID)) {
+			cities.add(new CityDTO(city.getCity(),city.getCityid()));
+		}
+		return cities;
+	}
+	
+	@Override
+	public List<NeighborhoodDTO> getNeighborhoods(long cityID) {
+		List<NeighborhoodDTO> neighborhoods = new ArrayList<NeighborhoodDTO>();
+		for(Neighborhood neighborhood: locationDao.getNeighborhoods(cityID)) {
+			neighborhoods.add(new NeighborhoodDTO(neighborhood.getNeighborhood(),neighborhood.getNeighborhoodid()));
+		}
+		return neighborhoods;
+	}
 }

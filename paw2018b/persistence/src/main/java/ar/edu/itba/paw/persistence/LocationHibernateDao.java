@@ -56,23 +56,16 @@ public class LocationHibernateDao implements LocationDao{
 
 	@Override
 	@Transactional
-	public List<City> getCities() {
-		String queryString = "select distinct c from City as c left join fetch c.neighborhoods order by c.city ASC";
+	public List<City> getCities(long provinceID) {
+		String queryString = "select distinct c from City as c left join fetch c.neighborhoods where c.province.provinceid = :provinceid order by c.city ASC";
 		final TypedQuery<City> query = em.createQuery(queryString, City.class);
-		return query.getResultList();
-	}
-
-	@Override
-	@Transactional
-	public List<Neighborhood> getNeighborhoods() {
-		String queryString = "select neigh from Neighborhood as neigh order by neigh.neighborhood ASC";
-		final TypedQuery<Neighborhood> query = em.createQuery(queryString, Neighborhood.class);
+		query.setParameter("provinceid", provinceID);
 		return query.getResultList();
 	}
 	
 	@Override
 	@Transactional
-	public List<Neighborhood> getNeighborhoodsByCity(long cityid) {
+	public List<Neighborhood> getNeighborhoods(long cityid) {
 		String queryString = "select neigh from Neighborhood as neigh where neigh.city.cityid = :cityid order by neigh.neighborhood ASC";
 		final TypedQuery<Neighborhood> query = em.createQuery(queryString, Neighborhood.class);
 		query.setParameter("cityid", cityid);

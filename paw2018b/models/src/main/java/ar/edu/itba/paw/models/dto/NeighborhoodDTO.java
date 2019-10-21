@@ -5,7 +5,6 @@ public class NeighborhoodDTO {
 	private String neighborhood;
 	private long neighborhoodID;
 	private long cityID;
-	private long provinceID;
 	
 	public NeighborhoodDTO(String neighborhood, long neighborhoodID) {
 		this.setNeighborhood(neighborhood);
@@ -36,14 +35,6 @@ public class NeighborhoodDTO {
 
 	public void setCityID(long cityID) {
 		this.cityID = cityID;
-	}
-
-	public long getProvinceID() {
-		return provinceID;
-	}
-
-	public void setProvinceID(long provinceID) {
-		this.provinceID = provinceID;
 	}
 
 }

@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import ar.edu.itba.paw.interfaces.LocationService;
+import ar.edu.itba.paw.models.dto.CitiesDTO;
 import ar.edu.itba.paw.models.dto.CityDTO;
 import ar.edu.itba.paw.models.dto.NeighborhoodDTO;
+import ar.edu.itba.paw.models.dto.NeighborhoodsDTO;
 import ar.edu.itba.paw.models.dto.ProvinceDTO;
 import ar.edu.itba.paw.models.dto.ProvincesDTO;
 
@@ -49,11 +51,29 @@ public class AdminController {
     }
     
     @GET
-    @Path("/getLocations")
+    @Path("/getProvinces")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getProvinces () {
-    	ProvincesDTO provinces = new ProvincesDTO(ls.getLocations());
+    	ProvincesDTO provinces = new ProvincesDTO(ls.getProvinces());
     	return Response.ok().entity(provinces).build();
+    }
+    
+    @POST
+    @Path("/getCities")
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response getCities (ProvinceDTO province) {
+    	CitiesDTO cities = new CitiesDTO(ls.getCities(province.getProvinceID()));
+    	return Response.ok().entity(cities).build();
+    }
+    
+    @POST
+    @Path("/getNeighborhoods")
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response getNeighborhoods (CityDTO city) {
+    	NeighborhoodsDTO neighborhoods = new NeighborhoodsDTO(ls.getNeighborhoods(city.getCityID()));
+    	return Response.ok().entity(neighborhoods).build();
     }
     
 
