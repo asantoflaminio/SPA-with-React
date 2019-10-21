@@ -12,3 +12,10 @@ export const getJSON = (array,quantity) => {
     result += "}"
     return result;
 }
+
+export const getJSONSingle = (target) => {
+    let result = "{"
+    result += '"' + target.name + '"' + ":" + '"' + target.value + '"';
+    result += "}";
+    return result;
+}

@@ -8,7 +8,7 @@ import * as yup from 'yup';
 import { Formik } from 'formik';
 import '../css/AdminGenerator.css';
 import AdminManagment from '../components/AdminManagment';
-import {getJSON} from '../util/function'
+import {getJSON, getJSONSingle} from '../util/function'
 import { isTSImportEqualsDeclaration } from '@babel/types';
 
 class AdminGenerator extends React.Component {
@@ -16,10 +16,9 @@ class AdminGenerator extends React.Component {
     constructor(props) {
         super(props);
          this.state = { 
-            locations: [],
-            province_cityID: 0,
-            province_neighborhoodID: 0,
-            city_neighborhoodID: 0
+            provinces: [],
+            cities: [],
+            neighborhoods: []
         };
         this.updateCity = this.updateCity.bind(this);
     }
@@ -44,7 +43,6 @@ class AdminGenerator extends React.Component {
     handleCitySubmit(event) {
         event.preventDefault();
         const data = getJSON(event.target,2)
-        alert(data)
         const jsonObject = JSON.parse(data);
         axios({
           method: 'post',
@@ -62,7 +60,6 @@ class AdminGenerator extends React.Component {
     handleNeighborhoodSubmit(event) {
         event.preventDefault();
         const data = getJSON(event.target,3)
-        alert(data)
         const jsonObject = JSON.parse(data);
         axios({
           method: 'post',
@@ -79,44 +76,56 @@ class AdminGenerator extends React.Component {
 
     componentDidMount(){
         axios
-          .get('admin/getLocations')
+          .get('admin/getProvinces')
           .then(({ data })=> {
             this.setState({
-                locations: data.provinces,
+                provinces: data.provinces,
             })})
           .catch((err)=> {})
-          
       }
 
-      updateCity(event){
-        let provinceIndex;
-        for(let i = 0 ; i < this.state.locations.length; i++){
-            if(this.state.locations[i].provinceID == event.target.value){
-                provinceIndex = i;
-                break;
+
+
+    async getCities(event){
+        event.preventDefault();
+        const data = getJSONSingle(event.target)
+        const jsonObject = JSON.parse(data);
+        return await axios({
+            method: 'post',
+            url: 'admin/getCities',
+            data: jsonObject
+          })
+          .then(function (response) {
+              return response.data.provinces
+          })
+          .catch(function (error) {
+              alert(error)
+          });
+    }
+
+    updateCity(event){
+        this.getCities(event).then(function (cities){
+            let selectCity = document.getElementById("city_neighborhood")
+            let newOption;
+            while (selectCity.firstChild) {
+                selectCity.removeChild(selectCity.firstChild);
             }
-        }
-        let province = this.state.locations[provinceIndex]
-        let selectCity = document.getElementById("city_neighborhood")
-        let newOption;
-        while (selectCity.firstChild) {
-            selectCity.removeChild(selectCity.firstChild);
-        }
-        for(let i = 0; i < province.cities.length; i++){
-            newOption = document.createElement("option");
-            newOption.value = province.cities[i].cityID
-            newOption.innerHTML = province.cities[i].city
-            selectCity.appendChild(newOption)
-        }
+            for(let i = 0; i < cities.length; i++){
+                newOption = document.createElement("option");
+                newOption.value = cities[i].cityID
+                newOption.innerHTML = cities[i].city
+                selectCity.appendChild(newOption)
+            }
+        })
+
     }
 
 
     render(){
         const { t } = this.props;
-        const provinces = this.state.locations.map(function(item){
+        const provinces = this.state.provinces.map(function(item){
             return <option value={item.provinceID}>  {item.province} </option>;
           });
-        const cities = 1
         const schemaProvince = yup.object({
             province: yup.string().required(t('errors.requiredField'))
         });
@@ -240,7 +249,6 @@ class AdminGenerator extends React.Component {
                                             onChange={handleChange}
                                             isInvalid={!!errors.cityID}
                                         >
-                                            {cities}
                                         </Form.Control>
                                     </Form.Group>
                                     <Form.Group controlId="validationFormik06">
