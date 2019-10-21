@@ -168,3 +168,16 @@ export const postImages = (publicationID,images)  => {
               alert(error)
           });
     }
+
+    export const getRentPublications = async () => {
+        return await axios({
+            method: 'get',
+            url: 'home/getRentPublications',
+          })
+          .then(function (response) {
+              return response.data.publications
+          })
+          .catch(function (error) {
+              alert(error)
+          });
+    }

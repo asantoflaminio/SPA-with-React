@@ -56,4 +56,12 @@ public class MainApi {
     	PublicationsDTO publications = new PublicationsDTO(ps.findNewest("FSale"));
     	return Response.ok().entity(publications).build();
     }
+    
+    @GET
+    @Path("/getRentPublications")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response getRentPublications () {
+    	PublicationsDTO publications = new PublicationsDTO(ps.findNewest("FRent"));
+    	return Response.ok().entity(publications).build();
+    }
 }

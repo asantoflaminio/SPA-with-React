@@ -23,7 +23,8 @@
       "search": "Buscar...",
       "searhBtn": "Buscar",
       "newPropsOnRent": "Nuevas propiedades en alquiler",
-      "newPropsOnSale": "Nuevas propiedades a la venta"
+      "newPropsOnSale": "Nuevas propiedades a la venta",
+      "moreInfo": "Más información"
     },
     "errors": {
       "requiredField": "Debe completarse el campo",
