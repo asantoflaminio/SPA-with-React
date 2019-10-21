@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserService;
@@ -46,14 +47,16 @@ public class UserController {
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response createPublication (final PublicationDTO publicationDTO) {
-    	/*Publication pub = ps.create(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodID(), 
+    	Publication pub = ps.create(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodID(), 
     			publicationDTO.getCityID(), publicationDTO.getProvinceID(), publicationDTO.getOperation(), 
     			publicationDTO.getPrice(), publicationDTO.getDescription(), publicationDTO.getPropertyType(), 
     			publicationDTO.getBedrooms(), publicationDTO.getBathrooms(), publicationDTO.getDimention(), 
-    			publicationDTO.getParking(), 1);*/
+    			publicationDTO.getParking(), 1);
     	
-    	
-        return Response.ok().entity(new IDResponseDTO(1)).build();
+    	if(pub != null)
+    		return Response.ok().entity(new IDResponseDTO(pub.getPublicationid())).build();
+    	else
+    		return Response.ok().entity(new IDResponseDTO(1)).build();
     }
     
     @POST
