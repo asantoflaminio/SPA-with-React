@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,7 +13,10 @@ import org.springframework.stereotype.Service;
 import ar.edu.itba.paw.interfaces.PublicationDao;
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserDao;
+import ar.edu.itba.paw.models.Province;
 import ar.edu.itba.paw.models.Publication;
+import ar.edu.itba.paw.models.dto.ProvinceDTO;
+import ar.edu.itba.paw.models.dto.PublicationDTO;
 
 @Service
 public class PublicationServiceImpl implements PublicationService{
@@ -89,9 +93,18 @@ public class PublicationServiceImpl implements PublicationService{
 	}
 	
 	@Override
-	public List<Publication> findNewest(String operation){
+	public List<PublicationDTO> findNewest(String operation){
 		LOGGER.debug("Getting most recently updated publications");
-		return publicationDao.findNewest(operation);
+		
+		List<PublicationDTO> publications = new ArrayList<PublicationDTO>();
+		for(Publication publication: publicationDao.findNewest(operation)) {
+			publications.add(new PublicationDTO(publication.getTitle(), publication.getProvince().getProvince(),
+					publication.getCity().getCity(), publication.getNeighborhood().getNeighborhood(), publication.getAddress(), 
+					publication.getOperation(), publication.getPrice().toString(), publication.getDescription(),
+					publication.getPropertyType(), publication.getBedrooms().toString(), publication.getBathrooms().toString(),
+					publication.getFloorSize().toString(), publication.getParking().toString()));
+		}
+		return publications;
 	}
 	
 	@Override

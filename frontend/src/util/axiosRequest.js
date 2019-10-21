@@ -154,3 +154,21 @@ export const postImages = (publicationID,images)  => {
           alert(error)
       });
 }
+
+
+    export const getSalePublications = async (event) => {
+        event.preventDefault();
+        const data = getJSONSingle(event.target)
+        const jsonObject = JSON.parse(data);
+        return await axios({
+            method: 'get',
+            url: 'home/getSalePublications',
+            data: jsonObject
+          })
+          .then(function (response) {
+              return response.data.publications
+          })
+          .catch(function (error) {
+              alert(error)
+          });
+    }

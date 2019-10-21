@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ar.edu.itba.paw.models.Publication;
+import ar.edu.itba.paw.models.dto.PublicationDTO;
 
 public interface PublicationService {
 	
@@ -13,7 +14,7 @@ public interface PublicationService {
 			   String description, String propertyType, String bedrooms,
 			   String bathrooms, String floorSize, String parking, long userid);
 	
-	public List<Publication> findNewest(String operation);
+	public List<PublicationDTO> findNewest(String operation);
 	
 	public List<Publication> findByUserId(long id, String pagePub);
 	

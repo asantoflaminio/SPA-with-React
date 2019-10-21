@@ -5,7 +5,7 @@
     import ImgsViewer from 'react-images-viewer'
     import image1 from '../resources/examples/1.jpg'
     import image2 from '../resources/examples/2.jpg'
- 
+    import * as axiosRequest from '../util/axiosRequest'
 
 class HomeReal extends React.Component {
 
@@ -17,9 +17,7 @@ class HomeReal extends React.Component {
             isOpen : false,
         };
       }
-
-      
-      
+    
 
     render(){
         const { t } = this.props;
@@ -29,7 +27,7 @@ class HomeReal extends React.Component {
         } 
         
         const maxResults = 8;
-        const listLengthSale = 9;
+        const listLengthSale = 9;//this.getSalePublications.length;
         const listLengthRent = 3;
         let loopEndSale;
         let loopEndRent;
