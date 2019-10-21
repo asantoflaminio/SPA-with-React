@@ -15,7 +15,17 @@ class HomeReal extends React.Component {
         super(props);
         this.state = {
             isOpen : false,
+            publicationsSale: []
         };
+      }
+    
+    componentDidMount(){
+        let currentComponent = this
+        axiosRequest.getSalePublications().then(function (publications){
+            currentComponent.setState({
+                publicationsSale: publications,
+            })
+        })
       }
     
 
@@ -45,7 +55,7 @@ class HomeReal extends React.Component {
         /* lista de publicaciones a la venta */
         //const publicationsSale = 
         let tableSale = [];
-        for(let i = 0; i < loopEndSale; i ++) { // desps convertirlo en for each
+        for(let i = 0; i < this.state.publicationsSale.length; i ++) { // desps convertirlo en for each
             tableSale.push(
                 <li class="polaroid">
                     <div id="imageDiv_1" class="arrows-div" currentImage="0">
@@ -53,7 +63,7 @@ class HomeReal extends React.Component {
                     </div>                    
                     <div class="line_separator"></div>
                     <div class="description_box">
-                        <label class="price">U$S price</label>
+                        <label class="price">U$S {this.state.publicationsSale[i].title}</label>
                         <label  class="expenses">title</label>
                         <label>address</label>
                         <a class="more-info" href="%"> mas info </a>

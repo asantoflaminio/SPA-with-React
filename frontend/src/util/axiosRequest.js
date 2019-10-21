@@ -156,14 +156,10 @@ export const postImages = (publicationID,images)  => {
 }
 
 
-    export const getSalePublications = async (event) => {
-        event.preventDefault();
-        const data = getJSONSingle(event.target)
-        const jsonObject = JSON.parse(data);
+    export const getSalePublications = async () => {
         return await axios({
             method: 'get',
             url: 'home/getSalePublications',
-            data: jsonObject
           })
           .then(function (response) {
               return response.data.publications
