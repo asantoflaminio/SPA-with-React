@@ -21,7 +21,7 @@ class AdminUsers extends React.Component {
 
     componentDidMount(){
         let currentComponent = this
-        axiosRequest.getUsers().then(function (users){
+        axiosRequest.getUsers(1).then(function (users){
             currentComponent.setState({
                 usersList: users
             })
@@ -56,8 +56,10 @@ class AdminUsers extends React.Component {
                      </div>
                 </div>
             )
-            
         }
+        tableUsers.push(
+            <hr></hr>
+        )
     }
 
     render(){
@@ -76,19 +78,19 @@ class AdminUsers extends React.Component {
                         </div>
                         {tableUsers}
                         <ReactPaginate
-                            previousLabel={'previous'}
-                            nextLabel={'next'}
+                            previousLabel={'<'}
+                            nextLabel={'>'}
                             breakLabel={'...'}
-                            pageCount={8}
+                            pageCount={this.state.pagesQuantity}
                             marginPagesDisplayed={2}
-                            pageRangeDisplayed={5}
+                            pageRangeDisplayed={3}
                             onPageChange={this.handlePageClick}
                             activeClassName={'active'}
                             breakClassName={''}
                             containerClassName={'container-pagination'}
-                            pageClassName={'container-page'}
-                            previousClassName={'container-previous'}
-                            nextClassName={'container-next'}
+                            pageClassName={''}
+                            previousClassName={''}
+                            nextClassName={''}
                         />
                     </div>
                 </div>

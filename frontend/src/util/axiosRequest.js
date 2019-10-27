@@ -182,10 +182,14 @@ export const postImages = (publicationID,images)  => {
           });
     }
 
-    export const getUsers = async () => {
+    export const getUsers = async (page) => {
+        const pageJSON = {
+            "page": page
+        }
         return await axios({
-            method: 'get',
+            method: 'post',
             url: 'admin/getUsers',
+            data: pageJSON
           })
           .then(function (response) {
               return response.data

@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -20,6 +21,7 @@ import ar.edu.itba.paw.models.dto.CityDTO;
 import ar.edu.itba.paw.models.dto.UserDTO;
 import ar.edu.itba.paw.models.dto.NeighborhoodDTO;
 import ar.edu.itba.paw.models.dto.NeighborhoodsDTO;
+import ar.edu.itba.paw.models.dto.PageDTO;
 import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.ProvinceDTO;
 import ar.edu.itba.paw.models.dto.ProvincesDTO;
@@ -84,11 +86,12 @@ public class AdminController {
     	return Response.ok().entity(neighborhoods).build();
     }
     
-    @GET
+    @POST
     @Path("/getUsers")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getUsers () {
-    	List<UserDTO> users = us.findAllUsers("1");
+    public Response getUsers (PageDTO page) {
+    	System.out.print(page.getPage());
+    	List<UserDTO> users = us.findAllUsers(page.getPage().toString());
     	return Response.ok().entity(users).build();
     }
     
@@ -96,7 +99,7 @@ public class AdminController {
     @Path("/getUsersQuantity")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getUsersQuantity () {
-    	PaginationDTO quantity = new PaginationDTO(us.getCountAllUsers(), 6); //cambiar x la constante que dice en persistance
+    	PaginationDTO quantity = new PaginationDTO(us.getCountAllUsers(), 1); //cambiar x la constante que dice en persistance
     	return Response.ok().entity(quantity).build();
     }
     
