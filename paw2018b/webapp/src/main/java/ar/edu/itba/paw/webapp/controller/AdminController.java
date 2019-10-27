@@ -20,6 +20,7 @@ import ar.edu.itba.paw.models.dto.CityDTO;
 import ar.edu.itba.paw.models.dto.UserDTO;
 import ar.edu.itba.paw.models.dto.NeighborhoodDTO;
 import ar.edu.itba.paw.models.dto.NeighborhoodsDTO;
+import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.ProvinceDTO;
 import ar.edu.itba.paw.models.dto.ProvincesDTO;
 
@@ -87,9 +88,16 @@ public class AdminController {
     @Path("/getUsers")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getUsers () {
-    	System.out.println("called");
     	List<UserDTO> users = us.findAllUsers("1");
     	return Response.ok().entity(users).build();
+    }
+    
+    @GET
+    @Path("/getUsersQuantity")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response getUsersQuantity () {
+    	PaginationDTO quantity = new PaginationDTO(us.getCountAllUsers(), 6); //cambiar x la constante que dice en persistance
+    	return Response.ok().entity(quantity).build();
     }
     
 

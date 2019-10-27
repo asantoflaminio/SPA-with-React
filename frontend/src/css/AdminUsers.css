@@ -1,9 +1,8 @@
-.user-list-left {
-	width: 50%;
-}
 
-.user-list-right {
-	width: 50%;
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
 }
 
 .user-status {

@@ -194,3 +194,16 @@ export const postImages = (publicationID,images)  => {
               alert(error)
           });
     }
+
+    export const getUsersCount = async () => {
+        return await axios({
+            method: 'get',
+            url: 'admin/getUsersQuantity',
+          })
+          .then(function (response) {
+              return response.data
+          })
+          .catch(function (error) {
+              alert(error)
+          });
+    }

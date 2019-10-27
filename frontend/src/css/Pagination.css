@@ -1,0 +1,32 @@
+.active{
+    background-color: orange;
+}
+
+.container-pagination{
+    display: flex;
+    width: 100%;
+    height: 20%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.container-pagination li{
+    list-style-type: none;
+    margin-left: 20px;
+}
+
+.container-page{
+    width: 20px;
+    height: 20px;
+}
+
+
+
+.container-previous{
+
+}
+
+.container-next{
+
+}
