@@ -27,7 +27,7 @@ public class UserHibernateDao implements UserDao {
 	
 	private static final Integer MAX_LANGUAJE = 4; 
 	
-	private static Integer MAX_RESULTS_USERS = 6;
+	private static Integer MAX_RESULTS_USERS = 1;
 	
 	
 	@Transactional

@@ -62,6 +62,17 @@ class AdminUsers extends React.Component {
         )
     }
 
+    handlePageClick = data => {
+        let selected = data.selected + 1;
+        let currentComponent = this
+        axiosRequest.getUsers(selected).then(function (users){
+            currentComponent.setState({
+                usersList: users
+            })
+        })
+
+    }
+
     render(){
         const { t } = this.props;
         let tableUsers = [];
