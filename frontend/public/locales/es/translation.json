@@ -86,6 +86,8 @@
       "city": "Ciudad:",
       "neighborhoodLegend": "Creación de barrio",
       "neighborhoodHolder": "Barrio...",
-      "neighborhood": "Barrio:"
+      "neighborhood": "Barrio:",
+      "unlocked": "NO BLOQUEADO",
+      "locked": "BLOQUEADO"
     }
   }

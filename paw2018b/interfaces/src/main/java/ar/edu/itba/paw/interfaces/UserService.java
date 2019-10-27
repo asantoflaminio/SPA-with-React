@@ -3,6 +3,7 @@ package ar.edu.itba.paw.interfaces;
 import java.util.List;
 
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.dto.UserDTO;
 
 public interface UserService {
 	
@@ -17,7 +18,7 @@ public interface UserService {
 	
 	public boolean editPassword(String oldPassword,String newPassword, String oldEmail);
 	
-	public List<User> findAllUsers(String pageUsers);
+	public List<UserDTO> findAllUsers(String pageUsers);
 	
 	public int getCountAllUsers();
 	

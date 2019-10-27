@@ -207,10 +207,4 @@ public class ValidateServiceImpl implements ValidateService{
 		return validateInputText(location, MIN_LOCATION_LENGTH, MAX_LOCATION_LENGTH, lettersAndSpacesRegex, field);
 	}
 
-
-
-
-
-
-
 }

@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import java.util.Base64;
-import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import ar.edu.itba.paw.interfaces.PublicationService;
-import ar.edu.itba.paw.models.dto.ProvincesDTO;
-import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.PublicationsDTO;
 import ar.edu.itba.paw.services.ImageServiceImpl;
 

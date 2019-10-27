@@ -5,6 +5,7 @@ import SignUp from './pages/SignUp';
 import Home from './pages/Home'
 import Publish from './pages/Publish'
 import AdminGenerator from './pages/AdminGenerator'
+import AdminUsers from './pages/AdminUsers'
 
 
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/SignUp" component={SignUp} />
           <Route path="/Publish" component={Publish} />
           <Route path="/AdminGenerator" component={AdminGenerator} />
+          <Route path="/AdminUsers" component={AdminUsers} />
         </Suspense>
      </BrowserRouter>
     </div>

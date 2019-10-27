@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -12,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import ar.edu.itba.paw.interfaces.LocationService;
+import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.dto.CitiesDTO;
 import ar.edu.itba.paw.models.dto.CityDTO;
+import ar.edu.itba.paw.models.dto.UserDTO;
 import ar.edu.itba.paw.models.dto.NeighborhoodDTO;
 import ar.edu.itba.paw.models.dto.NeighborhoodsDTO;
 import ar.edu.itba.paw.models.dto.ProvinceDTO;
@@ -25,6 +29,9 @@ public class AdminController {
 	
 	@Autowired
 	private LocationService ls;
+	
+	@Autowired
+	private UserService us;
 	
     @POST
     @Path("/province")
@@ -74,6 +81,15 @@ public class AdminController {
     public Response getNeighborhoods (CityDTO city) {
     	NeighborhoodsDTO neighborhoods = new NeighborhoodsDTO(ls.getNeighborhoods(city.getCityID()));
     	return Response.ok().entity(neighborhoods).build();
+    }
+    
+    @GET
+    @Path("/getUsers")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response getUsers () {
+    	System.out.println("called");
+    	List<UserDTO> users = us.findAllUsers("1");
+    	return Response.ok().entity(users).build();
     }
     
 

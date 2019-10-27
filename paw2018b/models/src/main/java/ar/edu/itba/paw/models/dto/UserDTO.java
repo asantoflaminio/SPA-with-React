@@ -8,6 +8,7 @@ public class UserDTO {
 	private String password;
 	private String repeatPassword;
 	private String phoneNumber;
+	private boolean locked;
 	
 	public UserDTO(String firstName, String lastName, String email, 
 			String password, String repeatPassword, String phoneNumber) {
@@ -17,6 +18,11 @@ public class UserDTO {
 		this.password = password;
 		this.phoneNumber = phoneNumber;
 		this.repeatPassword = repeatPassword;
+	}
+	
+	public UserDTO(String email, boolean locked) {
+		this.email = email;
+		this.locked = locked;
 	}
 	
 	public UserDTO() {} ;
@@ -67,6 +73,14 @@ public class UserDTO {
 
 	public void setRepeatPassword(String repeatPassword) {
 		this.repeatPassword = repeatPassword;
+	}
+
+	public boolean isLocked() {
+		return locked;
+	}
+
+	public void setLocked(boolean locked) {
+		this.locked = locked;
 	}
 
 }

@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import ar.edu.itba.paw.interfaces.UserDao;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.dto.UserDTO;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -82,9 +84,13 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public List<User> findAllUsers(String pageUsers){
+	public List<UserDTO> findAllUsers(String pageUsers){
 		LOGGER.debug("Looking for all users in DB");
-		return userDaoInt.findAllUsers(pageUsers);
+		List<UserDTO> users = new ArrayList<UserDTO>();
+		for(User user: userDaoInt.findAllUsers(pageUsers)) {
+			users.add(new UserDTO(user.getEmail(),user.isLocked()));
+		}
+		return users;
 	}
 	
 	@Override
