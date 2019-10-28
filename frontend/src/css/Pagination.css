@@ -8,25 +8,37 @@
     height: 20%;
     margin-left: auto;
     margin-right: auto;
-    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
 }
 
 .container-pagination li{
     list-style-type: none;
     margin-left: 20px;
-}
-
-.container-page{
-    width: 20px;
-    height: 20px;
-}
-
-
-
-.container-previous{
+    width: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 
 }
 
-.container-next{
-
+.container-pagination li:hover{
+    background-color: #c99;
+    -webkit-transition: background-color 250ms  linear;
+    -ms-transition: background-color 250ms  linear;
+    transition: background-color 250ms linear;
 }
+
+li a{
+    color: #555;
+    padding: 20px;
+    outline: 0;
+}
+
+li a:hover{
+    text-decoration: none;
+    color: #555;
+}
+
