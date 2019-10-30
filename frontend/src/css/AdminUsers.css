@@ -17,6 +17,15 @@
 }
 
 .user-email {
+	position: relative;
+	float: left;
+	margin-right: 10px;
+	margin-top: 12px;
+	margin-bottom: 10px;
+	font-size: 20px;
+}
+
+.user-email {
 	margin-top: 10px;
 	margin-bottom: 8px;
 	margin-left: 5px;
@@ -43,6 +52,7 @@
   .slider {
     position: absolute;
     cursor: pointer;
+    height: auto;
     top: 0;
     left: 0;
     right: 0;

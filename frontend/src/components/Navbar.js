@@ -10,7 +10,7 @@ const Navbar = ({ t }) => (
            <img src={logo} alt="Home" id="logo"/>
     </a>
     <div className="dropdown" id="sign_in">
-        <a className="navbar_item" href="#" onclick="showSignIn()">{t('navbar.signIn')}</a>
+        <a className="navbar_item" href="#">{t('navbar.signIn')}</a>
         <form>
         <div className="dropdown-content-p dropdown-padding get-this" id="sign-in">
                 <div className="email">

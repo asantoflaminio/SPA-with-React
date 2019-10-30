@@ -33,6 +33,10 @@ class AdminUsers extends React.Component {
         })
       }
 
+    lockUser(event){
+        alert(JSON.stringify(event.target))
+    }
+
     generateUsers(tableUsers,users,t){
         for(let i = 0; i < users.length; i++){
             var inputClause;
@@ -45,11 +49,11 @@ class AdminUsers extends React.Component {
             tableUsers.push(
                 <div class="row">
                     <div class="column">
-                        {users[i].email}
+                        <p class="user-email">{users[i].email}</p>
                     </div>
                     <div class="column">
                         <label class="switch">
-                            <input type="checkbox" checked/>
+                            <input type="checkbox" onClick={this.lockUser}/>
                             <span class="slider round"/>
                         </label>
                         <p class="user-status">{t('admin.unlocked')}</p>			
