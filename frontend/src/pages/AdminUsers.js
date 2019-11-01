@@ -7,6 +7,8 @@ import '../css/AdminUsers.css';
 import '../css/Pagination.css';
 import * as axiosRequest from '../util/axiosRequest'
 import ReactPaginate from 'react-paginate';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 
 class AdminUsers extends React.Component {
@@ -33,35 +35,23 @@ class AdminUsers extends React.Component {
         })
       }
 
-    lockUser(event,t){
-        let label = document.getElementById(event.target.getAttribute("labelID"));
+    lockUser(event,index){
         let status = event.target.checked;
-        if(event.target.checked){
-            event.target.checked = true;
-            event.target.value = "ON"
-            label.innerText = t('admin.unlocked')
-            
-        }else{
-            event.target.checked = false;
-            event.target.value = "OFF"
-            label.innerText = t('admin.locked')
-        }
+        let newList = this.state.usersList
+        newList[index].locked = !event.target.checked;
         axiosRequest.lockUser(status,event.target.id)
+        this.setState({
+            userList: newList
+        })
     }
 
     generateUsers(tableUsers,users,t){
-        let input;
         let label;
-        let labelID;
         for(let i = 0; i < users.length; i++){
-            labelID = users[i].id + "-label";
-            if(users[i].locked){
-                input = <input type="checkbox" labelID={labelID} id={users[i].id} onClick={(event) => this.lockUser(event,t)}/> 
-                label = <p class="user-status" id={labelID}>{t('admin.locked')}</p>
-            }else{
-                input = <input type="checkBox" labelID={labelID} id={users[i].id} onClick={(event) => this.lockUser(event,t)} checked="false"/>
-                label = <p class="user-status" id={labelID}>{t('admin.unlocked')}</p>
-            }   
+            if(users[i].locked)
+                label = t('admin.locked')
+            else
+                label = t('admin.unlocked')
             tableUsers.push(
                 <hr></hr>
             )
@@ -71,11 +61,15 @@ class AdminUsers extends React.Component {
                         <p class="user-email">{users[i].email}</p>
                     </div>
                     <div class="column">
-                        <label class="switch">
-                            {input}
-                            <span class="slider round"/>
-                        </label>
-                        {label}			
+                        <FormControlLabel
+                            value="start"
+                            control={<Switch color="primary" id={users[i].id}/>}
+                            checked={!users[i].locked}
+                            onChange={(event) => this.lockUser(event,i)}
+                            label={label}
+                            labelPlacement="start"
+                            className="switch"
+                        />
                      </div>
                 </div>
             )
@@ -95,6 +89,13 @@ class AdminUsers extends React.Component {
             })
         })
     }
+    asd(){
+        let users = document.getElementById("users-list");
+        while(users.firstChild){
+            users.removeChild(users.firstChild)
+        }
+    }
+
     render(){
         const { t } = this.props;
         let tableUsers = [];
