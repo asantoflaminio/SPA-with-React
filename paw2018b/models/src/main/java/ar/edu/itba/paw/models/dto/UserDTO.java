@@ -9,6 +9,7 @@ public class UserDTO {
 	private String repeatPassword;
 	private String phoneNumber;
 	private boolean locked;
+	private long id;
 	
 	public UserDTO(String firstName, String lastName, String email, 
 			String password, String repeatPassword, String phoneNumber) {
@@ -20,9 +21,10 @@ public class UserDTO {
 		this.repeatPassword = repeatPassword;
 	}
 	
-	public UserDTO(String email, boolean locked) {
+	public UserDTO(String email, boolean locked, long id) {
 		this.email = email;
 		this.locked = locked;
+		this.id = id;
 	}
 	
 	public UserDTO() {} ;
@@ -81,6 +83,14 @@ public class UserDTO {
 
 	public void setLocked(boolean locked) {
 		this.locked = locked;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 }

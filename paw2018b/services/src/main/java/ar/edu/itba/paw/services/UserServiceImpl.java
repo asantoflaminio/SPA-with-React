@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService{
 		LOGGER.debug("Looking for all users in DB");
 		List<UserDTO> users = new ArrayList<UserDTO>();
 		for(User user: userDaoInt.findAllUsers(pageUsers)) {
-			users.add(new UserDTO(user.getEmail(),user.isLocked()));
+			users.add(new UserDTO(user.getEmail(),user.isLocked(),user.getUserid()));
 		}
 		return users;
 	}

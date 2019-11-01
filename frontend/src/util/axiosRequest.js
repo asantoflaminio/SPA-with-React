@@ -211,3 +211,21 @@ export const postImages = (publicationID,images)  => {
               alert(error)
           });
     }
+
+    export const lockUser = (status,id) => {
+        const idJSON = {
+            "id": id,
+            "locked" : status
+        }
+        return axios({
+            method: 'post',
+            url: 'admin/lockUser',
+            data: idJSON
+          })
+          .then(function (response) {
+              return response.data
+          })
+          .catch(function (error) {
+              alert(error)
+          });
+    }

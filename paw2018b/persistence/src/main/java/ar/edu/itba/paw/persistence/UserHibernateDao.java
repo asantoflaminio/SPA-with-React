@@ -27,7 +27,7 @@ public class UserHibernateDao implements UserDao {
 	
 	private static final Integer MAX_LANGUAJE = 4; 
 	
-	private static Integer MAX_RESULTS_USERS = 1;
+	private static Integer MAX_RESULTS_USERS = 2;
 	
 	
 	@Transactional
@@ -84,7 +84,7 @@ public class UserHibernateDao implements UserDao {
 	@Override
 	@Transactional
 	public List<User> findAllUsers(String pageUsers) {
-		final TypedQuery<User> query = em.createQuery("select distinct u from User as u where u.role != :role Order by u.locked DESC", User.class);
+		final TypedQuery<User> query = em.createQuery("select distinct u from User as u where u.role != :role Order by u.email ASC", User.class);
 		query.setParameter("role", EnumContainer.Role.ADMIN.getRole());
 		query.setFirstResult((Integer.parseInt(pageUsers) - 1) * MAX_RESULTS_USERS);
 		query.setMaxResults(MAX_RESULTS_USERS);

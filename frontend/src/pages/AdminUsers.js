@@ -33,16 +33,35 @@ class AdminUsers extends React.Component {
         })
       }
 
-    lockUser(event){
-        alert(JSON.stringify(event.target))
+    lockUser(event,t){
+        let label = document.getElementById(event.target.getAttribute("labelID"));
+        let status = event.target.checked;
+        if(event.target.checked){
+            event.target.checked = true;
+            event.target.value = "ON"
+            label.innerText = t('admin.unlocked')
+            
+        }else{
+            event.target.checked = false;
+            event.target.value = "OFF"
+            label.innerText = t('admin.locked')
+        }
+        axiosRequest.lockUser(status,event.target.id)
     }
 
     generateUsers(tableUsers,users,t){
+        let input;
+        let label;
+        let labelID;
         for(let i = 0; i < users.length; i++){
-            var inputClause;
+            labelID = users[i].id + "-label";
             if(users[i].locked){
-
-            }
+                input = <input type="checkbox" labelID={labelID} id={users[i].id} onClick={(event) => this.lockUser(event,t)}/> 
+                label = <p class="user-status" id={labelID}>{t('admin.locked')}</p>
+            }else{
+                input = <input type="checkBox" labelID={labelID} id={users[i].id} onClick={(event) => this.lockUser(event,t)} checked="false"/>
+                label = <p class="user-status" id={labelID}>{t('admin.unlocked')}</p>
+            }   
             tableUsers.push(
                 <hr></hr>
             )
@@ -53,10 +72,10 @@ class AdminUsers extends React.Component {
                     </div>
                     <div class="column">
                         <label class="switch">
-                            <input type="checkbox" onClick={this.lockUser}/>
+                            {input}
                             <span class="slider round"/>
                         </label>
-                        <p class="user-status">{t('admin.unlocked')}</p>			
+                        {label}			
                      </div>
                 </div>
             )
@@ -64,6 +83,7 @@ class AdminUsers extends React.Component {
         tableUsers.push(
             <hr></hr>
         )
+        
     }
 
     handlePageClick = data => {
@@ -74,13 +94,10 @@ class AdminUsers extends React.Component {
                 usersList: users
             })
         })
-
     }
-
     render(){
         const { t } = this.props;
         let tableUsers = [];
-        let pagination = [];
         this.generateUsers(tableUsers,this.state.usersList, t);
         return(
             <div>
@@ -91,7 +108,9 @@ class AdminUsers extends React.Component {
                         <div class="title-container">
                             <h3>{t('admin.users')}</h3>
                         </div>
+                        <div id="users-list">
                         {tableUsers}
+                        </div>
                         <ReactPaginate
                             previousLabel={'<'}
                             nextLabel={'>'}

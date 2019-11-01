@@ -1,10 +1,8 @@
 import React from 'react';
 import '../css/Navbar.css';
-import { withTranslation } from 'react-i18next';
 import logo from '../resources/Logo4.png';
 
 const Navbar = ({ t }) => (
-    
     <nav>
     <a href="/">
            <img src={logo} alt="Home" id="logo"/>

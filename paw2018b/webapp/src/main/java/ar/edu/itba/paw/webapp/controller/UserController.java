@@ -10,7 +10,6 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import ar.edu.itba.paw.interfaces.PublicationService;
@@ -37,7 +36,7 @@ public class UserController {
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response createUser (final UserDTO userDTO) {
     	us.create(userDTO.getFirstName(), userDTO.getLastName(), 
-    			userDTO.getEmail(), userDTO.getPassword(), userDTO.getPhoneNumber(), "ADMIN");
+    			userDTO.getEmail(), userDTO.getPassword(), userDTO.getPhoneNumber(), "USER");
     	
         return Response.ok().build();
     }

@@ -1,11 +1,10 @@
 package ar.edu.itba.paw.models.dto;
 
 public class IDResponseDTO {
-	
 	private long id;
 	
 	public IDResponseDTO(long id) {
-		this.setId(id);
+		this.id = id;
 	}
 	
 	public IDResponseDTO() {}
@@ -17,5 +16,4 @@ public class IDResponseDTO {
 	public void setId(long id) {
 		this.id = id;
 	}
-
 }
