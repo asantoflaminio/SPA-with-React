@@ -20,7 +20,7 @@ function App() {
           <Route path="/Publish" component={Publish} />
           <Route path="/AdminGenerator" component={AdminGenerator} />
           <Route path="/AdminUsers" component={AdminUsers} />
-          <Route path="/List" component={List} />
+          <Route path="/List?search=:search" component={List} />
         </Suspense>
      </BrowserRouter>
     </div>

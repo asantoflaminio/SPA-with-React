@@ -16,7 +16,10 @@ class HomeReal extends React.Component {
         this.state = {
             isOpen : false,
             publicationsSale: [],
-            publicationsRent: []
+            publicationsRent: [],
+            type: "",
+            operation: "",
+            search: ""
         };
       }
     
@@ -64,6 +67,10 @@ class HomeReal extends React.Component {
             }
         }   
     }
+
+    setOperation(){
+        alert("asd")
+    }
     
 
     render(){
@@ -92,10 +99,10 @@ class HomeReal extends React.Component {
                     <div className="search_list">
                         <fieldset className="search_list-container rounded">
                                 <div className="search_list-item selected" id="buy">
-                                    <input value="FSale" type="radio" checked /><label id="buy-label">{t('home.buy')}</label>
+                                    <input value="FSale" type="radio" checked onChange={this.setOperation}/><label id="buy-label" >{t('home.buy')}</label>
                                 </div>
                                 <div className="search_list-item" id="rent">
-                                    <input value="FRent" type="radio"/><label id="rent-label">{t('home.rent')}</label>
+                                    <input value="FRent" type="radio" onChange={this.setOperation}/><label id="rent-label">{t('home.rent')}</label>
                                 </div>
                         </fieldset>
                     </div>

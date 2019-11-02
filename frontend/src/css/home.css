@@ -79,6 +79,10 @@ h1 {
   display: none;
  }
 
+ .selected{
+	background-color: rgb(124, 11, 11)
+}
+
 .search_list-item input:hover {
 	background-color: #fecc94;
 	cursor:pointer;
