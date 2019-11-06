@@ -89,5 +89,20 @@
       "neighborhood": "Barrio:",
       "unlocked": "NO BLOQUEADO",
       "locked": "BLOQUEADO"
+    },
+    "list": {
+      "buy": "Comprar",
+      "rent": "Alquilar",
+      "search": "Buscar",
+      "searchPlaceholder": "Buscar...",
+      "house": "Casa",
+      "apartment": "Departamento",
+      "order": "Ordernar por",
+      "lowest": "Precio más bajo",
+      "highest": "Precio más alto",
+      "newest": "Lo más nuevo",
+      "oldest": "Lo más viejo",
+      "resultsTitle": "resultados para:",
+      "resultTitle": "resultado para:"
     }
   }

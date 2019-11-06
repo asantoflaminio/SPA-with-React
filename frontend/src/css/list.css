@@ -1,42 +1,11 @@
 @charset "UTF-8";
 
-html{
-    position:relative; 
-    min-height: 100%;
+.wrap{
+	margin-left: 15px;
+	width: 600px;
+	height: 85px;
+	margin-bottom: 15px;
 }
-
-body {
-	height: 100%;
-	width: 100%;
-	background-color: #eee !important;
-	font-family: 'Rubik', sans-serif !important;
-}
-
-/* Breadcrumb style */
-
-/* Style the list */
-.breadcrumb {
-    margin-bottom: 10px !important;
-    background-color: #eee !important;
-}
-
-/* Add a color to all links inside the list */
-.breadcrumb a {
-    color: #FD8907;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-/* Add a color on mouse-over */
-.breadcrumb a:hover {
-    color: #555;
-    text-decoration: underline;
-}
-
-/* End of style */
-
-
-/* Search bar style */
 
 .search {
   width: 100%;
@@ -70,6 +39,32 @@ body {
   padding-left: 5px;
 }
 
+.inlineBlock{
+	display: inline-block;
+}
+
+#select-type{
+	height: 40px;
+}
+
+.search_list-container {
+	text-align: center;  
+	width:100%;
+	border: 1px solid #7C7C7C;
+	list-style: none;
+	margin: 0 auto;
+	padding: 0;
+	overflow: hidden;
+	min-width: 200px;
+	height: 35px;
+}
+
+
+.results-container{
+	width: 100%;
+}
+
+
 option {
   font-size: 15px;
 }
@@ -97,18 +92,6 @@ input#search-btn {
 	margin-bottom: 2px;
 }
 
-.wrap{
-	margin-left: 15px;
-	width: 600px;
-	height: 85px;
-	margin-bottom: 15px;
-}
-
-/* End of style */
-
-
-/* Results style */
-
 #results-container {
 	height: 50px;
 }
@@ -133,9 +116,16 @@ input#search-btn {
 }
 
 #order-title {
-	display: inline-block;
+	float: left;
+	margin-left: 20px;
+	font-size: 25px !important;
+	margin-top: 25px !important;
+}
+
+#order-title-select {
 	float: right;
-	font-size: 14px !important;
+	margin-left: 20px;
+	font-size: 16px !important;
 	margin-top: 25px !important;
 }
 
@@ -170,20 +160,6 @@ input#search-btn {
   	margin-bottom: 15px;
   	
 }
-
-.search_list-container {
-	text-align: center;  
-	width:100%;
-	border: 1px solid #7C7C7C;
-	list-style: none;
-	margin: 0 auto;
-	padding: 0;
-	overflow: hidden;
-	min-width: 200px;
-	height: 35px;
-}
-
-
 
 .search_list-item {
 	float: left;
@@ -371,7 +347,7 @@ h3 {
 	cursor: pointer;
 }
 
-div.polaroid {
+.filter-polaroid {
   margin-top: 7px;
   float: left;
   margin-left: 1%;
