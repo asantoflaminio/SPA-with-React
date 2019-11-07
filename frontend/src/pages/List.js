@@ -3,6 +3,7 @@ import { withTranslation } from 'react-i18next';
 import '../css/List.css';
 import Navbar from '../components/Navbar'
 import arrowDown from '../resources/arrow_down.png';
+import Publication from '../components/Publication';
 import ImgsViewer from 'react-images-viewer'
 import * as axiosRequest from '../util/axiosRequest'
 import queryString from 'query-string'
@@ -13,8 +14,24 @@ class List extends React.Component {
         super(props);
         this.state = {
             resultsQuantity: 0,
-            search: "queryString.parse(this.props.location.search)"
+            search: "queryString.parse(this.props.location.search)",
+            publications: [],
+            pageQuantity: 0,
         };
+      }
+
+      componentDidMount(){
+        let currentComponent = this
+        axiosRequest.getPublications(1).then(function (pubs){
+            currentComponent.setState({
+                publications: pubs
+            })
+        })
+        axiosRequest.getPublicationsCount().then(function (data){
+            currentComponent.setState({
+                pagesQuantity: Math.ceil(data.count / data.limit)
+            })
+        })
       }
 
     getResults(t){
@@ -24,8 +41,19 @@ class List extends React.Component {
             return <h3 id="order-title">{this.state.resultsQuantity} {t('list.resultTitle')}</h3>
     }
 
+    initializePublications(t){
+        let pubComponents = [];
+
+        for(let i = 0; i < this.state.publications.length; i++)
+            pubComponents.push(
+                <Publication t={t} publication={this.state.publications[i]}></Publication>
+            )
+        return pubComponents;
+    }
+
     render(){
         const { t } = this.props;
+        let publications = this.initializePublications(t);
         return(
             <div>
                 <Navbar t={t} />
@@ -184,6 +212,9 @@ class List extends React.Component {
                                 </div>
                             </div>
                         </aside>
+                        <section id="publications">
+                            {publications}
+                        </section>
                     </div>
                 </div>
             </div>

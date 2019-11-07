@@ -104,5 +104,8 @@
       "oldest": "Lo más viejo",
       "resultsTitle": "resultados para:",
       "resultTitle": "resultado para:"
+    },
+    "publication": {
+      "moreInfo": "Mas información "
     }
   }
