@@ -53,7 +53,7 @@ public interface PublicationService {
 	
 	public void lockUnlockPublication(boolean status, long publicationid);
 	
-	public List<Publication> findAllPublications(String pagePub);
+	public List<PublicationDTO> findAllPublications(String pagePub);
 	
 	public int getCountAllPublications();
 	

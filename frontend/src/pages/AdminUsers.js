@@ -89,12 +89,6 @@ class AdminUsers extends React.Component {
             })
         })
     }
-    asd(){
-        let users = document.getElementById("users-list");
-        while(users.firstChild){
-            users.removeChild(users.firstChild)
-        }
-    }
 
     render(){
         const { t } = this.props;

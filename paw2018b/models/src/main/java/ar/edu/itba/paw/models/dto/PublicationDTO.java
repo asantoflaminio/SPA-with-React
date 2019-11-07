@@ -16,11 +16,12 @@ public class PublicationDTO {
 	private String dimention;
 	private String parking;
 	private long publicationID;
+	private String date;
 	
 	public PublicationDTO(String title, String provinceID, String cityID, String neighborhoodID,
 							String address, String operation, String price, String description,
 							String propertyType, String bedrooms, String bathrooms, String dimention,
-							String parking) {
+							String parking, String date) {
 		this.title = title;
 		this.setProvinceID(provinceID);
 		this.setCityID(cityID);
@@ -34,6 +35,7 @@ public class PublicationDTO {
 		this.bathrooms = bathrooms;
 		this.dimention = dimention;
 		this.parking = parking;
+		this.setDate(date);
 	}
 	
 	public PublicationDTO() {} ;
@@ -149,6 +151,14 @@ public class PublicationDTO {
 
 	public void setPublicationID(long publicationID) {
 		this.publicationID = publicationID;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 }

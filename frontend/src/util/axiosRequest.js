@@ -229,3 +229,33 @@ export const postImages = (publicationID,images)  => {
               alert(error)
           });
     }
+
+    export const getPublicationsCount = async () => {
+        return await axios({
+            method: 'get',
+            url: 'users/getPublicationsQuantity',
+          })
+          .then(function (response) {
+              return response.data
+          })
+          .catch(function (error) {
+              alert(error)
+          });
+    }
+
+    export const getPublications = async (page) => {
+        const pageJSON = {
+            "page": page
+        }
+        return await axios({
+            method: 'post',
+            url: 'users/getPublications',
+            data: pageJSON
+          })
+          .then(function (response) {
+              return response.data
+          })
+          .catch(function (error) {
+              alert(error)
+          });
+    }

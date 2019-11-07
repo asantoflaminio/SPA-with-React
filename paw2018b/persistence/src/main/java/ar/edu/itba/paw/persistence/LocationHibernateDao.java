@@ -71,5 +71,7 @@ public class LocationHibernateDao implements LocationDao{
 		query.setParameter("cityid", cityid);
 		return query.getResultList();
 	}
+	
+
 
 }

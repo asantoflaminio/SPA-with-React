@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -13,9 +14,7 @@ import org.springframework.stereotype.Service;
 import ar.edu.itba.paw.interfaces.PublicationDao;
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserDao;
-import ar.edu.itba.paw.models.Province;
 import ar.edu.itba.paw.models.Publication;
-import ar.edu.itba.paw.models.dto.ProvinceDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 
 @Service
@@ -102,7 +101,7 @@ public class PublicationServiceImpl implements PublicationService{
 					publication.getCity().getCity(), publication.getNeighborhood().getNeighborhood(), publication.getAddress(), 
 					publication.getOperation(), publication.getPrice().toString(), publication.getDescription(),
 					publication.getPropertyType(), publication.getBedrooms().toString(), publication.getBathrooms().toString(),
-					publication.getFloorSize().toString(), publication.getParking().toString()));
+					publication.getFloorSize().toString(), publication.getParking().toString(), publication.getPublicationDate().toString()));
 		}
 		return publications;
 	}
@@ -172,9 +171,18 @@ public class PublicationServiceImpl implements PublicationService{
 	}
 	
 	@Override
-	public List<Publication> findAllPublications(String pagePub){
+	public List<PublicationDTO> findAllPublications(String pagePub){
+		List<PublicationDTO> publications = new LinkedList<PublicationDTO>();
+		PublicationDTO current;
+		
+		for(Publication pub: publicationDao.findAllPublications(pagePub)) {
+			current = new PublicationDTO(pub.getTitle(), pub.getProvince().getProvince(), pub.getCity().getCity(), pub.getNeighborhood().getNeighborhood(), pub.getAddress(),
+										pub.getOperation(), pub.getPrice().toString(), pub.getDescription(), pub.getPropertyType(), pub.getBedrooms().toString(), pub.getBathrooms().toString() , 
+										pub.getFloorSize().toString() , pub.getParking().toString(), pub.getPublicationDate().toString());
+			publications.add(current);
+		}
 		LOGGER.debug("Looking up for all publications in data base");
-		return publicationDao.findAllPublications(pagePub);
+		return publications;
 	}
 	
 	@Override

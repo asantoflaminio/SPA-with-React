@@ -1,6 +1,9 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -16,6 +19,8 @@ import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.Publication;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
+import ar.edu.itba.paw.models.dto.PageDTO;
+import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.UserDTO;
 
@@ -64,6 +69,22 @@ public class UserController {
     public Response uploadImages (@RequestParam CommonsMultipartFile[] filesUpload) {
     	//System.out.println(files.length);
         return Response.ok().build();
+    }
+    
+    @GET
+    @Path("/getPublicationsQuantity")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response getPublicationsQuantity () {
+    	PaginationDTO quantity = new PaginationDTO(ps.getCountAllPublications(), 3); //cambiar x la constante que dice en persistance
+    	return Response.ok().entity(quantity).build();
+    }
+    
+    @POST
+    @Path("/getPublications")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response getPublications (PageDTO page) {
+    	List<PublicationDTO> publications = ps.findAllPublications(page.getPage().toString());
+    	return Response.ok().entity(publications).build();
     }
 
 

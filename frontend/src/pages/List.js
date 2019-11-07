@@ -1,12 +1,13 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import '../css/List.css';
+import '../css/Pagination.css';
 import Navbar from '../components/Navbar'
 import arrowDown from '../resources/arrow_down.png';
 import Publication from '../components/Publication';
-import ImgsViewer from 'react-images-viewer'
 import * as axiosRequest from '../util/axiosRequest'
-import queryString from 'query-string'
+import ReactPaginate from 'react-paginate';
+
 
 class List extends React.Component {
 
@@ -44,11 +45,22 @@ class List extends React.Component {
     initializePublications(t){
         let pubComponents = [];
 
-        for(let i = 0; i < this.state.publications.length; i++)
+        for(let i = 0; i < this.state.publications.length; i++){
             pubComponents.push(
                 <Publication t={t} publication={this.state.publications[i]}></Publication>
             )
+        }
         return pubComponents;
+    }
+    
+    handlePageClick = data => {
+        let selected = data.selected + 1;
+        let currentComponent = this
+        axiosRequest.getPublications(selected).then(function (pubs){
+            currentComponent.setState({
+                publications: pubs
+            })
+        })
     }
 
     render(){
@@ -213,7 +225,26 @@ class List extends React.Component {
                             </div>
                         </aside>
                         <section id="publications">
-                            {publications}
+                            <div>
+                                {publications}
+                            </div>
+                            <div class="pubsPagination">
+                                <ReactPaginate
+                                previousLabel={'<'}
+                                nextLabel={'>'}
+                                breakLabel={'...'}
+                                pageCount={this.state.pagesQuantity}
+                                marginPagesDisplayed={2}
+                                pageRangeDisplayed={3}
+                                onPageChange={this.handlePageClick}
+                                activeClassName={'active'}
+                                breakClassName={''}
+                                containerClassName={'container-pagination separation'}
+                                pageClassName={''}
+                                previousClassName={''}
+                                nextClassName={''}
+                            />
+                            </div>
                         </section>
                     </div>
                 </div>
