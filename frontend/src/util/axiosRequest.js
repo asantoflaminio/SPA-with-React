@@ -230,10 +230,11 @@ export const postImages = (publicationID,images)  => {
           });
     }
 
-    export const getPublicationsCount = async () => {
+    export const getPublicationsCount = async (query) => {
         return await axios({
-            method: 'get',
+            method: 'post',
             url: 'users/getPublicationsQuantity',
+            data: query
           })
           .then(function (response) {
               return response.data
@@ -243,14 +244,11 @@ export const postImages = (publicationID,images)  => {
           });
     }
 
-    export const getPublications = async (page) => {
-        const pageJSON = {
-            "page": page
-        }
+    export const getPublications = async (query) => {
         return await axios({
             method: 'post',
             url: 'users/getPublications',
-            data: pageJSON
+            data: query
           })
           .then(function (response) {
               return response.data

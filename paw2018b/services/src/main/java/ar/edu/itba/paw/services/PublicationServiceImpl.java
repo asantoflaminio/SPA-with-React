@@ -118,14 +118,16 @@ public class PublicationServiceImpl implements PublicationService{
 	}
 	
 	@Override
-	public List<Publication> findSearchFiltering(String operation, String propertyType,  String address, String minPrice, String maxPrice,
+	public List<PublicationDTO> findSearchFiltering(String operation, String propertyType,  String address, String minPrice, String maxPrice,
 												 String minFloorSize, String maxFloorSize,
 												 String bedrooms, String bathrooms, String parking, String order, String page){
+		List<PublicationDTO> publications;
 		if(! vs.validateSearch(address, minPrice , maxPrice, minFloorSize, maxFloorSize)) {
 			return null;
 		}
-		return publicationDao.findSearchFiltering(operation,propertyType,address,minPrice,maxPrice,minFloorSize,
-												  maxFloorSize,bedrooms,bathrooms, parking, order, page);
+		publications = transform(publicationDao.findSearchFiltering(operation,propertyType,address,minPrice,maxPrice,minFloorSize,
+												  maxFloorSize,bedrooms,bathrooms, parking, order, page));
+		return publications;
 	}
 
 	@Override
@@ -172,15 +174,9 @@ public class PublicationServiceImpl implements PublicationService{
 	
 	@Override
 	public List<PublicationDTO> findAllPublications(String pagePub){
-		List<PublicationDTO> publications = new LinkedList<PublicationDTO>();
-		PublicationDTO current;
+		List<PublicationDTO> publications;
 		
-		for(Publication pub: publicationDao.findAllPublications(pagePub)) {
-			current = new PublicationDTO(pub.getTitle(), pub.getProvince().getProvince(), pub.getCity().getCity(), pub.getNeighborhood().getNeighborhood(), pub.getAddress(),
-										pub.getOperation(), pub.getPrice().toString(), pub.getDescription(), pub.getPropertyType(), pub.getBedrooms().toString(), pub.getBathrooms().toString() , 
-										pub.getFloorSize().toString() , pub.getParking().toString(), pub.getPublicationDate().toString());
-			publications.add(current);
-		}
+		publications = transform(publicationDao.findAllPublications(pagePub));
 		LOGGER.debug("Looking up for all publications in data base");
 		return publications;
 	}
@@ -188,6 +184,21 @@ public class PublicationServiceImpl implements PublicationService{
 	@Override
 	public int getCountAllPublications(){
 		return publicationDao.getCountAllPublications();
+	}
+	
+	@Override
+	public List<PublicationDTO> transform(List<Publication> publications){
+		List<PublicationDTO> publicationsDTO = new LinkedList<PublicationDTO>();
+		PublicationDTO current;
+		
+		for(Publication pub: publications) {
+			current = new PublicationDTO(pub.getTitle(), pub.getProvince().getProvince(), pub.getCity().getCity(), pub.getNeighborhood().getNeighborhood(), pub.getAddress(),
+										pub.getOperation(), pub.getPrice().toString(), pub.getDescription(), pub.getPropertyType(), pub.getBedrooms().toString(), pub.getBathrooms().toString() , 
+										pub.getFloorSize().toString() , pub.getParking().toString(), pub.getPublicationDate().toString());
+			publicationsDTO.add(current);
+		}
+		
+		return publicationsDTO;
 	}
 
 }

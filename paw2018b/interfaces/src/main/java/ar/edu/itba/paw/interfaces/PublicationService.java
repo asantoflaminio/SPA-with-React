@@ -20,7 +20,7 @@ public interface PublicationService {
 	
 	public int getCountPublicationsOfUser(long id);
 	
-	public List<Publication> findSearchFiltering(String operation, String propertyType, String address, String minPrice, String maxPrice,
+	public List<PublicationDTO> findSearchFiltering(String operation, String propertyType, String address, String minPrice, String maxPrice,
 												 String minFloorSize, String maxFloorSize,
 												 String bedrooms, String bathrooms, String parking, String order, String page);
 	
@@ -56,5 +56,7 @@ public interface PublicationService {
 	public List<PublicationDTO> findAllPublications(String pagePub);
 	
 	public int getCountAllPublications();
+	
+	public List<PublicationDTO> transform(List<Publication> publications);
 	
 }

@@ -19,9 +19,9 @@ import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.Publication;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
-import ar.edu.itba.paw.models.dto.PageDTO;
 import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
+import ar.edu.itba.paw.models.dto.QueryDTO;
 import ar.edu.itba.paw.models.dto.UserDTO;
 
 @Path("users")
@@ -71,19 +71,27 @@ public class UserController {
         return Response.ok().build();
     }
     
-    @GET
+    @POST
     @Path("/getPublicationsQuantity")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getPublicationsQuantity () {
-    	PaginationDTO quantity = new PaginationDTO(ps.getCountAllPublications(), 3); //cambiar x la constante que dice en persistance
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response getPublicationsQuantity (QueryDTO queryDTO) {
+    	int pubs = ps.getSearchFilteringCount(queryDTO.getOperation(), queryDTO.getPropertyType(), queryDTO.getSearch(), queryDTO.getMinPrice(),
+    											queryDTO.getMaxPrice(), queryDTO.getMinFloorSize(), queryDTO.getMaxFloorSize(), queryDTO.getBedrooms(),
+    											queryDTO.getBathrooms(), queryDTO.getParking());
+    	PaginationDTO quantity = new PaginationDTO(pubs, 1); //cambiar x la constante que dice en persistance
     	return Response.ok().entity(quantity).build();
     }
+    
     
     @POST
     @Path("/getPublications")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getPublications (PageDTO page) {
-    	List<PublicationDTO> publications = ps.findAllPublications(page.getPage().toString());
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response getPublicationsFilter (QueryDTO queryDTO) {
+    	List<PublicationDTO> publications = ps.findSearchFiltering(queryDTO.getOperation(), queryDTO.getPropertyType(), queryDTO.getSearch(), 
+    														queryDTO.getMinPrice(), queryDTO.getMaxPrice(), queryDTO.getMinFloorSize(), queryDTO.getMaxFloorSize(), 
+    														queryDTO.getBedrooms(), queryDTO.getBathrooms(), queryDTO.getParking(), queryDTO.getOrder(), queryDTO.getPage());
     	return Response.ok().entity(publications).build();
     }
 

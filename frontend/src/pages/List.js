@@ -10,30 +10,60 @@ import ReactPaginate from 'react-paginate';
 
 
 class List extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
             resultsQuantity: 0,
-            search: "queryString.parse(this.props.location.search)",
             publications: [],
+            operation:"FSale",
+            propertyType:"House",
+            search: "",
+            minPrice: "",
+            maxPrice:"",
+            minFloorSize:"",
+            maxFloorSize:"",
+            bedrooms:"",
+            bathrooms:"",
+            parking:"",
+            order:"No order",
+            page: 1,
             pageQuantity: 0,
         };
+        this.handleOrder = this.handleOrder.bind(this)
       }
 
       componentDidMount(){
         let currentComponent = this
-        axiosRequest.getPublications(1).then(function (pubs){
+        let query = this.generateQueryPackage()
+        axiosRequest.getPublications(query).then(function (pubs){
             currentComponent.setState({
                 publications: pubs
             })
         })
-        axiosRequest.getPublicationsCount().then(function (data){
+        axiosRequest.getPublicationsCount(query).then(function (data){
             currentComponent.setState({
                 pagesQuantity: Math.ceil(data.count / data.limit)
             })
         })
       }
+
+    generateQueryPackage(){
+        const query = {
+            operation: this.state.operation,
+            propertyType: this.state.propertyType,
+            search: this.state.search,
+            minPrice: this.state.minPrice,
+            maxPrice: this.state.maxPrice,
+            minFloorSize: this.state.minFloorSize,
+            maxFloorSize: this.state.maxFloorSize,
+            bedrooms: this.state.bedrooms,
+            bathrooms: this.state.bathrooms,
+            parking: this.state.parking,
+            order: this.state.order,
+            page: this.state.page       
+         }
+         return query
+    }
 
     getResults(t){
         if(this.state.resultsQuantity > 1 || this.state.resultsQuantity === 0)
@@ -52,13 +82,69 @@ class List extends React.Component {
         }
         return pubComponents;
     }
-    
-    handlePageClick = data => {
-        let selected = data.selected + 1;
+
+    createFiltersNotes(t){
+        let filters = [];
+        filters.push(this.createFilter("search",this.state.search,""));
+        filters.push(this.createFilter("minPrice",this.state.minPrice,"U$S"));
+        filters.push(this.createFilter("maxPrice",this.state.maxPrice,"U$S"));
+        filters.push(this.createFilter("minFloorSize",this.state.minFloorSize,"m2"));
+        filters.push(this.createFilter("maxFloorSize",this.state.maxFloorSize,"m2"));
+        filters.push(this.createFilter("bedrooms",this.state.bedrooms,""));
+        filters.push(this.createFilter("bathrooms",this.state.bathrooms,""));
+        filters.push(this.createFilter("parking",this.state.parking,""));
+        return filters
+    }
+
+    createFilter(stateName,information,additionalInformation){
+        if(information === ""){
+            return;
+        }
+            
+        return(
+            <li class="applied-filters-list-item">
+                <input value="x" class="delete-btn" onClick={() => this.deleteFilter(stateName)}/>
+                <p class="applied-filter-text">{information}</p>{additionalInformation}
+            </li>
+        )
+    }
+
+    deleteFilter(stateName){
+        let query = this.generateQueryPackage()
+        query.page = 1
+        query[stateName] = "";
         let currentComponent = this
-        axiosRequest.getPublications(selected).then(function (pubs){
+        axiosRequest.getPublications(query).then(function (pubs,stateName){
             currentComponent.setState({
-                publications: pubs
+                publications: pubs,
+                page: query.page,
+                [stateName] : "",
+            })
+        })
+    }
+
+    handleOrder(e){
+        let query = this.generateQueryPackage()
+        query.page = 1
+        query.order = e.target.value;
+        let currentComponent = this
+        axiosRequest.getPublications(query).then(function (pubs,e){
+            currentComponent.setState({
+                publications: pubs,
+                page: query.page,
+                order : query.order,
+            })
+        })
+    }
+
+    handlePageClick = data => {
+        let query = this.generateQueryPackage()
+        query.page = data.selected + 1
+        let currentComponent = this
+        axiosRequest.getPublications(query).then(function (pubs){
+            currentComponent.setState({
+                publications: pubs,
+                page: query.page
             })
         })
     }
@@ -66,6 +152,7 @@ class List extends React.Component {
     render(){
         const { t } = this.props;
         let publications = this.initializePublications(t);
+        let filters = this.createFiltersNotes(t);
         return(
             <div>
                 <Navbar t={t} />
@@ -97,7 +184,7 @@ class List extends React.Component {
                     <div class="results" id="res">
                         {this.getResults(t)}
                     </div>
-                    <div class="results" id="order">
+                    <div class="results" id="order" onChange={this.handleOrder}>
                             <select id="order-select">
                                 <option value="No order"></option>
                                 <option value="Ascending order">{t('list.lowest')}</option>
@@ -111,38 +198,7 @@ class List extends React.Component {
 
                 <div class="filters">
                     <ul id="applied-filters-list">
-                        <li class="applied-filters-list-item hidden" id="filterLocation">
-                            <input value="x" class="delete-btn"/>
-                            <p class="applied-filter-text" id="filterLocationText"></p>
-                        </li>
-                        <li class="applied-filters-list-item hidden" id="filterMinPrice">
-                            <input value="x" type="submit" class="delete-btn" />
-                            <p class="applied-filter-text" id="filterMinPriceText"></p>U$S
-                        </li>
-                        <li class="applied-filters-list-item hidden" id="filterMaxPrice">
-                            <input value="x" type="submit" class="delete-btn"/>
-                            <p class="applied-filter-text" id="filterMaxPriceText"></p>U$S
-                        </li>
-                        <li class="applied-filters-list-item hidden" id="filterMinFloorSize">
-                            <input value="x" type="submit" class="delete-btn" />
-                            <p class="applied-filter-text" id="filterMinFloorSizeText"></p>m2
-                        </li>
-                        <li class="applied-filters-list-item hidden" id="filterMaxFloorSize">
-                            <input value="x" type="submit" class="delete-btn" />
-                            <p class="applied-filter-text" id="filterMaxFloorSizeText"></p>m2
-                        </li>
-                        <li class="applied-filters-list-item hidden" id="filterBedroom">
-                            <input value="x" type="submit" class="delete-btn"/>
-                            <p class="applied-filter-text" id="filterBedroomText">asd</p>
-                        </li>
-                        <li class="applied-filters-list-item hidden" id="filterBathroom">
-                            <input value="x" type="submit" class="delete-btn"/>
-                            <p class="applied-filter-text" id="filterBathroomText">asd</p>
-                        </li>
-                        <li class="applied-filters-list-item hidden" id="filterParking">
-                            <input value="x" type="submit" class="delete-btn"/>
-                            <p class="applied-filter-text" id="filterParkingText">asd</p>
-                        </li>
+                        {filters}
                     </ul>
                 </div>
 
@@ -178,7 +234,7 @@ class List extends React.Component {
                                                         </div>
                                                     </div>
                                             </div>
-                                        <div class="filters-list-item">list.floorsizetitle<img src={arrowDown} alt="Arrow Up" onclick="expand(this);" class="arrow-up-filters"></img>
+                                        <div class="filters-list-item">list.floorsizetitle<img src={arrowDown} alt="Arrow Up" onClick="expand(this);" class="arrow-up-filters"></img>
                                         </div>
                                             <div class="expandible">
                                                     <div class="slidecontainer">

@@ -37,7 +37,7 @@ public class PublicationHibernateDao implements PublicationDao{
 	
 	private static Integer MAX_RESULTS_HOME = 9;
 	private static Integer MAX_RESULTS_PROFILE = 3;
-	private static Integer MAX_RESULTS_LIST = 10;
+	private static Integer MAX_RESULTS_LIST = 1;
 	
 	private static String NO_ORDER = "No order";
 	private static String ASCENDANT_ORDER = "Ascending order";
