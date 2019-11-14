@@ -371,6 +371,7 @@ h3 {
 	margin-left: 8px;
 	font-size: 14px;
 	margin-bottom: 5px;
+	width: 100%;
 }
 
 /* End of style */
@@ -538,8 +539,8 @@ h3 {
 	margin-top: 7px;
 }
 
-.radioFlexOption{
-	display: flex;
+.full{
+	width: 100%;
 }
 
 .radioFlexOption input {

@@ -103,7 +103,14 @@
       "newest": "Lo más nuevo",
       "oldest": "Lo más viejo",
       "resultsTitle": "resultados para:",
-      "resultTitle": "resultado para:"
+      "resultTitle": "resultado para:",
+      "filters": "FILTROS",
+      "location": "LOCALIDAD",
+      "price": "PRECIO",
+      "floorsizetitle": "SUPERFICIE",
+      "bedrooms": "HABITACIONES",
+      "bathrooms": "BAÑOS",
+      "parking": "ESTACIONAMIENTOS",
     },
     "publication": {
       "moreInfo": "Mas información "

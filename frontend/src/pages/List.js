@@ -5,7 +5,8 @@ import '../css/Pagination.css';
 import Navbar from '../components/Navbar'
 import arrowDown from '../resources/arrow_down.png';
 import Publication from '../components/Publication';
-import * as axiosRequest from '../util/axiosRequest'
+import * as axiosRequest from '../util/axiosRequest';
+import * as utilFunction from '../util/function';
 import ReactPaginate from 'react-paginate';
 
 
@@ -28,6 +29,7 @@ class List extends React.Component {
             order:"No order",
             page: 1,
             pageQuantity: 0,
+            filters : null
         };
       }
 
@@ -42,7 +44,47 @@ class List extends React.Component {
 
         this.updatePublicationsQuantity()
         this.selectOperation(this.state.operation)
+        this.updateFilters()
       }
+
+      updatePublications(stateName,value,stateName2,value2){
+        let query = this.generateQueryPackage();
+        query.page = 1;
+        query[stateName] = value;
+        query[stateName2] = value2;
+        let currentComponent = this
+        axiosRequest.getPublications(query,stateName,stateName2).then(function (pubs){
+            currentComponent.setState({
+                publications: pubs,
+                page: query.page,
+                [stateName] : query[stateName],
+                [stateName2] : query[stateName2]
+            })
+            currentComponent.updatePublicationsQuantity()
+        })
+    }
+
+    updatePublicationsQuantity(){
+        let currentComponent = this
+        let query = this.generateQueryPackage()
+        axiosRequest.getPublicationsCount(query).then(function (data){
+            currentComponent.setState({
+                pagesQuantity: Math.ceil(data.count / data.limit)
+            })
+        })
+    }
+
+    updateFilters(){
+        let currentComponent = this
+        let query = this.generateQueryPackage()
+        axiosRequest.getFilters(query).then(function (data){
+            currentComponent.setState({
+                filters: data
+            })
+        })
+    }
+
+
 
     generateQueryPackage(){
         const query = {
@@ -106,34 +148,20 @@ class List extends React.Component {
         )
     }
 
-    updatePublications(stateName,value,stateName2,value2){
-        let query = this.generateQueryPackage();
-        query.page = 1;
-        query[stateName] = value;
-        query[stateName2] = value2;
-        let currentComponent = this
-        axiosRequest.getPublications(query,stateName,stateName2).then(function (pubs){
-            currentComponent.setState({
-                publications: pubs,
-                page: query.page,
-                [stateName] : query[stateName],
-                [stateName2] : query[stateName2]
-            })
-            currentComponent.updatePublicationsQuantity()
-        })
+    createFilterFields(field,information,t){
+        if(this.state.filters === null)
+            return;
+        return(
+            Object.entries(this.state.filters[field]).map( ([key, value]) =>
+            <div>
+                <a class="filters-item-name" href="#">{key} {utilFunction.decidePlural(t(information),key)} ({value})</a>
+            </div>
+            )
+        )
+
     }
 
-    updatePublicationsQuantity(){
-        let currentComponent = this
-        let query = this.generateQueryPackage()
-        alert(JSON.stringify(query))
-        axiosRequest.getPublicationsCount(query).then(function (data){
-            currentComponent.setState({
-                pagesQuantity: Math.ceil(data.count / data.limit)
-            })
-        })
-        
-    }
+
 
     deleteFilter(stateName){
         this.updatePublications(stateName,"");
@@ -149,7 +177,6 @@ class List extends React.Component {
     }
 
     handleSearch(){
-        alert("asd")
         let value = document.getElementById("search").value
         this.updatePublications("search",value)
     }
@@ -159,6 +186,13 @@ class List extends React.Component {
         let maxPrice = document.getElementById("maxPrice");
 
         this.updatePublications("minPrice",minPrice.value,"maxPrice",maxPrice.value);
+    }
+
+    handleFloorSize(){
+        let minFloorSize = document.getElementById("minFloorSize");
+        let maxFloorSize = document.getElementById("maxFloorSize");
+
+        this.updatePublications("minFloorSize",minFloorSize.value,"maxFloorSize",maxFloorSize.value);
     }
 
     selectOperation(operation){
@@ -198,6 +232,10 @@ class List extends React.Component {
         const { t } = this.props;
         let publications = this.initializePublications(t);
         let filters = this.createFiltersNotes(t);
+        let locationFilter = this.createFilterFields("locations","",t)
+        let bedroomFilter = this.createFilterFields("bedrooms","list.bedrooms",t)
+        let bathroomFilter = this.createFilterFields("bathrooms","list.bedrooms",t)
+        let parkingFilter = this.createFilterFields("parking","list.bedrooms",t)
         return(
             <div>
                 <Navbar t={t} />
@@ -256,14 +294,12 @@ class List extends React.Component {
                                         <h3>list.filters</h3>
                                     </div>
                                     <div id="filters-list">
-                                        <div class="filters-list-item">list.location<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterLocation")} class="arrow-up-filters"></img>
+                                        <div class="filters-list-item">{t('list.location')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterLocation")} class="arrow-up-filters"></img>
                                         </div>
                                             <div class="expandible filters-list-item-last" id="filterLocation">
-                                                            <div class="radioFlexOption">
-                                                                    <a class="filters-item-name" href="#">
-                                                                        lo que dice el filtro location
-                                                                    </a>
-                                                            </div>
+                                                            <ul class="list-group">
+                                                                {locationFilter}
+                                                            </ul>
                                             </div>
                                         <div class="filters-list-item">list.price<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterPrice")} class="arrow-up-filters"></img>
                                         </div>
@@ -279,18 +315,18 @@ class List extends React.Component {
                                                         </div>
                                                     </div>
                                             </div>
-                                        <div class="filters-list-item">list.floorsizetitle<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterFloorSize")} class="arrow-up-filters"></img>
+                                        <div class="filters-list-item">{t('list.floorSizeTitle')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterFloorSize")} class="arrow-up-filters"></img>
                                         </div>
                                             <div class="expandible" id="filterFloorSize">
                                                     <div class="slidecontainer">
                                                         <p class="filter-subtitle">list.sqmeters</p>
-                                                        <input type="text" name = "minFloorSize" />
+                                                        <input type="text" id="minFloorSize" />
 
                                                         <p class="filter-subtitle filter-subtitle-not-first"> list.sqmeters</p>
-                                                        <input type="text" name="maxFloorSize" />
+                                                        <input type="text" id="maxFloorSize" />
                                                     
                                                         <div class="apply-container">
-                                                            <button type="button" class="apply-btn" onclick="submitFloorSize()">list.apply</button>
+                                                            <button type="button" class="apply-btn" onClick={() => this.handleFloorSize()}>list.apply</button>
                                                         </div>
                                                     </div>
                                             </div>
@@ -298,8 +334,7 @@ class List extends React.Component {
                                         </div>
                                             <div class="expandible filters-list-item-last" id="filterBedrooms">
                                                     <div class="radioFlexOption">
-                                                        <a class="filters-item-name" href="">
-                                                        </a>
+                                                        {bedroomFilter}
                                                     </div>	
                                             </div>
 
@@ -307,8 +342,7 @@ class List extends React.Component {
                                     </div>
                                             <div class="expandible filters-list-item-last" id="filterBathrooms">
                                                         <div class="radioFlexOption">
-                                                            <a class="filters-item-name" href="">
-                                                            </a>
+                                                            {bathroomFilter}
                                                         </div>
                                             </div>
 
@@ -316,8 +350,7 @@ class List extends React.Component {
                                     </div>
                                             <div class="expandible filters-list-item-last" id="filterParking">
                                                         <div class="radioFlexOption">
-                                                            <a class="filters-item-name" href="" onclick="submitParking(this,'${parkingEntry.key}')">
-                                                            </a>
+                                                            {parkingFilter}
                                                         </div>	
                                             </div>
                                     

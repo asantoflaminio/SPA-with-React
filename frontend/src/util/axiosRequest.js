@@ -257,3 +257,17 @@ export const postImages = (publicationID,images)  => {
               alert(error)
           });
     }
+
+    export const getFilters = async (query) => {
+        return await axios({
+            method: 'post',
+            url: 'users/getFilters',
+            data: query
+          })
+          .then(function (response) {
+              return response.data
+          })
+          .catch(function (error) {
+              alert(error)
+          });
+    }

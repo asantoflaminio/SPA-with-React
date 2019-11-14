@@ -1,9 +1,9 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -18,6 +18,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.Publication;
+import ar.edu.itba.paw.models.dto.FiltersDTO;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
@@ -93,6 +94,36 @@ public class UserController {
     														queryDTO.getMinPrice(), queryDTO.getMaxPrice(), queryDTO.getMinFloorSize(), queryDTO.getMaxFloorSize(), 
     														queryDTO.getBedrooms(), queryDTO.getBathrooms(), queryDTO.getParking(), queryDTO.getOrder(), queryDTO.getPage());
     	return Response.ok().entity(publications).build();
+    }
+    
+    @POST
+    @Path("/getFilters")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response getFilters (QueryDTO queryDTO) {
+    	FiltersDTO filtersDTO = new FiltersDTO();
+    	HashMap<String,Long> locations = ps.getLocationFilter(queryDTO.getOperation(), queryDTO.getPropertyType(), queryDTO.getSearch(), 
+    														queryDTO.getMinPrice(), queryDTO.getMaxPrice(), queryDTO.getMinFloorSize(), queryDTO.getMaxFloorSize(), 
+    														queryDTO.getBedrooms(), queryDTO.getParking(), queryDTO.getBathrooms());
+    	
+    	HashMap<Integer, Long> bedrooms = ps.getBedroomsFilter(queryDTO.getOperation(), queryDTO.getPropertyType(), queryDTO.getSearch(), 
+															queryDTO.getMinPrice(), queryDTO.getMaxPrice(), queryDTO.getMinFloorSize(), queryDTO.getMaxFloorSize(), 
+															queryDTO.getBedrooms(), queryDTO.getParking(), queryDTO.getBathrooms());
+    	
+    	HashMap<Integer, Long> bathrooms = ps.getBathroomsFilter(queryDTO.getOperation(), queryDTO.getPropertyType(), queryDTO.getSearch(), 
+															queryDTO.getMinPrice(), queryDTO.getMaxPrice(), queryDTO.getMinFloorSize(), queryDTO.getMaxFloorSize(), 
+															queryDTO.getBedrooms(), queryDTO.getParking(), queryDTO.getBathrooms());
+    	
+    	HashMap<Integer, Long> parking = ps.getParkingFilter(queryDTO.getOperation(), queryDTO.getPropertyType(), queryDTO.getSearch(), 
+															queryDTO.getMinPrice(), queryDTO.getMaxPrice(), queryDTO.getMinFloorSize(), queryDTO.getMaxFloorSize(), 
+															queryDTO.getBedrooms(), queryDTO.getParking(), queryDTO.getBathrooms());
+    	
+    	filtersDTO.setLocations(locations);
+    	filtersDTO.setBedrooms(bedrooms);
+    	filtersDTO.setBathrooms(bathrooms);
+    	filtersDTO.setParking(parking);
+    	
+    	return Response.ok().entity(filtersDTO).build();
     }
 
 
