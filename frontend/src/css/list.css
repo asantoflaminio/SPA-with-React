@@ -176,6 +176,10 @@ input#search-btn {
 	padding-top: 5px;
 }
 
+.search_list-item-active{
+	background-color: orange !important;
+}
+
 .search_list-item:hover {
 	background-color: #fecc94;
 }
@@ -332,6 +336,10 @@ h3 {
 	width: 100%;
 	display:none;
 	border-bottom: 1px solid #ccc;
+}
+
+.show{
+	display: block;
 }
 
 .check_box {

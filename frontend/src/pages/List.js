@@ -29,7 +29,6 @@ class List extends React.Component {
             page: 1,
             pageQuantity: 0,
         };
-        this.handleOrder = this.handleOrder.bind(this)
       }
 
       componentDidMount(){
@@ -40,11 +39,9 @@ class List extends React.Component {
                 publications: pubs
             })
         })
-        axiosRequest.getPublicationsCount(query).then(function (data){
-            currentComponent.setState({
-                pagesQuantity: Math.ceil(data.count / data.limit)
-            })
-        })
+
+        this.updatePublicationsQuantity()
+        this.selectOperation(this.state.operation)
       }
 
     generateQueryPackage(){
@@ -109,32 +106,72 @@ class List extends React.Component {
         )
     }
 
-    deleteFilter(stateName){
-        let query = this.generateQueryPackage()
-        query.page = 1
-        query[stateName] = "";
+    updatePublications(stateName,value,stateName2,value2){
+        let query = this.generateQueryPackage();
+        query.page = 1;
+        query[stateName] = value;
+        query[stateName2] = value2;
         let currentComponent = this
-        axiosRequest.getPublications(query).then(function (pubs,stateName){
+        axiosRequest.getPublications(query,stateName,stateName2).then(function (pubs){
             currentComponent.setState({
                 publications: pubs,
                 page: query.page,
-                [stateName] : "",
+                [stateName] : query[stateName],
+                [stateName2] : query[stateName2]
             })
+            currentComponent.updatePublicationsQuantity()
         })
     }
 
-    handleOrder(e){
-        let query = this.generateQueryPackage()
-        query.page = 1
-        query.order = e.target.value;
+    updatePublicationsQuantity(){
         let currentComponent = this
-        axiosRequest.getPublications(query).then(function (pubs,e){
+        let query = this.generateQueryPackage()
+        alert(JSON.stringify(query))
+        axiosRequest.getPublicationsCount(query).then(function (data){
             currentComponent.setState({
-                publications: pubs,
-                page: query.page,
-                order : query.order,
+                pagesQuantity: Math.ceil(data.count / data.limit)
             })
         })
+        
+    }
+
+    deleteFilter(stateName){
+        this.updatePublications(stateName,"");
+    }
+
+    handleSelect(event,stateName){
+        this.updatePublications(stateName,event.target.value)
+    }
+
+    handleOperation(operation){
+        this.selectOperation(operation);
+        this.updatePublications("operation",operation)
+    }
+
+    handleSearch(){
+        alert("asd")
+        let value = document.getElementById("search").value
+        this.updatePublications("search",value)
+    }
+
+    handlePrice(){
+        let minPrice = document.getElementById("minPrice");
+        let maxPrice = document.getElementById("maxPrice");
+
+        this.updatePublications("minPrice",minPrice.value,"maxPrice",maxPrice.value);
+    }
+
+    selectOperation(operation){
+        let buy = document.getElementById("buy")
+        let rent = document.getElementById("rent")
+
+        if(operation === "FSale"){
+            rent.classList.remove("search_list-item-active")
+            buy.classList.add("search_list-item-active");
+        }else{
+            buy.classList.remove("search_list-item-active")
+            rent.classList.add("search_list-item-active");
+        }
     }
 
     handlePageClick = data => {
@@ -149,6 +186,14 @@ class List extends React.Component {
         })
     }
 
+    expand(id){
+        let filter = document.getElementById(id);
+        if(filter.classList.contains("show"))
+            filter.classList.remove("show")
+        else
+            filter.classList.add("show")
+    }
+
     render(){
         const { t } = this.props;
         let publications = this.initializePublications(t);
@@ -158,24 +203,24 @@ class List extends React.Component {
                 <Navbar t={t} />
                 <div class="wrap inlineBlock">
                     <div class="search_list inlineBlock">
-                        <fieldset class="search_list-container rounded" id="operation-type">
-                            <div class="search_list-item" id="buy" onclick="updateInputsOperation('FSale'); submitOperation('${operation}','FSale');">
+                        <fieldset class="search_list-container rounded" id="operation-type" >
+                            <div class="search_list-item" id="buy" onClick={() => this.handleOperation("FSale")}>
                                 <p class="search_list-item-label">{t('list.buy')}</p>
                             </div>
-                            <div class="search_list-item" id="rent" onclick="updateInputsOperation('FRent') ; submitOperation('${operation}','FRent');">
+                            <div class="search_list-item" id="rent" onClick={() => this.handleOperation("FRent")}>
                                 <p class="search_list-item-label">{t('list.rent')}</p>
                             </div>
                         </fieldset>
                     </div>
                     <div class="search">
                         <form>
-                            <select class="type-home-select" id="select-type">
+                            <select class="type-home-select" id="select-type" onChange={(event) => this.handleSelect(event,"propertyType")}>
                                         <option value="House">{t('list.house')}</option>
                                         <option value="Apartment">{t('list.apartment')}</option>
                             </select>
                         </form>
-                        <input path="address" type="text" class="searchTerm" placeholder={t('list.searchPlaceholder')} oninput="updateCheckInput(this)"/>
-                        <input type="submit" id="search-btn" value={t('list.search')}/>
+                        <input type="text" class="searchTerm" placeholder={t('list.searchPlaceholder')} id="search"/>
+                        <input type="submit" id="search-btn" value={t('list.search')} onClick={() => this.handleSearch()} />
                     </div>
                 </div>
             
@@ -184,7 +229,7 @@ class List extends React.Component {
                     <div class="results" id="res">
                         {this.getResults(t)}
                     </div>
-                    <div class="results" id="order" onChange={this.handleOrder}>
+                    <div class="results" id="order" onChange={(event) => this.handleSelect(event,"order")}>
                             <select id="order-select">
                                 <option value="No order"></option>
                                 <option value="Ascending order">{t('list.lowest')}</option>
@@ -211,32 +256,32 @@ class List extends React.Component {
                                         <h3>list.filters</h3>
                                     </div>
                                     <div id="filters-list">
-                                        <div class="filters-list-item">list.location<img src={arrowDown} alt="Arrow Up" class="arrow-up-filters"></img>
+                                        <div class="filters-list-item">list.location<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterLocation")} class="arrow-up-filters"></img>
                                         </div>
-                                            <div class="expandible filters-list-item-last">
+                                            <div class="expandible filters-list-item-last" id="filterLocation">
                                                             <div class="radioFlexOption">
                                                                     <a class="filters-item-name" href="#">
                                                                         lo que dice el filtro location
                                                                     </a>
                                                             </div>
                                             </div>
-                                        <div class="filters-list-item">list.price<img src={arrowDown} alt="Arrow Up" onclick="expand(this);" class="arrow-up-filters"></img>
+                                        <div class="filters-list-item">list.price<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterPrice")} class="arrow-up-filters"></img>
                                         </div>
-                                            <div class="expandible">
+                                            <div class="expandible" id="filterPrice">
                                                     <div class="slidecontainer">
                                                         <p class="filter-subtitle">list.dollars</p>
-                                                        <input type="text" name = "minPrice"/>
+                                                        <input type="text" id="minPrice"/>
                                                         <p class="filter-subtitle filter-subtitle-not-first">list.dollars</p>
-                                                        <input type="text" name="maxPrice"/>
+                                                        <input type="text" id="maxPrice"/>
                                                     
                                                         <div class="apply-container">
-                                                            <button type="button" class="apply-btn" onclick="submitPrice()">list.apply</button>
+                                                            <button type="button" class="apply-btn" onClick={() => this.handlePrice()}>list.apply</button>
                                                         </div>
                                                     </div>
                                             </div>
-                                        <div class="filters-list-item">list.floorsizetitle<img src={arrowDown} alt="Arrow Up" onClick="expand(this);" class="arrow-up-filters"></img>
+                                        <div class="filters-list-item">list.floorsizetitle<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterFloorSize")} class="arrow-up-filters"></img>
                                         </div>
-                                            <div class="expandible">
+                                            <div class="expandible" id="filterFloorSize">
                                                     <div class="slidecontainer">
                                                         <p class="filter-subtitle">list.sqmeters</p>
                                                         <input type="text" name = "minFloorSize" />
@@ -249,27 +294,27 @@ class List extends React.Component {
                                                         </div>
                                                     </div>
                                             </div>
-                                        <div class="filters-list-item">list.bedrooms<img src={arrowDown} alt="Arrow Up" onclick="expand(this);" class="arrow-up-filters"></img>
+                                        <div class="filters-list-item">list.bedrooms<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterBedrooms")} class="arrow-up-filters"></img>
                                         </div>
-                                            <div class="expandible filters-list-item-last">
+                                            <div class="expandible filters-list-item-last" id="filterBedrooms">
                                                     <div class="radioFlexOption">
                                                         <a class="filters-item-name" href="">
                                                         </a>
                                                     </div>	
                                             </div>
 
-                                    <div class="filters-list-item">list.bathrooms<img src={arrowDown} alt="Arrow Up" onclick="expand(this);" class="arrow-up-filters"></img>
+                                    <div class="filters-list-item">list.bathrooms<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterBathrooms")} class="arrow-up-filters"></img>
                                     </div>
-                                            <div class="expandible filters-list-item-last">
+                                            <div class="expandible filters-list-item-last" id="filterBathrooms">
                                                         <div class="radioFlexOption">
                                                             <a class="filters-item-name" href="">
                                                             </a>
                                                         </div>
                                             </div>
 
-                                    <div class="filters-list-item">list.parking<img src={arrowDown} alt="Arrow Up" onclick="expand(this);" class="arrow-up-filters"></img>
+                                    <div class="filters-list-item">list.parking<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterParking")} class="arrow-up-filters"></img>
                                     </div>
-                                            <div class="expandible filters-list-item-last">
+                                            <div class="expandible filters-list-item-last" id="filterParking">
                                                         <div class="radioFlexOption">
                                                             <a class="filters-item-name" href="" onclick="submitParking(this,'${parkingEntry.key}')">
                                                             </a>
