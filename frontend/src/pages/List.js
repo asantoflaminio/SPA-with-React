@@ -61,6 +61,7 @@ class List extends React.Component {
                 [stateName2] : query[stateName2]
             })
             currentComponent.updatePublicationsQuantity()
+            currentComponent.updateFilters()
         })
     }
 
@@ -69,7 +70,9 @@ class List extends React.Component {
         let query = this.generateQueryPackage()
         axiosRequest.getPublicationsCount(query).then(function (data){
             currentComponent.setState({
-                pagesQuantity: Math.ceil(data.count / data.limit)
+                pagesQuantity: Math.ceil(data.count / data.limit),
+                resultsQuantity: data.count
+
             })
         })
     }
@@ -81,6 +84,10 @@ class List extends React.Component {
             currentComponent.setState({
                 filters: data
             })
+            currentComponent.hideEmptyFilters(data,"locations","filterLocationHeader");
+            currentComponent.hideEmptyFilters(data,"bedrooms","filterBedroomsHeader");
+            currentComponent.hideEmptyFilters(data,"bathrooms","filterBathroomsHeader");
+            currentComponent.hideEmptyFilters(data,"parking","filterParkingHeader");
         })
     }
 
@@ -102,6 +109,14 @@ class List extends React.Component {
             page: this.state.page       
          }
          return query
+    }
+
+
+    hideEmptyFilters(filters,field,id){
+        if(Object.keys(filters[field]).length === 0)
+            document.getElementById(id).style.display = "none";
+        else
+            document.getElementById(id).style.display = "block";
     }
 
     getResults(t){
@@ -148,13 +163,13 @@ class List extends React.Component {
         )
     }
 
-    createFilterFields(field,information,t){
+    createFilterFields(field,informationSingular,informationPlural,t,stateName){
         if(this.state.filters === null)
             return;
         return(
             Object.entries(this.state.filters[field]).map( ([key, value]) =>
             <div>
-                <a class="filters-item-name" href="#">{key} {utilFunction.decidePlural(t(information),key)} ({value})</a>
+                <a class="filters-item-name" href="#" onClick={() => this.handleFilter(stateName,key)}>{key} {utilFunction.decidePlural(t(informationSingular),t(informationPlural),key)} ({value})</a>
             </div>
             )
         )
@@ -169,6 +184,10 @@ class List extends React.Component {
 
     handleSelect(event,stateName){
         this.updatePublications(stateName,event.target.value)
+    }
+
+    handleFilter(stateName,value){
+        this.updatePublications(stateName,value)
     }
 
     handleOperation(operation){
@@ -232,10 +251,10 @@ class List extends React.Component {
         const { t } = this.props;
         let publications = this.initializePublications(t);
         let filters = this.createFiltersNotes(t);
-        let locationFilter = this.createFilterFields("locations","",t)
-        let bedroomFilter = this.createFilterFields("bedrooms","list.bedrooms",t)
-        let bathroomFilter = this.createFilterFields("bathrooms","list.bedrooms",t)
-        let parkingFilter = this.createFilterFields("parking","list.bedrooms",t)
+        let locationFilter = this.createFilterFields("locations","","",t,"search")
+        let bedroomFilter = this.createFilterFields("bedrooms","list.bedroomSingular","list.bedroomPlural",t,"bedrooms")
+        let bathroomFilter = this.createFilterFields("bathrooms","list.bathroomSingular","list.bathroomPlural",t,"bathrooms")
+        let parkingFilter = this.createFilterFields("parking","list.parkingSingular","list.parkingPlural",t,"parking")
         return(
             <div>
                 <Navbar t={t} />
@@ -272,7 +291,7 @@ class List extends React.Component {
                                 <option value="No order"></option>
                                 <option value="Ascending order">{t('list.lowest')}</option>
                                 <option value="Descending order">{t('list.highest')}</option>
-                                <option value="Newest publications">{t('list.newst')}</option>
+                                <option value="Newest publications">{t('list.newest')}</option>
                                 <option value="Oldest publications">{t('list.oldest')}</option>
                             </select>
                         <h3 id="order-title-select">{t('list.order')}</h3>
@@ -291,27 +310,27 @@ class List extends React.Component {
                             <div class="filter-polaroid">
                                 <div class="container">
                                     <div id="filters-title">
-                                        <h3>list.filters</h3>
+                                        <h3>{t('list.filters')}</h3>
                                     </div>
                                     <div id="filters-list">
-                                        <div class="filters-list-item">{t('list.location')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterLocation")} class="arrow-up-filters"></img>
+                                        <div class="filters-list-item" id="filterLocationHeader">{t('list.location')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterLocation")} class="arrow-up-filters"></img>
                                         </div>
                                             <div class="expandible filters-list-item-last" id="filterLocation">
                                                             <ul class="list-group">
                                                                 {locationFilter}
                                                             </ul>
                                             </div>
-                                        <div class="filters-list-item">list.price<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterPrice")} class="arrow-up-filters"></img>
+                                        <div class="filters-list-item">{t('list.price')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterPrice")} class="arrow-up-filters"></img>
                                         </div>
                                             <div class="expandible" id="filterPrice">
                                                     <div class="slidecontainer">
-                                                        <p class="filter-subtitle">list.dollars</p>
+                                                        <p class="filter-subtitle">{t('list.dollarsMin')}</p>
                                                         <input type="text" id="minPrice"/>
-                                                        <p class="filter-subtitle filter-subtitle-not-first">list.dollars</p>
+                                                        <p class="filter-subtitle filter-subtitle-not-first">{t('list.dollarsMax')}</p>
                                                         <input type="text" id="maxPrice"/>
                                                     
                                                         <div class="apply-container">
-                                                            <button type="button" class="apply-btn" onClick={() => this.handlePrice()}>list.apply</button>
+                                                            <button type="button" class="apply-btn" onClick={() => this.handlePrice()}>{t('list.apply')}</button>
                                                         </div>
                                                     </div>
                                             </div>
@@ -319,18 +338,18 @@ class List extends React.Component {
                                         </div>
                                             <div class="expandible" id="filterFloorSize">
                                                     <div class="slidecontainer">
-                                                        <p class="filter-subtitle">list.sqmeters</p>
+                                                        <p class="filter-subtitle">{t('list.sqmetersMin')}</p>
                                                         <input type="text" id="minFloorSize" />
 
-                                                        <p class="filter-subtitle filter-subtitle-not-first"> list.sqmeters</p>
+                                                        <p class="filter-subtitle filter-subtitle-not-first">{t('list.sqmetersMax')}</p>
                                                         <input type="text" id="maxFloorSize" />
                                                     
                                                         <div class="apply-container">
-                                                            <button type="button" class="apply-btn" onClick={() => this.handleFloorSize()}>list.apply</button>
+                                                            <button type="button" class="apply-btn" onClick={() => this.handleFloorSize()}>{t('list.apply')}</button>
                                                         </div>
                                                     </div>
                                             </div>
-                                        <div class="filters-list-item">list.bedrooms<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterBedrooms")} class="arrow-up-filters"></img>
+                                        <div class="filters-list-item" id="filterBedroomsHeader">{t('list.bedrooms')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterBedrooms")} class="arrow-up-filters"></img>
                                         </div>
                                             <div class="expandible filters-list-item-last" id="filterBedrooms">
                                                     <div class="radioFlexOption">
@@ -338,7 +357,7 @@ class List extends React.Component {
                                                     </div>	
                                             </div>
 
-                                    <div class="filters-list-item">list.bathrooms<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterBathrooms")} class="arrow-up-filters"></img>
+                                    <div class="filters-list-item" id="filterBathroomsHeader">{t('list.bathrooms')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterBathrooms")} class="arrow-up-filters"></img>
                                     </div>
                                             <div class="expandible filters-list-item-last" id="filterBathrooms">
                                                         <div class="radioFlexOption">
@@ -346,7 +365,7 @@ class List extends React.Component {
                                                         </div>
                                             </div>
 
-                                    <div class="filters-list-item">list.parking<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterParking")} class="arrow-up-filters"></img>
+                                    <div class="filters-list-item" id="filterParkingHeader">{t('list.parking')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterParking")} class="arrow-up-filters"></img>
                                     </div>
                                             <div class="expandible filters-list-item-last" id="filterParking">
                                                         <div class="radioFlexOption">
@@ -377,6 +396,7 @@ class List extends React.Component {
                                 pageClassName={''}
                                 previousClassName={''}
                                 nextClassName={''}
+                                forcePage={this.state.page - 1}
                             />
                             </div>
                         </section>

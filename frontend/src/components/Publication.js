@@ -5,6 +5,7 @@ import defaultBlack from '../resources/blackDefault.png'
 import nextArrow from '../resources/arrow_right.png';
 import previousArrow from '../resources/arrow_left.png';
 import heartFilled from '../resources/heart_filled.png';
+import * as utilFunction from '../util/function';
 
 const Publication = ({ t , publication}) => (
         <div class="polaroid-property">
@@ -24,13 +25,13 @@ const Publication = ({ t , publication}) => (
                 
                     <div class="property-characteristics">
                         <div class="column-1">
-                            <h4 class="littleCharacteristic"><strong>{publication.bedrooms}</strong> publication.bedrooms</h4>
-                            <h4 class="littleCharacteristic"><strong>{publication.bathrooms}</strong> publication.bathrooms</h4>
-                            <h4 class="littleCharacteristic"><strong>{publication.parking}</strong> publication.parking</h4>						
+                            <h4 class="littleCharacteristic"><strong>{publication.bedrooms}</strong> {utilFunction.decidePlural(t('list.bedroomSingular'),t('list.bedroomPlural'),publication.bedrooms)}</h4>
+                            <h4 class="littleCharacteristic"><strong>{publication.bathrooms}</strong> {utilFunction.decidePlural(t('list.bathroomSingular'),t('list.bathroomPlural'),publication.bedrooms)}</h4>
+                            <h4 class="littleCharacteristic"><strong>{publication.parking}</strong> {utilFunction.decidePlural(t('list.parkingSingular'),t('list.parkingPlural'),publication.bedrooms)}</h4>						
                         </div>
                         <div class="column-2">
-                            <h4 class="littleCharacteristic"><strong>{publication.dimention}</strong> publication.floorSize</h4>	
-                            <h3 class="bigCharacteristic">{publication.operation}</h3>	
+                            <h4 class="littleCharacteristic"><strong>{publication.dimention}</strong> {t('list.sqmeters')}</h4>
+                            <h3 class="bigCharacteristic">{utilFunction.decideOperation(t('list.buy'),t('list.rent'),publication.operation)}</h3>
                         </div>				
                     </div>
                 </div>
@@ -39,7 +40,7 @@ const Publication = ({ t , publication}) => (
                         {publication.date}
                     </div>
                 <div class="more-info">
-                    <a class="more-info-title" href="">{t('publication.moreInfo')} ></a>
+                    <a class="more-info-title" href="">{t('list.moreInfo')} ></a>
                 </div>	
                 </div>
             </div>

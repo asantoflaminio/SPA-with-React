@@ -35,5 +35,28 @@
       "remember": "Remember me",
       "signIn": "Sign In",
       "signUp": "Sign Up"
-    }
+    },
+    "list": {
+      "buy": "Buy",
+      "rent": "Rent",
+      "search": "Search",
+      "searchPlaceholder": "Search...",
+      "house": "House",
+      "apartment": "Apartment",
+      "order": "Order by",
+      "lowest": "Lowest price",
+      "highest": "Highest price",
+      "newest": "Newest",
+      "oldest": "Oldest",
+      "resultsTitle": "results for:",
+      "resultTitle": "result for:",
+      "filters": "FILTERS",
+      "location": "LOCATIONS",
+      "price": "PRICE",
+      "floorsizetitle": "AREA",
+      "bedrooms": "ROOMS",
+      "bathrooms": "BATHROOMS",
+      "parking": "PARKING",
+      "sqmeters" : "m2"
+      }
   }

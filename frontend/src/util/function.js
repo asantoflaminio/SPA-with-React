@@ -6,9 +6,16 @@ export const appendSelectElement = (selectCity,text,value) => {
 
 }
 
-export const decidePlural = (information,value) => {
-    if((value > 1 || value === 0) && information != "")
-        return information + "s";
+export const decidePlural = (informationSingular,informationPlural,value) => {
+    if(value > 1 || value === 0)
+        return informationPlural;
     else
-        return information;
+        return informationSingular;
+}
+
+export const decideOperation = (buy,rent,value) => {
+    if(value === "FSale")
+        return buy;
+    else
+        return rent;
 }

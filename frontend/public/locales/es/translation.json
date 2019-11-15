@@ -107,12 +107,22 @@
       "filters": "FILTROS",
       "location": "LOCALIDAD",
       "price": "PRECIO",
-      "floorsizetitle": "SUPERFICIE",
+      "floorSizeTitle": "SUPERFICIE",
       "bedrooms": "HABITACIONES",
       "bathrooms": "BAÑOS",
       "parking": "ESTACIONAMIENTOS",
-    },
-    "publication": {
+      "dollarsMin": "Min (U$S):",
+      "dollarsMax": "Max (U$S):",
+      "apply": "Aplicar",
+      "sqmetersMin": "Min (m2)",
+      "sqmetersMax": "Max (m2)",
+      "bedroomSingular": "habitación",
+      "bedroomPlural": "habitaciones",
+      "bathroomSingular": "baño",
+      "bathroomPlural": "baños",
+      "parkingSingular": "estacionamiento",
+      "parkingPlural": "estacionamientos",
+      "sqmeters": "metros cuadrados",
       "moreInfo": "Mas información "
     }
   }
