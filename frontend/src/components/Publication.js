@@ -20,7 +20,7 @@ const Publication = ({ t , publication}) => (
                 <div class="first-column">								
                     <div class="property-title-container">
                         <h3 class="property-title">{publication.title}</h3>
-                        <h4 class="address"> {publication.address}, {publication.neighborhoodID}, {publication.cityID}, {publication.provinceID}</h4>
+                        <h4 class="address" id="address"> {publication.address}, {publication.neighborhoodID}, {publication.cityID}, {publication.provinceID}</h4>
                     </div>					
                 
                     <div class="property-characteristics">

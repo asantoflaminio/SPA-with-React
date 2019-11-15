@@ -73,7 +73,7 @@
 	max-width: 95%;
 	white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis !important;
+	text-overflow: ellipsis !important;
 }
 
 .property-date {
@@ -108,6 +108,7 @@
 	color: #888 !important;
 	margin-left: 10px;
 	margin-top: 3px;
+	text-align: left !important;
 }
 
 #address {
@@ -135,19 +136,19 @@ h4 {
 
 .more-info {
 	height: 20px;
-	margin-top: 70%;	
+	margin-top: 35%;	
 }
 
 .more-info-title {
+	margin-right: -50px;
 	float: right;
 	font-size: 15px !important;
 	color: #FD8907 !important;
-	margin-right: 15px;
 }
 
 .bigCharacteristic {
 	margin-top: 15px !important;
-	text-align: center !important;
+	text-align: left !important;
 	font-size: 18px !important;
 	color: #666 !important;
 }
@@ -156,4 +157,5 @@ h4 {
 	font-family: 'Rubik', sans-serif !important;
 	font-size: 13px !important;
 	color: #888 !important;
+	text-align: left !important;
 }
