@@ -8,6 +8,7 @@ import Publication from '../components/Publication';
 import * as axiosRequest from '../util/axiosRequest';
 import * as utilFunction from '../util/function';
 import ReactPaginate from 'react-paginate';
+import { timingSafeEqual } from 'crypto';
 
 
 class List extends React.Component {
@@ -16,6 +17,7 @@ class List extends React.Component {
         this.state = {
             resultsQuantity: 0,
             publications: [],
+            images: [],
             operation:"FSale",
             propertyType:"House",
             search: "",
@@ -34,17 +36,8 @@ class List extends React.Component {
       }
 
       componentDidMount(){
-        let currentComponent = this
-        let query = this.generateQueryPackage()
-        axiosRequest.getPublications(query).then(function (pubs){
-            currentComponent.setState({
-                publications: pubs
-            })
-        })
-
-        this.updatePublicationsQuantity()
+        this.updatePublications()      
         this.selectOperation(this.state.operation)
-        this.updateFilters()
       }
 
       updatePublications(stateName,value,stateName2,value2){
@@ -60,8 +53,21 @@ class List extends React.Component {
                 [stateName] : query[stateName],
                 [stateName2] : query[stateName2]
             })
+            currentComponent.getImages()
             currentComponent.updatePublicationsQuantity()
             currentComponent.updateFilters()
+        })
+    }
+
+    async getImages(){
+        let imagesRequest = []
+        for(let i = 0; i < this.state.publications.length ; i++){
+            await axiosRequest.getImage(this.state.publications[i].publicationID,0).then(function (image){
+                imagesRequest.push(image);
+            })
+        }
+        this.setState({
+            images: imagesRequest
         })
     }
 
@@ -72,7 +78,6 @@ class List extends React.Component {
             currentComponent.setState({
                 pagesQuantity: Math.ceil(data.count / data.limit),
                 resultsQuantity: data.count
-
             })
         })
     }
@@ -128,10 +133,9 @@ class List extends React.Component {
 
     initializePublications(t){
         let pubComponents = [];
-
         for(let i = 0; i < this.state.publications.length; i++){
             pubComponents.push(
-                <Publication t={t} publication={this.state.publications[i]}></Publication>
+                <Publication t={t} publication={this.state.publications[i]} image={this.state.images[i]}></Publication>
             )
         }
         return pubComponents;
@@ -236,7 +240,9 @@ class List extends React.Component {
                 publications: pubs,
                 page: query.page
             })
+            currentComponent.getImages()
         })
+        
     }
 
     expand(id){

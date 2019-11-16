@@ -97,7 +97,7 @@ public class PublicationServiceImpl implements PublicationService{
 		
 		List<PublicationDTO> publications = new ArrayList<PublicationDTO>();
 		for(Publication publication: publicationDao.findNewest(operation)) {
-			publications.add(new PublicationDTO(publication.getTitle(), publication.getProvince().getProvince(),
+			publications.add(new PublicationDTO(publication.getPublicationid(),publication.getTitle(), publication.getProvince().getProvince(),
 					publication.getCity().getCity(), publication.getNeighborhood().getNeighborhood(), publication.getAddress(), 
 					publication.getOperation(), publication.getPrice().toString(), publication.getDescription(),
 					publication.getPropertyType(), publication.getBedrooms().toString(), publication.getBathrooms().toString(),
@@ -192,9 +192,11 @@ public class PublicationServiceImpl implements PublicationService{
 		PublicationDTO current;
 		
 		for(Publication pub: publications) {
-			current = new PublicationDTO(pub.getTitle(), pub.getProvince().getProvince(), pub.getCity().getCity(), pub.getNeighborhood().getNeighborhood(), pub.getAddress(),
+			current = new PublicationDTO(pub.getPublicationid(),pub.getTitle(), pub.getProvince().getProvince(), pub.getCity().getCity(), pub.getNeighborhood().getNeighborhood(), pub.getAddress(),
 										pub.getOperation(), pub.getPrice().toString(), pub.getDescription(), pub.getPropertyType(), pub.getBedrooms().toString(), pub.getBathrooms().toString() , 
 										pub.getFloorSize().toString() , pub.getParking().toString(), pub.getPublicationDate().toString());
+			current.setImages(pub.getImages().size());
+			
 			publicationsDTO.add(current);
 		}
 		

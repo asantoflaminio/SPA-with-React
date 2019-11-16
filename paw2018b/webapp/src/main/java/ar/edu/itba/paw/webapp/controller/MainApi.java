@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import java.util.Base64;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,14 +12,13 @@ import org.springframework.stereotype.Component;
 
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.models.dto.PublicationsDTO;
-import ar.edu.itba.paw.services.ImageServiceImpl;
+
 
 @Path("home")
 @Component
 public class MainApi {
 	
-	@Autowired
-	private ImageServiceImpl is;
+
 	
 	@Autowired
 	private PublicationService ps;
@@ -36,15 +34,6 @@ public class MainApi {
     }
 	*/
 	
-    @GET
-    @Path("/img")
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response getImg () {
-    	System.out.println("Called img!");
-    	byte[] data = is.findFirstById(1).getData();
-    	byte[] dataBase64 = Base64.getEncoder().encode(data);
-        return Response.ok(dataBase64).build();
-    }
     
     @GET
     @Path("/getSalePublications")

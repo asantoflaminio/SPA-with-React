@@ -79,8 +79,8 @@ public class ImageServiceImpl implements ImageService{
 	}
 
 	@Override
-	public UploadFile findFirstById(long id) {
-		return imageDao.findFirstById(id);
+	public UploadFile findByIndexAndId(long id, int index) {
+		return imageDao.findByIndexAndId(id,index);
 	}
 	
 	@Override

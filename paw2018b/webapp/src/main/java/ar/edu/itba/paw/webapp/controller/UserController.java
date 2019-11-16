@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,12 +19,15 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.Publication;
+import ar.edu.itba.paw.models.UploadFile;
 import ar.edu.itba.paw.models.dto.FiltersDTO;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
+import ar.edu.itba.paw.models.dto.ImageDTO;
 import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.QueryDTO;
 import ar.edu.itba.paw.models.dto.UserDTO;
+import ar.edu.itba.paw.services.ImageServiceImpl;
 
 @Path("users")
 @Component
@@ -34,6 +38,9 @@ public class UserController {
 	
 	@Autowired
 	private PublicationService ps;
+	
+	@Autowired
+	private ImageServiceImpl is;
 	
 
 	
@@ -87,7 +94,7 @@ public class UserController {
     
     @POST
     @Path("/getPublications")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { MediaType.APPLICATION_JSON})
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response getPublicationsFilter (QueryDTO queryDTO) {
     	List<PublicationDTO> publications = ps.findSearchFiltering(queryDTO.getOperation(), queryDTO.getPropertyType(), queryDTO.getSearch(), 
@@ -124,6 +131,20 @@ public class UserController {
     	filtersDTO.setParking(parking);
     	
     	return Response.ok().entity(filtersDTO).build();
+    }
+    
+    @POST
+    @Path("/getPublicationImage")
+    @Produces(value = { MediaType.APPLICATION_OCTET_STREAM })
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response getImg (ImageDTO imageDTO) {
+    	UploadFile uploadFile = is.findByIndexAndId(imageDTO.getPublicationID(),imageDTO.getIndex());
+    	if(uploadFile == null)
+    		return Response.ok(null).build();
+    	byte[] data = uploadFile.getData();
+    	byte[] dataBase64 = Base64.getEncoder().encode(data);
+    	imageDTO.setData(dataBase64);
+        return Response.ok(dataBase64).build();
     }
 
 

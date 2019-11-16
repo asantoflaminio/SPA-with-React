@@ -15,6 +15,18 @@ export const getJSON = (array,quantity) => {
     return result;
 }
 
+export const generateImageJSON = (publicationID, index) => {
+    let result = "{";
+
+    result += '"' + "publicationID" + '"' + ":" + '"' + publicationID + '"' ;
+    result += ",";
+    result += '"' + "index" + '"' + ":" + '"' + index + '"' ;
+    result += "}"
+
+    return result;
+
+}
+
 export const getJSONSingle = (target) => {
     let result = "{"
     result += '"' + target.name + '"' + ":" + '"' + target.value + '"';
@@ -266,6 +278,22 @@ export const postImages = (publicationID,images)  => {
           })
           .then(function (response) {
               return response.data
+          })
+          .catch(function (error) {
+              alert(error)
+          });
+    }
+
+    export const getImage = async (publicationID,index) => {
+        const request = generateImageJSON(publicationID,index)
+        const jsonObject = JSON.parse(request);
+        return await axios({
+            method: 'post',
+            url: 'users/getPublicationImage',
+            data: jsonObject,
+          })
+          .then(function (response) {
+            return response.data
           })
           .catch(function (error) {
               alert(error)

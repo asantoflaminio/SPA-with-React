@@ -17,11 +17,13 @@ public class PublicationDTO {
 	private String parking;
 	private long publicationID;
 	private String date;
+	private int images;
 	
-	public PublicationDTO(String title, String provinceID, String cityID, String neighborhoodID,
+	public PublicationDTO(long publicationID, String title, String provinceID, String cityID, String neighborhoodID,
 							String address, String operation, String price, String description,
 							String propertyType, String bedrooms, String bathrooms, String dimention,
 							String parking, String date) {
+		this.publicationID = publicationID;
 		this.title = title;
 		this.setProvinceID(provinceID);
 		this.setCityID(cityID);
@@ -159,6 +161,14 @@ public class PublicationDTO {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public int getImages() {
+		return images;
+	}
+
+	public void setImages(int images) {
+		this.images = images;
 	}
 
 }

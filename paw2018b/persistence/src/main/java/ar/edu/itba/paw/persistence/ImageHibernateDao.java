@@ -37,13 +37,13 @@ public class ImageHibernateDao implements ImageDao{
 
 	@Override
 	@Transactional
-	public UploadFile findFirstById(long publicationid) {
+	public UploadFile findByIndexAndId(long publicationid, int index) {
 		String queryString = "from Publication as pub left join fetch pub.images where pub.publicationid = :publicationid";
 		final TypedQuery<Publication> query = em.createQuery(queryString, Publication.class);
 		query.setParameter("publicationid", publicationid);
 		final List<UploadFile> images = query.getResultList().get(0).getImages();
-		if(images.size() != 0)
-			return images.get(0);
+		if(images.size() != 0 && index < images.size())
+			return images.get(index);
 		else
 			return null;
 	}

@@ -11,7 +11,7 @@ public interface ImageService {
 	
 	public List<UploadFile> create(CommonsMultipartFile[] fileUpload, long publicationid);
 	
-	public UploadFile findFirstById(long id);
+	public UploadFile findByIndexAndId(long id, int index);
 	
 	public UploadFile findByUploadId(long id);
 	
