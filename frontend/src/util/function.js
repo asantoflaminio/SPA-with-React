@@ -1,5 +1,6 @@
 import defaultBlack from '../resources/blackDefault.png'
 
+
 export const appendSelectElement = (selectCity,text,value) => {
     let option = document.createElement("option");
     option.value = value;
@@ -29,7 +30,3 @@ export const setSRC = (base64) => {
         return defaultBlack;
 }
 
-export const getNextImage = (publicationID, element, index) => {
-    alert(element)
-    
-}

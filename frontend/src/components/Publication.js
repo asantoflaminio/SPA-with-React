@@ -1,19 +1,17 @@
 import React from 'react';
 import '../css/Publication.css';
-import nextArrow from '../resources/arrow_right.png';
-import previousArrow from '../resources/arrow_left.png';
-import heartFilled from '../resources/heart_filled.png';
 import * as utilFunction from '../util/function';
+import ImgVisualizer from './ImageVisualizer';
 
 const Publication = ({ t , publication, image}) => (
         <div class="polaroid-property">
-            <div class="img-with-tag">
-                <img class="polaroid-property-img" id={"publication-" + publication.publicationID} src={utilFunction.setSRC(image)} />
-                <img class="favorite-icon" src={heartFilled} alt="Fave" />
-                <img class="prev-image pointer" src={previousArrow} alt="Previous" index="0" onClick={(e) => utilFunction.getNextImage(publication.publicationID,e.target,e.target.index - 1)}/>
-                <img class="next-image pointer" src={nextArrow} alt="Next" index="0" onClick={(e) => utilFunction.getNextImage(publication.publicationID,e.target,e.target.index + 1)}/>
-                <h2 class="price-tag">U$S {publication.price}</h2>
-            </div>
+            <ImgVisualizer
+                publicationID={publication.publicationID}
+                price={publication.price}
+                maxImages={publication.images}
+                page="List"
+                image={image}
+            />
             <div class="property-container">
                 <div class="first-column">								
                     <div class="property-title-container">
