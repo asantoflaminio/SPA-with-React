@@ -7,6 +7,7 @@ import List from './pages/List'
 import Publish from './pages/Publish'
 import AdminGenerator from './pages/AdminGenerator'
 import AdminUsers from './pages/AdminUsers'
+import Details from './pages/Details'
 
 
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/AdminGenerator" component={AdminGenerator} />
           <Route path="/AdminUsers" component={AdminUsers} />
           <Route path="/List" component={List} />
+          <Route path="/Details" component={Details} />
         </Suspense>
      </BrowserRouter>
     </div>
