@@ -256,6 +256,21 @@ export const postImages = (publicationID,images)  => {
           });
     }
 
+    export const getPublication = async (id) => {
+        const idJSON = {"id": id,}
+        return await axios({
+            method: 'post',
+            url: 'users/getPublicationByID',
+            data: idJSON
+          })
+          .then(function (response) {
+              return response.data
+          })
+          .catch(function (error) {
+              alert(error)
+          });
+    }
+
     export const getPublications = async (query) => {
         return await axios({
             method: 'post',
@@ -299,3 +314,22 @@ export const postImages = (publicationID,images)  => {
               alert(error)
           });
     }
+
+    export const sendMessage = async (event) => {
+        const data = getJSON(event.target,5)
+        alert(data)
+        const jsonObject = JSON.parse(data);
+        return await axios({
+          method: 'post',
+          url: 'users/sendMessage',
+          data: jsonObject
+        })
+        .then(function (response) {
+            alert(response)
+            return response;
+        })
+        .catch(function (error) {
+            alert(error)
+        });
+    }
+

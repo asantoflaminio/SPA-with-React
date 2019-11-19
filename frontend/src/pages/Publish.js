@@ -183,7 +183,7 @@ class Publish extends React.Component {
                                     type="text"
                                     name="title"
                                     placeholder={t('publish.titleHolder')}
-                                    value={values.firstName}
+                                    value={values.title}
                                     onChange={handleChange}
                                     id="title"
                                     isInvalid={!!errors.title}

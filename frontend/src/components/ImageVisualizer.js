@@ -19,8 +19,8 @@ class ImageVisualizer extends React.Component {
         let img = document.getElementById(id);
         let currentIndex = this.state.index
         let nextIndex;
-    
-        if(currentIndex + 1 == this.props.maxImages)
+        
+        if(currentIndex + 1 === this.props.maxImages)
             nextIndex = 0;
         else
             nextIndex = currentIndex + 1;
@@ -57,13 +57,18 @@ class ImageVisualizer extends React.Component {
     }
 
     render(){
+        let price;
+        if(this.props.price != null){
+            price = <h2 class="price-tag">U$S {this.props.price}</h2>
+        }
+
         return(
-            <div class="img-with-tag">
-                <img class="polaroid-property-img" id={this.props.page + this.props.publicationID} src={utilFunction.setSRC(this.props.image)} />
+            <div class={this.props.containerClass}>
+                <img class={this.props.imageClass} id={this.props.page + this.props.publicationID} src={utilFunction.setSRC(this.props.image)} />
                 <img class="favorite-icon" src={heartFilled} alt="Fave" />
-                <img class="prev-image pointer" src={previousArrow} alt="Previous" onClick={() => this.getPreviousImage(this.props.page)}/>
-                <img class="next-image pointer" src={nextArrow} alt="Next" onClick={() => this.getNextImage(this.props.page)}/>
-                <h2 class="price-tag">U$S {this.props.price}</h2>
+                <img class={this.props.previousClass} src={previousArrow} alt="Previous" onClick={() => this.getPreviousImage(this.props.page)}/>
+                <img class={this.props.nextClass} src={nextArrow} alt="Next" onClick={() => this.getNextImage(this.props.page)}/>
+                {price}
             </div>
            
         )

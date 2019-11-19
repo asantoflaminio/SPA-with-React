@@ -124,5 +124,22 @@
       "parkingPlural": "estacionamientos",
       "sqmeters": "metros cuadrados",
       "moreInfo": "Mas información "
+    },
+    "details": {
+       "overview": "Resumen",
+       "bedrooms": "Dormitorios: ",
+       "bathrooms": "Baños: ",
+       "floorSize": "Dimensión: ",
+       "parking": "Estacionamiento: ",
+       "price": "PRECIO",
+       "contact": "¡Contactá al vendedor!",
+       "phoneNumber": "Teléfono:",
+       "name": "NOMBRE",
+       "namePlaceholder": "Ingresá tu nombre",
+       "email": "EMAIL",
+       "emailPlaceholder": "Ingresá tu email",
+       "message": "MENSAJE",
+       "messagePlaceholder": "Ingresá tu mensaje",
+       "submit": "Contactar al vendedor"
     }
   }

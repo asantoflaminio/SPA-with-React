@@ -1,12 +1,15 @@
 import React from 'react';
 import '../css/Navbar.css';
 import logo from '../resources/Logo4.png';
+import {Link} from 'react-router-dom';
 
 const Navbar = ({ t }) => (
     <nav>
-    <a href="/">
-           <img src={logo} alt="Home" id="logo"/>
-    </a>
+        <Link to={{pathname: "/"}}>
+        <a href="">
+           <    img src={logo} alt="Home" id="logo"/>
+        </a>
+        </Link>
     <div className="dropdown" id="sign_in">
         <a className="navbar_item" href="#">{t('navbar.signIn')}</a>
         <form>

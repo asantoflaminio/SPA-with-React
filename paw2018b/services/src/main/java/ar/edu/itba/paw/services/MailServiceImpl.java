@@ -158,6 +158,7 @@ public class MailServiceImpl implements MailService {
 	
     @Override
 	public void sendEmail (String to,String from, String body, String info){
+    	System.out.println("to: " + to + " from: " + from + "body: " + body + " info: " + info);
 		User user = us.findByUsername(to);
 		String message = prepareMessage(body,from, info, user.getLanguaje());
 

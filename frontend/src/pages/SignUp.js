@@ -20,7 +20,6 @@ class SignUp extends React.Component {
           repeatPassword: event.target[4].value,
           phoneNumber: event.target[5].value
         }
-        alert(JSON.stringify(data))
         axios({
           method: 'post',
           url: 'users/signUp',

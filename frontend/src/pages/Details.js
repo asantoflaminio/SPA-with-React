@@ -1,46 +1,108 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import heartFilled from '../resources/heart_filled.png';
 import Navbar from '../components/Navbar'
-import '../css/Details.css';
-import * as utilFunction from '../util/function';
 import * as axiosRequest from '../util/axiosRequest';
+import { Form, Button, Col } from 'react-bootstrap';
+import '../css/Details.css';
+import { Formik } from 'formik';
+import * as yup from 'yup';
+import ImageVisualizer from '../components/ImageVisualizer'
 
 class Details extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            publicationID: null,
+            province: null,
+            city: null,
+            neighborhood: null,
+            address: null,
+            bedrooms: null,
+            bathrooms: null,
+            floorSize: null,
+            parking: null,
+            price: null,
+            title: null,
+            description: null,
+            image: null,
+            maxImages: null,
+            ownerEmail: null,
+            phoneNumber: null
+        }
       }
+
+    componentDidMount(){
+        const queryString = require('query-string');
+        const query = queryString.parse(this.props.location.search)
+        const component = this
+        axiosRequest.getPublication(query.publicationID).then(function (pub){
+            axiosRequest.getImage(query.publicationID,0,pub).then(function (img){
+                component.setState({
+                    publicationID: pub.publicationID,
+                    province: pub.provinceID,
+                    city: pub.cityID,
+                    neighborhood: pub.neighborhoodID,
+                    address: pub.address,
+                    bedrooms: pub.bedrooms,
+                    bathrooms: pub.bathrooms,
+                    floorSize: pub.dimention,
+                    parking: pub.parking,
+                    price: pub.price,
+                    title: pub.title,
+                    description: pub.description,
+                    image: img,
+                    maxImages: pub.images,
+                    phoneNumber: pub.phoneNumber,
+                    ownerEmail: pub.userEmail
+                })
+            })
+        })
+    }
+
+    handleSendMessage(event){
+        event.preventDefault();
+        axiosRequest.sendMessage(event).then(function (status){
+            alert("Message sent")
+        })
+    }
 
     render(){
         const { t } = this.props;
+        const schema = yup.object({
+            name: yup.string().required( t('errors.requiredField') ),
+            email: yup.string().required(t('errors.requiredField')),
+            message: yup.string().required(t('errors.requiredField')),
+            ownerEmail: yup.string(),
+            title: yup.string()
+            });
         return(
             <div>
                 <Navbar t={t} />
                 <div id="cols">
                     <div id="left-col">   
-                        <div class="polaroid">       
-                            <div class="w3-content w3-display-container">
-                                <img class="favorite-icon pointer" src={heartFilled} alt="Fave"/>
-                                    <div class="size_div">
-                                        <img class="mySlides" src=""/>
-                                    </div>
-                                    <div class="w3-center w3-container w3-section w3-large w3-text-white w3-display-bottommiddle">
-                                        <div class="w3-left w3-hover-text-khaki">&#10094;</div>
-                                        <div class="w3-right w3-hover-text-khaki">&#10095;</div>
-                                    </div>
-                            </div>
-                            <div class="container">
-                                <p class="direction"></p>
+                        <div class="polaroid">
+                            <ImageVisualizer 
+                                publicationID={this.state.publicationID}
+                                maxImages={this.state.maxImages}
+                                image={this.state.image}
+                                page="Details"
+                                imageClass="imageSize"
+                                containerClass="img-with-tag mySlides"
+                                nextClass="next-image pointer centerArrow"
+                                previousClass="prev-image pointer centerArrow"
+                            />
+                            <div class="container-list">
+                                <p class="direction">{this.state.province},{this.state.city},{this.state.city},{this.state.neighborhood},{this.state.address}</p>
                             </div>
                         </div>
                     
                         <div class="polaroid_overview">
                             <div class="container4">
-                                <p class="polaroid_title">details.overview</p>
-                                <p class="agency_text">details.bedrooms:</p>
-                                <p class="agency_text">details.bathrooms</p>
-                                <p class="agency_text">details.floorSize: m2</p>
-                                <p class="agency_text">details.parking</p>
+                                <p class="polaroid_title">{t('details.overview')}</p>
+                                <p class="agency_text">{t('details.bedrooms')} {this.state.bedrooms}</p>
+                                <p class="agency_text">{t('details.bathrooms')} {this.state.bathrooms}</p>
+                                <p class="agency_text">{t('details.floorSize')} {this.state.floorSize} m2</p>
+                                <p class="agency_text">{t('details.parking')} {this.state.parking}</p>
                             </div>
                         </div>
                     </div>
@@ -49,42 +111,109 @@ class Details extends React.Component {
                         <div class="polaroid_price">
                             <div class="container2">
                                 <div class="price_text">
-                                    <p id="rent_sale">details.price</p> 
-                                    <p id="price_tag">$</p>
+                                    <p id="rent_sale">{t('details.price')} </p> 
+                                    <p id="price_tag">U$S {this.state.price}</p>
                                 </div>
                             </div>
                         </div>
                     
                         <div class="polaroid_agency">
                             <div class="container3">
-                                <p class="agency_text_contact">details.contact</p>
+                                <p class="agency_text_contact">{t('details.contact')}</p>
                                 <div id="tel-container">
-                                    <p class="tel-text">details.tel</p>
-                                    <p class="tel-num">phonenumber</p>
+                                    <p class="tel-text">{t('details.phoneNumber')}</p>
+                                    <p class="tel-num">{this.state.phoneNumber}</p>
                                 </div>
                                 <div class="fillers">
-                                    <label class="contact-title" path="name">details.name</label>
-                                    <input type="text" placeholder={t('details.namePlaceholder')} />
-                                
-                                
-                                    <label class="contact-title">details.email</label>
-                                    <input type="text" placeholder={t('details.emailPlaceholder')}/>
-                                
-                                    <label class="contact-title">details.message</label>
-                                    <input type="text" placeholder={t('details.messagePlaceholder')}/>
-                                
-                                    <input type="hidden" value={'sellerEmail'}/>
-                                
-                                    <input class="button-contact" type="submit" value=""/>
+                                    <Formik
+                                        validationSchema={schema}
+                                        >
+                                        {({
+                                            values,
+                                            handleChange,
+                                            errors,
+                                        }) => (
+                                            <Form noValidate id="messageForm" onSubmit={(event) => {this.handleSendMessage(event)}}>
+                                                    <Form.Group as={Col} md="12" controlId="validationFormik01">
+                                                        <Form.Label bsPrefix="contact-title">{t('details.name')}</Form.Label>
+                                                        <Form.Control
+                                                            type="input"
+                                                            placeholder={t('details.namePlaceholder')}
+                                                            value={values.name}
+                                                            onChange={handleChange}
+                                                            name="name"
+                                                            isInvalid={!!errors.name}
+                                                        />
+                                                        <Form.Control.Feedback type="invalid">
+                                                            {errors.name}
+                                                        </Form.Control.Feedback>
+                                                    </Form.Group>
+                                                    <Form.Group as={Col} md="12" controlId="validationFormik02">
+                                                        <Form.Label bsPrefix="contact-title">{t('details.email')}</Form.Label>
+                                                        <Form.Control
+                                                            type="input"
+                                                            placeholder={t('details.emailPlaceholder')}
+                                                            onChange={handleChange}
+                                                            name="email"
+                                                            value={values.email}
+                                                            isInvalid={!!errors.email}
+                                                        >
+                                                        </Form.Control>
+                                                        <Form.Control.Feedback type="invalid">
+                                                            {errors.email}
+                                                        </Form.Control.Feedback>
+                                                    </Form.Group>
+                                                    <Form.Group as={Col} md="12" controlId="validationFormik03">
+                                                        <Form.Label bsPrefix="contact-title">{t('details.message')}</Form.Label>
+                                                        <Form.Control
+                                                            as="textarea"
+                                                            placeholder={t('details.messagePlaceholder')}
+                                                            name="message"
+                                                            onChange={handleChange}
+                                                            value={values.message}
+                                                            isInvalid={!!errors.message}
+                                                        >
+                                                        </Form.Control>
+                                                        <Form.Control.Feedback type="invalid">
+                                                            {errors.message}
+                                                        </Form.Control.Feedback>
+                                                    </Form.Group>
+                                                    <Form.Group as={Col} md="12" bsPrefix="hidden" controlId="validationFormik04">
+                                                        <Form.Label bsPrefix="contact-title">{t('details.message')}</Form.Label>
+                                                        <Form.Control
+                                                            as="input"
+                                                            placeholder={t('details.messagePlaceholder')}
+                                                            name="ownerEmail"
+                                                            onChange={handleChange}
+                                                            value={this.state.ownerEmail}
+                                                        >
+                                                        </Form.Control>
+                                                    </Form.Group>
+                                                    <Form.Group as={Col} md="12" bsPrefix="hidden" controlId="validationFormik05">
+                                                        <Form.Label bsPrefix="contact-title">{t('details.message')}</Form.Label>
+                                                        <Form.Control
+                                                            as="input"
+                                                            placeholder={t('details.messagePlaceholder')}
+                                                            name="title"
+                                                            onChange={handleChange}
+                                                            value={this.state.title}
+                                                        >
+                                                        </Form.Control>
+                                                    </Form.Group>
+                                                    <Button bsPrefix="button-contact" type="submit">{t('details.submit')}</Button>
+                                            </Form>
+                                            
+                                        )}
+                                    </Formik>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="polaroid_des">
-                    <div class="container">
-                        <p class="polaroid_title">details.title</p>
-                        <p class="agency_text">Descriprion</p>
+                    <div class="container-list">
+                        <p class="polaroid_title">{this.state.title}</p>
+                        <p class="agency_text">{this.state.description}</p>
                     </div>
                 </div>
             </div>

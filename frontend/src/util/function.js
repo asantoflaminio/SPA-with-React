@@ -24,9 +24,12 @@ export const decideOperation = (buy,rent,value) => {
 }
 
 export const setSRC = (base64) => {
-    if(base64 != "")
-        return "data:image/png;base64," + base64;
-    else
+    if(base64 == null || base64 === "" || base64 === 'undefined'){
         return defaultBlack;
+    }
+    else{
+        return "data:image/png;base64," + base64;
+    }
+        
 }
 

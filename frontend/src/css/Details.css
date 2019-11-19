@@ -37,11 +37,6 @@ div.polaroid {
 	width: 100%;
 }
 
-.mySlides{
-    height: 100%;
-    width: 100%;
-}
-
 div.polaroid_price {
   margin-top: 10px;
   width: 30%;
@@ -53,7 +48,7 @@ div.polaroid_price {
   min-height: 70px;
 }
 
-div.container {
+div.container-list {
   text-align: center;
   padding: 10px 20px;
 }
@@ -72,6 +67,20 @@ div.container2 {
     width: auto; 
     max-width: 300px; 
     max-height: 300px; 
+}
+
+.imageSize{
+  width: 100%;
+  height: 100%;
+}
+
+.mySlides{
+  width: 100%;
+  height:80%;
+}
+
+.centerArrow{
+  top:45%;
 }
 
 .favorite-icon {
@@ -155,17 +164,6 @@ div.polaroid_des {
   margin-bottom: 50px;
 }
 
-input[type=text], select {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    height: 35px;
-}
-
 textarea {
     width: 100%;
     padding: 12px 20px;
@@ -227,10 +225,6 @@ div.container4 {
     cursor: pointer;
 }
 
-.mySlides {
-	display:none
-}
-
 .w3-left, .w3-right, .w3-badge{
  cursor:pointer
  }
@@ -244,6 +238,10 @@ div.container4 {
 #message {
 	max-height: 150px;
 	min-height: 60px;
+}
+
+.hidden{
+  display: none;
 }
 
 .button-contact {

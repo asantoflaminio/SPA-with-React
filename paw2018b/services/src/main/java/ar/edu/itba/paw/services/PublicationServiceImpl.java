@@ -52,14 +52,23 @@ public class PublicationServiceImpl implements PublicationService{
 	}
 	
 	@Override
-	public Publication findById(final long publicationid) {
+	public PublicationDTO findById(final long publicationid) {
+		PublicationDTO publication;
+		Publication pub;
 		if(publicationid < 0){
             LOGGER.error("Attempted to find a publication with a negative id");
             throw new IllegalArgumentException("id must be positive");
         }
 		
         LOGGER.trace("Looking up publication with id {}", publicationid);
-		return publicationDao.findById(publicationid);
+        pub = publicationDao.findById(publicationid);
+        publication = new PublicationDTO(pub.getPublicationid(),pub.getTitle(), pub.getProvince().getProvince(), pub.getCity().getCity(), pub.getNeighborhood().getNeighborhood(), pub.getAddress(),
+				pub.getOperation(), pub.getPrice().toString(), pub.getDescription(), pub.getPropertyType(), pub.getBedrooms().toString(), pub.getBathrooms().toString() , 
+				pub.getFloorSize().toString() , pub.getParking().toString(), pub.getPublicationDate().toString());
+        publication.setImages(pub.getImages().size());
+        publication.setUserEmail(pub.getUser().getEmail());
+        publication.setPhoneNumber(pub.getUser().getPhoneNumber());
+        return publication;
 	}
 	
 	@Override

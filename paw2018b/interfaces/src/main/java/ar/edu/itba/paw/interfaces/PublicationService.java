@@ -8,7 +8,7 @@ import ar.edu.itba.paw.models.dto.PublicationDTO;
 
 public interface PublicationService {
 	
-	public Publication findById(final long id); 
+	public PublicationDTO findById(final long id); 
 	
 	public Publication create(String title, String address,String neighborhood, String city, String province, String operation, String price,
 			   String description, String propertyType, String bedrooms,

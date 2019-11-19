@@ -28,6 +28,8 @@ import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.QueryDTO;
 import ar.edu.itba.paw.models.dto.UserDTO;
 import ar.edu.itba.paw.services.ImageServiceImpl;
+import ar.edu.itba.paw.services.MailServiceImpl;
+import ar.edu.itba.paw.services.MessageDTO;
 
 @Path("users")
 @Component
@@ -41,6 +43,9 @@ public class UserController {
 	
 	@Autowired
 	private ImageServiceImpl is;
+	
+	@Autowired
+	private MailServiceImpl ms;
 	
 
 	
@@ -104,6 +109,15 @@ public class UserController {
     }
     
     @POST
+    @Path("/getPublicationByID")
+    @Produces(value = { MediaType.APPLICATION_JSON})
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response getPublicationsFilter (IDResponseDTO id) {
+    	PublicationDTO publication = ps.findById(id.getId());
+    	return Response.ok().entity(publication).build();
+    }
+    
+    @POST
     @Path("/getFilters")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     @Consumes(value = { MediaType.APPLICATION_JSON, })
@@ -145,6 +159,14 @@ public class UserController {
     	byte[] dataBase64 = Base64.getEncoder().encode(data);
     	imageDTO.setData(dataBase64);
         return Response.ok(dataBase64).build();
+    }
+    
+    @POST
+    @Path("/sendMessage")
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response sendMessage (MessageDTO messageDTO) {
+    	ms.sendEmail(messageDTO.getOwnerEmail(), messageDTO.getEmail(), messageDTO.getMessage(), messageDTO.getTitle());
+        return Response.ok().build();
     }
 
 

@@ -18,6 +18,8 @@ public class PublicationDTO {
 	private long publicationID;
 	private String date;
 	private int images;
+	private String userEmail;
+	private String phoneNumber;
 	
 	public PublicationDTO(long publicationID, String title, String provinceID, String cityID, String neighborhoodID,
 							String address, String operation, String price, String description,
@@ -169,6 +171,22 @@ public class PublicationDTO {
 
 	public void setImages(int images) {
 		this.images = images;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
 
 }

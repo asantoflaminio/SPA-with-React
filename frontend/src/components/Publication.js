@@ -2,6 +2,8 @@ import React from 'react';
 import '../css/Publication.css';
 import * as utilFunction from '../util/function';
 import ImgVisualizer from './ImageVisualizer';
+import {Link} from 'react-router-dom';
+
 
 const Publication = ({ t , publication, image}) => (
         <div class="polaroid-property">
@@ -11,6 +13,10 @@ const Publication = ({ t , publication, image}) => (
                 maxImages={publication.images}
                 page="List"
                 image={image}
+                imageClass="polaroid-property-img"
+                containerClass="img-with-tag"
+                nextClass="next-image pointer"
+                previousClass="prev-image pointer"
             />
             <div class="property-container">
                 <div class="first-column">								
@@ -36,7 +42,10 @@ const Publication = ({ t , publication, image}) => (
                         {publication.date}
                     </div>
                 <div class="more-info">
-                    <a class="more-info-title" href="">{t('list.moreInfo')} ></a>
+                    <Link to={{pathname: "/publication", search: "?publicationID=" + publication.publicationID}}>
+                        <a class="more-info-title" href="">{t('list.moreInfo')} ></a>
+                    </Link>
+                    
                 </div>	
                 </div>
             </div>

@@ -22,7 +22,7 @@ function App() {
           <Route path="/AdminGenerator" component={AdminGenerator} />
           <Route path="/AdminUsers" component={AdminUsers} />
           <Route path="/List" component={List} />
-          <Route path="/Details" component={Details} />
+          <Route path="/publication" component={Details} />
         </Suspense>
      </BrowserRouter>
     </div>
