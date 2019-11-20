@@ -33,7 +33,9 @@ const Navbar = ({ t }) => (
         </form>
     </div>
     <div>
-        <a className="navbar_item" id="sign_up" href="./SignUp">{t('navbar.signUp')}</a>
+        <Link to={{pathname: "/SignUp"}}>
+            <a className="navbar_item" id="sign_up" href="./SignUp">{t('navbar.signUp')}</a>
+        </Link>
     </div>
 </nav>
 )

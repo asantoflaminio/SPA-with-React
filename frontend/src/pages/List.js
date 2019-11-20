@@ -18,8 +18,8 @@ class List extends React.Component {
             resultsQuantity: 0,
             publications: [],
             images: [],
-            operation:"FSale",
-            propertyType:"House",
+            operation:"",
+            propertyType:"",
             search: "",
             minPrice: "",
             maxPrice:"",
@@ -36,22 +36,27 @@ class List extends React.Component {
       }
 
       componentDidMount(){
-        this.updatePublications()      
-        this.selectOperation(this.state.operation)
+        const queryString = require('query-string');
+        const query = queryString.parse(this.props.location.search)
+        this.updatePublications("search", query.search, "operation", query.operation, "propertyType", query.propertyType)      
+        this.selectOperation(query.operation)
+        this.selectPropertyType(query.propertyType)
       }
 
-      updatePublications(stateName,value,stateName2,value2){
+      updatePublications(stateName,value,stateName2,value2,stateName3,value3){
         let query = this.generateQueryPackage();
         query.page = 1;
         query[stateName] = value;
         query[stateName2] = value2;
+        query[stateName3] = value3;
         let currentComponent = this
         axiosRequest.getPublications(query,stateName,stateName2).then(function (pubs){
             currentComponent.setState({
                 publications: pubs,
                 page: query.page,
                 [stateName] : query[stateName],
-                [stateName2] : query[stateName2]
+                [stateName2] : query[stateName2],
+                [stateName3] : query[stateName3]
             })
             currentComponent.getImages()
             currentComponent.updatePublicationsQuantity()
@@ -231,6 +236,16 @@ class List extends React.Component {
         }
     }
 
+    selectPropertyType(propertyType){
+        let house = document.getElementById("House")
+        let apartment = document.getElementById("Apartment")
+
+        if(propertyType === "House")
+            house.selected = true;
+        else
+            apartment.selected = true
+    }
+
     handlePageClick = data => {
         let query = this.generateQueryPackage()
         query.page = data.selected + 1
@@ -278,8 +293,8 @@ class List extends React.Component {
                     <div class="search">
                         <form>
                             <select class="type-home-select" id="select-type" onChange={(event) => this.handleSelect(event,"propertyType")}>
-                                        <option value="House">{t('list.house')}</option>
-                                        <option value="Apartment">{t('list.apartment')}</option>
+                                        <option value="House" id="House">{t('list.house')}</option>
+                                        <option value="Apartment" id="Apartment">{t('list.apartment')}</option>
                             </select>
                         </form>
                         <input type="text" class="searchTerm" placeholder={t('list.searchPlaceholder')} id="search"/>

@@ -1,0 +1,36 @@
+.polaroid {
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.arrows-div {
+	position: relative;
+}
+
+.polaroid-property-img-home {
+	width:230px;
+	margin: 5px;
+	height:150px;
+}
+
+.price{
+	font-size: 18px !important;
+	color: #555;
+}
+
+.expenses{
+	font-size: 15px !important;
+	color: #666;	
+	white-space: nowrap; 
+    overflow: hidden;
+	text-overflow: ellipsis !important;
+}
+
+.more-info-home {
+	font-size: 15px;
+	color: #FD8907;
+	margin-bottom: 2px;
+	width:90%;
+	float: left;
+	text-align:right;
+}

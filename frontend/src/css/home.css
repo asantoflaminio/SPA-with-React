@@ -80,7 +80,7 @@ h1 {
  }
 
  .selected{
-	background-color: rgb(124, 11, 11)
+	background-color: orange !important
 }
 
 .search_list-item input:hover {
@@ -203,6 +203,7 @@ div.card-body.row.no-gutters.align-items-center {
 	margin-bottom: 40px;
 	text-align: left;
 	display:flex;
+	overflow-y: hidden !important;
 }
 
 .newest_homes li {
@@ -214,10 +215,7 @@ div.card-body.row.no-gutters.align-items-center {
 	margin: 5px 3px 15px 3px;
 }
 
-.polaroid {
-  	background-color: white;
-  	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
+
 
 .newest_homes ul {
  	overflow: auto;
@@ -250,16 +248,7 @@ div.card-body.row.no-gutters.align-items-center {
 	text-align:left;
 }
 
-.more-info {
-	font-size: 15px;
-	color: #FD8907;
-	margin-bottom: 2px;
-	width:90%;
-	float: left;
-	text-align:right;
-}
-
-.newest_homes .description_box .price{
+.newest_homes .description_box{
 	font-size: 18px !important;
 	color: #555;
 }
@@ -412,6 +401,4 @@ div.card-body.row.no-gutters.align-items-center {
 	cursor: pointer;
 }
 
-.arrows-div {
-	position: relative;
-}
+
