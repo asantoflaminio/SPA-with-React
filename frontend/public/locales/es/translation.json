@@ -140,6 +140,7 @@
        "emailPlaceholder": "Ingresá tu email",
        "message": "MENSAJE",
        "messagePlaceholder": "Ingresá tu mensaje",
-       "submit": "Contactar al vendedor"
+       "submit": "Contactar al vendedor",
+       "location": "Ubicación"
     }
   }

@@ -58,5 +58,23 @@
       "bathrooms": "BATHROOMS",
       "parking": "PARKING",
       "sqmeters" : "m2"
-      }
+      },
+      "details": {
+        "overview": "Overview",
+        "bedrooms": "Bedrooms: ",
+        "bathrooms": "Bathrooms: ",
+        "floorSize": "Floor size: ",
+        "parking": "Parking: ",
+        "price": "PRICE",
+        "contact": "Contact the agent!",
+        "phoneNumber": "Phone number:",
+        "name": "NAME",
+        "namePlaceholder": "Complete your name",
+        "email": "EMAIL",
+        "emailPlaceholder": "Complete your email",
+        "message": "MESSAGE",
+        "messagePlaceholder": "Complete your message",
+        "submit": "Contact the agent",
+        "location": "Location"
+     }
   }

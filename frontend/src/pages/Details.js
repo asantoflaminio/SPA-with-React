@@ -92,7 +92,7 @@ class Details extends React.Component {
                                 previousClass="prev-image pointer centerArrow"
                             />
                             <div class="container-list">
-                                <p class="direction">{this.state.province},{this.state.city},{this.state.city},{this.state.neighborhood},{this.state.address}</p>
+                                <p class="direction">{this.state.address},{this.state.neighborhood}, {this.state.city},{this.state.province}</p>
                             </div>
                         </div>
                     
@@ -214,6 +214,11 @@ class Details extends React.Component {
                     <div class="container-list">
                         <p class="polaroid_title">{this.state.title}</p>
                         <p class="agency_text">{this.state.description}</p>
+                    </div>
+                </div>
+                <div class="polaroid_des">
+                    <div class="container-list">
+                        <p class="polaroid_title">{t('details.location')}</p>
                     </div>
                 </div>
             </div>
