@@ -7,7 +7,10 @@ import '../css/Details.css';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import ImageVisualizer from '../components/ImageVisualizer'
+import MapContainer from '../components/MapContainer';
+import credentials from '../components/credentials'
 
+const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credentials.mapsKey}` ;
 class Details extends React.Component {
     constructor(props) {
         super(props);
@@ -30,6 +33,11 @@ class Details extends React.Component {
             phoneNumber: null
         }
       }
+
+      static defaultProps = {
+        center: {lat: 40.73, lng: -73.93}, 
+        zoom: 12
+     }
 
     componentDidMount(){
         const queryString = require('query-string');
@@ -215,16 +223,23 @@ class Details extends React.Component {
                         <p class="polaroid_title">{this.state.title}</p>
                         <p class="agency_text">{this.state.description}</p>
                     </div>
-                </div>
+                </div>  
                 <div class="polaroid_des">
                     <div class="container-list">
                         <p class="polaroid_title">{t('details.location')}</p>
+                        <MapContainer 
+                        googleMapURL= {mapURL}
+                        containerElement= {<div style={{height: '300px'}}/>}
+                        mapElement= {<div style={{height:'100%'}} />}
+                        loadingElement= {<p> Cargando</p>}
+                        />
+                        
                     </div>
-                </div>
+                </div>               
             </div>
         )
     }
 
 }
 
-export default withTranslation()(Details);
+    export default withTranslation()(Details);

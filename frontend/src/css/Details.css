@@ -20,6 +20,11 @@ h1 {
     font: bold 1.9em 'Rubik', sans-serif !important;
 }
 
+div.location_map{
+    width: 100%;
+    height: 100%;
+}
+
 div.polaroid {
   margin-top: 10px;
   margin-left: 30%;
