@@ -235,7 +235,7 @@ class Details extends React.Component {
                         googleMapURL= {mapURL}
                         containerElement= {<div style={{height: '300px'}}/>}
                         mapElement= {<div style={{height:'100%'}} />}
-                        loadingElement= {<p> Cargando</p>}
+                        loadingElement= {<p>t('details.loadingMap')</p>}
                         />
                         
                     </div>

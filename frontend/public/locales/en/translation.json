@@ -75,6 +75,7 @@
         "message": "MESSAGE",
         "messagePlaceholder": "Complete your message",
         "submit": "Contact the agent",
-        "location": "Location"
+        "location": "Location",
+        "loadingMap": "Loading"
      }
   }

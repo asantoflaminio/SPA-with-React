@@ -141,6 +141,7 @@
        "message": "MENSAJE",
        "messagePlaceholder": "Ingresá tu mensaje",
        "submit": "Contactar al vendedor",
-       "location": "Ubicación"
+       "location": "Ubicación",
+       "loadingMap": "Cargando"
     }
   }
