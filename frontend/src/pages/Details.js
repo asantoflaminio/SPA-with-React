@@ -228,6 +228,10 @@ class Details extends React.Component {
                     <div class="container-list">
                         <p class="polaroid_title">{t('details.location')}</p>
                         <MapContainer 
+                        address = {this.state.address}
+                        neighborhood =  {this.state.neighborhood}
+                        city = {this.state.city}
+                        province = {this.state.province}
                         googleMapURL= {mapURL}
                         containerElement= {<div style={{height: '300px'}}/>}
                         mapElement= {<div style={{height:'100%'}} />}
