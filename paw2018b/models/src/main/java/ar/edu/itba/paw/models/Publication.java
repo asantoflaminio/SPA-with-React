@@ -64,7 +64,7 @@ public class Publication {
 	@Column(length = 3, nullable = false, unique = false)
 	private Integer bathrooms;
 	
-	@Column(length = 3, nullable = false, unique = false)
+	@Column(length = 5, nullable = false, unique = false)
 	private Integer floorSize;
 	
 	@Column(length = 3, nullable = false, unique = false)

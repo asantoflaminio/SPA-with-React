@@ -35,6 +35,8 @@ public class ValidateServiceImpl implements ValidateService{
 	private final static int SECOND_FORM_MAX_LENGTH = 2500;
 	private final static int THIRD_FORM_MIN_LENGTH = 1;
 	private final static int THIRD_FORM_MAX_LENGTH = 3;
+	private final static int DIMENSION_MAX_LENGTH = 5;
+	
 	
 	//Location constants
 	private final static int MIN_LOCATION_LENGTH = 3;
@@ -44,8 +46,8 @@ public class ValidateServiceImpl implements ValidateService{
 	@Override
 	public boolean validateUser(String firstName, String lastName, String email, String password, String phoneNumber) {
 		
-		final String lettersAndSpacesRegex = "[a-zA-Z ]+";
-		final String lettersAndNumbersRegex = "[0-9a-zA-Z ]+";
+		final String lettersAndSpacesRegex = "[\\p{L} ]+";
+		final String lettersAndNumbersRegex = "[0-9\\p{L} ]+";
 		final Pattern emailRegex = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 		
 		
@@ -69,7 +71,7 @@ public class ValidateServiceImpl implements ValidateService{
 	
 	@Override
 	public boolean validateUserPassword(String password) {
-		final String lettersAndNumbersRegex = "[0-9a-zA-Z ]+";
+		final String lettersAndNumbersRegex = "[0-9\\p{L} ]+";
 		return validateInputText(password, LONG_STRING_MIN_LENGTH, LONG_STRING_MAX_LENGTH_PASS, lettersAndNumbersRegex, "Password");
 	}
 	
@@ -81,9 +83,9 @@ public class ValidateServiceImpl implements ValidateService{
 			   String bathrooms, String floorSize, String parking, long userid){
 		
 		final String numbersRegex = "[0-9]+";
-		final String lettesNumersAndSpacesRegex = "[a-zA-Z0-9 ]+";
-		final String lettesNumersAndSpacesRegexComma = "[a-zA-Z0-9, ]+";
-		final String descriptionRegex = "[-a-zA-Z0-9¿?:%!¡,.()$ ]+";
+		final String lettesNumersAndSpacesRegex = "[\\p{L}0-9 ]+";
+		final String lettesNumersAndSpacesRegexComma = "[\\p{L}0-9, ]+";
+		final String descriptionRegex = "[-\\p{L}0-9¿?:%!¡,.()$ ]+";
 		
 		if(
 			! validateInputText(title, FIRST_FORM_MIN_LENGTH, FIRST_FORM_MAX_LENGTH, lettesNumersAndSpacesRegex, "Title") ||
@@ -95,7 +97,7 @@ public class ValidateServiceImpl implements ValidateService{
 			! validateInputText(description, SECOND_FORM_MIN_LENGTH, SECOND_FORM_MAX_LENGTH, descriptionRegex, "Description") ||
 			! validateInputNumber(bedrooms, THIRD_FORM_MIN_LENGTH, THIRD_FORM_MAX_LENGTH, numbersRegex, "Bedrooms") ||
 			! validateInputNumber(bathrooms, THIRD_FORM_MIN_LENGTH, THIRD_FORM_MAX_LENGTH, numbersRegex, "Bathrooms") ||
-			! validateInputNumber(floorSize, THIRD_FORM_MIN_LENGTH, THIRD_FORM_MAX_LENGTH, numbersRegex, "FloorSize") ||
+			! validateInputNumber(floorSize, THIRD_FORM_MIN_LENGTH, DIMENSION_MAX_LENGTH, numbersRegex, "FloorSize") ||
 			! validateInputNumber(parking, THIRD_FORM_MIN_LENGTH, THIRD_FORM_MAX_LENGTH, numbersRegex, "Parking")
 		  ) {
 			return false;
@@ -152,7 +154,7 @@ public class ValidateServiceImpl implements ValidateService{
 	
 	@Override
 	public boolean validateSearch(String address, String minPrice, String maxPrice, String minFloorSize, String maxFloorSize) {
-		final String lettesNumersAndSpacesRegexComma = "[a-zA-Z0-9, ]+";
+		final String lettesNumersAndSpacesRegexComma = "[\\p{L}0-9, ]+";
 		
 		if(! valideBothInputNumberFields(minPrice, maxPrice, PRICE_MIN_LENGTH, PRICE_MAX_LENGTH, "MinPrice", "MaxPrice")|| 
 		   ! valideBothInputNumberFields(minFloorSize, maxFloorSize, THIRD_FORM_MIN_LENGTH, THIRD_FORM_MAX_LENGTH, "MinFloorSize", "MaxFloorSize") ||
@@ -203,7 +205,7 @@ public class ValidateServiceImpl implements ValidateService{
 	
 	@Override
 	public boolean validateLocationAdmin(String location, String field) {
-		final String lettersAndSpacesRegex = "[a-zA-Z ]+";
+		final String lettersAndSpacesRegex = "[\\p{L} ]+";
 		return validateInputText(location, MIN_LOCATION_LENGTH, MAX_LOCATION_LENGTH, lettersAndSpacesRegex, field);
 	}
 

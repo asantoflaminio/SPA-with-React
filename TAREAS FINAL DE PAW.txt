@@ -11,18 +11,41 @@ Consigna:
 funcionalidad ni información en el servidor. La aplicación web debe estar optimizada para dar buenos tiempos de carga, haciendo uso de
 las múltiples técnicas vistas en clase: RequireJS, Minificacion y file revving + cache incondicional.
 
+
+
+Cosas que faltan:
+Log in (dificil) ARI DICIEMBRE
+Poder cargar imagenes a la bd (dificil/medio) ARI DICIEMBRE
+Cache (????) ARI ENERO
+Errores en general de la app que se vayan encontrando (facil/medio/dificil) ALE DICIEMBRE desps TODOS
+Handlear errores onda codigo 500, 405, etc (facil/medio) ALE DICIEMBRE
+Ver que yup no checkee todos los fields de una (medio) ARI ENERO
+Optimizaciones de CSS (una paja la verdad) FLOR ENERO
+Optimizaciones de imagenes (esto nose si ya lo hicimos) FLOR ENERO
+Deploy (dificil final boss) FLOR (PRINCIPIOS ENERO)
+Karma tests (medio) RO ENERO
+Sacar la navbar ARI
+
+Profile:
+	MyInformation(facil/medio) ARI enero
+	Mis publicaciones(facil) RO diciembre
+	Mis favoritos(facil) Ro diciembre
+
+Administrador:
+	Publicaciones(facil) NO SE
+
 Correcciones a nuestra segunda entrega:
 
 FUNCIONAMIENTO
 - campo del telefono en el registro no esta marcado como obligatorio pero si validado como tal
-- dimension de casa limitada a 3 caracters, deberia ser mas
+- LISTO dimension de casa limitada a 3 caracters, deberia ser mas
 - form de admin es confuso, no dice q es lo q estas agregando. Hay 3 formularios en una pagina.
 - Disenio se rompe. More info > se cae de la caja.
 - Por defecto no hay ningun orden en los resultados. Deberia haber mejor default.
 - Busqueda por superficie maxima no funciona. Filtro se muestra como min:, no se tran resultados, pero no se muestra zero result page.
 - no hay forma rapida de limpiar todos los filtros
 - Clickear ir a la pagina siguiente si no hay mas produce error oops con status 200.
-- Descripcion de publicacion no permita comas ni puntos
+- LISTO Descripcion de publicacion no permita comas ni puntos
 - Form de publicacion acepta texto en campos de# de cocheras etc. Validaciones hechas en backend pero UI no ayuda.
 - Form de publicacion dice q banios puede contener letras o numeros pero en realidd solo acpeta numeros. 
 - Form de publicacion pierde nro de cocheras ante clqer error. 
@@ -52,6 +75,6 @@ CODIGO
 
 
 Otras correcciones que conocemos:
-- Tema en los campos no acepta enies ni tildes. 
+- LISTO Tema en los campos no acepta enies ni tildes. 
 - Una vez arreglado eso faltaria agregar barrios como nuniez en CABA, muniz a san migel, villa espania a berazategui
 - Permitir al usuario eliminar su cuenta
