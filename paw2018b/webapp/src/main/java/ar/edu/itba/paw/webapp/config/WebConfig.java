@@ -6,7 +6,6 @@ import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -22,10 +21,6 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.context.request.RequestContextListener;
@@ -45,9 +40,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Value("classpath:schema.sql")
     private Resource scriptSql;
 	
-	@Autowired
-	private UserDetailsService uds;
-	
 	@Bean
 	public LocalSessionFactoryBean sessionFactory() {
 	   LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
@@ -58,19 +50,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	   //sessionFactory.setHibernateProperties(hibernateProperties());
 
 	   return sessionFactory;
-	}
-	
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-	    return new BCryptPasswordEncoder();
-	}
-	
-	@Bean
-	public DaoAuthenticationProvider authProvider() {
-	    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-	    authProvider.setUserDetailsService(uds);
-	    authProvider.setPasswordEncoder(passwordEncoder());
-	    return authProvider;
 	}
 
 	@Bean(name = "multipartResolver")
