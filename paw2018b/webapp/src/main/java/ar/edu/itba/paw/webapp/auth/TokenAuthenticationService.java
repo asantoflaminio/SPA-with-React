@@ -68,9 +68,8 @@ public class TokenAuthenticationService {
 
     Authentication getAuthenticationForLogin(final HttpServletRequest request) throws UserNotActiveException {
         try {
-        	System.out.println("En autentication login");
             final UserLoginDTO user = new ObjectMapper().readValue(request.getInputStream(), UserLoginDTO.class); // Attempt
-            System.out.println(request.getInputStream());
+            System.out.println(user.getEmail());
             final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
 
             if (userDetails != null) {

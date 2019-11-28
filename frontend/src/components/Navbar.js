@@ -2,7 +2,7 @@ import React from 'react';
 import '../css/Navbar.css';
 import logo from '../resources/Logo4.png';
 import {Link} from 'react-router-dom';
-import { withTranslation } from 'react-i18next';
+import { withTranslation, setDefaults } from 'react-i18next';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Form, Button, Col, InputGroup } from 'react-bootstrap';
@@ -25,8 +25,24 @@ class Navbar extends React.Component {
             login.style.display = 'none'
     }
 
+    checkRememberMe(e){
+        let checkbox = document.getElementById("rememberMe")
+        if(e.target.value === 'false' || e.target.value === 'on')
+            checkbox.value = true
+        else
+            checkbox.value = false
+        
+    }
+
+    setDefault(){
+        let checkbox = document.getElementById("rememberMe")
+        if(checkbox.value === 'on')
+            checkbox.value = 'false'
+    }
+
     handleFormSubmit(event){
         event.preventDefault();
+        this.setDefault()
         axiosRequest.login(event);
     }
 
@@ -36,7 +52,7 @@ class Navbar extends React.Component {
         const schema = yup.object({
             email: yup.string().required( t('errors.requiredField') ).min( t('errors.shortMin') ),
             password: yup.string().required( t('errors.requiredField') ),
-            rememberMe: yup.bool().required("asd")
+            rememberMe: yup.bool()
             });
         return(
                 <nav>
@@ -79,7 +95,6 @@ class Navbar extends React.Component {
                                                 type="password"
                                                 placeholder={t('login.passwordHolder')}
                                                 name="password"
-                                                value={values.password}
                                                 isInvalid={!!errors.password}
                                             />
                                             <Form.Control.Feedback type="invalid">
@@ -88,11 +103,9 @@ class Navbar extends React.Component {
                                         </Form.Group>
                                         <Form.Group>
                                             <Form.Check
-                                            required
                                             name="rememberMe"
                                             label={t('login.rememberMe')}
-                                            isInvalid={!!errors.terms}
-                                            feedback={errors.terms}
+                                            onClick={e => this.checkRememberMe(e)}
                                             id="rememberMe"
                                             />
                                         </Form.Group>
