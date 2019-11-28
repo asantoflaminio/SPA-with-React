@@ -47,8 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/getSalePublications").permitAll()
-                .antMatchers(HttpMethod.GET, "/home/getSalePublications").permitAll()
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/home/getSalePublications").permitAll()
                 .antMatchers(HttpMethod.GET, "/home/getRentPublications").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/signUp").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/getPublicationsQuantity").permitAll()
@@ -57,12 +56,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/users/getFilters").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/getPublicationImage").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/sendMessage").permitAll()
-                .antMatchers(HttpMethod.GET, "/users/publish").authenticated();
+                .antMatchers(HttpMethod.POST, "/users/publish").authenticated();
         
         //Por ahora dejames estos path que vimos que los agarra bien
 
 
-        http.addFilterBefore(new StatelessLoginFilter("/login", tokenAuthenticationService, userDetailsService, userService,
+        http.addFilterBefore(new StatelessLoginFilter("/users/login", tokenAuthenticationService, userDetailsService, userService,
                 authenticationManager()), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new StatelessAuthenticationFilter(tokenAuthenticationService),
                         UsernamePasswordAuthenticationFilter.class)

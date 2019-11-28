@@ -333,3 +333,20 @@ export const postImages = (publicationID,images)  => {
         });
     }
 
+    export const login = (event) => {
+        const data = getJSON(event.target,3)
+        const jsonObject = JSON.parse(data);
+        alert(data)
+        axios({
+          method: 'post',
+          url: 'users/login',
+          data: jsonObject
+        })
+        .then(function (response) {
+            alert(response.status)
+        })
+        .catch(function (error) {
+            alert(error)
+        });
+    }
+

@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 
-import ar.edu.itba.paw.models.dto.UserLogginDTO;
+import ar.edu.itba.paw.models.dto.UserLoginDTO;
 
 @Component
 public class TokenAuthenticationService {
@@ -68,11 +68,13 @@ public class TokenAuthenticationService {
 
     Authentication getAuthenticationForLogin(final HttpServletRequest request) throws UserNotActiveException {
         try {
-            final UserLogginDTO user = new ObjectMapper().readValue(request.getInputStream(), UserLogginDTO.class); // Attempt
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+        	System.out.println("En autentication login");
+            final UserLoginDTO user = new ObjectMapper().readValue(request.getInputStream(), UserLoginDTO.class); // Attempt
+            System.out.println(request.getInputStream());
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
 
             if (userDetails != null) {
-                if (userDetails.isEnabled() && user.getUsername().equals(userDetails.getUsername())
+                if (userDetails.isEnabled() && user.getEmail().equals(userDetails.getUsername())
                         && passwordEncoder.matches(user.getPassword(), userDetails.getPassword())) {
                     return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(),
                             userDetails.getAuthorities());
