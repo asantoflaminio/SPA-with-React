@@ -29,7 +29,12 @@
     "errors": {
       "requiredField": "The field is required",
       "phoneField": "Must be a phone number",
-      "shortMin": "The field must have at least 3 characters"
+      "shortMin": "The field must have at least 3 characters",
+      "errorTitle": "¡Oops! There seems to be a problem.",
+      "errorCode": "Error code: ",
+      "errorMessage": "Go back to homepage.",
+      "errorBack": "Back to previous page",
+      "errorBackHome": "Back to home"
     },
     "navbar": {
       "remember": "Remember me",

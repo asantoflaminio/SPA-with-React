@@ -8,10 +8,12 @@ import Publish from './pages/Publish'
 import AdminGenerator from './pages/AdminGenerator'
 import AdminUsers from './pages/AdminUsers'
 import Details from './pages/Details'
+import ErrorBoundary from './pages/ErrorBoundary'
 
 
 
 function App() {
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -26,6 +28,7 @@ function App() {
         </Suspense>
      </BrowserRouter>
     </div>
+    
   );
 }
 

@@ -266,9 +266,9 @@ export const postImages = (publicationID,images)  => {
           .then(function (response) {
               return response.data
           })
-          .catch(function (error) {
-              alert(error)
-          });
+        //   .catch(function (error) {
+        //       alert(error)
+        //   });
     }
 
     export const getPublications = async (query) => {

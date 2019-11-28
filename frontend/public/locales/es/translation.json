@@ -29,7 +29,12 @@
     "errors": {
       "requiredField": "Debe completarse el campo",
       "phoneField": "Debe ser un numero de celular",
-      "shortMin": "El campo debe tener almenos 3 caracteres"
+      "shortMin": "El campo debe tener almenos 3 caracteres",
+      "errorTitle": "¡Ups! Parece que hubo un problema.",
+      "errorCode": "Código de error: ",
+      "errorMessage": "Volver a la página de inicio.",
+      "errorBack": "Volver a la página anterior",
+      "errorBackHome": "Volver al inicio"
     },
     "navbar": {
       "remember": "Recordarme",
@@ -143,5 +148,5 @@
        "submit": "Contactar al vendedor",
        "location": "Ubicación",
        "loadingMap": "Cargando"
-    }
+    },
   }
