@@ -165,7 +165,7 @@ export const postPublication = async (event, props) => {
     });
 }
 
-export const postImages = (publicationID,images, props)  => {
+export const postImages = (publicationID,images)  => {
     let formData = new FormData();
     for(let i = 0; i < images.length; i++) {
         formData.append('file', images[i])
@@ -184,10 +184,10 @@ export const postImages = (publicationID,images, props)  => {
           alert(response.status)
       })
       .catch(function (error) {
-        props.history.push({
-            pathname: '/error',
-            state: { coding: error.response.status }
-          })
+        // props.history.push({
+        //     pathname: '/error',
+        //     state: { coding: error.response.status }
+        //   })
       });
 }
 

@@ -100,7 +100,7 @@ class Publish extends React.Component {
         let currentComponent = this
         event.preventDefault();
         axiosRequest.postPublication(event, this.props).then(function (publicationID){
-            axiosRequest.postImages(publicationID,currentComponent.state.pictures, this.props);
+            axiosRequest.postImages(publicationID,currentComponent.state.pictures);
         })
 
     }
