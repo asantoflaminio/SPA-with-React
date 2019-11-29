@@ -47,7 +47,7 @@ class Details extends React.Component {
         const query = queryString.parse(this.props.location.search)
         const component = this
         
-            axiosRequest.getPublication(query.publicationID).then(function (pub){
+            axiosRequest.getPublication(query.publicationID, this.props).then(function (pub){
                 axiosRequest.getImage(query.publicationID,0,pub).then(function (img){
                     component.setState({
                         publicationID: pub.publicationID, 
@@ -69,9 +69,6 @@ class Details extends React.Component {
                     })
                 })
             })
-            .catch(function (error) {
-                component.setState({ error: true, code: error.response.status});
-            });
 
         
     }
@@ -85,13 +82,6 @@ class Details extends React.Component {
 
     render(){
         const { t } = this.props;
-        var errorCode = this.state.code;
-        if(this.state.error) {
-            return(
-                <ErrorBoundary hasError = {true} coding = {errorCode}>                  
-                </ErrorBoundary>
-            )
-        } else{
             const schema = yup.object({
                 name: yup.string().required( t('errors.requiredField') ),
                 email: yup.string().required(t('errors.requiredField')),
@@ -258,9 +248,7 @@ class Details extends React.Component {
                     </div>               
                 </div>
             )
-              
-       }
-        
+                     
     }
 
 }

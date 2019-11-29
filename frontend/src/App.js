@@ -25,6 +25,7 @@ function App() {
           <Route path="/AdminUsers" component={AdminUsers} />
           <Route path="/List" component={List} />
           <Route path="/publication" component={Details} />
+          <Route path="/error" component={ErrorBoundary} />
         </Suspense>
      </BrowserRouter>
     </div>

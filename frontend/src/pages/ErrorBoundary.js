@@ -10,21 +10,8 @@ class ErrorBoundary extends React.Component {
     constructor(props) {
         super(props);
          this.state = { 
-            hasError: false,
-            coding: props.coding
+            coding: props.location.state.coding
          };
-    }
-
-    static getDerivedStateFromError(error) {
-        // Update state so the next render will show the fallback UI.
-        //alert("alert1");
-        return { hasError: true, coding: error.response.code};
-    }
-
-    componentDidCatch(error, info) {
-        // Display fallback UI
-        //alert("alert2");
-        this.setState({ hasError: true, coding: error.response.code });
     }
 
     render(){
@@ -38,11 +25,11 @@ class ErrorBoundary extends React.Component {
                          <p id="error-status">{codeMsg}</p>		
                           <p id="error-message">{t('errors.errorMessage')}</p>
                       </div>
-                    <div id="link1-container">
-                        <a href="%" id="error-link1">{t('errors.errorBack')}</a>
-                    </div>
+                    {/* <div id="link1-container">
+                        <a href="/" id="error-link1">{t('errors.errorBack')}</a>
+                    </div> */}
                     <div id="link2-container">
-                    <a href="%" id="error-link1">{t('errors.errorBackHome')}</a>
+                    <a href="/" id="error-link1">{t('errors.errorBackHome')}</a>
                     </div>  
                 </div>
             );     
