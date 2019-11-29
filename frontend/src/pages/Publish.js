@@ -26,7 +26,7 @@ class Publish extends React.Component {
 
     componentDidMount(){
         let currentComponent = this
-        axiosRequest.getProvinces().then(function (provincesList){
+        axiosRequest.getProvinces(this.props).then(function (provincesList){
             currentComponent.setState({
                 provinces: provincesList,
             })
@@ -99,15 +99,15 @@ class Publish extends React.Component {
     handleFormSubmit(event) {
         let currentComponent = this
         event.preventDefault();
-        axiosRequest.postPublication(event).then(function (publicationID){
-            axiosRequest.postImages(publicationID,currentComponent.state.pictures);
+        axiosRequest.postPublication(event, this.props).then(function (publicationID){
+            axiosRequest.postImages(publicationID,currentComponent.state.pictures, this.props);
         })
 
     }
 
     updateCity(event){
         event.preventDefault();
-        axiosRequest.getCities(event).then(function (cities){
+        axiosRequest.getCities(event, this.props).then(function (cities){
             let select = document.getElementById("city-Select")
             let selectNeighborhood = document.getElementById("neighborhood-Select")
             select.selectedIndex = 0;
@@ -123,7 +123,7 @@ class Publish extends React.Component {
 
     updateNeighborhood(event){
         event.preventDefault();
-        axiosRequest.getNeighborhoods(event).then(function (neighborhoods){
+        axiosRequest.getNeighborhoods(event, this.props).then(function (neighborhoods){
             let select = document.getElementById("neighborhood-Select")
             select.selectedIndex = 0;
             while (select.childNodes[1]) {

@@ -23,12 +23,12 @@ class AdminUsers extends React.Component {
 
     componentDidMount(){
         let currentComponent = this
-        axiosRequest.getUsers(1).then(function (users){
+        axiosRequest.getUsers(1, this.props).then(function (users){
             currentComponent.setState({
                 usersList: users
             })
         })
-        axiosRequest.getUsersCount().then(function (data){
+        axiosRequest.getUsersCount(this.props).then(function (data){
             currentComponent.setState({
                 pagesQuantity: Math.ceil(data.count / data.limit)
             })
@@ -83,7 +83,7 @@ class AdminUsers extends React.Component {
     handlePageClick = data => {
         let selected = data.selected + 1;
         let currentComponent = this
-        axiosRequest.getUsers(selected).then(function (users){
+        axiosRequest.getUsers(selected, this.props).then(function (users){
             currentComponent.setState({
                 usersList: users
             })

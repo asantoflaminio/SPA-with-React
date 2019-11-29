@@ -26,7 +26,7 @@ class ImageVisualizer extends React.Component {
             nextIndex = currentIndex + 1;
     
         let component = this;
-        axiosRequest.getImage(this.props.publicationID,nextIndex).then(function (src){
+        axiosRequest.getImage(this.props.publicationID,nextIndex, this.props).then(function (src){
             img.src = utilFunction.setSRC(src)
             component.setState({
                 index: nextIndex

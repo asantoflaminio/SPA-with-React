@@ -16,7 +16,7 @@ class HomeCard extends React.Component {
 
       componentDidMount(){
           let component = this
-          axiosRequest.getImage(this.props.publication.publicationID,0).then(function (img){
+          axiosRequest.getImage(this.props.publication.publicationID,0, this.props).then(function (img){
               component.setState({
                   image: img
               })

@@ -23,22 +23,22 @@ class AdminGenerator extends React.Component {
 
     handleProvinceSubmit(event) {
         event.preventDefault();
-        axiosRequest.postProvince(event);
+        axiosRequest.postProvince(event, this.props);
     }
 
     handleCitySubmit(event) {
         event.preventDefault();
-        axiosRequest.postCity(event);
+        axiosRequest.postCity(event, this.props);
     }
 
     handleNeighborhoodSubmit(event) {
         event.preventDefault();
-        axiosRequest.postNeighborhood(event);
+        axiosRequest.postNeighborhood(event, this.props);
     }
 
     componentDidMount(){
         let currentComponent = this
-        axiosRequest.getProvinces().then(function (provincesList){
+        axiosRequest.getProvinces(this.props).then(function (provincesList){
             currentComponent.setState({
                 provinces: provincesList,
             })
@@ -47,7 +47,7 @@ class AdminGenerator extends React.Component {
 
     updateCity(event){
         event.preventDefault();
-        axiosRequest.getCities(event).then(function (cities){
+        axiosRequest.getCities(event, this.props).then(function (cities){
             let select = document.getElementById("city_neighborhood")
             select.selectedIndex = 0;
             while (select.childNodes[1]) {

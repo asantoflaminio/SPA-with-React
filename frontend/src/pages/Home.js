@@ -26,12 +26,12 @@ class HomeReal extends React.Component {
     
     componentDidMount(){
         let currentComponent = this
-        axiosRequest.getSalePublications().then(function (publications){
+        axiosRequest.getSalePublications(this.props).then(function (publications){
             currentComponent.setState({
                 publicationsSale: publications
             })
         })
-        axiosRequest.getRentPublications().then(function (publications){
+        axiosRequest.getRentPublications(this.props).then(function (publications){
             currentComponent.setState({
                 publicationsRent: publications
             })
