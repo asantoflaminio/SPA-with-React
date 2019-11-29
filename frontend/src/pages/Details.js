@@ -48,7 +48,7 @@ class Details extends React.Component {
         const component = this
         
             axiosRequest.getPublication(query.publicationID, this.props).then(function (pub){
-                axiosRequest.getImage(query.publicationID,0,pub, this.props).then(function (img){
+                axiosRequest.getImage(query.publicationID,0,pub).then(function (img){
                     component.setState({
                         publicationID: pub.publicationID, 
                         province: pub.provinceID,

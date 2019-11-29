@@ -350,7 +350,7 @@ export const postImages = (publicationID,images, props)  => {
           });
     }
 
-    export const getImage = async (publicationID,index, props) => {
+    export const getImage = async (publicationID,index) => {
         const request = generateImageJSON(publicationID,index)
         const jsonObject = JSON.parse(request);
         return await axios({
@@ -362,11 +362,9 @@ export const postImages = (publicationID,images, props)  => {
             return response.data
           })
           .catch(function (error) {
-            props.history.push({
-                pathname: '/error',
-                state: { coding: error.response.status }
-              })
+            alert("error");
           });
+            
     }
 
     export const sendMessage = async (event, props) => {
