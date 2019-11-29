@@ -85,10 +85,10 @@ class Details extends React.Component {
 
     render(){
         const { t } = this.props;
+        var errorCode = this.state.code;
         if(this.state.error) {
-            var errorCode = this.state.code;
             return(
-                <ErrorBoundary coding = {errorCode}>                  
+                <ErrorBoundary hasError = {true} coding = {errorCode}>                  
                 </ErrorBoundary>
             )
         } else{
@@ -99,9 +99,7 @@ class Details extends React.Component {
                 ownerEmail: yup.string(),
                 title: yup.string()
                 });
-            return(
-                <ErrorBoundary>                  
-                         
+            return(                                            
                 <div>
                     <Navbar t={t} />
                     <div id="cols">
@@ -259,7 +257,6 @@ class Details extends React.Component {
                         </div>
                     </div>               
                 </div>
-                </ErrorBoundary>
             )
               
        }

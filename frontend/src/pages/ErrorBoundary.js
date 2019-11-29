@@ -10,8 +10,21 @@ class ErrorBoundary extends React.Component {
     constructor(props) {
         super(props);
          this.state = { 
-            coding: null
+            hasError: false,
+            coding: props.coding
          };
+    }
+
+    static getDerivedStateFromError(error) {
+        // Update state so the next render will show the fallback UI.
+        //alert("alert1");
+        return { hasError: true, coding: error.response.code};
+    }
+
+    componentDidCatch(error, info) {
+        // Display fallback UI
+        //alert("alert2");
+        this.setState({ hasError: true, coding: error.response.code });
     }
 
     render(){
