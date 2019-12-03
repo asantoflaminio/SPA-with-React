@@ -89,9 +89,8 @@ public class FavPublicationsHibernateDao implements FavPublicationsDao{
 	@Override
 	@Transactional
 	public int getCountUserFavourites(long userid) {
-		final String queryString = "select distinct COUNT(pub) from Publication as pub "
-								+ "INNER JOIN FavPublications as favPub ON pub.publicationid = favPub.publicationid "
-								+ "WHERE favPub.userid = :userid AND pub.locked != true";
+		final String queryString = "select COUNT(favPub) from FavPublications as favPub "
+								+ "WHERE favPub.userid = :userid";
 		TypedQuery<Long> query = em.createQuery(queryString, Long.class);
 		query.setParameter("userid", userid);
 		return query.getResultList().get(0).intValue();

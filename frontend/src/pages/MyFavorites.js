@@ -17,7 +17,11 @@ class MyFavorites extends React.Component {
 
     componentDidMount(){
         let currentComponent = this;
-        
+        axiosRequest.getMyFavoritesCount(1).then(function (quantity) {
+            currentComponent.setState({
+                myFavoritesCounter: quantity
+            })
+        })
     }
     
 
