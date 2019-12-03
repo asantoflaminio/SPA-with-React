@@ -82,5 +82,16 @@
         "submit": "Contact the agent",
         "location": "Location",
         "loadingMap": "Loading"
-     }
+     }, 
+     "mypublications": {
+      "title_section": "Mis publicaciones"
+    },
+    "profileAsideBar": {
+        "optionPublications": "MY PUBLICATIONS",
+        "optionData": "MY INFORMATION",
+        "optionFavorites": "MY FAVORITES"
+    }, 
+    "myfavorites": {
+      "title_section": "Mis favoritos"
+    }
   }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import ar.edu.itba.paw.interfaces.FavPublicationsService;
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.Publication;
@@ -47,8 +48,10 @@ public class UserController {
 	@Autowired
 	private MailServiceImpl ms;
 	
-
+	@Autowired
+	private FavPublicationsService fps;
 	
+
     @POST
     @Path("/signUp")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
@@ -167,6 +170,26 @@ public class UserController {
     public Response sendMessage (MessageDTO messageDTO) {
     	ms.sendEmail(messageDTO.getOwnerEmail(), messageDTO.getEmail(), messageDTO.getMessage(), messageDTO.getTitle());
         return Response.ok().build();
+    }
+    
+    @POST
+    @Path("/getMyPublicationsQuantity")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response getMyPublicationsQuantity (IDResponseDTO id) {   	
+    	int quantity = ps.getCountPublicationsOfUser(id.getId());
+    	return Response.ok().entity(quantity).build();
+    	
+    }
+    
+    @POST
+    @Path("/getMyFavoritesQuantity")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response getMyFavoritesQuantity (IDResponseDTO id) {   	
+    	int quantity = fps.getCountUserFavourites(id.getId());
+    	return Response.ok().entity(quantity).build();
+    	
     }
 
 

@@ -9,6 +9,8 @@ import AdminGenerator from './pages/AdminGenerator'
 import AdminUsers from './pages/AdminUsers'
 import Details from './pages/Details'
 import ErrorBoundary from './pages/ErrorBoundary'
+import MyPublications from './pages/MyPublications'
+import MyFavorites from './pages/MyFavorites'
 
 
 
@@ -26,6 +28,8 @@ function App() {
           <Route path="/List" component={List} />
           <Route path="/publication" component={Details} />
           <Route path="/error" component={ErrorBoundary} />
+          <Route path="/MyPublications" component={MyPublications} />
+          <Route path="/MyFavorites" component={MyFavorites} />
         </Suspense>
      </BrowserRouter>
     </div>

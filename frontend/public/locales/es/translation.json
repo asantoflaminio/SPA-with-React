@@ -149,4 +149,15 @@
        "location": "Ubicación",
        "loadingMap": "Cargando"
     },
+    "mypublications": {
+        "title_section": "Mis publicaciones"
+    },
+    "profileAsideBar": {
+        "optionPublications": "MIS PUBLICACIONES",
+        "optionData": "MI INFORMACIÓN",
+        "optionFavorites": "MIS FAVORITOS"
+    },
+    "myfavorites": {
+        "title_section": "Mis favorites"
+    }
   }
