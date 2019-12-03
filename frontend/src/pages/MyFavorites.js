@@ -10,18 +10,14 @@ class MyFavorites extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            myFavoritesCounter: null
+            myFavoritesCounter: 0
         };
       }
      
 
     componentDidMount(){
         let currentComponent = this;
-        axiosRequest.getMyFavoritesCount(1).then(function (quantity) {
-            currentComponent.setState({
-                myFavoritesCounter: quantity
-            })
-        })
+        
     }
     
 
