@@ -116,9 +116,11 @@ public class PublicationServiceImpl implements PublicationService{
 	}
 	
 	@Override
-	public List<Publication> findByUserId(long id, String pagePub){
+	public List<PublicationDTO> findByUserId(long id, String pagePub){
 		LOGGER.debug("Looking for publications of user with id {}", id);
-		return publicationDao.findByUserId(id,pagePub);
+		List<PublicationDTO> publications = transform(publicationDao.findByUserId(id,pagePub));
+		return publications;
+		
 	}
 	
 	@Override

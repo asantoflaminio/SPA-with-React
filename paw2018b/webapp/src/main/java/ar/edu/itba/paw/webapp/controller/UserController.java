@@ -24,6 +24,7 @@ import ar.edu.itba.paw.models.UploadFile;
 import ar.edu.itba.paw.models.dto.FiltersDTO;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.ImageDTO;
+import ar.edu.itba.paw.models.dto.PageDTO;
 import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.QueryDTO;
@@ -191,6 +192,18 @@ public class UserController {
     	return Response.ok().entity(quantity).build();
     	
     }
+    
+    @POST
+    @Path("/getMyPublications")
+    @Produces(value = { MediaType.APPLICATION_JSON})
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response getMyPublications (IDResponseDTO id) {
+    	PageDTO page = new PageDTO(1); //cambiar
+    	List<PublicationDTO> publications = ps.findByUserId(id.getId(), page.getPage().toString());
+    	return Response.ok().entity(publications).build();
+    }
+    
+   
 
 
 }

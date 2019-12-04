@@ -438,4 +438,22 @@ export const postImages = (publicationID,images)  => {
           });
     }
 
+    export const getMyPublications = async (id) => {
+        const idJSON = {"id": id}
+        return await axios({
+            method: 'post',
+            url: 'users/getMyPublications',
+            data: idJSON
+          })
+          .then(function (response) {
+              return response.data
+          })
+          .catch(function (error) {
+              alert(error)
+          });
 
+          
+    }
+
+
+    

@@ -16,7 +16,7 @@ public interface PublicationService {
 	
 	public List<PublicationDTO> findNewest(String operation);
 	
-	public List<Publication> findByUserId(long id, String pagePub);
+	public List<PublicationDTO> findByUserId(long id, String pagePub);
 	
 	public int getCountPublicationsOfUser(long id);
 	
