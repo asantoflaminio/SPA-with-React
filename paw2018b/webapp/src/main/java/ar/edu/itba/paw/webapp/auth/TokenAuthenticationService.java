@@ -35,12 +35,17 @@ public class TokenAuthenticationService {
     public TokenAuthenticationService() {
         this.tokenHandler = new JWTTokenHandler();
     }
-
+    
+    
+    //Basicamente aca revisa en cada URL si hay un token de autorizacion si lo requiere,
+    //Si lo hay devuelve un 200 como que esta autorizado
+   //Sino un 401 para mostrar que el usuario no puede acceder ahi
     Authentication getAuthentication(final HttpServletRequest request) {
         final String token = request.getHeader(AUTH_HEADER);
         Authentication authentication = null;
-
+        System.out.println("Buscando autorizacion");
         if (token != null) {
+        	System.out.println("hay token");
             final String username = tokenHandler.getUsername(token);
 
             if (username != null) {
@@ -55,11 +60,14 @@ public class TokenAuthenticationService {
                     return null;
                 }
             }
+        }else {
+        	System.out.println("no hay token");
         }
 
         return authentication;
     }
-
+    
+    //Aca se agrega el token de la autorizacion
     void addAuthentication(final HttpServletResponse response, final UserDetails userDetails) throws IOException, ServletException {
         final String token = tokenHandler.createToken(userDetails.getUsername());
 
@@ -69,12 +77,13 @@ public class TokenAuthenticationService {
     Authentication getAuthenticationForLogin(final HttpServletRequest request) throws UserNotActiveException {
         try {
             final UserLoginDTO user = new ObjectMapper().readValue(request.getInputStream(), UserLoginDTO.class); // Attempt
-            System.out.println(user.getEmail());
+            
             final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
 
             if (userDetails != null) {
                 if (userDetails.isEnabled() && user.getEmail().equals(userDetails.getUsername())
                         && passwordEncoder.matches(user.getPassword(), userDetails.getPassword())) {
+                	System.out.println(user.getEmail());
                     return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(),
                             userDetails.getAuthorities());
                 } else if (!userDetails.isEnabled()

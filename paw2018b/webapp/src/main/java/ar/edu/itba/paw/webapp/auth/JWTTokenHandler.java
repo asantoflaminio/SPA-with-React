@@ -43,7 +43,7 @@ public class JWTTokenHandler implements TokenHandler {
         final Date expirationDateTime = Date.from(now.plusDays(DAYS_TO_EXPIRE).toInstant());
         final String token = Jwts.builder().setSubject(username).setExpiration(expirationDateTime)
                 .signWith(SignatureAlgorithm.HS512, KEY).compact();
-
+        System.out.println("token");
         return token;
     }
 

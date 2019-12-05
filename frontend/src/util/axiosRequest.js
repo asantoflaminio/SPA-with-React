@@ -398,7 +398,7 @@ export const postImages = (publicationID,images)  => {
           data: jsonObject
         })
         .then(function (response) {
-            alert(response.status)
+            alert(JSON.stringify(response.headers))
         })
         .catch(function (error) {
             props.history.push({
