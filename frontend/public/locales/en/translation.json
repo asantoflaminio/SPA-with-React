@@ -92,6 +92,10 @@
         "optionFavorites": "MY FAVORITES"
     }, 
     "myfavorites": {
-      "title_section": "Mis favoritos"
+      "title_section": "My favorites"
+    },
+    "profilepublication": {
+      "edit": "EDIT",
+      "delete": "DELETE"
     }
   }

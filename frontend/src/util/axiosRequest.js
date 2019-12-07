@@ -369,7 +369,6 @@ export const postImages = (publicationID,images)  => {
 
     export const sendMessage = async (event, props) => {
         const data = getJSON(event.target,5)
-        alert(data)
         const jsonObject = JSON.parse(data);
         return await axios({
           method: 'post',
@@ -377,7 +376,6 @@ export const postImages = (publicationID,images)  => {
           data: jsonObject
         })
         .then(function (response) {
-            alert(response)
             return response;
         })
         .catch(function (error) {
@@ -391,7 +389,6 @@ export const postImages = (publicationID,images)  => {
     export const login = (event, props) => {
         const data = getJSON(event.target,3)
         const jsonObject = JSON.parse(data);
-        alert(data)
         axios({
           method: 'post',
           url: 'users/login',
@@ -408,7 +405,7 @@ export const postImages = (publicationID,images)  => {
         });
     }
 
-    export const getMyPublicationsCount = async (id) => {
+    export const getMyPublicationsQuantity = async (id) => {
         const idJSON = {"id": id}
         return await axios({
             method: 'post',
@@ -438,12 +435,11 @@ export const postImages = (publicationID,images)  => {
           });
     }
 
-    export const getMyPublications = async (id) => {
-        const idJSON = {"id": id}
+    export const getMyPublications = async (pub) => {
         return await axios({
             method: 'post',
             url: 'users/getMyPublications',
-            data: idJSON
+            data: pub
           })
           .then(function (response) {
               return response.data
@@ -451,8 +447,20 @@ export const postImages = (publicationID,images)  => {
           .catch(function (error) {
               alert(error)
           });
+    }
 
-          
+    export const getMyPublicationsCount = async (id) => {
+        return await axios({
+            method: 'post',
+            url: 'users/getMyPublicationsCount',
+            data: id
+          })
+          .then(function (response) {
+              return response.data
+          })
+          .catch(function (error) {
+              alert(error)
+          });
     }
 
 

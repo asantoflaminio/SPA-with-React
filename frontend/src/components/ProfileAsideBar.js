@@ -1,6 +1,5 @@
 import React from 'react';
 import '../css/ProfileAsideBar.css';
-import logo from '../resources/Logo4.png';
 import {Link} from 'react-router-dom';
 
 const ProfileAsideBar = ({ t }) => (

@@ -24,6 +24,7 @@ import ar.edu.itba.paw.models.UploadFile;
 import ar.edu.itba.paw.models.dto.FiltersDTO;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.ImageDTO;
+import ar.edu.itba.paw.models.dto.MyPublicationsDTO;
 import ar.edu.itba.paw.models.dto.PageDTO;
 import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
@@ -197,13 +198,19 @@ public class UserController {
     @Path("/getMyPublications")
     @Produces(value = { MediaType.APPLICATION_JSON})
     @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getMyPublications (IDResponseDTO id) {
-    	PageDTO page = new PageDTO(1); //cambiar
-    	List<PublicationDTO> publications = ps.findByUserId(id.getId(), page.getPage().toString());
+    public Response getMyPublications (MyPublicationsDTO myPublications) {
+    	List<PublicationDTO> publications = ps.findByUserId(myPublications.getUserID(), myPublications.getPage().toString());
     	return Response.ok().entity(publications).build();
     }
     
-   
-
+    @POST
+    @Path("/getMyPublicationsCount")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response getMyPublicationsCount (IDResponseDTO id) {
+    	int pubs = ps.getCountPublicationsOfUser(id.getId());
+    	PaginationDTO quantity = new PaginationDTO(pubs, 1); //cambiar x la constante que dice en persistance
+    	return Response.ok().entity(quantity).build();
+    }
 
 }

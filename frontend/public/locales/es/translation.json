@@ -158,6 +158,10 @@
         "optionFavorites": "MIS FAVORITOS"
     },
     "myfavorites": {
-        "title_section": "Mis favorites"
+        "title_section": "Mis favoritos"
+    },
+    "profilepublication": {
+      "edit": "EDITAR",
+      "delete": "ELIMINAR"
     }
   }

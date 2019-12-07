@@ -12,6 +12,7 @@ import ErrorBoundary from './pages/ErrorBoundary'
 import MyPublications from './pages/MyPublications'
 import MyFavorites from './pages/MyFavorites'
 import MyInformation from './pages/MyInformation'
+import EditPublication from './pages/EditPublication'
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route path="/MyPublications" component={MyPublications} />
           <Route path="/MyFavorites" component={MyFavorites} />
           <Route path="/MyInformation" component={MyInformation} />
+          <Route path="/EditPublication" component={EditPublication} />
         </Suspense>
      </BrowserRouter>
     </div>
