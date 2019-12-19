@@ -43,9 +43,7 @@ public class TokenAuthenticationService {
     Authentication getAuthentication(final HttpServletRequest request) {
         final String token = request.getHeader(AUTH_HEADER);
         Authentication authentication = null;
-        System.out.println("Buscando autorizacion");
         if (token != null) {
-        	System.out.println("hay token");
             final String username = tokenHandler.getUsername(token);
 
             if (username != null) {
@@ -60,8 +58,6 @@ public class TokenAuthenticationService {
                     return null;
                 }
             }
-        }else {
-        	System.out.println("no hay token");
         }
 
         return authentication;

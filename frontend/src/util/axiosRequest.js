@@ -1,4 +1,5 @@
 import axios from 'axios';
+import LocalStorageService from '../services/LocalStorageService'
 
 export const getJSON = (array,quantity) => {
     let result = "{";
@@ -152,7 +153,10 @@ export const postPublication = async (event, props) => {
     return await axios({
       method: 'post',
       url: 'users/publish',
-      data: jsonObject
+      data: jsonObject,
+      headers: {
+        authorization: LocalStorageService.getAccessToken(),
+      }
     })
     .then(function (response) {
         return response.data.id;
@@ -177,7 +181,9 @@ export const postImages = (publicationID,images)  => {
         method: 'post',
         url: 'users/images',
         data: formData,
-        headers: {contentType:'multipart/form-data'},
+        headers: {
+            contentType:'multipart/form-data'},
+            authorization: LocalStorageService.getAccessToken()
 
       })
       .then(function (response) {
@@ -386,25 +392,6 @@ export const postImages = (publicationID,images)  => {
         });
     }
 
-    export const login = (event, props) => {
-        const data = getJSON(event.target,3)
-        const jsonObject = JSON.parse(data);
-        axios({
-          method: 'post',
-          url: 'users/login',
-          data: jsonObject
-        })
-        .then(function (response) {
-            alert(JSON.stringify(response.headers))
-        })
-        .catch(function (error) {
-            props.history.push({
-                pathname: '/error',
-                state: { coding: error.response.status }
-              })
-        });
-    }
-
     export const getMyPublicationsQuantity = async (id) => {
         const idJSON = {"id": id}
         return await axios({
@@ -461,6 +448,26 @@ export const postImages = (publicationID,images)  => {
           .catch(function (error) {
               alert(error)
           });
+    }
+
+    export const login = (event, props) => {
+        const data = getJSON(event.target,3)
+        const jsonObject = JSON.parse(data);
+        axios({
+          method: 'post',
+          url: 'users/login',
+          data: jsonObject
+        })
+        .then(function (response) {
+            LocalStorageService.setToken(response.headers.authorization)
+            
+        })
+        .catch(function (error) {
+            props.history.push({
+                pathname: '/error',
+                state: { coding: error.response.status }
+              })
+        });
     }
 
 
