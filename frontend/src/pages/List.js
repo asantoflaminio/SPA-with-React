@@ -278,7 +278,6 @@ class List extends React.Component {
         let parkingFilter = this.createFilterFields("parking","list.parkingSingular","list.parkingPlural",t,"parking")
         return(
             <div>
-                <Navbar t={t} />
                 <div class="wrap inlineBlock">
                     <div class="search_list inlineBlock">
                         <fieldset class="search_list-container rounded" id="operation-type" >

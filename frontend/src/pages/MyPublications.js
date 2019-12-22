@@ -117,7 +117,6 @@ class MyPublications extends React.Component {
         let publications = this.initializePublications(t);        
         return(
             <div>
-                <Navbar t={t} />
                 <ProfileAsideBar t={t} />
                 <header>
                     <div className="Publications">

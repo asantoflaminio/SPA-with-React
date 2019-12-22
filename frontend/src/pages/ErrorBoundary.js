@@ -19,7 +19,6 @@ class ErrorBoundary extends React.Component {
             var codeMsg = t('errors.errorCode') + this.state.coding;
             return ( 
                 <div>
-                    <Navbar t={t} />
                     <div id="error-container">
                          <h1 id="error-title">{t('errors.errorTitle')}</h1>			
                          <p id="error-status">{codeMsg}</p>		

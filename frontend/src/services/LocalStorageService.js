@@ -19,6 +19,10 @@ const LocalStorageService = (function(){
       return localStorage.getItem("access_token");
     }
 
+    function _getAccessRole() {
+      return localStorage.getItem("access_role");
+    }
+
     function _clearToken() {
       localStorage.removeItem("access_token");
     }
@@ -34,6 +38,7 @@ const LocalStorageService = (function(){
       getService : _getService,
       setToken : _setToken,
       getAccessToken : _getAccessToken,
+      getAccessRole : _getAccessRole,
       clearToken : _clearToken
     }
    })();

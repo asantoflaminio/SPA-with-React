@@ -81,7 +81,6 @@ class AdminGenerator extends React.Component {
 
         return(
             <div>
-                <Navbar t={t} />
                 <AdminManagment t={t}/>
                 <div className="polaroid data">
                     <div className="title-container">       

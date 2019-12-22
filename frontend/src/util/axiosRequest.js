@@ -1,7 +1,6 @@
-import React from 'react';
 import axios from 'axios';
 import LocalStorageService from '../services/LocalStorageService'
-import {Redirect} from 'react-router-dom';
+
 
 export const getJSON = (array,quantity) => {
     let result = "{";
@@ -81,7 +80,6 @@ export const postCity = (event, props) => {
 export const postNeighborhood = (event, props) => {
     const data = getJSON(event.target,3)
     const jsonObject = JSON.parse(data);
-    alert(data)
     axios({
       method: 'post',
       url: 'admin/neighborhood',
@@ -455,23 +453,18 @@ export const postImages = (publicationID,images)  => {
           });
     }
 
-    export const login = (email, password, props) => {
-        alert(email + " + " + password)
+    export const login = async (email, password, props) => {
         const data = {
             email: email,
             password: password
           }
-        axios({
+        return await axios({
           method: 'post',
           url: 'users/login',
           data: data
         })
         .then(function (response) {
-            alert(response.headers)
             LocalStorageService.setToken(response.headers.authorization, response.headers.authorities)
-            return(
-                <Redirect to="/" />
-            )
         })
         .catch(function (error) {
             props.history.push({
@@ -484,12 +477,13 @@ export const postImages = (publicationID,images)  => {
     export const signUp = async (event, props) => {
         const data = getJSON(event.target,6)
         const jsonObject = JSON.parse(data);
-        axios({
+        return await axios({
           method: 'post',
           url: 'users/signUp',
           data: jsonObject
         })
         .then(function (response) {
+            return response.data
         })
         .catch(function (error) {
             props.history.push({

@@ -91,7 +91,6 @@ class Details extends React.Component {
                 });
             return(                                            
                 <div>
-                    <Navbar t={t} />
                     <div id="cols">
                         <div id="left-col">   
                             <div class="polaroid">

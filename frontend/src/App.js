@@ -13,21 +13,16 @@ import MyPublications from './pages/MyPublications'
 import MyFavorites from './pages/MyFavorites'
 import MyInformation from './pages/MyInformation'
 import EditPublication from './pages/EditPublication'
-import LocalStorageService from './services/LocalStorageService'
+import UserService from './services/UserService'
+import Navbar from './components/Navbar'
 
 
 
 const PrivateRoute = ({component: Component, ...rest}) => {
-  function isLogin(){
-    if(LocalStorageService.getAccessToken() != null)
-      return true;
-    else
-      return false;
-  }
 
   return (
       <Route {...rest} render={props => (
-          isLogin() ?
+        UserService.isLogin() ?
               <Component {...props} />
           : <Redirect to="/SignUp" />
       )} />
@@ -41,6 +36,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Suspense fallback={(<div>Loading</div>)}>
+          <Navbar />
           <Route exact path="/" component={Home} />
           <Route path="/SignUp" component={SignUp} />
           <PrivateRoute path="/Publish" component={Publish} />

@@ -29,6 +29,7 @@ import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.QueryDTO;
 import ar.edu.itba.paw.models.dto.UserDTO;
+import ar.edu.itba.paw.models.dto.UserLoginDTO;
 import ar.edu.itba.paw.services.ImageServiceImpl;
 import ar.edu.itba.paw.services.MailServiceImpl;
 import ar.edu.itba.paw.services.MessageDTO;
@@ -56,11 +57,12 @@ public class UserController {
     @POST
     @Path("/signUp")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response createUser (final UserDTO userDTO) {
     	us.create(userDTO.getFirstName(), userDTO.getLastName(), 
     			userDTO.getEmail(), userDTO.getPassword(), userDTO.getPhoneNumber(), "USER");
-    	
-        return Response.ok().build();
+    	UserLoginDTO loginInfo = new UserLoginDTO(userDTO.getEmail(),userDTO.getPassword());
+        return Response.ok().entity(loginInfo).build();
     }
     
     @POST

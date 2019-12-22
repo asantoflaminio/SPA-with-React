@@ -96,7 +96,6 @@ class AdminUsers extends React.Component {
         this.generateUsers(tableUsers,this.state.usersList, t);
         return(
             <div>
-                <Navbar t={t} />
                 <AdminManagment t={t}/>
                 <div>
                     <div class="polaroid data">

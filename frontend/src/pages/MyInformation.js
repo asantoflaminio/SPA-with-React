@@ -26,7 +26,6 @@ class MyInformation extends React.Component {
        
         return(
             <div>
-                <Navbar t={t} />
                 <ProfileAsideBar t={t} />
                 <header>
                    

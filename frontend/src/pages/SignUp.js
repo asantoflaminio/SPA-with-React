@@ -5,27 +5,43 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/SignUp.css';
-import axios from 'axios';
 import * as axiosRequest from '../util/axiosRequest'
+import {Redirect} from 'react-router-dom';
+import UserService from '../services/UserService'
 
 
 
 class SignUp extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLogged: UserService.isLogin()
+        };
+      }
+
     handleFormSubmit(event) {
+        let currentComponent = this
+
         event.preventDefault();
-        axiosRequest.signUp(event).then(function (){
-            alert(event.target[2].value)
-            axiosRequest.login(event.target[2].value,event.target[3].value)
+        axiosRequest.signUp(event,this.props).then(function (data){
+            axiosRequest.login(data.email,data.password,currentComponent.props).then(function (data){
+                currentComponent.setState({
+                    isLogged: true
+                })
+            })
         })
     }
 
     checkErrors(){
         let firstName = document.getElementById("firstName")
-        alert(firstName) 
         return true;
     }
 
     render() {
+
+    if (this.state.isLogged === true) {
+        return <Redirect to='/' />
+    }
 
     const { t } = this.props;
     const schema = yup.object({

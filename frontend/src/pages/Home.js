@@ -96,7 +96,6 @@ class HomeReal extends React.Component {
         this.renderNewest(this.state.publicationsRent, tableRent, t);
         return(
             <div>
-                <Navbar t={t} />
                 <header>
                 <div className="header">
                     <div className="title">

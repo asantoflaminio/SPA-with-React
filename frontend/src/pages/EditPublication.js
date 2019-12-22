@@ -21,7 +21,7 @@ class EditPublication extends React.Component {
        
         return(
             <div>
-                <Navbar t={t} />
+               
             </div>
         );
     }
