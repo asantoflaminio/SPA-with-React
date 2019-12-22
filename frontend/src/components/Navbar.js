@@ -34,16 +34,9 @@ class Navbar extends React.Component {
         
     }
 
-    setDefault(){
-        let checkbox = document.getElementById("rememberMe")
-        if(checkbox.value === 'on')
-            checkbox.value = 'false'
-    }
-
     handleFormSubmit(event){
         event.preventDefault();
-        this.setDefault()
-        axiosRequest.login(event);
+        axiosRequest.login(event.target[0].value,event.target[1].value);
     }
 
 
@@ -100,14 +93,6 @@ class Navbar extends React.Component {
                                             <Form.Control.Feedback type="invalid">
                                                 {errors.password}
                                             </Form.Control.Feedback>
-                                        </Form.Group>
-                                        <Form.Group>
-                                            <Form.Check
-                                            name="rememberMe"
-                                            label={t('login.rememberMe')}
-                                            onClick={e => this.checkRememberMe(e)}
-                                            id="rememberMe"
-                                            />
                                         </Form.Group>
                                     <Button type="submit">{t('signUp.submit')}</Button>
                                     </Form>

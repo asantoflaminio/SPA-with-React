@@ -25,7 +25,6 @@ import ar.edu.itba.paw.models.dto.FiltersDTO;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.ImageDTO;
 import ar.edu.itba.paw.models.dto.MyPublicationsDTO;
-import ar.edu.itba.paw.models.dto.PageDTO;
 import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.QueryDTO;

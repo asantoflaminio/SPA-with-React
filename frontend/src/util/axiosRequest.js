@@ -1,5 +1,7 @@
+import React from 'react';
 import axios from 'axios';
 import LocalStorageService from '../services/LocalStorageService'
+import {Redirect} from 'react-router-dom';
 
 export const getJSON = (array,quantity) => {
     let result = "{";
@@ -41,7 +43,10 @@ export const postProvince = (event, props) => {
     axios({
       method: 'post',
       url: 'admin/province',
-      data: jsonObject
+      data: jsonObject,
+      headers: {
+        authorization: LocalStorageService.getAccessToken(),
+      }
     })
     .then(function (response) {
         alert(response.status)
@@ -450,17 +455,41 @@ export const postImages = (publicationID,images)  => {
           });
     }
 
-    export const login = (event, props) => {
-        const data = getJSON(event.target,3)
-        const jsonObject = JSON.parse(data);
+    export const login = (email, password, props) => {
+        alert(email + " + " + password)
+        const data = {
+            email: email,
+            password: password
+          }
         axios({
           method: 'post',
           url: 'users/login',
+          data: data
+        })
+        .then(function (response) {
+            alert(response.headers)
+            LocalStorageService.setToken(response.headers.authorization, response.headers.authorities)
+            return(
+                <Redirect to="/" />
+            )
+        })
+        .catch(function (error) {
+            props.history.push({
+                pathname: '/error',
+                state: { coding: error.response.status }
+              })
+        });
+    }
+
+    export const signUp = async (event, props) => {
+        const data = getJSON(event.target,6)
+        const jsonObject = JSON.parse(data);
+        axios({
+          method: 'post',
+          url: 'users/signUp',
           data: jsonObject
         })
         .then(function (response) {
-            LocalStorageService.setToken(response.headers.authorization)
-            
         })
         .catch(function (error) {
             props.history.push({

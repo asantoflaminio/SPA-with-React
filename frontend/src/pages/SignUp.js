@@ -6,30 +6,17 @@ import * as yup from 'yup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/SignUp.css';
 import axios from 'axios';
+import * as axiosRequest from '../util/axiosRequest'
 
 
 
 class SignUp extends React.Component {
     handleFormSubmit(event) {
         event.preventDefault();
-        const data = {
-          firstName: event.target[0].value,
-          lastName: event.target[1].value,
-          email: event.target[2].value,
-          password: event.target[3].value,
-          repeatPassword: event.target[4].value,
-          phoneNumber: event.target[5].value
-        }
-        axios({
-          method: 'post',
-          url: 'users/signUp',
-          data: data
+        axiosRequest.signUp(event).then(function (){
+            alert(event.target[2].value)
+            axiosRequest.login(event.target[2].value,event.target[3].value)
         })
-        .then(function (response) {
-            alert(response.status)
-        })
-        .catch(function (error) {
-        });
     }
 
     checkErrors(){

@@ -47,11 +47,9 @@ public class TokenAuthenticationService {
             final String username = tokenHandler.getUsername(token);
 
             if (username != null) {
-
                 try {
                     final UserDetails user = userDetailsService.loadUserByUsername(username);
                     final Collection<GrantedAuthority> authorities = new HashSet<GrantedAuthority>(user.getAuthorities());
-
                     authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),
                             authorities);
                 } catch (UsernameNotFoundException e) {
@@ -64,10 +62,12 @@ public class TokenAuthenticationService {
     }
     
     //Aca se agrega el token de la autorizacion
+   //Adicionalmente agregamos el header de las autoridades que tiene
     void addAuthentication(final HttpServletResponse response, final UserDetails userDetails) throws IOException, ServletException {
         final String token = tokenHandler.createToken(userDetails.getUsername());
-
+        
         response.setHeader(AUTH_HEADER, "Bearer " + token);
+        response.setHeader("Authorities", userDetails.getAuthorities().toString());
     }
 
     Authentication getAuthenticationForLogin(final HttpServletRequest request) throws UserNotActiveException {
@@ -75,11 +75,10 @@ public class TokenAuthenticationService {
             final UserLoginDTO user = new ObjectMapper().readValue(request.getInputStream(), UserLoginDTO.class); // Attempt
             
             final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
-
+            
             if (userDetails != null) {
                 if (userDetails.isEnabled() && user.getEmail().equals(userDetails.getUsername())
                         && passwordEncoder.matches(user.getPassword(), userDetails.getPassword())) {
-                	System.out.println(user.getEmail());
                     return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(),
                             userDetails.getAuthorities());
                 } else if (!userDetails.isEnabled()

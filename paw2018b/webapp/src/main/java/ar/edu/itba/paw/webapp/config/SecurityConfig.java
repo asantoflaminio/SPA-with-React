@@ -47,7 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/home/getSalePublications").permitAll()
+        http.authorizeRequests()
+        
+        		//permitAll
+        		.antMatchers(HttpMethod.GET, "/home/getSalePublications").permitAll()
                 .antMatchers(HttpMethod.GET, "/home/getRentPublications").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/signUp").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/getPublicationsQuantity").permitAll()
@@ -56,9 +59,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/users/getFilters").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/getPublicationImage").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/sendMessage").permitAll()
-                .antMatchers(HttpMethod.POST, "/users/publish").authenticated();
+                .antMatchers(HttpMethod.POST, "/users/getProvinces").permitAll()
+                .antMatchers(HttpMethod.POST, "/users/getCities").permitAll()
+                .antMatchers(HttpMethod.POST, "/users/getNeighborhoods").permitAll()
+                
+                
+                //access(USER OR ADMIN)
+                .antMatchers(HttpMethod.POST, "/users/publish").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.POST, "/users/images").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.POST, "/users/getMyPublicationsQuantity").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.POST, "/users/getMyFavoritesQuantity").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.POST, "/users/getMyPublications").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.POST, "/users/getMyPublicationsCount").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+        		
         
-        //Por ahora dejames estos path que vimos que los agarra bien
+        		//access(ADMIN)
+                .antMatchers(HttpMethod.POST, "/admin/province").access("hasRole('ROLE_ADMIN')")
+        		.antMatchers(HttpMethod.POST, "/admin/city").access("hasRole('ROLE_ADMIN')")
+        		.antMatchers(HttpMethod.POST, "/admin/neighborhood").access("hasRole('ROLE_ADMIN')")
+        		.antMatchers(HttpMethod.POST, "/admin/getUsers").access("hasRole('ROLE_ADMIN')")
+        		.antMatchers(HttpMethod.POST, "/admin/getUsersQuantity").access("hasRole('ROLE_ADMIN')")
+        		.antMatchers(HttpMethod.POST, "/admin/lockUser").access("hasRole('ROLE_ADMIN')");
 
 
         http.addFilterBefore(new StatelessLoginFilter("/users/login", tokenAuthenticationService, userDetailsService, userService,
