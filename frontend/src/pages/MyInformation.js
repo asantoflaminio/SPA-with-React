@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'
 import ProfileAsideBar from '../components/ProfileAsideBar'
 import * as axiosRequest from '../util/axiosRequest';
 import '../css/Profile.css';
+import { withRouter } from "react-router";
 
 
 class MyInformation extends React.Component {
@@ -36,4 +37,4 @@ class MyInformation extends React.Component {
 
 }
 
-export default withTranslation()(MyInformation);
+export default withRouter(withTranslation()(MyInformation));

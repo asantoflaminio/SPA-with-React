@@ -1,9 +1,8 @@
-
-
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import Navbar from '../components/Navbar'
 import '../css/ErrorBoundary.css';
+import { withRouter } from "react-router";
 
 class ErrorBoundary extends React.Component {
 
@@ -36,4 +35,4 @@ class ErrorBoundary extends React.Component {
 
 }
 
-export default withTranslation()(ErrorBoundary);
+export default withRouter(withTranslation()(ErrorBoundary));

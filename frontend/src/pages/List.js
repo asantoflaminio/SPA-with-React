@@ -1,14 +1,13 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
+import { withRouter } from "react-router";
 import '../css/list.css';
 import '../css/Pagination.css';
-import Navbar from '../components/Navbar'
 import arrowDown from '../resources/arrow_down.png';
 import Publication from '../components/Publication';
 import * as axiosRequest from '../util/axiosRequest';
 import * as utilFunction from '../util/function';
 import ReactPaginate from 'react-paginate';
-import { timingSafeEqual } from 'crypto';
 
 
 class List extends React.Component {
@@ -429,4 +428,4 @@ class List extends React.Component {
 
 }
 
-export default withTranslation()(List);
+export default withRouter(withTranslation()(List));

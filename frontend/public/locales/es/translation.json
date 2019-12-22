@@ -163,5 +163,12 @@
     "profilepublication": {
       "edit": "EDITAR",
       "delete": "ELIMINAR"
+    },
+    "userNavbar":{
+      "options": "Opciones",
+      "publish": "Publicar",
+      "profile": "Mi perfil",
+      "signOut": "Cerrar sesión",
+      "manage": "Administrar"
     }
   }

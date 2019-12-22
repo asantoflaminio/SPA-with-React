@@ -2,7 +2,8 @@ import React from 'react';
 import '../css/Navbar.css';
 import logo from '../resources/Logo4.png';
 import {Link} from 'react-router-dom';
-import { withTranslation, setDefaults } from 'react-i18next';
+import { withRouter } from "react-router";
+import { withTranslation } from 'react-i18next';
 
 class AdminNavbar extends React.Component {
 
@@ -28,4 +29,4 @@ class AdminNavbar extends React.Component {
 
 }
 
-export default withTranslation()(AdminNavbar);
+export default withRouter(withTranslation()(AdminNavbar));

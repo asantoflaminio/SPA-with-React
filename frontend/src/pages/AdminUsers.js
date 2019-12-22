@@ -9,6 +9,7 @@ import * as axiosRequest from '../util/axiosRequest'
 import ReactPaginate from 'react-paginate';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { withRouter } from "react-router";
 
 
 class AdminUsers extends React.Component {
@@ -128,4 +129,4 @@ class AdminUsers extends React.Component {
 
 }
 
-export default withTranslation()(AdminUsers);
+export default withRouter(withTranslation()(AdminUsers));

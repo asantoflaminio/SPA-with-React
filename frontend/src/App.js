@@ -22,7 +22,7 @@ const PrivateRoute = ({component: Component, ...rest}) => {
 
   return (
       <Route {...rest} render={props => (
-        UserService.isLogin() ?
+        UserService.isLogged() ?
               <Component {...props} />
           : <Redirect to="/SignUp" />
       )} />
@@ -45,10 +45,10 @@ function App() {
           <Route path="/List" component={List} />
           <Route path="/publication" component={Details} />
           <Route path="/error" component={ErrorBoundary} />
-          <Route path="/MyPublications" component={MyPublications} />
-          <Route path="/MyFavorites" component={MyFavorites} />
-          <Route path="/MyInformation" component={MyInformation} />
-          <Route path="/EditPublication" component={EditPublication} />
+          <PrivateRoute path="/MyPublications" component={MyPublications} />
+          <PrivateRoute path="/MyFavorites" component={MyFavorites} />
+          <PrivateRoute path="/MyInformation" component={MyInformation} />
+          <PrivateRoute path="/EditPublication" component={EditPublication} />
         </Suspense>
      </BrowserRouter>
     </div>

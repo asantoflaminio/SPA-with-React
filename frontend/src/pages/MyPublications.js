@@ -5,6 +5,7 @@ import ProfileAsideBar from '../components/ProfileAsideBar'
 import ProfilePublication from '../components/ProfilePublication';
 import * as axiosRequest from '../util/axiosRequest';
 import ReactPaginate from 'react-paginate';
+import { withRouter } from "react-router";
 
 
 class MyPublications extends React.Component {
@@ -153,4 +154,4 @@ class MyPublications extends React.Component {
 
 }
 
-export default withTranslation()(MyPublications);
+export default withRouter(withTranslation()(MyPublications));

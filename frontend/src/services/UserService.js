@@ -2,7 +2,7 @@ import LocalStorageService from './LocalStorageService'
 
 const UserService = (function(){
 
-    function _isLogin(){
+    function _isLogged(){
         if(LocalStorageService.getAccessToken() != null)
             return true;
         else
@@ -10,7 +10,7 @@ const UserService = (function(){
     }
 
    return {
-      isLogin : _isLogin,
+      isLogged : _isLogged,
     }
    })();
 

@@ -10,6 +10,7 @@ import * as yup from 'yup';
 import ImageVisualizer from '../components/ImageVisualizer'
 import MapContainer from '../components/MapContainer';
 import credentials from '../components/credentials'
+import { withRouter } from "react-router";
 
 const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credentials.mapsKey}` ;
 class Details extends React.Component {
@@ -252,4 +253,4 @@ class Details extends React.Component {
 
 }
 
-    export default withTranslation()(Details);
+    export default withRouter(withTranslation()(Details));

@@ -1,5 +1,6 @@
     import React from 'react';
     import { withTranslation } from 'react-i18next';
+    import { withRouter } from "react-router";
     import '../css/home.css';
     import Navbar from '../components/Navbar'
     import ImgsViewer from 'react-images-viewer'
@@ -178,4 +179,4 @@ class HomeReal extends React.Component {
 }
 
 
-export default withTranslation()(HomeReal);
+export default withRouter(withTranslation()(HomeReal));

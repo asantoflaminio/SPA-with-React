@@ -1,14 +1,19 @@
 import React from 'react';
+import { withRouter } from "react-router";
 import '../css/Navbar.css';
 import logo from '../resources/Logo4.png';
 import {Link} from 'react-router-dom';
-import { withTranslation, setDefaults } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { Form, Button, Col, InputGroup } from 'react-bootstrap';
+import { Form, Button, Col } from 'react-bootstrap';
 import * as axiosRequest from '../util/axiosRequest'
 
+
 class StandarNavbar extends React.Component {
+    constructor(props){
+        super(props)
+    }
 
     showlogin(){
         let login = document.getElementById("sign-in");
@@ -20,9 +25,11 @@ class StandarNavbar extends React.Component {
 
     handleFormSubmit(event){
         let currentComponent = this;
+        let currentPath = this.props.location;
         event.preventDefault();
         axiosRequest.login(event.target[0].value,event.target[1].value).then(function(){
-            window.location.reload();
+            currentComponent.props.rerenderParentCallback();
+            currentComponent.props.history.push(currentPath)
         })
     }
 
@@ -36,7 +43,7 @@ class StandarNavbar extends React.Component {
         return(
                 <nav>
                     <Link to={{pathname: "/"}}>
-                    <a href="">
+                    <a>
                         <img src={logo} alt="Home" id="logo"/>
                     </a>
                     </Link>
@@ -97,4 +104,4 @@ class StandarNavbar extends React.Component {
 
 }
 
-export default withTranslation()(StandarNavbar);
+export default withRouter(withTranslation()(StandarNavbar));

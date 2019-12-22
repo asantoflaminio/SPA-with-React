@@ -9,6 +9,7 @@ import '../css/AdminGenerator.css';
 import AdminManagment from '../components/AdminManagment';
 import {appendSelectElement} from '../util/function'
 import * as axiosRequest from '../util/axiosRequest'
+import { withRouter } from "react-router";
 
 class AdminGenerator extends React.Component {
 
@@ -223,4 +224,4 @@ class AdminGenerator extends React.Component {
 
 
 
-export default withTranslation()(AdminGenerator);
+export default withRouter(withTranslation()(AdminGenerator));

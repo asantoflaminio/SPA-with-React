@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as axiosRequest from '../util/axiosRequest'
 import '../css/Publish.css';
+import { withRouter } from "react-router";
 import {appendSelectElement} from '../util/function'
 import ImageUploader from 'react-images-upload';
 
@@ -401,4 +402,4 @@ class Publish extends React.Component {
 }
 
 
-export default withTranslation()(Publish);
+export default withRouter(withTranslation()(Publish));

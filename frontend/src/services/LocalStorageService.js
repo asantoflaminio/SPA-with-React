@@ -25,6 +25,7 @@ const LocalStorageService = (function(){
 
     function _clearToken() {
       localStorage.removeItem("access_token");
+      localStorage.removeItem("access_role");
     }
 
     function _decideAccess(access_role){

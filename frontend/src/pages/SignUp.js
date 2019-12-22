@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/SignUp.css';
 import * as axiosRequest from '../util/axiosRequest'
 import {Redirect} from 'react-router-dom';
+import { withRouter } from "react-router";
 import UserService from '../services/UserService'
 
 
@@ -15,7 +16,7 @@ class SignUp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLogged: UserService.isLogin()
+            isLogged: UserService.isLogged()
         };
       }
 
@@ -38,8 +39,7 @@ class SignUp extends React.Component {
     }
 
     render() {
-
-    if (this.state.isLogged === true) {
+    if (this.state.isLogged === true || UserService.isLogged()) {
         return <Redirect to='/' />
     }
 
@@ -160,4 +160,4 @@ class SignUp extends React.Component {
     }
 }
 
-export default withTranslation()(SignUp);
+export default withRouter(withTranslation()(SignUp));

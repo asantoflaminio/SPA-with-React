@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar'
 import ProfileAsideBar from '../components/ProfileAsideBar'
 import * as axiosRequest from '../util/axiosRequest';
 import '../css/Profile.css';
-
+import { withRouter } from "react-router";
 
 class MyFavorites extends React.Component {
     constructor(props) {
@@ -42,4 +42,4 @@ class MyFavorites extends React.Component {
 
 }
 
-export default withTranslation()(MyFavorites);
+export default withRouter(withTranslation()(MyFavorites));

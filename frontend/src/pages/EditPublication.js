@@ -1,7 +1,7 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import Navbar from '../components/Navbar'
-
+import { withRouter } from "react-router";
 
 class EditPublication extends React.Component {
     constructor(props) {
@@ -28,4 +28,4 @@ class EditPublication extends React.Component {
 
 }
 
-export default withTranslation()(EditPublication);
+export default withRouter(withTranslation()(EditPublication));
