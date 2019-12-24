@@ -5,7 +5,6 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/SignUp.css';
-import * as axiosRequest from '../util/axiosRequest'
 import {Redirect} from 'react-router-dom';
 import { withRouter } from "react-router";
 import UserService from '../services/UserService'
@@ -24,8 +23,8 @@ class SignUp extends React.Component {
         let currentComponent = this
 
         event.preventDefault();
-        axiosRequest.signUp(event,this.props).then(function (data){
-            axiosRequest.login(data.email,data.password,currentComponent.props).then(function (data){
+        UserService.signUp(event,this.props).then(function (data){
+            UserService.login(data.email,data.password,currentComponent.props).then(function (data){
                 currentComponent.setState({
                     isLogged: true
                 })
