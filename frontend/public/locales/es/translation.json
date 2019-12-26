@@ -57,6 +57,7 @@
       "buy": "Venta",
       "rent": "Alquiler",
       "price": "Precio",
+      "propertyType": "Tipo de propiedad",
       "priceHolder": "Precio en dólares...",
       "description": "Descripción",
       "descriptionHolder": "Descripción...",
@@ -75,7 +76,18 @@
       "uploadImagesText": "Subí imágenes para tu publicación!!",
       "uploadImages": "Subir imágenes",
       "uploadImagesTitle": "Maximo peso: 5mb. Acepta: JPG",
-      "submit": "Publicar"
+      "submit": "Publicar",
+      "coveredFloorSize": "Superficie cubierta",
+      "expenses": "Expensas",
+      "expensesHolder": "En dólares. Dejar en blanco si no corresponde.",
+      "amenities": "Comodidades",
+      "amenitiesHolder": "Ej: SUM, pileta. Dejar en blanco si no corresponde.",
+      "storage": "Baulera",
+      "balconies":"Balcones",
+      "balconiesHolder": "Cantidad de balcones...",
+      "notCorresponding": "No corresponde",
+      "Yes": "Sí",
+      "No": "No"
     },
     "admin": {
       "locations": "UBICACIONES",

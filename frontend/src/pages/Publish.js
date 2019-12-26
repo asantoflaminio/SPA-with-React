@@ -156,7 +156,12 @@ class Publish extends React.Component {
         bedrooms: yup.number().required(t('errors.requiredField')).positive(),
         bathrooms: yup.number().required(t('errors.requiredField')).positive(),
         dimention: yup.number().required(t('errors.requiredField')).positive(),
-        parking: yup.number().required(t('errors.requiredField')).positive()
+        coveredFloorSize: yup.number().required(t('errors.requiredField')).positive(),
+        parking: yup.number().required(t('errors.requiredField')).positive(),
+        balconies: yup.number().required(t('errors.requiredField')),
+        storage: yup.number().required(t('errors.requiredField')),
+        expenses: yup.number().required(t('errors.requiredField')),
+        amenities: yup.number().required(t('errors.requiredField'))
         });
 
         return (
@@ -283,9 +288,35 @@ class Publish extends React.Component {
                                     {errors.price}
                                 </Form.Control.Feedback>
                             </Form.Group>
+                            <Form.Group as={Col} md="12" controlId="validationFormik08">
+                                <Form.Label>{t('publish.expenses')}</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder={t('publish.expensesHolder')}
+                                    name="expenses"
+                                    value={values.expenses}
+                                    isInvalid={!!errors.expenses}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.price}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group as={Col} md="12" controlId="validationFormik09">
+                                <Form.Label>{t('publish.amenities')}</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder={t('publish.amenitiesHolder')}
+                                    name="amenities"
+                                    value={values.amenities}
+                                    isInvalid={!!errors.amenities}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.amenities}
+                                </Form.Control.Feedback>
+                            </Form.Group>
                             </div>
                             <div className="sub_box">
-                                <Form.Group as={Col} md="12" controlId="validationFormik08">
+                                <Form.Group as={Col} md="12" controlId="validationFormik10">
                                         <Form.Label>{t('publish.description')}</Form.Label>
                                         <Form.Control
                                             type="text"
@@ -299,7 +330,7 @@ class Publish extends React.Component {
                                             {errors.description}
                                         </Form.Control.Feedback>
                                 </Form.Group>
-                                <Form.Group as={Col} md="12" controlId="validationFormik09">
+                                <Form.Group as={Col} md="12" controlId="validationFormik11">
                                     <Form.Label>{t('publish.propertyType')}</Form.Label>
                                     <Form.Check
                                         type="radio"
@@ -315,7 +346,7 @@ class Publish extends React.Component {
                                         value="Apartment"
                                     />
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik10">
+                            <Form.Group as={Col} md="12" controlId="validationFormik12">
                                 <Form.Label>{t('publish.bedrooms')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -328,7 +359,7 @@ class Publish extends React.Component {
                                     {errors.bedrooms}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik11">
+                            <Form.Group as={Col} md="12" controlId="validationFormik13">
                                 <Form.Label>{t('publish.bathrooms')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -341,7 +372,7 @@ class Publish extends React.Component {
                                     {errors.bathrooms}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik12">
+                            <Form.Group as={Col} md="12" controlId="validationFormik14">
                                 <Form.Label>{t('publish.dimention')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -354,7 +385,20 @@ class Publish extends React.Component {
                                     {errors.dimention}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik13">
+                            <Form.Group as={Col} md="12" controlId="validationFormik15">
+                                <Form.Label>{t('publish.coveredFloorSize')}</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder={t('publish.dimentionHolder')}
+                                    name="coveredFloorSize"
+                                    value={values.coveredFloorSize}
+                                    isInvalid={!!errors.coveredFloorSize}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.coveredFloorSize}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group as={Col} md="12" controlId="validationFormik16">
                                 <Form.Label>{t('publish.parking')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -366,6 +410,41 @@ class Publish extends React.Component {
                                 <Form.Control.Feedback type="invalid">
                                     {errors.parking}
                                 </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group as={Col} md="12" controlId="validationFormik17">
+                                <Form.Label>{t('publish.balconies')}</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder={t('publish.balconiesHolder')}
+                                    name="balconies"
+                                    value={values.balconies}
+                                    isInvalid={!!errors.balconies}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.balconies}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group as={Col} md="12" controlId="validationFormik18">
+                                    <Form.Label>{t('publish.storage')}</Form.Label>
+                                    <Form.Check
+                                        type="radio"
+                                        label={t('publish.Yes')}
+                                        name="storage"
+                                        value="yes"
+                                        checked
+                                    />
+                                    <Form.Check
+                                        type="radio"
+                                        label={t('publish.No')}
+                                        name="storage"
+                                        value="no"
+                                    />
+                                    <Form.Check
+                                        type="radio"
+                                        label={t('publish.notCorresponding')}
+                                        name="storage"
+                                        value="notCorresponding"
+                                    />
                             </Form.Group>
                             </div>
                             <div class="down_box">
