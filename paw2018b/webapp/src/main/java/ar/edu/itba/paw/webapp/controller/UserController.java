@@ -202,7 +202,7 @@ public class UserController {
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response getMyPublications (MyPublicationsDTO pub /*IDResponseDTO id*/) {
     	System.out.println("entre");
-    	List<PublicationDTO> publications = ps.findByUserId(pub.getUserID(), pub.getPage().toString());
+    	List<PublicationDTO> publications = ps.findByUserId(pub.getId(), pub.getPage().toString());
     	// PageDTO p = new PageDTO(1);
     	// List<PublicationDTO> publications = ps.findByUserId(id.getId(), p.getPage().toString());
     	System.out.println("aca" + publications.size());

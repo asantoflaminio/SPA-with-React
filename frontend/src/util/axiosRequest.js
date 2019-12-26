@@ -385,6 +385,7 @@ export const postImages = (publicationID,images)  => {
           data: jsonObject
         })
         .then(function (response) {
+            alert(response)
             return response;
         })
         .catch(function (error) {
@@ -430,11 +431,6 @@ export const postImages = (publicationID,images)  => {
             "id": id, 
             "page": page
         }
-        alert(id);
-        alert(page);
-        alert(JSON.stringify(dat))
-        // const idJSON = {"id": id}
-        // meter el idJSON en vez de dat
         return await axios({
             method: 'post',
             url: 'users/getMyPublicationsMade',

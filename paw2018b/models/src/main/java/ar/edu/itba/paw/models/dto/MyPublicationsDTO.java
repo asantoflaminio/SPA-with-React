@@ -6,19 +6,11 @@ public class MyPublicationsDTO {
 	private Integer page;
 	
 	public MyPublicationsDTO (long id, Integer page) {
-		this.setUserID(id);
+		this.setId(id);
 		this.setPage(page);
 	}
 	
 	public MyPublicationsDTO() {}
-
-	public long getUserID() {
-		return id;
-	}
-
-	public void setUserID(long userid) {
-		this.id = userid;
-	}
 
 	public Integer getPage() {
 		return page;
@@ -26,5 +18,13 @@ public class MyPublicationsDTO {
 	
 	public void setPage(Integer page) {
 		this.page = page;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 }
