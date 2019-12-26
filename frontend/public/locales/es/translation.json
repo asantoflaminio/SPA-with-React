@@ -67,7 +67,7 @@
       "bedroomsHolder": "Cantidad de habitaciones...",
       "bathrooms": "Baños",
       "bathroomsHolder": "Cantidad de baños...",
-      "dimention": "Dimensión",
+      "dimention": "Superficie total",
       "dimentionHolder": "Cantidad de metros cuadrados...",
       "parking": "Estacionamiento",
       "parkingHolder": "Cantidad de lugares de estacionamiento...",
@@ -134,7 +134,8 @@
        "overview": "Resumen",
        "bedrooms": "Dormitorios: ",
        "bathrooms": "Baños: ",
-       "floorSize": "Dimensión: ",
+       "floorSize": "Superficie total: ",
+       "coveredFloorSize": "Superficie cubierta: ",
        "parking": "Estacionamiento: ",
        "price": "PRECIO",
        "contact": "¡Contactá al vendedor!",
@@ -147,7 +148,12 @@
        "messagePlaceholder": "Ingresá tu mensaje",
        "submit": "Contactar al vendedor",
        "location": "Ubicación",
-       "loadingMap": "Cargando"
+       "loadingMap": "Cargando",
+       "notAvailable": "N/D",
+       "amenities": "Comidades:",
+       "balconies": "Balcones:",
+       "storage": "Baulera:",
+       "expenses": "Expensas:"
     },
     "mypublications": {
         "title_section": "Mis publicaciones"

@@ -27,6 +27,7 @@ class Details extends React.Component {
             bedrooms: null,
             bathrooms: null,
             floorSize: null,
+            coveredFloorSize: null, 
             parking: null,
             price: null,
             title: null,
@@ -34,7 +35,11 @@ class Details extends React.Component {
             image: null,
             maxImages: null,
             ownerEmail: null,
-            phoneNumber: null
+            phoneNumber: null,
+            balconies: null,
+            amenities: null,
+            storage: null,
+            expenses: null
         }
       }
 
@@ -59,6 +64,7 @@ class Details extends React.Component {
                         bedrooms: pub.bedrooms,
                         bathrooms: pub.bathrooms,
                         floorSize: pub.dimention,
+                        coveredFloorSize: pub.coveredFloorSize,
                         parking: pub.parking,
                         price: pub.price,
                         title: pub.title,
@@ -66,10 +72,16 @@ class Details extends React.Component {
                         image: img,
                         maxImages: pub.images,
                         phoneNumber: pub.phoneNumber,
-                        ownerEmail: pub.userEmail
+                        ownerEmail: pub.userEmail,
+                        amenities: pub.amenities,
+                        storage: pub.storage,
+                        expenses: pub.expenses,
+                        balconies: pub.balconies
                     })
                 })
             })
+
+            
 
         
     }
@@ -82,6 +94,10 @@ class Details extends React.Component {
     }
 
     render(){
+
+        
+        
+
         const { t } = this.props;
             const schema = yup.object({
                 name: yup.string().required( t('errors.requiredField') ),
@@ -90,6 +106,21 @@ class Details extends React.Component {
                 ownerEmail: yup.string(),
                 title: yup.string()
                 });
+                if(this.state.coveredFloorSize == "Optional.empty") {
+                    this.state.coveredFloorSize = t('details.notAvailable');
+                } 
+                if(this.state.balconies == "Optional.empty") {
+                    this.state.balconies = t('details.notAvailable');
+                }
+                if(this.state.amenities == "Optional.empty") {
+                    this.state.amenities = t('details.notAvailable');
+                } 
+                if(this.state.expenses == "Optional.empty") {
+                    this.state.expenses = t('details.notAvailable');
+                } 
+                if(this.state.storage == "Optional.empty") {
+                    this.state.storage = t('details.notAvailable');
+                } 
             return(                                            
                 <div>
                     <div id="cols">
@@ -116,7 +147,12 @@ class Details extends React.Component {
                                     <p class="agency_text">{t('details.bedrooms')} {this.state.bedrooms}</p>
                                     <p class="agency_text">{t('details.bathrooms')} {this.state.bathrooms}</p>
                                     <p class="agency_text">{t('details.floorSize')} {this.state.floorSize} m2</p>
+                                    <p class="agency_text">{t('details.coveredFloorSize')} {this.state.coveredFloorSize} m2</p>
                                     <p class="agency_text">{t('details.parking')} {this.state.parking}</p>
+                                    <p class="agency_text">{t('details.balconies')} {this.state.balconies}</p>
+                                    <p class="agency_text">{t('details.amenities')} {this.state.amenities}</p>
+                                    <p class="agency_text">{t('details.storage')} {this.state.storage}</p>
+                                    <p class="agency_text">{t('details.expenses')} {this.state.expenses} </p>
                                 </div>
                             </div>
                         </div>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,8 +68,11 @@ public class PublicationServiceImpl implements PublicationService{
         publication = new PublicationDTO(pub.getPublicationid(),pub.getTitle(), pub.getProvince().getProvince(), pub.getCity().getCity(), pub.getNeighborhood().getNeighborhood(), pub.getAddress(),
 				pub.getOperation(), pub.getPrice().toString(), pub.getDescription(), pub.getPropertyType(), pub.getBedrooms().toString(), pub.getBathrooms().toString() , 
 				pub.getFloorSize().toString() , pub.getParking().toString(), pub.getPublicationDate().toString(),
-				pub.getCoveredFloorSize().toString(), pub.getBalconies().toString(), pub.getAmenities().toString(),
-				pub.getStorage().toString(), pub.getExpenses().toString());
+				Optional.ofNullable(pub.getCoveredFloorSize()).toString(),
+				Optional.ofNullable(pub.getBalconies()).toString(), 
+				Optional.ofNullable(pub.getAmenities()).toString(),
+				Optional.ofNullable(pub.getStorage()).toString(),
+				Optional.ofNullable(pub.getExpenses()).toString());
         publication.setImages(pub.getImages().size());
         publication.setUserEmail(pub.getUser().getEmail());
         publication.setPhoneNumber(pub.getUser().getPhoneNumber());
@@ -118,8 +122,11 @@ public class PublicationServiceImpl implements PublicationService{
 					publication.getOperation(), publication.getPrice().toString(), publication.getDescription(),
 					publication.getPropertyType(), publication.getBedrooms().toString(), publication.getBathrooms().toString(),
 					publication.getFloorSize().toString(), publication.getParking().toString(), publication.getPublicationDate().toString(),
-					publication.getCoveredFloorSize().toString(), publication.getBalconies().toString(), 
-					publication.getAmenities().toString(), publication.getStorage().toString(), publication.getExpenses().toString()));
+					Optional.ofNullable(publication.getCoveredFloorSize()).toString(),
+					Optional.ofNullable(publication.getBalconies()).toString(), 
+					Optional.ofNullable(publication.getAmenities()).toString(),
+					Optional.ofNullable(publication.getStorage()).toString(),
+					Optional.ofNullable(publication.getExpenses()).toString()));
 		}
 		return publications;
 	}
@@ -215,8 +222,11 @@ public class PublicationServiceImpl implements PublicationService{
 			current = new PublicationDTO(pub.getPublicationid(),pub.getTitle(), pub.getProvince().getProvince(), pub.getCity().getCity(), pub.getNeighborhood().getNeighborhood(), pub.getAddress(),
 										pub.getOperation(), pub.getPrice().toString(), pub.getDescription(), pub.getPropertyType(), pub.getBedrooms().toString(), pub.getBathrooms().toString() , 
 										pub.getFloorSize().toString() , pub.getParking().toString(), pub.getPublicationDate().toString(),
-										pub.getCoveredFloorSize().toString(), pub.getBalconies().toString(), pub.getAmenities().toString(),
-										pub.getStorage().toString(), pub.getExpenses().toString());
+										Optional.ofNullable(pub.getCoveredFloorSize()).toString(),
+										Optional.ofNullable(pub.getBalconies()).toString(), 
+										Optional.ofNullable(pub.getAmenities()).toString(),
+										Optional.ofNullable(pub.getStorage()).toString(),
+										Optional.ofNullable(pub.getExpenses()).toString());
 			current.setImages(pub.getImages().size());
 			
 			publicationsDTO.add(current);

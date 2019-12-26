@@ -69,6 +69,7 @@
         "bedrooms": "Bedrooms: ",
         "bathrooms": "Bathrooms: ",
         "floorSize": "Floor size: ",
+        "coveredFloorSize": "Covered floor size: ",
         "parking": "Parking: ",
         "price": "PRICE",
         "contact": "Contact the agent!",
@@ -81,7 +82,12 @@
         "messagePlaceholder": "Complete your message",
         "submit": "Contact the agent",
         "location": "Location",
-        "loadingMap": "Loading"
+        "loadingMap": "Loading",
+        "notAvailable": "N/A",
+        "amenities": "Amenities:",
+        "balconies": "Balconies:",
+        "storage": "Storage:",
+        "expenses": "Expenses:"
      }, 
      "mypublications": {
       "title_section": "Mis publicaciones"
