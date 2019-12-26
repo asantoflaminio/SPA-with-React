@@ -399,7 +399,7 @@ export const postImages = (publicationID,images)  => {
         const idJSON = {"id": id}
         return await axios({
             method: 'post',
-            url: 'users/getMyPublicationsQuantity',
+            url: 'users/getQuantity',
             data: idJSON
           })
           .then(function (response) {
@@ -425,11 +425,20 @@ export const postImages = (publicationID,images)  => {
           });
     }
 
-    export const getMyPublications = async (pub) => {
+    export const getMyPublications = async (id, page) => {
+        const dat = {
+            "id": id, 
+            "page": page
+        }
+        alert(id);
+        alert(page);
+        alert(JSON.stringify(dat))
+        // const idJSON = {"id": id}
+        // meter el idJSON en vez de dat
         return await axios({
             method: 'post',
-            url: 'users/getMyPublications',
-            data: pub
+            url: 'users/getMyPublicationsMade',
+            data: dat
           })
           .then(function (response) {
               return response.data

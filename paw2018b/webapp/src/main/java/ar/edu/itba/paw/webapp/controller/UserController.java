@@ -24,7 +24,9 @@ import ar.edu.itba.paw.models.UploadFile;
 import ar.edu.itba.paw.models.dto.FiltersDTO;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.ImageDTO;
+import ar.edu.itba.paw.models.dto.MessageDTO;
 import ar.edu.itba.paw.models.dto.MyPublicationsDTO;
+import ar.edu.itba.paw.models.dto.PageDTO;
 import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.QueryDTO;
@@ -32,7 +34,6 @@ import ar.edu.itba.paw.models.dto.UserDTO;
 import ar.edu.itba.paw.models.dto.UserLoginDTO;
 import ar.edu.itba.paw.services.ImageServiceImpl;
 import ar.edu.itba.paw.services.MailServiceImpl;
-import ar.edu.itba.paw.services.MessageDTO;
 
 @Path("users")
 @Component
@@ -176,10 +177,10 @@ public class UserController {
     }
     
     @POST
-    @Path("/getMyPublicationsQuantity")
+    @Path("/getQuantity")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getMyPublicationsQuantity (IDResponseDTO id) {   	
+    public Response getMyPublicationsQuantity (IDResponseDTO id) {   
     	int quantity = ps.getCountPublicationsOfUser(id.getId());
     	return Response.ok().entity(quantity).build();
     	
@@ -196,11 +197,15 @@ public class UserController {
     }
     
     @POST
-    @Path("/getMyPublications")
-    @Produces(value = { MediaType.APPLICATION_JSON})
+    @Path("/getMyPublicationsMade")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
     @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getMyPublications (MyPublicationsDTO myPublications) {
-    	List<PublicationDTO> publications = ps.findByUserId(myPublications.getUserID(), myPublications.getPage().toString());
+    public Response getMyPublications (MyPublicationsDTO pub /*IDResponseDTO id*/) {
+    	System.out.println("entre");
+    	List<PublicationDTO> publications = ps.findByUserId(pub.getUserID(), pub.getPage().toString());
+    	// PageDTO p = new PageDTO(1);
+    	// List<PublicationDTO> publications = ps.findByUserId(id.getId(), p.getPage().toString());
+    	System.out.println("aca" + publications.size());
     	return Response.ok().entity(publications).build();
     }
     

@@ -36,6 +36,7 @@ public class PublicationServiceImpl implements PublicationService{
 			   String description, String propertyType, String bedrooms,
 			   String bathrooms, String floorSize, String parking, long userid) {
 		
+		
 		if(userDao.findById(userid).isLocked())
 			return null;
 		

@@ -1,6 +1,6 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import Navbar from '../components/Navbar'
+import UserNavbar from '../components/UserNavbar'
 import ProfileAsideBar from '../components/ProfileAsideBar'
 import ProfilePublication from '../components/ProfilePublication';
 import * as axiosRequest from '../util/axiosRequest';
@@ -12,20 +12,14 @@ class MyPublications extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: this.getID(),
+            id: 1,
             myPublicationsCounter: 0,
-            publications: [],
+            myPublications: [],
             images: [],
             page: 1,
-            pageQuantity: 0,
-            
         };
       }
-     
-      componentDidMount(){
-        this.updateQuantity();
-        this.updatePublications();
-    }
+    
 
     updateQuantity(){
         let currentComponent = this;
@@ -37,61 +31,26 @@ class MyPublications extends React.Component {
         })
     }
 
-    getID(){
-        return 1; //cambiar dsp
-    }
-    
-
     updatePublications(){
         let currentComponent = this; 
-        let pubinfo = this.generateParamPackage();
 
-        axiosRequest.getMyPublications(pubinfo).then(function(pubs) {
+        axiosRequest.getMyPublications(this.state.id, this.state.page).then(function(pubs) {
             currentComponent.setState({
-                publications: pubs,
+                myPublications: pubs,
             })
-            currentComponent.getImages()
-            currentComponent.updatePublicationsQuantity()
-        })
-
-    }
-
-    updatePublicationsQuantity(){
-        let currentComponent = this
-        let id = this.state.id;
-
-        axiosRequest.getMyPublicationsCount(id).then(function (data){
-            currentComponent.setState({
-                pagesQuantity: Math.ceil(data.count / data.limit),
-            })
+            currentComponent.getImages();
         })
     }
 
-    generateParamPackage() {
-        const param = {
-            id: this.state.id,
-            page: this.state.page,
-        }
-        return param;
-    }
-
-    handlePageClick = data => {
-        let currentComponent = this
-        let pubinfo = this.generateParamPackage();
-        
-        axiosRequest.getMyPublications(pubinfo).then(function (pubs){
-            currentComponent.setState({
-                publications: pubs,
-                page: data.selected + 1
-            })
-            currentComponent.getImages()
-        })
+    componentDidMount(){
+        this.updateQuantity();
+        this.updatePublications();
     }
 
     async getImages(){
         let imagesRequest = []
-        for(let i = 0; i < this.state.publications.length ; i++){
-            await axiosRequest.getImage(this.state.publications[i].publicationID, 0, this.props).then(function (image){
+        for(let i = 0; i < this.state.myPublications.length ; i++){
+            await axiosRequest.getImage(this.state.myPublications[i].publicationID, 0, this.props).then(function (image){
                 imagesRequest.push(image);
             })
         }
@@ -103,9 +62,9 @@ class MyPublications extends React.Component {
     initializePublications(t){
         let pubComponents = [];
         
-        for(let i = 0; i < this.state.publications.length; i++){
+        for(let i = 0; i < this.state.myPublications.length; i++){
             pubComponents.push(
-                <ProfilePublication t={t} publication={this.state.publications[i]} 
+                <ProfilePublication t={t} publication={this.state.myPublications[i]} 
                     image={this.state.images[i]}></ProfilePublication>
             )
         }
@@ -113,9 +72,12 @@ class MyPublications extends React.Component {
         return pubComponents;
     }
 
+    
+
     render(){
         const { t } = this.props;
-        let publications = this.initializePublications(t);        
+        let publications = this.initializePublications(t);  
+      
         return(
             <div>
                 <ProfileAsideBar t={t} />
@@ -123,31 +85,13 @@ class MyPublications extends React.Component {
                     <div className="Publications">
                         <h2 className="title_section">{t('mypublications.title_section')}: {this.state.myPublicationsCounter}</h2> 
                     </div>
-                    <section className="section_publications">
+                </header>
+                <section className="section_publications">
                             <div>
                                 {publications}
                             </div>
-                            <div class="pubsPagination">
-                                <ReactPaginate
-                                previousLabel={'<'}
-                                nextLabel={'>'}
-                                breakLabel={'...'}
-                                pageCount={this.state.pagesQuantity}
-                                marginPagesDisplayed={2}
-                                pageRangeDisplayed={3}
-                                onPageChange={this.handlePageClick}
-                                activeClassName={'active'}
-                                breakClassName={''}
-                                containerClassName={'container-pagination separation'}
-                                pageClassName={''}
-                                previousClassName={''}
-                                nextClassName={''}
-                                forcePage={this.state.page - 1}
-                            />
-                            </div>
+                            
                     </section>
-                </header>
-
             </div>
         );
     }

@@ -43,14 +43,14 @@ class UserNavbar extends React.Component {
                 </Link>
                 <NavDropdown title={t("userNavbar.options")} id="basic-nav-dropdown">
                     <Link to={{pathname: "/MyInformation"}}>
-                        <a href="#" className="dropdown-item">{t("userNavbar.profile")}</a>
+                        <a href="#" className="dropdown-item">{t('userNavbar.profile')}</a>
                     </Link>
                     <Link to={{pathname: "/Publish"}}>
-                        <a href="#" className="dropdown-item">{t("userNavbar.publish")}</a>
+                        <a href="#" className="dropdown-item">{t('userNavbar.publish')}</a>
                     </Link>
                     {adminOption}
                     <NavDropdown.Divider/>
-                    <a href="#" onClick={this.signOut} className="dropdown-item">{t("userNavbar.signOut")}</a>
+                    <a href="#" onClick={this.signOut} className="dropdown-item">{t('userNavbar.signOut')}</a>
                 </NavDropdown>
             </nav>
         )

@@ -2,19 +2,21 @@ package ar.edu.itba.paw.models.dto;
 
 public class MyPublicationsDTO {
 
-	private Integer id;
+	private long id;
 	private Integer page;
 	
-	public MyPublicationsDTO (Integer id, Integer page) {
+	public MyPublicationsDTO (long id, Integer page) {
 		this.setUserID(id);
 		this.setPage(page);
 	}
+	
+	public MyPublicationsDTO() {}
 
-	public Integer getUserID() {
+	public long getUserID() {
 		return id;
 	}
 
-	public void setUserID(Integer userid) {
+	public void setUserID(long userid) {
 		this.id = userid;
 	}
 
