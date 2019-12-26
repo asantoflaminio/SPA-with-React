@@ -54,7 +54,6 @@ public class PersistentLoginHibernateDao implements PersistentTokenRepository {
 	@Override
 	@Transactional
 	public PersistentRememberMeToken getTokenForSeries(String seriesId) {
-		System.out.println("Me llamaron get :3 con " + seriesId);
 		final String queryString = "from PersistentLogin as pl WHERE pl.series = :series";
 		final TypedQuery<PersistentLogin> query = em.createQuery(queryString, PersistentLogin.class);
 		query.setParameter("series", seriesId);

@@ -12,7 +12,8 @@ public interface PublicationService {
 	
 	public Publication create(String title, String address,String neighborhood, String city, String province, String operation, String price,
 			   String description, String propertyType, String bedrooms,
-			   String bathrooms, String floorSize, String parking, long userid);
+			   String bathrooms, String floorSize, String parking, long userid,
+			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses);
 	
 	public List<PublicationDTO> findNewest(String operation);
 	
@@ -49,7 +50,9 @@ public interface PublicationService {
 	
 	public boolean editData(String title, String address,String neighborhood, String city, String province, String operation, String price,
 			   String description, String propertyType, String bedrooms,
-			   String bathrooms, String floorSize, String parking, long publicationid);
+			   String bathrooms, String floorSize, String parking, long publicationid,
+			   String coveredFloorSize, String balconies, String amenities,
+			   String storage, String expenses);
 	
 	public void lockUnlockPublication(boolean status, long publicationid);
 	
@@ -58,5 +61,6 @@ public interface PublicationService {
 	public int getCountAllPublications();
 	
 	public List<PublicationDTO> transform(List<Publication> publications);
+
 	
 }

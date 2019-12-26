@@ -70,6 +70,21 @@ public class Publication {
 	@Column(length = 3, nullable = false, unique = false)
 	private Integer parking;
 	
+	@Column(length = 5, nullable = false, unique = false)
+	private Integer coveredFloorSize;
+	
+	@Column(length = 1, nullable = false, unique = false)
+	private Integer balconies;
+	
+	@Column(length = 140, nullable = false, unique = false)
+	private String amenities;
+	
+	@Column(length = 140, nullable = false, unique = false)
+	private String storage;
+	
+	@Column(length = 30, nullable = false, unique = false)
+	private Integer expenses;
+	
 	@Column(length = 25, nullable = false, unique = false)
 	private Date publicationDate;
 	
@@ -88,7 +103,8 @@ public class Publication {
 	public Publication(long publicationid, String title, String address, 
 					   String operation, Integer price,
 					   String description, String propertyType, Integer bedrooms,
-					   Integer bathrooms, Integer floorSize, Integer parking, Date publicationDate) {
+					   Integer bathrooms, Integer floorSize, Integer parking, Date publicationDate, 
+					   Integer coveredFloorSize, Integer balconies, String amenities, String storage, Integer expenses) {
 		
 		this.publicationid = publicationid;
 		this.title = title;
@@ -103,12 +119,20 @@ public class Publication {
 		this.setParking(parking);
 		this.publicationDate = publicationDate;
 		this.locked = false;
+		this.setCoveredFloorSize(coveredFloorSize);
+		this.setBalconies(balconies);
+		this.setAmenities(amenities);
+		this.setStorage(storage);
+		this.setExpenses(expenses);
+		
 	}
 	
+
 	public Publication(String title, String address, 
 			   String operation, Integer price,
 			   String description, String propertyType, Integer bedrooms,
-			   Integer bathrooms, Integer floorSize, Integer parking, Date publicationDate) {
+			   Integer bathrooms, Integer floorSize, Integer parking, Date publicationDate,
+			   Integer coveredFloorSize, Integer balconies, String amenities, String storage, Integer expenses) {
 	
 		this.title = title;
 		this.address = address;
@@ -122,6 +146,11 @@ public class Publication {
 		this.setParking(parking);
 		this.publicationDate = publicationDate;
 		this.locked = false;
+		this.setCoveredFloorSize(coveredFloorSize);
+		this.setBalconies(balconies);
+		this.setAmenities(amenities);
+		this.setStorage(storage);
+		this.setExpenses(expenses);
 	}
 	
 	public long getPublicationid() {
@@ -269,6 +298,47 @@ public class Publication {
 
 	public void setLocked(boolean locked) {
 		this.locked = locked;
+	}
+	
+
+	public Integer getCoveredFloorSize() {
+		return coveredFloorSize;
+	}
+
+	public void setCoveredFloorSize(Integer coveredFloorSize) {
+		this.coveredFloorSize = coveredFloorSize;
+	}
+
+	public Integer getBalconies() {
+		return balconies;
+	}
+
+	public void setBalconies(Integer balconies) {
+		this.balconies = balconies;
+	}
+
+	public String getAmenities() {
+		return amenities;
+	}
+
+	public void setAmenities(String amenities) {
+		this.amenities = amenities;
+	}
+
+	public String getStorage() {
+		return storage;
+	}
+
+	public void setStorage(String storage) {
+		this.storage = storage;
+	}
+
+	public Integer getExpenses() {
+		return expenses;
+	}
+
+	public void setExpenses(Integer expenses) {
+		this.expenses = expenses;
 	}
 
 }

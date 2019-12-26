@@ -75,7 +75,9 @@ public class UserController {
     			publicationDTO.getCityID(), publicationDTO.getProvinceID(), publicationDTO.getOperation(), 
     			publicationDTO.getPrice(), publicationDTO.getDescription(), publicationDTO.getPropertyType(), 
     			publicationDTO.getBedrooms(), publicationDTO.getBathrooms(), publicationDTO.getDimention(), 
-    			publicationDTO.getParking(), 1);
+    			publicationDTO.getParking(), 1,
+    			publicationDTO.getCoveredFloorSize(), publicationDTO.getBalconies(),
+    			publicationDTO.getAmenities(), publicationDTO.getStorage(), publicationDTO.getExpenses());
     	
     	if(pub != null)
     		return Response.ok().entity(new IDResponseDTO(pub.getPublicationid())).build();

@@ -75,10 +75,13 @@ public class PublicationHibernateDao implements PublicationDao{
 	@Transactional
 	public Publication create(String title, String address,String neighborhood, String city, String province, String operation, String price,
 			   String description, String propertyType, String bedrooms,
-			   String bathrooms, String floorSize, String parking, long userid) {
+			   String bathrooms, String floorSize, String parking, long userid, 
+			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses) {
 		final Publication pub = new Publication(title, address, operation, Integer.valueOf(price),
 				   description, propertyType, Integer.valueOf(bedrooms),
-				   Integer.valueOf(bathrooms), Integer.valueOf(floorSize), Integer.valueOf(parking), new Date());
+				   Integer.valueOf(bathrooms), Integer.valueOf(floorSize), Integer.valueOf(parking), new Date(),
+				   Integer.valueOf(coveredFloorSize), Integer.valueOf(balconies), amenities, storage, Integer.valueOf(expenses));
+
 		User user = userDaoInt.findById(userid);
 		pub.setUser(user);
 		Neighborhood n = em.find(Neighborhood.class, Long.parseLong(neighborhood));
@@ -173,13 +176,19 @@ public class PublicationHibernateDao implements PublicationDao{
 	@Transactional
 	public boolean editData(String title, String address,String neighborhood, String city, String province, String operation, String price,
 			   String description, String propertyType, String bedrooms,
-			   String bathrooms, String floorSize, String parking, long publicationid) {
+			   String bathrooms, String floorSize, String parking, long publicationid,
+			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses) {
 		final Query query =  em.createQuery("update Publication as pub set pub.title = :title, "
 													 + "pub.address = :address, "
 													 + "pub.operation = :operation, pub.price = :price, "
 													 + "pub.description = :description, pub.propertyType = :propertyType, "
 													 + "pub.bedrooms = :bedrooms, pub.bathrooms = :bathrooms, pub.floorSize = :floorSize, "
 													 + "pub.parking = :parking "
+													 + "pub.coveredfloorsize = :coveredFloorSize "
+													 + "pub.balconies = :balconies "
+													 + "pub.amenities = :amenities "
+													 + "pub.storage = :storage "
+													 + "pub.expenses = :expenses "
 													 + "where pub.publicationid = :publicationid");
 
 		query.setParameter("title", title);
@@ -193,6 +202,11 @@ public class PublicationHibernateDao implements PublicationDao{
 		query.setParameter("floorSize", Integer.parseInt(floorSize));
 		query.setParameter("parking", Integer.parseInt(parking));
 		query.setParameter("publicationid", publicationid);
+		query.setParameter("coveredFloorSize", Integer.parseInt(coveredFloorSize));
+		query.setParameter("balconies", Integer.parseInt(balconies));
+		query.setParameter("amenities", amenities);
+		query.setParameter("storage", storage);
+		query.setParameter("expenses", Integer.parseInt(expenses));
 		Publication pub = em.find(Publication.class, publicationid);
 		Neighborhood n = em.find(Neighborhood.class, Long.parseLong(neighborhood));
 		City c = em.find(City.class, Long.parseLong(city));

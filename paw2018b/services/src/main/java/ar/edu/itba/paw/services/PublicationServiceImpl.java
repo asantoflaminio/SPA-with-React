@@ -34,7 +34,8 @@ public class PublicationServiceImpl implements PublicationService{
 	@Override
 	public Publication create(String title, String address,String neighborhood, String city, String province, String operation, String price,
 			   String description, String propertyType, String bedrooms,
-			   String bathrooms, String floorSize, String parking, long userid) {
+			   String bathrooms, String floorSize, String parking, long userid,
+			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses) {
 		
 		
 		if(userDao.findById(userid).isLocked())
@@ -43,13 +44,13 @@ public class PublicationServiceImpl implements PublicationService{
 		if(! vs.validatePublication(title, address, neighborhood,
 				   city, province, operation, price,
 				   description, propertyType, bedrooms,
-				   bathrooms, floorSize, parking, userid)) 
+				   bathrooms, floorSize, parking, userid, coveredFloorSize, balconies, amenities, storage, expenses)) 
 			return null;
 		
 		LOGGER.debug("Creating publication with title {}", title);
 		return publicationDao.create(title, address, neighborhood, city, province, operation, price,
 				   description, propertyType, bedrooms,
-				   bathrooms, floorSize, parking, userid);
+				   bathrooms, floorSize, parking, userid, coveredFloorSize, balconies, amenities, storage, expenses);
 	}
 	
 	@Override
@@ -65,7 +66,9 @@ public class PublicationServiceImpl implements PublicationService{
         pub = publicationDao.findById(publicationid);
         publication = new PublicationDTO(pub.getPublicationid(),pub.getTitle(), pub.getProvince().getProvince(), pub.getCity().getCity(), pub.getNeighborhood().getNeighborhood(), pub.getAddress(),
 				pub.getOperation(), pub.getPrice().toString(), pub.getDescription(), pub.getPropertyType(), pub.getBedrooms().toString(), pub.getBathrooms().toString() , 
-				pub.getFloorSize().toString() , pub.getParking().toString(), pub.getPublicationDate().toString());
+				pub.getFloorSize().toString() , pub.getParking().toString(), pub.getPublicationDate().toString(),
+				pub.getCoveredFloorSize().toString(), pub.getBalconies().toString(), pub.getAmenities().toString(),
+				pub.getStorage().toString(), pub.getExpenses().toString());
         publication.setImages(pub.getImages().size());
         publication.setUserEmail(pub.getUser().getEmail());
         publication.setPhoneNumber(pub.getUser().getPhoneNumber());
@@ -86,18 +89,21 @@ public class PublicationServiceImpl implements PublicationService{
 	@Override
 	public boolean editData(String title, String address,String neighborhood, String city, String province, String operation, String price,
 			   String description, String propertyType, String bedrooms,
-			   String bathrooms, String floorSize, String parking, long publicationid) {
+			   String bathrooms, String floorSize, String parking, long publicationid,
+			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses) {
 		
 		if(! vs.validatePublication(title, address, neighborhood,
 				   city, province, operation, price,
 				   description, propertyType, bedrooms,
-				   bathrooms, floorSize, parking, publicationid))
+				   bathrooms, floorSize, parking, publicationid,
+				   coveredFloorSize, balconies, amenities, storage, expenses))
 			return false;
 		
 		LOGGER.debug("Editing data of publication with title {}", title);
 		return publicationDao.editData(title, address, neighborhood, city, province, operation, price,
 				   description, propertyType, bedrooms,
-				   bathrooms, floorSize, parking, publicationid);
+				   bathrooms, floorSize, parking, publicationid,
+				   coveredFloorSize, balconies, amenities, storage, expenses);
 
 	}
 	
@@ -111,7 +117,9 @@ public class PublicationServiceImpl implements PublicationService{
 					publication.getCity().getCity(), publication.getNeighborhood().getNeighborhood(), publication.getAddress(), 
 					publication.getOperation(), publication.getPrice().toString(), publication.getDescription(),
 					publication.getPropertyType(), publication.getBedrooms().toString(), publication.getBathrooms().toString(),
-					publication.getFloorSize().toString(), publication.getParking().toString(), publication.getPublicationDate().toString()));
+					publication.getFloorSize().toString(), publication.getParking().toString(), publication.getPublicationDate().toString(),
+					publication.getCoveredFloorSize().toString(), publication.getBalconies().toString(), 
+					publication.getAmenities().toString(), publication.getStorage().toString(), publication.getExpenses().toString()));
 		}
 		return publications;
 	}
@@ -206,7 +214,9 @@ public class PublicationServiceImpl implements PublicationService{
 		for(Publication pub: publications) {
 			current = new PublicationDTO(pub.getPublicationid(),pub.getTitle(), pub.getProvince().getProvince(), pub.getCity().getCity(), pub.getNeighborhood().getNeighborhood(), pub.getAddress(),
 										pub.getOperation(), pub.getPrice().toString(), pub.getDescription(), pub.getPropertyType(), pub.getBedrooms().toString(), pub.getBathrooms().toString() , 
-										pub.getFloorSize().toString() , pub.getParking().toString(), pub.getPublicationDate().toString());
+										pub.getFloorSize().toString() , pub.getParking().toString(), pub.getPublicationDate().toString(),
+										pub.getCoveredFloorSize().toString(), pub.getBalconies().toString(), pub.getAmenities().toString(),
+										pub.getStorage().toString(), pub.getExpenses().toString());
 			current.setImages(pub.getImages().size());
 			
 			publicationsDTO.add(current);

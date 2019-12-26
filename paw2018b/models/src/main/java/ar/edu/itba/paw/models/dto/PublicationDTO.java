@@ -15,16 +15,23 @@ public class PublicationDTO {
 	private String bathrooms;
 	private String dimention;
 	private String parking;
+	private String coveredFloorSize;
+	private String balconies;
+	private String amenities;
+	private String storage;
+	private String expenses;
 	private long publicationID;
 	private String date;
 	private int images;
 	private String userEmail;
 	private String phoneNumber;
 	
+	
 	public PublicationDTO(long publicationID, String title, String provinceID, String cityID, String neighborhoodID,
 							String address, String operation, String price, String description,
 							String propertyType, String bedrooms, String bathrooms, String dimention,
-							String parking, String date) {
+							String parking, String date,
+							String coveredFloorSize, String balconies, String amenities, String storage, String expenses) {
 		this.publicationID = publicationID;
 		this.title = title;
 		this.setProvinceID(provinceID);
@@ -39,6 +46,11 @@ public class PublicationDTO {
 		this.bathrooms = bathrooms;
 		this.dimention = dimention;
 		this.parking = parking;
+		this.coveredFloorSize = coveredFloorSize;
+		this.balconies = balconies;
+		this.amenities = amenities;
+		this.storage = storage;
+		this.expenses = expenses;
 		this.setDate(date);
 	}
 	
@@ -151,6 +163,46 @@ public class PublicationDTO {
 
 	public long getPublicationID() {
 		return publicationID;
+	}
+
+	public String getCoveredFloorSize() {
+		return coveredFloorSize;
+	}
+
+	public void setCoveredFloorSize(String coveredFloorSize) {
+		this.coveredFloorSize = coveredFloorSize;
+	}
+
+	public String getBalconies() {
+		return balconies;
+	}
+
+	public void setBalconies(String balconies) {
+		this.balconies = balconies;
+	}
+
+	public String getAmenities() {
+		return amenities;
+	}
+
+	public void setAmenities(String amenities) {
+		this.amenities = amenities;
+	}
+
+	public String getStorage() {
+		return storage;
+	}
+
+	public void setStorage(String storage) {
+		this.storage = storage;
+	}
+
+	public String getExpenses() {
+		return expenses;
+	}
+
+	public void setExpenses(String expenses) {
+		this.expenses = expenses;
 	}
 
 	public void setPublicationID(long publicationID) {

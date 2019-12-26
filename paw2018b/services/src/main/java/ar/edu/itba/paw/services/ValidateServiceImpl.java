@@ -36,6 +36,7 @@ public class ValidateServiceImpl implements ValidateService{
 	private final static int THIRD_FORM_MIN_LENGTH = 1;
 	private final static int THIRD_FORM_MAX_LENGTH = 3;
 	private final static int DIMENSION_MAX_LENGTH = 5;
+	private final static int AMENITIES_MAX_LENGTH = 140;
 	
 	
 	//Location constants
@@ -80,7 +81,8 @@ public class ValidateServiceImpl implements ValidateService{
 	public boolean validatePublication(String title, String address, String neighborhood,
 			   String city, String province, String operation, String price,
 			   String description, String propertyType, String bedrooms,
-			   String bathrooms, String floorSize, String parking, long userid){
+			   String bathrooms, String floorSize, String parking, long userid,
+			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses){
 		
 		final String numbersRegex = "[0-9]+";
 		final String lettesNumersAndSpacesRegex = "[\\p{L}0-9 ]+";
@@ -98,7 +100,13 @@ public class ValidateServiceImpl implements ValidateService{
 			! validateInputNumber(bedrooms, THIRD_FORM_MIN_LENGTH, THIRD_FORM_MAX_LENGTH, numbersRegex, "Bedrooms") ||
 			! validateInputNumber(bathrooms, THIRD_FORM_MIN_LENGTH, THIRD_FORM_MAX_LENGTH, numbersRegex, "Bathrooms") ||
 			! validateInputNumber(floorSize, THIRD_FORM_MIN_LENGTH, DIMENSION_MAX_LENGTH, numbersRegex, "FloorSize") ||
-			! validateInputNumber(parking, THIRD_FORM_MIN_LENGTH, THIRD_FORM_MAX_LENGTH, numbersRegex, "Parking")
+			! validateInputNumber(parking, THIRD_FORM_MIN_LENGTH, THIRD_FORM_MAX_LENGTH, numbersRegex, "Parking") ||
+			! validateInputNumber(coveredFloorSize, THIRD_FORM_MIN_LENGTH, DIMENSION_MAX_LENGTH, numbersRegex, "CoveredFloorSize") ||
+			! validateInputNumber(balconies, THIRD_FORM_MIN_LENGTH, THIRD_FORM_MIN_LENGTH, numbersRegex, "Balconies") ||
+			! validateInputNumber(amenities, THIRD_FORM_MIN_LENGTH, AMENITIES_MAX_LENGTH, lettesNumersAndSpacesRegexComma, "Amenities") ||
+			! validateInputNumber(storage, THIRD_FORM_MIN_LENGTH, DIMENSION_MAX_LENGTH, lettesNumersAndSpacesRegex, "Storage") ||
+			! validateInputNumber(expenses, PRICE_MIN_LENGTH, PRICE_MAX_LENGTH, numbersRegex, "Expenses")
+			
 		  ) {
 			return false;
 		}
