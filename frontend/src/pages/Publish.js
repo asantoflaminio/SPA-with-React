@@ -298,7 +298,7 @@ class Publish extends React.Component {
                                     isInvalid={!!errors.expenses}
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                    {errors.price}
+                                    {errors.expenses}
                                 </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group as={Col} md="12" controlId="validationFormik09">
