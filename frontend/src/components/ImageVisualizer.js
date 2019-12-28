@@ -5,6 +5,7 @@ import previousArrow from '../resources/arrow_left.png';
 import heartFilled from '../resources/heart_filled.png';
 import * as utilFunction from '../util/function';
 import PublicationService from '../services/PublicationService';
+import JsonService from '../services/JsonService'
 
 class ImageVisualizer extends React.Component {
     constructor(props) {
@@ -26,7 +27,9 @@ class ImageVisualizer extends React.Component {
             nextIndex = currentIndex + 1;
     
         let component = this;
-        PublicationService.getImage(this.props.publicationID,nextIndex, this.props).then(function (src){
+        let names = ["publicationID","index"]
+        let values = [this.props.publicationID,nextIndex]
+        PublicationService.getImage(JsonService.createJSONArray(names,values), this.props).then(function (src){
             img.src = utilFunction.setSRC(src)
             component.setState({
                 index: nextIndex
@@ -47,7 +50,9 @@ class ImageVisualizer extends React.Component {
             previousIndex = currentIndex - 1;
     
         let component = this
-        PublicationService.getImage(this.props.publicationID,previousIndex).then(function (src){
+        let names = ["publicationID","index"]
+        let values = [this.props.publicationID,previousIndex]
+        PublicationService.getImage(JsonService.createJSONArray(names,values), this.props).then(function (src){
             img.src = utilFunction.setSRC(src)
             component.setState({
                 index: previousIndex
@@ -64,7 +69,7 @@ class ImageVisualizer extends React.Component {
 
         return(
             <div class={this.props.containerClass}>
-                <img class={this.props.imageClass} id={this.props.page + this.props.publicationID} src={utilFunction.setSRC(this.props.image)} />
+                <img class={this.props.imageClass} alt="img" id={this.props.page + this.props.publicationID} src={utilFunction.setSRC(this.props.image)} />
                 <img class="favorite-icon" src={heartFilled} alt="Fave" />
                 <img class={this.props.previousClass} src={previousArrow} alt="Previous" onClick={() => this.getPreviousImage(this.props.page)}/>
                 <img class={this.props.nextClass} src={nextArrow} alt="Next" onClick={() => this.getNextImage(this.props.page)}/>

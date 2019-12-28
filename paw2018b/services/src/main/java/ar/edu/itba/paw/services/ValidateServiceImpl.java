@@ -103,8 +103,8 @@ public class ValidateServiceImpl implements ValidateService{
 			! validateInputNumber(parking, THIRD_FORM_MIN_LENGTH, THIRD_FORM_MAX_LENGTH, numbersRegex, "Parking") ||
 			! validateInputNumber(coveredFloorSize, THIRD_FORM_MIN_LENGTH, DIMENSION_MAX_LENGTH, numbersRegex, "CoveredFloorSize") ||
 			! validateInputNumber(balconies, THIRD_FORM_MIN_LENGTH, THIRD_FORM_MIN_LENGTH, numbersRegex, "Balconies") ||
-			! validateInputNumber(amenities, THIRD_FORM_MIN_LENGTH, AMENITIES_MAX_LENGTH, lettesNumersAndSpacesRegexComma, "Amenities") ||
-			! validateInputNumber(storage, THIRD_FORM_MIN_LENGTH, DIMENSION_MAX_LENGTH, lettesNumersAndSpacesRegex, "Storage") ||
+			! validateInputText(amenities, THIRD_FORM_MIN_LENGTH, AMENITIES_MAX_LENGTH, lettesNumersAndSpacesRegexComma, "Amenities") ||
+			! validateInputText(storage, THIRD_FORM_MIN_LENGTH, DIMENSION_MAX_LENGTH, lettesNumersAndSpacesRegex, "Storage") ||
 			! validateInputNumber(expenses, PRICE_MIN_LENGTH, PRICE_MAX_LENGTH, numbersRegex, "Expenses")
 			
 		  ) {

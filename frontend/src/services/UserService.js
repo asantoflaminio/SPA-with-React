@@ -18,7 +18,7 @@ const UserService = (function(){
         return await axios({
           method: 'post',
           url: USERS_PATH + 'signUp',
-          data: JsonService.getJSONForm(event)
+          data: JsonService.getJSONParsed(event.target)
         })
         .then(function (response) {
             return response.data
@@ -28,11 +28,11 @@ const UserService = (function(){
         });
     }
 
-    async function _login(names, values, props){
+    async function _login(array, props){
         return await axios({
           method: 'post',
           url: USERS_PATH + 'login',
-          data: JsonService.getJSONArray(names,values)
+          data: JsonService.getJSONParsed(array)
         })
         .then(function (response) {
             LocalStorageService.setToken(response.headers.authorization, response.headers.authorities)
@@ -46,7 +46,7 @@ const UserService = (function(){
         return await axios({
           method: 'post',
           url: USERS_PATH + 'publish',
-          data: JsonService.getJSONForm(event),
+          data: JsonService.getJSONParsed(event.target),
           headers: {
             authorization: LocalStorageService.getAccessToken(),
           }
@@ -83,7 +83,7 @@ const UserService = (function(){
         return await axios({
           method: 'post',
           url: USERS_PATH + 'sendMessage',
-          data: JsonService.getJSONObject(event.target,5)
+          data: JsonService.getJSONParsed(event.target)
         })
         .then(function (response) {
             return response;
@@ -93,12 +93,11 @@ const UserService = (function(){
         });
     }
 
-    async function _getMyPublicationsQuantity(id,props){
-        const idJSON = {"id": id}
+    async function _getMyPublicationsQuantity(array,props){
         return await axios({
             method: 'post',
             url: USERS_PATH + 'getQuantity',
-            data: idJSON,
+            data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
@@ -111,12 +110,11 @@ const UserService = (function(){
           });
     }
 
-    async function _getMyFavoritesCount(id,props){
-        const idJSON = {"id": id}
+    async function _getMyFavoritesCount(array,props){
         return await axios({
             method: 'post',
             url: USERS_PATH + 'getMyFavoritesQuantity',
-            data: idJSON,
+            data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
@@ -129,15 +127,11 @@ const UserService = (function(){
           });
     }
 
-    async function _getMyPublications(id, page, props){
-        const dat = {
-            "id": id, 
-            "page": page
-        }
+    async function _getMyPublications(array, props){
         return await axios({
             method: 'post',
             url: USERS_PATH + 'getMyPublicationsMade',
-            data: dat,
+            data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
@@ -150,11 +144,11 @@ const UserService = (function(){
           });
     }
 
-    async function _getMyPublicationsCount(id,props){
+    async function _getMyPublicationsCount(array,props){
         return await axios({
             method: 'post',
             url: USERS_PATH + 'getMyPublicationsCount',
-            data: id,
+            data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }

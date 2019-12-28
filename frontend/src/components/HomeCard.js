@@ -4,6 +4,7 @@ import ImgVisualizer from './ImageVisualizer';
 import {Link} from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import PublicationService from '../services/PublicationService'
+import JsonService from '../services/JsonService';
 
 class HomeCard extends React.Component {
     constructor(props) {
@@ -15,7 +16,9 @@ class HomeCard extends React.Component {
 
       componentDidMount(){
           let component = this
-          PublicationService.getImage(this.props.publication.publicationID,0, this.props).then(function (img){
+          let names = ["publicationID","index"]
+          let values = [this.props.publication.publicationID,0]
+          PublicationService.getImage(JsonService.createJSONArray(names,values), this.props).then(function (img){
               component.setState({
                   image: img
               })

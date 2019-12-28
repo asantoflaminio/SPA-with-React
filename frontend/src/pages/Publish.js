@@ -102,7 +102,7 @@ class Publish extends React.Component {
         let currentComponent = this
         event.preventDefault();
         UserService.postPublication(event, this.props).then(function (publicationID){
-            UserService.postImages(publicationID,currentComponent.state.pictures);
+            UserService.postImages(publicationID,currentComponent.state.pictures,currentComponent.props);
         })
 
     }

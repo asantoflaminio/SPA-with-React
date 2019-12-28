@@ -46,12 +46,11 @@ const PublicationService = (function(){
           });
     }
 
-    async function _getPublication(id, props){
-        const idJSON = {"id": id,}
+    async function _getPublication(array, props){
         return await axios({
             method: 'post',
             url: PUBLICATIONS_PATH + 'getPublicationByID',
-            data: idJSON
+            data: JsonService.getJSONParsed(array)
           })
           .then(function (response) {
               return response.data
@@ -89,13 +88,11 @@ const PublicationService = (function(){
           });
     }
 
-    async function _getImage(publicationID,index,props){
-        const request = JsonService.generateImageJSON(publicationID,index)
-        const jsonObject = JSON.parse(request);
+    async function _getImage(array,props){
         return await axios({
             method: 'post',
             url: PUBLICATIONS_PATH + 'getPublicationImage',
-            data: jsonObject,
+            data: JsonService.getJSONParsed(array)
           })
           .then(function (response) {
             return response.data

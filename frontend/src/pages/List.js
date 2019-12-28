@@ -8,6 +8,7 @@ import Publication from '../components/Publication';
 import * as utilFunction from '../util/function';
 import ReactPaginate from 'react-paginate';
 import PublicationService from '../services/PublicationService'
+import JsonService from '../services/JsonService'
 
 
 class List extends React.Component {
@@ -65,8 +66,11 @@ class List extends React.Component {
 
     async getImages(){
         let imagesRequest = []
+        
         for(let i = 0; i < this.state.publications.length ; i++){
-            await PublicationService.getImage(this.state.publications[i].publicationID,0, this.props).then(function (image){
+            let names = ["publicationID","index"]
+            let values = [this.state.publications[i].publicationID,0]
+            await PublicationService.getImage(JsonService.createJSONArray(names,values), this.props).then(function (image){
                 imagesRequest.push(image);
             })
         }

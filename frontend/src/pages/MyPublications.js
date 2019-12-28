@@ -2,10 +2,10 @@ import React from 'react';
 import { withTranslation } from 'react-i18next';
 import ProfileAsideBar from '../components/ProfileAsideBar'
 import ProfilePublication from '../components/ProfilePublication';
-import ReactPaginate from 'react-paginate';
 import { withRouter } from "react-router";
 import UserService from '../services/UserService'
 import PublicationService from '../services/PublicationService'
+import JsonService from '../services/JsonService'
 
 
 class MyPublications extends React.Component {
@@ -23,8 +23,9 @@ class MyPublications extends React.Component {
 
     updateQuantity(){
         let currentComponent = this;
-
-        UserService.getMyPublicationsQuantity(this.state.id).then(function (quantity) {
+        let names = ["id"]
+        let values = [this.state.id]
+        UserService.getMyPublicationsQuantity(JsonService.createJSONArray(names,values),this.props).then(function (quantity) {
             currentComponent.setState({
                 myPublicationsCounter: quantity,
             })
@@ -33,8 +34,9 @@ class MyPublications extends React.Component {
 
     updatePublications(){
         let currentComponent = this; 
-
-        UserService.getMyPublications(this.state.id, this.state.page).then(function(pubs) {
+        let names = ["id","page"]
+        let values = [this.state.id,this.state.page]
+        UserService.getMyPublications(JsonService.createJSONArray(names,values),this.props).then(function(pubs) {
             currentComponent.setState({
                 myPublications: pubs,
             })
@@ -50,7 +52,9 @@ class MyPublications extends React.Component {
     async getImages(){
         let imagesRequest = []
         for(let i = 0; i < this.state.myPublications.length ; i++){
-            await PublicationService.getImage(this.state.myPublications[i].publicationID, 0, this.props).then(function (image){
+            let names = ["publicationID","index"]
+            let values = [this.state.myPublications[i].publicationID,0]
+            await PublicationService.getImage(JsonService.createJSONArray(names,values), this.props).then(function (image){
                 imagesRequest.push(image);
             })
         }

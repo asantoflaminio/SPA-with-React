@@ -2,7 +2,6 @@ import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from '../components/Navbar'
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import '../css/AdminGenerator.css';
@@ -65,7 +64,7 @@ class AdminGenerator extends React.Component {
     render(){
         const { t } = this.props;
         const provinces = this.state.provinces.map(function(item){
-            return <option value={item.provinceID}>  {item.province} </option>;
+            return <option value={item.provinceID} name="provinceID">  {item.province} </option>;
           });
         const schemaProvince = yup.object({
             province: yup.string().required(t('errors.requiredField'))

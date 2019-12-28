@@ -8,6 +8,7 @@ import '../css/SignUp.css';
 import {Redirect} from 'react-router-dom';
 import { withRouter } from "react-router";
 import UserService from '../services/UserService'
+import JsonService from '../services/JsonService'
 
 
 
@@ -26,7 +27,7 @@ class SignUp extends React.Component {
         UserService.signUp(event,this.props).then(function (data){
             let names = ["email","password"];
             let values = [data.email,data.password]
-            UserService.login(names,values,currentComponent.props).then(function (data){
+            UserService.login(JsonService.createJSONArray(names,values),currentComponent.props).then(function (data){
                 currentComponent.setState({
                     isLogged: true
                 })

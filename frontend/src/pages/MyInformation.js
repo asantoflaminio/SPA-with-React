@@ -1,7 +1,6 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import ProfileAsideBar from '../components/ProfileAsideBar'
-import UserService from '../services/UserService'
 import '../css/Profile.css';
 import { withRouter } from "react-router";
 
@@ -16,8 +15,6 @@ class MyInformation extends React.Component {
      
 
     componentDidMount(){
-        let currentComponent = this;
-        
     }
     
 

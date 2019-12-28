@@ -5,6 +5,8 @@ import axios from 'axios';
 
 const AdminService = (function(){
 
+    const ADMIN_PATH = 'admin/'
+
     function _isAdmin(){
         let access = LocalStorageService.getAccessRole()
         if(access != null && access.includes("ROLE_ADMIN"))
@@ -16,8 +18,8 @@ const AdminService = (function(){
     function _postProvice(event,props){
         axios({
             method: 'post',
-            url: 'admin/province',
-            data: JsonService.getJSONForm(event),
+            url: ADMIN_PATH + 'province',
+            data: JsonService.getJSONParsed(event.target),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
@@ -30,8 +32,8 @@ const AdminService = (function(){
     function _postCity(event,props){
         axios({
           method: 'post',
-          url: 'admin/city',
-          data: JsonService.getJSONForm(event),
+          url: ADMIN_PATH + 'city',
+          data: JsonService.getJSONParsed(event.target),
           headers: {
             authorization: LocalStorageService.getAccessToken(),
         }
@@ -44,8 +46,8 @@ const AdminService = (function(){
     function _postNeighborhood(event,props){
         axios({
           method: 'post',
-          url: 'admin/neighborhood',
-          data: JsonService.getJSONForm(event),
+          url: ADMIN_PATH + 'neighborhood',
+          data: JsonService.getJSONParsed(event.target),
           headers: {
             authorization: LocalStorageService.getAccessToken(),
         }
@@ -58,7 +60,7 @@ const AdminService = (function(){
     async function _getProvinces(props){
         return await axios({
             method: 'get',
-            url: 'admin/getProvinces',
+            url: ADMIN_PATH + 'getProvinces',
           })
           .then(function (response) {
               return response.data.provinces
@@ -71,8 +73,8 @@ const AdminService = (function(){
     async function _getCities(event,props){
         return await axios({
             method: 'post',
-            url: 'admin/getCities',
-            data: JsonService.getJSONForm(event),
+            url: ADMIN_PATH + 'getCities',
+            data: JsonService.getJSONParsed(event.target),
           })
           .then(function (response) {
               return response.data.cities
@@ -85,8 +87,8 @@ const AdminService = (function(){
     async function _getNeighborhoods(event, props){
         return await axios({
             method: 'post',
-            url: 'admin/getNeighborhoods',
-            data: JsonService.getJSONForm(event),
+            url: ADMIN_PATH + 'getNeighborhoods',
+            data: JsonService.getJSONParsed(event.target),
           })
           .then(function (response) {
               return response.data.neighborhoods
@@ -102,7 +104,7 @@ const AdminService = (function(){
         }
         return await axios({
             method: 'post',
-            url: 'admin/getUsers',
+            url: ADMIN_PATH + 'getUsers',
             data: pageJSON
           })
           .then(function (response) {
@@ -116,7 +118,7 @@ const AdminService = (function(){
     async function _getUsersCount(props){
         return await axios({
             method: 'get',
-            url: 'admin/getUsersQuantity',
+            url: ADMIN_PATH + 'getUsersQuantity',
           })
           .then(function (response) {
               return response.data
@@ -133,7 +135,7 @@ const AdminService = (function(){
         }
         return axios({
             method: 'post',
-            url: 'admin/lockUser',
+            url: ADMIN_PATH + 'lockUser',
             data: idJSON
           })
           .then(function (response) {

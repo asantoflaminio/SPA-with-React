@@ -3,9 +3,15 @@ const JsonService = (function(){
     function _getFormValues(target){
         let array = []
         for(let i = 0; i < target.length; i++){
-            if( (target[i].type === "radio" && array[i].checked === false) || target[i].type === "submit")
+            if( (target[i].type === "radio" && target[i].checked === false) || target[i].type === "submit" || target[i].type === "button"
+                || target[i].type === "file")
                 continue;
-            else{
+            else if(target[i] instanceof HTMLOptionElement){
+                if(target[i].selected === false)
+                    continue;
+                else
+                    array.push(new JsonObject(target[i].parentElement.name,target[i].value))
+            }else{
                 array.push(new JsonObject(target[i].name,target[i].value))
             }
         }
@@ -33,38 +39,15 @@ const JsonService = (function(){
                 result += ",";
         }
         result += "}"
-        alert(result)
         return result;
     }
 
-    function _generateImageJSON(publicationID, index){
-        let result = "{";
 
-        result += '"' + "publicationID" + '"' + ":" + '"' + publicationID + '"' ;
-        result += ",";
-        result += '"' + "index" + '"' + ":" + '"' + index + '"' ;
-        result += "}"
-
-        return result;
-
-    }
-
-    function _getJSONSingle(target){
-        let result = "{"
-        result += '"' + target.name + '"' + ":" + '"' + target.value + '"';
-        result += "}";
-        return result;
-    }
-
-    function _getJSONForm(event){
-        let array = _getFormValues(event.target)
-        let jsonData = _getJSON(array)
-        return JSON.parse(jsonData)
-    }
-
-    function _getJSONArray(names,values){
-        let array = _createJSONArray(names,values)
-        let jsonData = _getJSON(array);
+    function _getJSONParsed(array){
+        let jsonData = array
+        if(array.constructor.name !== "Array")
+            jsonData = _getFormValues(array)
+        jsonData = _getJSON(jsonData);
         return JSON.parse(jsonData)
     }
 
@@ -72,10 +55,7 @@ const JsonService = (function(){
         getFormValues : _getFormValues,
         createJSONArray : _createJSONArray,
         getJSON : _getJSON,
-        generateImageJSON : _generateImageJSON,
-        getJSONSingle : _getJSONSingle,
-        getJSONForm : _getJSONForm,
-        getJSONArray : _getJSONArray
+        getJSONParsed : _getJSONParsed
     }
     })();
 

@@ -10,6 +10,7 @@ import credentials from '../components/credentials'
 import { withRouter } from "react-router";
 import PublicationService from '../services/PublicationService'
 import UserService from '../services/UserService'
+import JsonService from '../services/JsonService'
 
 const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credentials.mapsKey}` ;
 class Details extends React.Component {
@@ -51,9 +52,12 @@ class Details extends React.Component {
         const queryString = require('query-string');
         const query = queryString.parse(this.props.location.search)
         const component = this
-        
-        PublicationService.getPublication(query.publicationID, this.props).then(function (pub){
-            PublicationService.getImage(query.publicationID,0,pub).then(function (img){
+        let names = ["id"]
+        let values = [query.publicationID]
+        PublicationService.getPublication(JsonService.createJSONArray(names,values), this.props).then(function (pub){
+            let names = ["publicationID","index"]
+            let values = [query.publicationID,0]
+            PublicationService.getImage(JsonService.createJSONArray(names,values),component.props,pub).then(function (img){
                     component.setState({
                         publicationID: pub.publicationID, 
                         province: pub.provinceID,

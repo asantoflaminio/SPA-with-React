@@ -53,7 +53,6 @@ class MapContainer extends React.Component {
 
 
     render(){
-      const {t} = this.props
       const X = this.state.lat;
       const Y = this.state.lng;
       if(X && Y) {

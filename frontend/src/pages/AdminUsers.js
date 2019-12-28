@@ -1,7 +1,6 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import AdminManagment from '../components/AdminManagment';
-import Navbar from '../components/Navbar'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/AdminUsers.css';
 import '../css/Pagination.css';

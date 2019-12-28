@@ -8,6 +8,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Form, Button, Col } from 'react-bootstrap';
 import UserService from '../services/UserService';
+import JsonService from '../services/JsonService';
 
 
 class StandarNavbar extends React.Component {
@@ -29,7 +30,7 @@ class StandarNavbar extends React.Component {
         let names = ["email","password"]
         let values = [event.target[0].value,event.target[1].value]
         event.preventDefault();
-        UserService.login(names,values,this.props).then(function(){
+        UserService.login(JsonService.createJSONArray(names,values),this.props).then(function(){
             currentComponent.props.rerenderParentCallback();
             currentComponent.props.history.push(currentPath)
         })
