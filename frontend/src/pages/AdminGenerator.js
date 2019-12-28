@@ -8,7 +8,7 @@ import { Formik } from 'formik';
 import '../css/AdminGenerator.css';
 import AdminManagment from '../components/AdminManagment';
 import {appendSelectElement} from '../util/function'
-import * as axiosRequest from '../util/axiosRequest'
+import AdminService from '../services/AdminService'
 import { withRouter } from "react-router";
 
 class AdminGenerator extends React.Component {
@@ -24,22 +24,22 @@ class AdminGenerator extends React.Component {
 
     handleProvinceSubmit(event) {
         event.preventDefault();
-        axiosRequest.postProvince(event, this.props);
+        AdminService.postProvince(event, this.props);
     }
 
     handleCitySubmit(event) {
         event.preventDefault();
-        axiosRequest.postCity(event, this.props);
+        AdminService.postCity(event, this.props);
     }
 
     handleNeighborhoodSubmit(event) {
         event.preventDefault();
-        axiosRequest.postNeighborhood(event, this.props);
+        AdminService.postNeighborhood(event, this.props);
     }
 
     componentDidMount(){
         let currentComponent = this
-        axiosRequest.getProvinces(this.props).then(function (provincesList){
+        AdminService.getProvinces(this.props).then(function (provincesList){
             currentComponent.setState({
                 provinces: provincesList,
             })
@@ -48,7 +48,7 @@ class AdminGenerator extends React.Component {
 
     updateCity(event){
         event.preventDefault();
-        axiosRequest.getCities(event, this.props).then(function (cities){
+        AdminService.getCities(event, this.props).then(function (cities){
             let select = document.getElementById("city_neighborhood")
             select.selectedIndex = 0;
             while (select.childNodes[1]) {

@@ -67,6 +67,8 @@ public class PublicationServiceImplTest {
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
     
+    /*
+    
     @Before
     public void setUp() {
     	Mockito.reset(publicationDao);
@@ -90,12 +92,14 @@ public class PublicationServiceImplTest {
 		Assert.assertNotNull(newPublication); 
 	}*/
 	
+    /*
 	@Test 
 	public void editDataPublicationTest() {
 		Assert.assertNotNull(publicationService.editData("NEW TITLE", ADDRESS, 
 				NEIGHBORHOOD, CITY, PROVINCE, OPERATION, PRICE, DESCRIPTION, PROPERTYTYPE, BEDROOMS, BATHROOMS, FLOORSIZE, PARKING, NONEXISTENTPUBLICATIONID)); 
 	}
 	
+	/*
 	@Test 
 	public void findIdPublicationTest() {
 		Assert.assertNotNull(publicationService.findById(PUBLICATIONID));
@@ -106,7 +110,7 @@ public class PublicationServiceImplTest {
 	public void findInexistentIdPublicationTest() {
 		Assert.assertNull(publicationService.findById(NONEXISTENTPUBLICATIONID));
 		
-	}
+	}/*
 	
 	/*@Test 
 	public void deleteIdPublicationTest() {

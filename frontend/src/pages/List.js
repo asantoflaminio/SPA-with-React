@@ -5,9 +5,9 @@ import '../css/list.css';
 import '../css/Pagination.css';
 import arrowDown from '../resources/arrow_down.png';
 import Publication from '../components/Publication';
-import * as axiosRequest from '../util/axiosRequest';
 import * as utilFunction from '../util/function';
 import ReactPaginate from 'react-paginate';
+import PublicationService from '../services/PublicationService'
 
 
 class List extends React.Component {
@@ -49,7 +49,7 @@ class List extends React.Component {
         query[stateName2] = value2;
         query[stateName3] = value3;
         let currentComponent = this
-        axiosRequest.getPublications(query,stateName,stateName2, this.props).then(function (pubs){
+        PublicationService.getPublications(query,stateName,stateName2, this.props).then(function (pubs){
             currentComponent.setState({
                 publications: pubs,
                 page: query.page,
@@ -66,7 +66,7 @@ class List extends React.Component {
     async getImages(){
         let imagesRequest = []
         for(let i = 0; i < this.state.publications.length ; i++){
-            await axiosRequest.getImage(this.state.publications[i].publicationID,0, this.props).then(function (image){
+            await PublicationService.getImage(this.state.publications[i].publicationID,0, this.props).then(function (image){
                 imagesRequest.push(image);
             })
         }
@@ -78,7 +78,7 @@ class List extends React.Component {
     updatePublicationsQuantity(){
         let currentComponent = this
         let query = this.generateQueryPackage()
-        axiosRequest.getPublicationsCount(query, this.props).then(function (data){
+        PublicationService.getPublicationsCount(query, this.props).then(function (data){
             currentComponent.setState({
                 pagesQuantity: Math.ceil(data.count / data.limit),
                 resultsQuantity: data.count
@@ -89,7 +89,7 @@ class List extends React.Component {
     updateFilters(){
         let currentComponent = this
         let query = this.generateQueryPackage()
-        axiosRequest.getFilters(query, this.props).then(function (data){
+        PublicationService.getFilters(query, this.props).then(function (data){
             currentComponent.setState({
                 filters: data
             })
@@ -249,7 +249,7 @@ class List extends React.Component {
         let query = this.generateQueryPackage()
         query.page = data.selected + 1
         let currentComponent = this
-        axiosRequest.getPublications(query).then(function (pubs){
+        PublicationService.getPublications(query).then(function (pubs){
             currentComponent.setState({
                 publications: pubs,
                 page: query.page

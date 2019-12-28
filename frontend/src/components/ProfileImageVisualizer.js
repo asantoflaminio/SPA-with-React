@@ -3,7 +3,7 @@ import { withTranslation } from 'react-i18next';
 import nextArrow from '../resources/arrow_right.png';
 import previousArrow from '../resources/arrow_left.png';
 import * as utilFunction from '../util/function';
-import * as axiosRequest from '../util/axiosRequest';
+import PublicationService from '../services/PublicationService';
 
 class ProfileImageVisualizer extends React.Component {
     constructor(props) {
@@ -25,7 +25,7 @@ class ProfileImageVisualizer extends React.Component {
             nextIndex = currentIndex + 1;
     
         let component = this;
-        axiosRequest.getImage(this.props.publicationID,nextIndex,this.props).then(function (src){
+        PublicationService.getImage(this.props.publicationID,nextIndex,this.props).then(function (src){
             img.src = utilFunction.setSRC(src)
             component.setState({
                 index: nextIndex
@@ -46,7 +46,7 @@ class ProfileImageVisualizer extends React.Component {
             previousIndex = currentIndex - 1;
     
         let component = this
-        axiosRequest.getImage(this.props.publicationID,previousIndex).then(function (src){
+        PublicationService.getImage(this.props.publicationID,previousIndex).then(function (src){
             img.src = utilFunction.setSRC(src)
             component.setState({
                 index: previousIndex

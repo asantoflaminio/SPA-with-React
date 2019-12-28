@@ -1,14 +1,13 @@
-    import React from 'react';
-    import { withTranslation } from 'react-i18next';
-    import { withRouter } from "react-router";
-    import '../css/home.css';
-    import Navbar from '../components/Navbar'
-    import ImgsViewer from 'react-images-viewer'
-    import image1 from '../resources/examples/1.jpg'
-    import image2 from '../resources/examples/2.jpg'
-    import * as axiosRequest from '../util/axiosRequest'
-    import HomeCard from '../components/HomeCard'
-    import {Link} from 'react-router-dom';
+import React from 'react';
+import { withTranslation } from 'react-i18next';
+import { withRouter } from "react-router";
+import '../css/home.css';
+import ImgsViewer from 'react-images-viewer'
+import image1 from '../resources/examples/1.jpg'
+import image2 from '../resources/examples/2.jpg'
+import HomeCard from '../components/HomeCard'
+import {Link} from 'react-router-dom';
+import PublicationService from '../services/PublicationService'
 
 class HomeReal extends React.Component {
 
@@ -27,12 +26,12 @@ class HomeReal extends React.Component {
     
     componentDidMount(){
         let currentComponent = this
-        axiosRequest.getSalePublications(this.props).then(function (publications){
+        PublicationService.getSalePublications(this.props).then(function (publications){
             currentComponent.setState({
                 publicationsSale: publications
             })
         })
-        axiosRequest.getRentPublications(this.props).then(function (publications){
+        PublicationService.getRentPublications(this.props).then(function (publications){
             currentComponent.setState({
                 publicationsRent: publications
             })

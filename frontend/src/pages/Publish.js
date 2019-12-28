@@ -4,11 +4,12 @@ import { Form, Button, Col } from 'react-bootstrap';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import * as axiosRequest from '../util/axiosRequest'
 import '../css/Publish.css';
 import { withRouter } from "react-router";
 import {appendSelectElement} from '../util/function'
 import ImageUploader from 'react-images-upload';
+import AdminService from '../services/AdminService'
+import UserService from '../services/UserService'
 
 class Publish extends React.Component {
 
@@ -27,7 +28,7 @@ class Publish extends React.Component {
 
     componentDidMount(){
         let currentComponent = this
-        axiosRequest.getProvinces(this.props).then(function (provincesList){
+        AdminService.getProvinces(this.props).then(function (provincesList){
             currentComponent.setState({
                 provinces: provincesList,
             })
@@ -100,15 +101,15 @@ class Publish extends React.Component {
     handleFormSubmit(event) {
         let currentComponent = this
         event.preventDefault();
-        axiosRequest.postPublication(event, this.props).then(function (publicationID){
-            axiosRequest.postImages(publicationID,currentComponent.state.pictures);
+        UserService.postPublication(event, this.props).then(function (publicationID){
+            UserService.postImages(publicationID,currentComponent.state.pictures);
         })
 
     }
 
     updateCity(event){
         event.preventDefault();
-        axiosRequest.getCities(event, this.props).then(function (cities){
+        AdminService.getCities(event, this.props).then(function (cities){
             let select = document.getElementById("city-Select")
             let selectNeighborhood = document.getElementById("neighborhood-Select")
             select.selectedIndex = 0;
@@ -124,7 +125,7 @@ class Publish extends React.Component {
 
     updateNeighborhood(event){
         event.preventDefault();
-        axiosRequest.getNeighborhoods(event, this.props).then(function (neighborhoods){
+        AdminService.getNeighborhoods(event, this.props).then(function (neighborhoods){
             let select = document.getElementById("neighborhood-Select")
             select.selectedIndex = 0;
             while (select.childNodes[1]) {

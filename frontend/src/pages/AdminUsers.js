@@ -5,12 +5,11 @@ import Navbar from '../components/Navbar'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/AdminUsers.css';
 import '../css/Pagination.css';
-import * as axiosRequest from '../util/axiosRequest'
 import ReactPaginate from 'react-paginate';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withRouter } from "react-router";
-
+import AdminService from '../services/AdminService'
 
 class AdminUsers extends React.Component {
 
@@ -24,12 +23,12 @@ class AdminUsers extends React.Component {
 
     componentDidMount(){
         let currentComponent = this
-        axiosRequest.getUsers(1, this.props).then(function (users){
+        AdminService.getUsers(1, this.props).then(function (users){
             currentComponent.setState({
                 usersList: users
             })
         })
-        axiosRequest.getUsersCount(this.props).then(function (data){
+        AdminService.getUsersCount(this.props).then(function (data){
             currentComponent.setState({
                 pagesQuantity: Math.ceil(data.count / data.limit)
             })
@@ -40,7 +39,7 @@ class AdminUsers extends React.Component {
         let status = event.target.checked;
         let newList = this.state.usersList
         newList[index].locked = !event.target.checked;
-        axiosRequest.lockUser(status,event.target.id)
+        AdminService.lockUser(status,event.target.id)
         this.setState({
             userList: newList
         })
@@ -84,7 +83,7 @@ class AdminUsers extends React.Component {
     handlePageClick = data => {
         let selected = data.selected + 1;
         let currentComponent = this
-        axiosRequest.getUsers(selected, this.props).then(function (users){
+        AdminService.getUsers(selected, this.props).then(function (users){
             currentComponent.setState({
                 usersList: users
             })

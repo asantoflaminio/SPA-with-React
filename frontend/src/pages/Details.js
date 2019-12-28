@@ -1,8 +1,5 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import Navbar from '../components/Navbar'
-import ErrorBoundary from './ErrorBoundary'
-import * as axiosRequest from '../util/axiosRequest';
 import { Form, Button, Col } from 'react-bootstrap';
 import '../css/Details.css';
 import { Formik } from 'formik';
@@ -11,6 +8,8 @@ import ImageVisualizer from '../components/ImageVisualizer'
 import MapContainer from '../components/MapContainer';
 import credentials from '../components/credentials'
 import { withRouter } from "react-router";
+import PublicationService from '../services/PublicationService'
+import UserService from '../services/UserService'
 
 const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credentials.mapsKey}` ;
 class Details extends React.Component {
@@ -53,8 +52,8 @@ class Details extends React.Component {
         const query = queryString.parse(this.props.location.search)
         const component = this
         
-            axiosRequest.getPublication(query.publicationID, this.props).then(function (pub){
-                axiosRequest.getImage(query.publicationID,0,pub).then(function (img){
+        PublicationService.getPublication(query.publicationID, this.props).then(function (pub){
+            PublicationService.getImage(query.publicationID,0,pub).then(function (img){
                     component.setState({
                         publicationID: pub.publicationID, 
                         province: pub.provinceID,
@@ -88,7 +87,7 @@ class Details extends React.Component {
 
     handleSendMessage(event){
         event.preventDefault();
-        axiosRequest.sendMessage(event, this.props).then(function (status){
+        UserService.sendMessage(event, this.props).then(function (status){
             alert("Message sent")
         })
     }

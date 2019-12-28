@@ -1,17 +1,39 @@
 const JsonService = (function(){
 
-    function _getJSON(array,quantity){
-        let result = "{";
-        for(var i = 0; i < quantity; i++){
-            if(array[i].type === "radio" && array[i].checked === false){
-                quantity = quantity + 1;
-            }else{
-                result += '"' + array[i].name + '"' + ":" + '"' + array[i].value + '"' ;
-                if(i !== quantity - 1)
-                    result += ",";
+    function _getFormValues(target){
+        let array = []
+        for(let i = 0; i < target.length; i++){
+            if( (target[i].type === "radio" && array[i].checked === false) || target[i].type === "submit")
+                continue;
+            else{
+                array.push(new JsonObject(target[i].name,target[i].value))
             }
         }
+        return array;
+    }
+
+    function _createJSONArray(names,values){
+        let array = []
+
+        if(names.length !== values.length)
+            alert("PROBLEM! --- DEBERIA LANZAR EXCEPCION")
+
+        for(let i = 0; i < names.length; i++){
+            array.push(new JsonObject(names[i],values[i]))
+        }
+
+        return array;
+    }
+
+    function _getJSON(array){
+        let result = "{";
+        for(var i = 0; i < array.length; i++){
+            result += '"' + array[i].name + '"' + ":" + '"' + array[i].value + '"' ;
+            if(i !== array.length - 1)
+                result += ",";
+        }
         result += "}"
+        alert(result)
         return result;
     }
 
@@ -34,17 +56,34 @@ const JsonService = (function(){
         return result;
     }
 
-    function _getJSONObject(array,quantity){
-        let jsonData = _getJSON(array,quantity)
+    function _getJSONForm(event){
+        let array = _getFormValues(event.target)
+        let jsonData = _getJSON(array)
+        return JSON.parse(jsonData)
+    }
+
+    function _getJSONArray(names,values){
+        let array = _createJSONArray(names,values)
+        let jsonData = _getJSON(array);
         return JSON.parse(jsonData)
     }
 
     return {
+        getFormValues : _getFormValues,
+        createJSONArray : _createJSONArray,
         getJSON : _getJSON,
         generateImageJSON : _generateImageJSON,
         getJSONSingle : _getJSONSingle,
-        getJSONObject : _getJSONObject
+        getJSONForm : _getJSONForm,
+        getJSONArray : _getJSONArray
     }
     })();
 
- export default JsonService;
+export class JsonObject{
+    constructor(name,value){
+        this.name = name;
+        this.value = value
+    }
+}
+
+export default JsonService;

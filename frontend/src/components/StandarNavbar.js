@@ -7,7 +7,7 @@ import { withTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Form, Button, Col } from 'react-bootstrap';
-import * as axiosRequest from '../util/axiosRequest'
+import UserService from '../services/UserService';
 
 
 class StandarNavbar extends React.Component {
@@ -26,8 +26,10 @@ class StandarNavbar extends React.Component {
     handleFormSubmit(event){
         let currentComponent = this;
         let currentPath = this.props.location;
+        let names = ["email","password"]
+        let values = [event.target[0].value,event.target[1].value]
         event.preventDefault();
-        axiosRequest.login(event.target[0].value,event.target[1].value).then(function(){
+        UserService.login(names,values,this.props).then(function(){
             currentComponent.props.rerenderParentCallback();
             currentComponent.props.history.push(currentPath)
         })

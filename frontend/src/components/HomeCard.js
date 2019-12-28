@@ -1,10 +1,9 @@
 import React from 'react';
 import '../css/HomeCard.css';
-import * as utilFunction from '../util/function';
 import ImgVisualizer from './ImageVisualizer';
 import {Link} from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
-import * as axiosRequest from '../util/axiosRequest'
+import PublicationService from '../services/PublicationService'
 
 class HomeCard extends React.Component {
     constructor(props) {
@@ -16,7 +15,7 @@ class HomeCard extends React.Component {
 
       componentDidMount(){
           let component = this
-          axiosRequest.getImage(this.props.publication.publicationID,0, this.props).then(function (img){
+          PublicationService.getImage(this.props.publication.publicationID,0, this.props).then(function (img){
               component.setState({
                   image: img
               })

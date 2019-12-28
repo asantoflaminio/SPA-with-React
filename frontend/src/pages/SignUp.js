@@ -24,7 +24,9 @@ class SignUp extends React.Component {
 
         event.preventDefault();
         UserService.signUp(event,this.props).then(function (data){
-            UserService.login(data.email,data.password,currentComponent.props).then(function (data){
+            let names = ["email","password"];
+            let values = [data.email,data.password]
+            UserService.login(names,values,currentComponent.props).then(function (data){
                 currentComponent.setState({
                     isLogged: true
                 })

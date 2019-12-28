@@ -1,10 +1,10 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import Navbar from '../components/Navbar'
 import ProfileAsideBar from '../components/ProfileAsideBar'
-import * as axiosRequest from '../util/axiosRequest';
 import '../css/Profile.css';
 import { withRouter } from "react-router";
+import UserService from '../services/UserService'
+
 
 class MyFavorites extends React.Component {
     constructor(props) {
@@ -17,7 +17,7 @@ class MyFavorites extends React.Component {
 
     componentDidMount(){
         let currentComponent = this;
-        axiosRequest.getMyFavoritesCount(1).then(function (quantity) {
+        UserService.getMyFavoritesCount(1).then(function (quantity) {
             currentComponent.setState({
                 myFavoritesCounter: quantity
             })

@@ -1,11 +1,11 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import UserNavbar from '../components/UserNavbar'
 import ProfileAsideBar from '../components/ProfileAsideBar'
 import ProfilePublication from '../components/ProfilePublication';
-import * as axiosRequest from '../util/axiosRequest';
 import ReactPaginate from 'react-paginate';
 import { withRouter } from "react-router";
+import UserService from '../services/UserService'
+import PublicationService from '../services/PublicationService'
 
 
 class MyPublications extends React.Component {
@@ -24,7 +24,7 @@ class MyPublications extends React.Component {
     updateQuantity(){
         let currentComponent = this;
 
-        axiosRequest.getMyPublicationsQuantity(this.state.id).then(function (quantity) {
+        UserService.getMyPublicationsQuantity(this.state.id).then(function (quantity) {
             currentComponent.setState({
                 myPublicationsCounter: quantity,
             })
@@ -34,7 +34,7 @@ class MyPublications extends React.Component {
     updatePublications(){
         let currentComponent = this; 
 
-        axiosRequest.getMyPublications(this.state.id, this.state.page).then(function(pubs) {
+        UserService.getMyPublications(this.state.id, this.state.page).then(function(pubs) {
             currentComponent.setState({
                 myPublications: pubs,
             })
@@ -50,7 +50,7 @@ class MyPublications extends React.Component {
     async getImages(){
         let imagesRequest = []
         for(let i = 0; i < this.state.myPublications.length ; i++){
-            await axiosRequest.getImage(this.state.myPublications[i].publicationID, 0, this.props).then(function (image){
+            await PublicationService.getImage(this.state.myPublications[i].publicationID, 0, this.props).then(function (image){
                 imagesRequest.push(image);
             })
         }

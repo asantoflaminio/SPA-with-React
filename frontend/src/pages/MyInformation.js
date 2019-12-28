@@ -1,8 +1,7 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import Navbar from '../components/Navbar'
 import ProfileAsideBar from '../components/ProfileAsideBar'
-import * as axiosRequest from '../util/axiosRequest';
+import UserService from '../services/UserService'
 import '../css/Profile.css';
 import { withRouter } from "react-router";
 

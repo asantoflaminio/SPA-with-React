@@ -1,6 +1,5 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import Navbar from '../components/Navbar'
 import '../css/ErrorBoundary.css';
 import { withRouter } from "react-router";
 
