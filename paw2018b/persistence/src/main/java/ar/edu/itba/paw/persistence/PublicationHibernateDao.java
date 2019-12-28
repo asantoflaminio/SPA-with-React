@@ -75,8 +75,8 @@ public class PublicationHibernateDao implements PublicationDao{
 	@Transactional
 	public Publication create(String title, String address,String neighborhood, String city, String province, String operation, String price,
 			   String description, String propertyType, String bedrooms,
-			   String bathrooms, String floorSize, String parking, long userid, 
-			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses) {
+			   String bathrooms, String floorSize, String parking, 
+			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses, long userid) {
 		final Publication pub = new Publication(title, address, operation, Integer.valueOf(price),
 				   description, propertyType, Integer.valueOf(bedrooms),
 				   Integer.valueOf(bathrooms), Integer.valueOf(floorSize), Integer.valueOf(parking), new Date(),

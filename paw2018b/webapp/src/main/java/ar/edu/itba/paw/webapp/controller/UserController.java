@@ -2,10 +2,12 @@ package ar.edu.itba.paw.webapp.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -26,6 +28,7 @@ import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.UserDTO;
 import ar.edu.itba.paw.models.dto.UserLoginDTO;
 import ar.edu.itba.paw.services.MailServiceImpl;
+import ar.edu.itba.paw.webapp.auth.TokenAuthenticationService;
 
 @Path("users")
 @Component
@@ -43,6 +46,9 @@ public class UserController {
 	@Autowired
 	private FavPublicationsService fps;
 	
+	@Autowired
+	private TokenAuthenticationService tas;
+	
 
     @POST
     @Path("/signUp")
@@ -59,19 +65,21 @@ public class UserController {
     @Path("/publish")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response createPublication (final PublicationDTO publicationDTO) {
+    public Response createPublication (@Context HttpServletRequest request, final PublicationDTO publicationDTO) {
     	Publication pub = ps.create(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodID(), 
     			publicationDTO.getCityID(), publicationDTO.getProvinceID(), publicationDTO.getOperation(), 
     			publicationDTO.getPrice(), publicationDTO.getDescription(), publicationDTO.getPropertyType(), 
     			publicationDTO.getBedrooms(), publicationDTO.getBathrooms(), publicationDTO.getDimention(), 
-    			publicationDTO.getParking(), 1,
+    			publicationDTO.getParking(),
     			publicationDTO.getCoveredFloorSize(), publicationDTO.getBalconies(),
-    			publicationDTO.getAmenities(), publicationDTO.getStorage(), publicationDTO.getExpenses());
+    			publicationDTO.getAmenities(), publicationDTO.getStorage(), publicationDTO.getExpenses(), tas.getUserIdAuthentication(request));
     	
     	if(pub != null)
     		return Response.ok().entity(new IDResponseDTO(pub.getPublicationid())).build();
-    	else
-    		return Response.ok().entity(new IDResponseDTO(1)).build();
+    	else 
+    		return Response.status(Response.Status.BAD_REQUEST).build();
+
+    	
     }
     
     @POST

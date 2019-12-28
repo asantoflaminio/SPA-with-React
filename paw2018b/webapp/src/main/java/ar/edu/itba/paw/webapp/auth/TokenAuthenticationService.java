@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 
+import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.dto.UserLoginDTO;
 
 @Component
@@ -29,11 +30,27 @@ public class TokenAuthenticationService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+    @Autowired
+    private UserService us;
+    
 
     private final TokenHandler tokenHandler;
 
     public TokenAuthenticationService() {
         this.tokenHandler = new JWTTokenHandler();
+    }
+    
+    public Long getUserIdAuthentication(final HttpServletRequest request) {
+    	final String token = request.getHeader(AUTH_HEADER);
+    	
+    	if (token != null) {
+    		final String username = tokenHandler.getUsername(token);
+    		if(username != null)
+    			return us.findByUsername(username).getUserid();
+    	}
+    	
+    	return null;
     }
     
     
