@@ -42,6 +42,17 @@ public class PublicationServiceImpl implements PublicationService{
 		if(userDao.findById(userid).isLocked())
 			return null;
 		
+		LOGGER.debug("CUACK");
+		
+		LOGGER.debug("expenses era {}", expenses);
+		LOGGER.debug("amenities era {}", amenities);
+		LOGGER.debug("bedrooms era {}", bedrooms);
+		LOGGER.debug("bathrooms era {}", bathrooms);
+		LOGGER.debug("floorsize era {}", floorSize);
+		LOGGER.debug("coveredFloorSize era {}", coveredFloorSize);
+		LOGGER.debug("parking era {}", parking);
+		LOGGER.debug("baulera era {}", storage);
+		
 		if(! vs.validatePublication(title, address, neighborhood,
 				   city, province, operation, price,
 				   description, propertyType, bedrooms,
@@ -49,6 +60,17 @@ public class PublicationServiceImpl implements PublicationService{
 			return null;
 		
 		LOGGER.debug("Creating publication with title {}", title);
+		
+		if(expenses.length() == 0) {
+			expenses = "-1";
+		}
+		if(storage.equals("notCorresponding")) {
+			storage = "-1";
+		}
+		if(amenities.length() == 0) {
+			amenities = "-1";
+		}
+		
 		return publicationDao.create(title, address, neighborhood, city, province, operation, price,
 				   description, propertyType, bedrooms,
 				   bathrooms, floorSize, parking, coveredFloorSize, balconies, amenities, storage, expenses, userid);
@@ -68,11 +90,11 @@ public class PublicationServiceImpl implements PublicationService{
         publication = new PublicationDTO(pub.getPublicationid(),pub.getTitle(), pub.getProvince().getProvince(), pub.getCity().getCity(), pub.getNeighborhood().getNeighborhood(), pub.getAddress(),
 				pub.getOperation(), pub.getPrice().toString(), pub.getDescription(), pub.getPropertyType(), pub.getBedrooms().toString(), pub.getBathrooms().toString() , 
 				pub.getFloorSize().toString() , pub.getParking().toString(), pub.getPublicationDate().toString(),
-				Optional.ofNullable(pub.getCoveredFloorSize()).toString(),
-				Optional.ofNullable(pub.getBalconies()).toString(), 
-				Optional.ofNullable(pub.getAmenities()).toString(),
-				Optional.ofNullable(pub.getStorage()).toString(),
-				Optional.ofNullable(pub.getExpenses()).toString());
+				Optional.ofNullable(pub.getCoveredFloorSize()).orElse(-1).toString(),
+				Optional.ofNullable(pub.getBalconies()).orElse(-1).toString(), 
+				Optional.ofNullable(pub.getAmenities()).orElse("-1").toString(),
+				Optional.ofNullable(pub.getStorage()).orElse("-1").toString(),
+				Optional.ofNullable(pub.getExpenses()).orElse(-1).toString());
         publication.setImages(pub.getImages().size());
         publication.setUserEmail(pub.getUser().getEmail());
         publication.setPhoneNumber(pub.getUser().getPhoneNumber());

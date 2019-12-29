@@ -109,19 +109,19 @@ class Details extends React.Component {
                 ownerEmail: yup.string(),
                 title: yup.string()
                 });
-                if(this.state.coveredFloorSize == "Optional.empty") {
+                if(this.state.coveredFloorSize == "-1") {
                     this.state.coveredFloorSize = t('details.notAvailable');
                 } 
-                if(this.state.balconies == "Optional.empty") {
+                if(this.state.balconies == "-1") {
                     this.state.balconies = t('details.notAvailable');
                 }
-                if(this.state.amenities == "Optional.empty") {
+                if(this.state.amenities == "-1") {
                     this.state.amenities = t('details.notAvailable');
                 } 
-                if(this.state.expenses == "Optional.empty") {
+                if(this.state.expenses == "-1") {
                     this.state.expenses = t('details.notAvailable');
                 } 
-                if(this.state.storage == "Optional.empty") {
+                if(this.state.storage == "-1") {
                     this.state.storage = t('details.notAvailable');
                 } 
             return(                                            

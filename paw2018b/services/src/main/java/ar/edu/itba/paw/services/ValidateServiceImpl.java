@@ -37,6 +37,9 @@ public class ValidateServiceImpl implements ValidateService{
 	private final static int THIRD_FORM_MAX_LENGTH = 3;
 	private final static int DIMENSION_MAX_LENGTH = 5;
 	private final static int AMENITIES_MAX_LENGTH = 140;
+	private final static int STORAGE_MIN_LENGTH = 2;
+	private final static int STORAGE_MAX_LENGTH = 140;
+	private final static int BLANK_LENGTH = 0;
 	
 	
 	//Location constants
@@ -85,7 +88,9 @@ public class ValidateServiceImpl implements ValidateService{
 			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses){
 		
 		final String numbersRegex = "[0-9]+";
+		final String emptyOrNumbersRegex = "^$|[0-9]+";
 		final String lettesNumersAndSpacesRegex = "[\\p{L}0-9 ]+";
+		final String lettesNumersAndSpacesRegexOrEmpty = "^$|[\\p{L}0-9 ]+";
 		final String lettesNumersAndSpacesRegexComma = "[\\p{L}0-9, ]+";
 		final String descriptionRegex = "[-\\p{L}0-9¿?:%!¡,.()$ ]+";
 		
@@ -103,9 +108,9 @@ public class ValidateServiceImpl implements ValidateService{
 			! validateInputNumber(parking, THIRD_FORM_MIN_LENGTH, THIRD_FORM_MAX_LENGTH, numbersRegex, "Parking") ||
 			! validateInputNumber(coveredFloorSize, THIRD_FORM_MIN_LENGTH, DIMENSION_MAX_LENGTH, numbersRegex, "CoveredFloorSize") ||
 			! validateInputNumber(balconies, THIRD_FORM_MIN_LENGTH, THIRD_FORM_MIN_LENGTH, numbersRegex, "Balconies") ||
-			! validateInputText(amenities, THIRD_FORM_MIN_LENGTH, AMENITIES_MAX_LENGTH, lettesNumersAndSpacesRegexComma, "Amenities") ||
-			! validateInputText(storage, THIRD_FORM_MIN_LENGTH, DIMENSION_MAX_LENGTH, lettesNumersAndSpacesRegex, "Storage") ||
-			! validateInputNumber(expenses, PRICE_MIN_LENGTH, PRICE_MAX_LENGTH, numbersRegex, "Expenses")
+			! validateInputText(amenities, BLANK_LENGTH, AMENITIES_MAX_LENGTH, lettesNumersAndSpacesRegexComma, "Amenities") ||
+			! validateInputText(storage, STORAGE_MIN_LENGTH, STORAGE_MAX_LENGTH, lettesNumersAndSpacesRegexOrEmpty, "Storage") ||
+			! validateInputNumber(expenses, BLANK_LENGTH, PRICE_MAX_LENGTH, emptyOrNumbersRegex, "Expenses")
 			
 		  ) {
 			return false;
@@ -153,7 +158,7 @@ public class ValidateServiceImpl implements ValidateService{
 		if(! validateInputText(text,minLength,maxLength,regex,input))
 			return false;
 		
-		if(Integer.parseInt(text) < 0) {
+		if(text.length() > 0 && Integer.parseInt(text) < 0) {
 			LOGGER.debug("The field {} has a negative number", input);
 			return false;
 		}
