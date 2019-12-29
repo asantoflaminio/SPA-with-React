@@ -28,6 +28,7 @@ import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.UserDTO;
 import ar.edu.itba.paw.models.dto.UserLoginDTO;
 import ar.edu.itba.paw.services.MailServiceImpl;
+import ar.edu.itba.paw.services.RequestServiceImpl;
 import ar.edu.itba.paw.webapp.auth.TokenAuthenticationService;
 
 @Path("users")
@@ -48,6 +49,9 @@ public class UserController {
 	
 	@Autowired
 	private TokenAuthenticationService tas;
+	
+	@Autowired
+	private RequestServiceImpl rs;
 	
 
     @POST
@@ -77,7 +81,7 @@ public class UserController {
     	if(pub != null)
     		return Response.ok().entity(new IDResponseDTO(pub.getPublicationid())).build();
     	else 
-    		return Response.status(Response.Status.BAD_REQUEST).build();
+    		return rs.badRequest();
 
     	
     }

@@ -45,7 +45,7 @@ public class MailServiceImpl implements MailService {
     private UserServiceImpl us;
     
     @Autowired
-    private RequestURIServiceImpl rs;
+    private RequestServiceImpl rs;
  
     public void sendEmail(Mail mail) {
     	SimpleMailMessage message = new SimpleMailMessage();
