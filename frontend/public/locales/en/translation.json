@@ -87,7 +87,9 @@
         "amenities": "Amenities:",
         "balconies": "Balconies:",
         "storage": "Storage:",
-        "expenses": "Expenses:"
+        "expenses": "Expenses:",
+        "Yes": "Yes",
+        "No": "No"
      }, 
      "mypublications": {
       "title_section": "Mis publicaciones"

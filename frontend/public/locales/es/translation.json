@@ -165,7 +165,9 @@
        "amenities": "Comidades:",
        "balconies": "Balcones:",
        "storage": "Baulera:",
-       "expenses": "Expensas:"
+       "expenses": "Expensas:",
+       "Yes": "Sí",
+       "No": "No"
     },
     "mypublications": {
         "title_section": "Mis publicaciones"

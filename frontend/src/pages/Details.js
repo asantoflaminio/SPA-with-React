@@ -109,6 +109,7 @@ class Details extends React.Component {
                 ownerEmail: yup.string(),
                 title: yup.string()
                 });
+
                 if(this.state.coveredFloorSize == "-1") {
                     this.state.coveredFloorSize = t('details.notAvailable');
                 } 
@@ -121,9 +122,14 @@ class Details extends React.Component {
                 if(this.state.expenses == "-1") {
                     this.state.expenses = t('details.notAvailable');
                 } 
+
                 if(this.state.storage == "-1") {
                     this.state.storage = t('details.notAvailable');
-                } 
+                } else if (this.state.storage == "yes") {
+                    this.state.storage = t('details.Yes');
+                } else {
+                    this.state.storage = t('details.No');
+                }
             return(                                            
                 <div>
                     <div id="cols">
