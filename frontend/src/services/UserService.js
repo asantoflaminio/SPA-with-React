@@ -61,13 +61,13 @@ const UserService = (function(){
 
     function _postImages(publicationID,images,props){
         let formData = new FormData();
+        formData.append("publicationid",publicationID)
         for(let i = 0; i < images.length; i++) {
-            formData.append('file', images[i])
-            
+            formData.append('files', images[i])
         }
         axios({
             method: 'post',
-            url: 'users/images',
+            url: USERS_PATH +  'images',
             data: formData,
             headers: {
                 contentType:'multipart/form-data'},

@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +8,8 @@ import java.util.List;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.io.IOUtils;
+import org.glassfish.jersey.media.multipart.BodyPartEntity;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +53,27 @@ public class ImageServiceImpl implements ImageService{
         	LOGGER.debug("Failed to upload the images requested");
         }
 		return uploadImages;
+	}
+	
+	public void create(byte[] bytes, long publicationid) {
+		imageDao.create(bytes, publicationid);
+	}
+	
+	public int create(List<FormDataBodyPart> bodyParts, long publicationid) {
+		byte[] bytes = null;
+		int filesUploaded = 0;
+		for (int i = 0; i < bodyParts.size(); i++) {
+			BodyPartEntity bodyPartEntity = (BodyPartEntity) bodyParts.get(i).getEntity();
+			try {
+				bytes = IOUtils.toByteArray(bodyPartEntity.getInputStream());
+				imageDao.create(bytes, publicationid);
+				filesUploaded++;
+			} catch (IOException e) {
+				return filesUploaded;
+			}
+		}
+		return filesUploaded;
+		
 	}
 	
 	@Override

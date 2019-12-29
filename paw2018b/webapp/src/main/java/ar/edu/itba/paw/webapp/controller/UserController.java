@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,10 +12,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import ar.edu.itba.paw.interfaces.FavPublicationsService;
 import ar.edu.itba.paw.interfaces.PublicationService;
@@ -27,6 +29,7 @@ import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.UserDTO;
 import ar.edu.itba.paw.models.dto.UserLoginDTO;
+import ar.edu.itba.paw.services.ImageServiceImpl;
 import ar.edu.itba.paw.services.MailServiceImpl;
 import ar.edu.itba.paw.services.RequestServiceImpl;
 import ar.edu.itba.paw.webapp.auth.TokenAuthenticationService;
@@ -52,6 +55,9 @@ public class UserController {
 	
 	@Autowired
 	private RequestServiceImpl rs;
+	
+	@Autowired
+	private ImageServiceImpl is;
 	
 
     @POST
@@ -88,9 +94,12 @@ public class UserController {
     
     @POST
     @Path("/images")
-    @Consumes(value = {MediaType.MULTIPART_FORM_DATA} )
-    public Response uploadImages (@RequestParam CommonsMultipartFile[] filesUpload) {
-    	//System.out.println(files.length);
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadImageFile(@FormDataParam("publicationid") long publicationid,
+			@FormDataParam("files") List<FormDataBodyPart> bodyParts,
+			@FormDataParam("files") FormDataContentDisposition fileDispositions) throws IOException {
+    	if(bodyParts != null && bodyParts.size() > 0)
+    		is.create(bodyParts, publicationid);
         return Response.ok().build();
     }
     
