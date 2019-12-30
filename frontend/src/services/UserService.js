@@ -59,7 +59,7 @@ const UserService = (function(){
         });
     }
 
-    function _postImages(publicationID,images,props){
+    async function _postImages(publicationID,images,props){
         let formData = new FormData();
         formData.append("publicationid",publicationID)
         for(let i = 0; i < images.length; i++) {

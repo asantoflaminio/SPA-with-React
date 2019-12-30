@@ -5,7 +5,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/Publish.css';
-import { withRouter } from "react-router";
+import { withRouter, Redirect } from "react-router";
 import {appendSelectElement} from '../util/function'
 import ImageUploader from 'react-images-upload';
 import AdminService from '../services/AdminService'
@@ -98,17 +98,10 @@ class Publish extends React.Component {
         });
     }
 
-    handleFormSubmit(event) {
-        let currentComponent = this
+    updateCity(event,values){
         event.preventDefault();
-        UserService.postPublication(event, this.props).then(function (publicationID){
-            UserService.postImages(publicationID,currentComponent.state.pictures,currentComponent.props);
-        })
-
-    }
-
-    updateCity(event){
-        event.preventDefault();
+        values.provinceID = event.target.value
+        event.target.blur();
         AdminService.getCities(event, this.props).then(function (cities){
             let select = document.getElementById("city-Select")
             let selectNeighborhood = document.getElementById("neighborhood-Select")
@@ -123,8 +116,10 @@ class Publish extends React.Component {
         })
     }
 
-    updateNeighborhood(event){
+    updateNeighborhood(event,values){
         event.preventDefault();
+        values.cityID = event.target.value
+        event.target.blur();
         AdminService.getNeighborhoods(event, this.props).then(function (neighborhoods){
             let select = document.getElementById("neighborhood-Select")
             select.selectedIndex = 0;
@@ -137,8 +132,23 @@ class Publish extends React.Component {
         })
     }
 
-    checkErrors(){
-        return true;
+    updateNeighborhoodValue(event,values){
+        event.preventDefault();
+        values.neighborhoodID = event.target.value
+        event.target.blur();
+    }
+
+    handleFormSubmit(event,errors) {
+        let currentComponent = this
+        event.preventDefault()
+        alert(JSON.stringify(errors))
+        if(Object.keys(errors).length === 0){
+            UserService.postPublication(event, this.props).then(function (publicationID){
+                UserService.postImages(publicationID,currentComponent.state.pictures,currentComponent.props).then(function (){
+                    currentComponent.props.history.push("/");
+                })
+            })
+        }
     }
 
     render() {
@@ -147,10 +157,10 @@ class Publish extends React.Component {
             return <option value={item.provinceID}>  {item.province} </option>;
           });
         const schema = yup.object({
-        title: yup.string().required( t('errors.requiredField') ),
-        province: yup.string().required(t('errors.requiredField')),
-        city: yup.string().required(t('errors.requiredField')),
-        neighborhood: yup.string().required(t('errors.requiredField')),
+        title: yup.string().required( t('errors.requiredField') ).min(3).max(15),
+        provinceID: yup.number().required(t('errors.requiredField')),
+        cityID: yup.number().required(t('errors.requiredField')),
+        neighborhoodID: yup.number().required(t('errors.requiredField')),
         address: yup.string().required(t('errors.requiredField')),
         price: yup.number().required(t('errors.requiredField')).positive(),
         description: yup.string().required(t('errors.requiredField')),
@@ -160,9 +170,8 @@ class Publish extends React.Component {
         coveredFloorSize: yup.number().required(t('errors.requiredField')).positive(),
         parking: yup.number().required(t('errors.requiredField')).positive(),
         balconies: yup.number().required(t('errors.requiredField')),
-        storage: yup.number().required(t('errors.requiredField')),
         expenses: yup.number().required(t('errors.requiredField')),
-        amenities: yup.number().required(t('errors.requiredField'))
+        amenities: yup.string().required(t('errors.requiredField'))
         });
 
         return (
@@ -173,16 +182,26 @@ class Publish extends React.Component {
                 <hr/>
                 <Formik
                 validationSchema={schema}
+                initialValues={{ title:"", provinceID:"", cityID:"", neighborhoodID:"",
+                                 address:"", price:"", expenses:"", amenities:"",
+                                 description:"", bedrooms:"", bathrooms:"", dimention: "",
+                                 coveredFloorSize:"", parking:"", balconies:""}}
+                onSubmit={(values, {setSubmitting, resetForm}) => {
+                    setSubmitting(true);
+                    resetForm();
+                    setSubmitting(false);
+                                }}
                 >
                 {({
                     values,
-                    handleChange,
                     errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting
                 }) => (
-                    <Form noValidate id="asd" onSubmit={event => {
-                        if(this.checkErrors(schema))
-                            this.handleFormSubmit(event);
-                      }}>
+                    <Form onSubmit={(event) => handleSubmit(event) || this.handleFormSubmit(event,errors)} >
                         <div className="sub_box">
                             <Form.Group as={Col} md="12" controlId="validationFormik01">
                                 <Form.Label>{t('publish.title')}</Form.Label>
@@ -192,44 +211,45 @@ class Publish extends React.Component {
                                     placeholder={t('publish.titleHolder')}
                                     value={values.title}
                                     onChange={handleChange}
+                                    onBlur={handleBlur}
                                     id="title"
-                                    isInvalid={!!errors.title}
+                                    isInvalid={!!errors.title && touched.title}
                                 />
                                 <Form.Control.Feedback type="invalid">
                                     {errors.title}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik02">
+                            <Form.Group as={Col} md="12" controlId="validationFormik02"></Form.Group>
                                 <Form.Label>{t('publish.province')}</Form.Label>
                                 <Form.Control
                                     as="select"
-                                    placeholder={t('publish.provinceHolder')}
                                     name="provinceID"
-                                    onChange={(event) => handleChange && this.updateCity(event)}
-                                    value={values.province}
-                                    isInvalid={!!errors.province}
+                                    onChange={(event) => this.updateCity(event,values) && handleChange(event)}
+                                    onBlur={handleBlur}
+                                    value={values.provinceID}
+                                    isInvalid={!!errors.provinceID && touched.provinceID}
                                 >
                                     <option disabled selected value="">{t('publish.provinceHolder')}</option>
                                     {provinces}
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">
-                                    {errors.province}
+                                    {errors.provinceID}
                                 </Form.Control.Feedback>
-                            </Form.Group>
                             <Form.Group as={Col} md="12" controlId="validationFormik03">
                                 <Form.Label>{t('publish.city')}</Form.Label>
                                     <Form.Control
                                     as="select"
                                     name="cityID"
                                     id="city-Select"
-                                    onChange={(event) => handleChange && this.updateNeighborhood(event)}
-                                    value={values.city}
-                                    isInvalid={!!errors.city}
+                                    onChange={(event) => this.updateNeighborhood(event,values) && handleChange(event)}
+                                    onBlur={handleBlur}
+                                    value={values.cityID}
+                                    isInvalid={!!errors.cityID && touched.cityID}
                                     >
                                         <option disabled selected value="">{t('publish.cityHolder')}</option>
                                     </Form.Control>  
                                     <Form.Control.Feedback type="invalid">
-                                    {errors.city}
+                                    {errors.cityID}
                                     </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group as={Col} md="12" controlId="validationFormik04">
@@ -238,13 +258,15 @@ class Publish extends React.Component {
                                     as="select"
                                     name="neighborhoodID"
                                     id="neighborhood-Select"
-                                    value={values.neighborhood}
-                                    isInvalid={!!errors.neighborhood}
+                                    value={values.neighborhoodID}
+                                    onChange={(event) => this.updateNeighborhoodValue(event,values) && handleChange(event)}
+                                    onBlur={handleBlur}
+                                    isInvalid={!!errors.neighborhoodID && touched.neighborhoodID}
                                 >
                                     <option disabled selected value="">{t('publish.neighborhoodHolder')}</option>
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">
-                                    {errors.neighborhood}
+                                    {errors.neighborhoodID}
                                 </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group as={Col} md="12" controlId="validationFormik05">
@@ -253,8 +275,10 @@ class Publish extends React.Component {
                                     type="text"
                                     placeholder={t('publish.addressHolder')}
                                     name="address"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     value={values.address}
-                                    isInvalid={!!errors.address}
+                                    isInvalid={!!errors.address && touched.address}
                                 />
                                 <Form.Control.Feedback type="invalid">
                                     {errors.address}
@@ -282,8 +306,10 @@ class Publish extends React.Component {
                                     type="text"
                                     placeholder={t('publish.priceHolder')}
                                     name="price"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     value={values.price}
-                                    isInvalid={!!errors.price}
+                                    isInvalid={!!errors.price && touched.price}
                                 />
                                 <Form.Control.Feedback type="invalid">
                                     {errors.price}
@@ -295,8 +321,10 @@ class Publish extends React.Component {
                                     type="text"
                                     placeholder={t('publish.expensesHolder')}
                                     name="expenses"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     value={values.expenses}
-                                    isInvalid={!!errors.expenses}
+                                    isInvalid={!!errors.expenses && touched.expenses}
                                 />
                                 <Form.Control.Feedback type="invalid">
                                     {errors.expenses}
@@ -308,8 +336,10 @@ class Publish extends React.Component {
                                     type="text"
                                     placeholder={t('publish.amenitiesHolder')}
                                     name="amenities"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     value={values.amenities}
-                                    isInvalid={!!errors.amenities}
+                                    isInvalid={!!errors.amenities && touched.amenities}
                                 />
                                 <Form.Control.Feedback type="invalid">
                                     {errors.amenities}
@@ -324,8 +354,10 @@ class Publish extends React.Component {
                                             as="textarea"
                                             placeholder={t('publish.descriptionHolder')}
                                             name="description"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
                                             value={values.description}
-                                            isInvalid={!!errors.description}
+                                            isInvalid={!!errors.description && touched.description}
                                         />
                                         <Form.Control.Feedback type="invalid">
                                             {errors.description}
@@ -353,8 +385,10 @@ class Publish extends React.Component {
                                     type="text"
                                     placeholder={t('publish.bedroomsHolder')}
                                     name="bedrooms"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     value={values.bedrooms}
-                                    isInvalid={!!errors.bedrooms}
+                                    isInvalid={!!errors.bedrooms && touched.bedrooms}
                                 />
                                 <Form.Control.Feedback type="invalid">
                                     {errors.bedrooms}
@@ -366,8 +400,10 @@ class Publish extends React.Component {
                                     type="text"
                                     placeholder={t('publish.bathroomsHolder')}
                                     name="bathrooms"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     value={values.bathrooms}
-                                    isInvalid={!!errors.bathrooms}
+                                    isInvalid={!!errors.bathrooms && touched.bathrooms}
                                 />
                                 <Form.Control.Feedback type="invalid">
                                     {errors.bathrooms}
@@ -379,8 +415,10 @@ class Publish extends React.Component {
                                     type="text"
                                     placeholder={t('publish.dimentionHolder')}
                                     name="dimention"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     value={values.dimention}
-                                    isInvalid={!!errors.dimention}
+                                    isInvalid={!!errors.dimention && touched.dimention}
                                 />
                                 <Form.Control.Feedback type="invalid">
                                     {errors.dimention}
@@ -392,8 +430,10 @@ class Publish extends React.Component {
                                     type="text"
                                     placeholder={t('publish.dimentionHolder')}
                                     name="coveredFloorSize"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     value={values.coveredFloorSize}
-                                    isInvalid={!!errors.coveredFloorSize}
+                                    isInvalid={!!errors.coveredFloorSize && touched.coveredFloorSize}
                                 />
                                 <Form.Control.Feedback type="invalid">
                                     {errors.coveredFloorSize}
@@ -405,8 +445,10 @@ class Publish extends React.Component {
                                     type="text"
                                     placeholder={t('publish.parkingHolder')}
                                     name="parking"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     value={values.parking}
-                                    isInvalid={!!errors.parking}
+                                    isInvalid={!!errors.parking && touched.parking}
                                 />
                                 <Form.Control.Feedback type="invalid">
                                     {errors.parking}
@@ -418,8 +460,10 @@ class Publish extends React.Component {
                                     type="text"
                                     placeholder={t('publish.balconiesHolder')}
                                     name="balconies"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     value={values.balconies}
-                                    isInvalid={!!errors.balconies}
+                                    isInvalid={!!errors.balconies && touched.balconies}
                                 />
                                 <Form.Control.Feedback type="invalid">
                                     {errors.balconies}
@@ -471,7 +515,7 @@ class Publish extends React.Component {
                                     imgExtension={['.jpg']}
                                     maxFileSize={5242880}
                                 />
-                                <Button type="submit" id="submitButton">{t('publish.submit')}</Button>
+                                <Button type="submit" id="submitButton" disabled={isSubmitting} onClick={handleChange}>{t('publish.submit')}</Button>
                             </div>
                     </Form>
                 )}
