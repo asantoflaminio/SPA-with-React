@@ -18,7 +18,7 @@ public class ValidateServiceImpl implements ValidateService{
 	//User constants
 	private final static int SHORT_STRING_MIN_LENGTH = 3;
 	private final static int SHORT_STRING_MAX_LENGTH = 30;
-	private final static int EMAIL_MAX_LENGTH = 250;
+	private final static int EMAIL_MAX_LENGTH = 50;
 	private final static int LONG_STRING_MIN_LENGTH = 6;
 	private final static int LONG_STRING_MAX_LENGTH = 30;
 	private final static int LONG_STRING_MAX_LENGTH_PASS = 70;
@@ -89,7 +89,7 @@ public class ValidateServiceImpl implements ValidateService{
 		
 		final String numbersRegex = "[0-9]+";
 		final String emptyOrNumbersRegex = "^$|[0-9]+";
-		final String lettesNumersAndSpacesRegex = "[\\p{L}0-9 ]+";
+		final String lettesNumersAndSpacesRegex = "^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ ]*$";
 		final String lettesNumersAndSpacesRegexOrEmpty = "^$|[\\p{L}0-9 ]+";
 		final String lettesNumersAndSpacesRegexComma = "[\\p{L}0-9, ]+";
 		final String descriptionRegex = "[-\\p{L}0-9¿?:%!¡,.()$ ]+";

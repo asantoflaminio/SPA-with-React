@@ -10,6 +10,7 @@ import {appendSelectElement} from '../util/function'
 import ImageUploader from 'react-images-upload';
 import AdminService from '../services/AdminService'
 import UserService from '../services/UserService'
+import * as ValidationConst from '../util/ValidationConst'
 
 class Publish extends React.Component {
 
@@ -141,11 +142,13 @@ class Publish extends React.Component {
     handleFormSubmit(event,errors) {
         let currentComponent = this
         event.preventDefault()
-        alert(JSON.stringify(errors))
         if(Object.keys(errors).length === 0){
             UserService.postPublication(event, this.props).then(function (publicationID){
                 UserService.postImages(publicationID,currentComponent.state.pictures,currentComponent.props).then(function (){
-                    currentComponent.props.history.push("/");
+                    currentComponent.props.history.push({
+                        pathname: '/publication',
+                        search: '?publicationID=' + publicationID,
+                    });
                 })
             })
         }
@@ -157,11 +160,16 @@ class Publish extends React.Component {
             return <option value={item.provinceID}>  {item.province} </option>;
           });
         const schema = yup.object({
-        title: yup.string().required( t('errors.requiredField') ).min(3).max(15),
+        title: yup.string().required( t('errors.requiredField') )
+                            .matches(ValidationConst.lettesNumersAndSpacesRegex, t('errors.lettesNumersAndSpacesRegex'))
+                            .min(ValidationConst.FIRST_FORM_MIN_LENGTH, t('errors.shortMin'))
+                            .max(ValidationConst.FIRST_FORM_MAX_LENGTH, t('errors.shortMax')),
         provinceID: yup.number().required(t('errors.requiredField')),
         cityID: yup.number().required(t('errors.requiredField')),
         neighborhoodID: yup.number().required(t('errors.requiredField')),
-        address: yup.string().required(t('errors.requiredField')),
+        address: yup.string().required(t('errors.requiredField'))
+                            .min(ValidationConst.FIRST_FORM_MIN_LENGTH, t('errors.shortMin'))
+                            .max(ValidationConst.FIRST_FORM_MAX_LENGTH, t('errors.shortMax')),
         price: yup.number().required(t('errors.requiredField')).positive(),
         description: yup.string().required(t('errors.requiredField')),
         bedrooms: yup.number().required(t('errors.requiredField')).positive(),

@@ -29,7 +29,9 @@
     "errors": {
       "requiredField": "Debe completarse el campo",
       "phoneField": "Debe ser un numero de celular",
-      "shortMin": "El campo debe tener almenos 3 caracteres",
+      "shortMin": "El campo debe tener almenos ${min} caracteres",
+      "shortMax" : "El campo debe tener a lo sumo ${max} caracteres",
+      "lettesNumersAndSpacesRegex" : "El campo solo puede contener letras, numeros y espacios",
       "errorTitle": "¡Ups! Parece que hubo un problema.",
       "errorCode": "Código de error: ",
       "errorMessage": "Volver a la página de inicio.",
