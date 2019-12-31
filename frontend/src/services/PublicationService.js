@@ -1,6 +1,7 @@
 import ErrorService from "./ErrorService";
 import axios from 'axios';
 import JsonService from './JsonService'
+import LocalStorageService from './LocalStorageService'
 
 const PublicationService = (function(){
 
@@ -102,6 +103,23 @@ const PublicationService = (function(){
           });       
     }
 
+    async function _isFavourite(array,props){
+      return await axios({
+        method: 'post',
+        url: PUBLICATIONS_PATH + 'isFavourite',
+        data: JsonService.getJSONParsed(array),
+        headers: {
+          authorization: LocalStorageService.getAccessToken(),
+      }
+      })
+      .then(function (response) {
+        return response.data
+      })
+      .catch(function (error) {
+        ErrorService.logError(props,error)
+      });   
+    }
+
     
 
     return {
@@ -111,7 +129,8 @@ const PublicationService = (function(){
         getPublication : _getPublication,
         getPublications : _getPublications,
         getFilters : _getFilters,
-        getImage : _getImage
+        getImage : _getImage,
+        isFavourite : _isFavourite
       }
      })();
   

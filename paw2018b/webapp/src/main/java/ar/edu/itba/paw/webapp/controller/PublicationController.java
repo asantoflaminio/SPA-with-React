@@ -5,11 +5,13 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.models.UploadFile;
+import ar.edu.itba.paw.models.dto.BooleanResponseDTO;
 import ar.edu.itba.paw.models.dto.FiltersDTO;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.ImageDTO;
@@ -25,7 +28,9 @@ import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.PublicationsDTO;
 import ar.edu.itba.paw.models.dto.QueryDTO;
+import ar.edu.itba.paw.services.FavPublicationsServiceImpl;
 import ar.edu.itba.paw.services.ImageServiceImpl;
+import ar.edu.itba.paw.webapp.auth.TokenAuthenticationService;
 
 
 @Path("publications")
@@ -40,16 +45,11 @@ public class PublicationController {
 	@Autowired
 	private ImageServiceImpl is;
 	
-	/*
-    @GET
-    @Path("/img")
-    @Produces("image/png")
-    public Response getImg () {
-    	System.out.println("Called img!");
-    	byte[] data = is.findFirstById(1).getData();
-        return Response.ok(data).build();
-    }
-	*/
+	@Autowired
+	private FavPublicationsServiceImpl fs;
+	
+	@Autowired
+	private TokenAuthenticationService tas;
 	
     
     @GET
@@ -143,5 +143,13 @@ public class PublicationController {
     	byte[] dataBase64 = Base64.getEncoder().encode(data);
     	imageDTO.setData(dataBase64);
         return Response.ok(dataBase64).build();
+    }
+    
+    @POST
+    @Path("/isFavourite")
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response isFavourite(@Context HttpServletRequest request, final IDResponseDTO iDResponseDTO)
+    {
+    	return Response.ok().entity(new BooleanResponseDTO(fs.isFavourite(tas.getUserIdAuthentication(request), iDResponseDTO.getId()))).build();
     }
 }

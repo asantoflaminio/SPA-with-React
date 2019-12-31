@@ -47,8 +47,8 @@ public class FavPublicationsServiceImpl implements FavPublicationsService{
 	}
 	
 	@Override
-	public boolean isFaved(long userid, long publicationid) {
-		return favPublicationDao.isFaved(userid, publicationid);
+	public boolean isFavourite(long userid, long publicationid) {
+		return favPublicationDao.isFavourite(userid, publicationid);
 	}
 
 }

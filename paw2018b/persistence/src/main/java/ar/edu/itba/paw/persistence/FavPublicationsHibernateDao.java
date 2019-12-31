@@ -42,7 +42,7 @@ public class FavPublicationsHibernateDao implements FavPublicationsDao{
 	
 	@Override
 	@Transactional
-	public boolean isFaved(long userid, long publicationid) {
+	public boolean isFavourite(long userid, long publicationid) {
 		final String queryString = "from FavPublications as fav where fav.publicationid = :publicationid "
 				 + "AND fav.userid = :userid";
 		TypedQuery<FavPublications> query = em.createQuery(queryString, FavPublications.class);

@@ -107,6 +107,8 @@ const UserService = (function(){
         });
     }
 
+    
+
     async function _getMyPublicationsQuantity(array,props){
         return await axios({
             method: 'post',
@@ -175,6 +177,34 @@ const UserService = (function(){
           });
     }
 
+    async function _favouritePublication(array,props){
+        return await axios({
+            method: 'post',
+            url: USERS_PATH + 'favouritePublication',
+            data: JsonService.getJSONParsed(array),
+            headers: {
+                authorization: LocalStorageService.getAccessToken(),
+            }
+          })
+          .catch(function (error) {
+              ErrorService.logError(props,error)
+          });
+    }
+
+    async function _unfavouritePublication(array,props){
+        return await axios({
+            method: 'post',
+            url: USERS_PATH + 'unfavouritePublication',
+            data: JsonService.getJSONParsed(array),
+            headers: {
+                authorization: LocalStorageService.getAccessToken(),
+            }
+          })
+          .catch(function (error) {
+              ErrorService.logError(props,error)
+          });
+    }
+
    return {
       isLogged : _isLogged,
       signUp : _signUp,
@@ -186,7 +216,9 @@ const UserService = (function(){
       getMyPublicationsQuantity : _getMyPublicationsQuantity,
       getMyFavoritesCount : _getMyFavoritesCount,
       getMyPublications : _getMyPublications,
-      getMyPublicationsCount : _getMyPublicationsCount
+      getMyPublicationsCount : _getMyPublicationsCount,
+      favouritePublication : _favouritePublication,
+      unfavouritePublication : _unfavouritePublication
 
       
     }

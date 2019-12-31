@@ -16,6 +16,6 @@ public interface FavPublicationsService {
 	
 	public int getCountUserFavourites(long userid);
 	
-	public boolean isFaved(long userid, long publicationid);
+	public boolean isFavourite(long userid, long publicationid);
 
 }

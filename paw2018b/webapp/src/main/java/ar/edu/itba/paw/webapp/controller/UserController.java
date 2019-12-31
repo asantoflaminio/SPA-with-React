@@ -22,6 +22,7 @@ import ar.edu.itba.paw.interfaces.FavPublicationsService;
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.Publication;
+import ar.edu.itba.paw.models.dto.BooleanResponseDTO;
 import ar.edu.itba.paw.models.dto.EmailDTO;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.MessageDTO;
@@ -162,10 +163,26 @@ public class UserController {
     @Path("/getMyPublicationsCount")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getMyPublicationsCount (IDResponseDTO id) {
+    public Response getMyPublicationsCount (final IDResponseDTO id) {
     	int pubs = ps.getCountPublicationsOfUser(id.getId());
     	PaginationDTO quantity = new PaginationDTO(pubs, 1); //cambiar x la constante que dice en persistance
     	return Response.ok().entity(quantity).build();
+    }
+    
+    @POST
+    @Path("/favouritePublication")
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response favouritePublication (@Context HttpServletRequest request, final IDResponseDTO iDResponseDTO) {
+    	fps.addFavourite(tas.getUserIdAuthentication(request), iDResponseDTO.getId());
+    	return Response.ok().build();
+    }
+    
+    @POST
+    @Path("/unfavouritePublication")
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response unfavouritePublication (@Context HttpServletRequest request, final IDResponseDTO iDResponseDTO) {
+    	fps.removeFavourite(tas.getUserIdAuthentication(request), iDResponseDTO.getId());
+    	return Response.ok().build();
     }
 
 }

@@ -40,6 +40,7 @@ class HomeCard extends React.Component {
                         containerClass="arrows-div"
                         nextClass="next-image pointer"
                         previousClass="prev-image pointer"
+                        
                     />                  
                     <div class="line_separator"></div>
                         <div class="description_box">
