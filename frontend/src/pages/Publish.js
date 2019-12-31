@@ -29,6 +29,8 @@ class Publish extends React.Component {
 
     componentDidMount(){
         let currentComponent = this
+        document.getElementById("FSale").checked = true
+        document.getElementById("House").checked = true
         AdminService.getProvinces(this.props).then(function (provincesList){
             currentComponent.setState({
                 provinces: provincesList,
@@ -153,6 +155,7 @@ class Publish extends React.Component {
             })
         }
     }
+
 
     render() {
         const { t } = this.props;
@@ -328,13 +331,14 @@ class Publish extends React.Component {
                                     label={t('publish.buy')}
                                     name="operation"
                                     value="FSale"
-                                    checked
+                                    id="FSale"
                                 />
                                 <Form.Check
                                     type="radio"
                                     label={t('publish.rent')}
                                     name="operation"
                                     value="FRent"
+                                    id="FRent"
                                 />
                             </Form.Group>
                             <Form.Group as={Col} md="12" controlId="validationFormik07">
@@ -407,13 +411,14 @@ class Publish extends React.Component {
                                         label={t('publish.house')}
                                         name="propertyType"
                                         value="House"
-                                        checked
+                                        id="House"
                                     />
                                     <Form.Check
                                         type="radio"
                                         label={t('publish.apartment')}
                                         name="propertyType"
                                         value="Apartment"
+                                        id="Apartment"
                                     />
                             </Form.Group>
                             <Form.Group as={Col} md="12" controlId="validationFormik12">
