@@ -10,7 +10,7 @@ public interface ValidateService {
 			   String bathrooms, String floorSize, String parking, long userid,
 			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses);
 	
-	public boolean validateUser(String firstName, String lastName, String email, String password, String phoneNumber);
+	public boolean validateUser(String firstName, String lastName, String email, String password, String repeatPassword, String phoneNumber);
 	
 	public boolean validateUserData(String firstName, String lastName, String email, String phoneNumber);
 	

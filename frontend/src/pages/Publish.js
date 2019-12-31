@@ -5,7 +5,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/Publish.css';
-import { withRouter, Redirect } from "react-router";
+import { withRouter } from "react-router";
 import {appendSelectElement} from '../util/function'
 import ImageUploader from 'react-images-upload';
 import AdminService from '../services/AdminService'
@@ -542,7 +542,7 @@ class Publish extends React.Component {
                                     </div>
                                     <div className="imageViewer" id="imageViewer">
                                         <p id="imageText">{t('publish.uploadImagesText')}</p>
-                                        <img id="image" className="imageStyle hidden"></img>
+                                        <img id="image" alt="img" className="imageStyle hidden"></img>
                                         <p id="countImage" classList="countImagesText hidden"></p>
                                     </div>
                                     <div className="wrapper_arrows">

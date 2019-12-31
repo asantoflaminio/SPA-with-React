@@ -1,6 +1,7 @@
 import LocalStorageService from './LocalStorageService'
 import ErrorService from './ErrorService'
 import JsonService from './JsonService'
+import * as statusCode from '../util/StatusCode'
 import axios from 'axios';
 
 const UserService = (function(){
@@ -24,6 +25,19 @@ const UserService = (function(){
             return response.data
         })
         .catch(function (error) {
+            ErrorService.logError(props,error)
+        });
+    }
+
+    async function _checkEmailAvaibility(event, props){
+        return await axios({
+          method: 'post',
+          url: USERS_PATH + 'checkEmail',
+          data: JsonService.getJSONParsed(event.target)
+        })
+        .catch(function (error) {
+            if(String(error).includes(statusCode.CONFLICT))
+                return false;
             ErrorService.logError(props,error)
         });
     }
@@ -164,6 +178,7 @@ const UserService = (function(){
    return {
       isLogged : _isLogged,
       signUp : _signUp,
+      checkEmailAvaibility : _checkEmailAvaibility,
       login : _login,
       postPublication : _postPublication,
       postImages : _postImages,

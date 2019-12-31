@@ -30,8 +30,8 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public User create(String firstName, String lastName,String email,
-			String password, String phoneNumber, String role) {
-		if(! vs.validateUser(firstName, lastName, email, password, phoneNumber))
+			String password, String repeatPassword, String phoneNumber, String role) {
+		if(! vs.validateUser(firstName, lastName, email, password, repeatPassword, phoneNumber))
 			return null;
 		
 		if(userDaoInt.findByUsername(email) != null)

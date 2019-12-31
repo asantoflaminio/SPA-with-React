@@ -2,6 +2,10 @@ const JsonService = (function(){
 
     function _getFormValues(target){
         let array = []
+        if(target.length == null){
+            array.push(new JsonObject(target.name, target.value))
+            return array;
+        }
         for(let i = 0; i < target.length; i++){
             if( (target[i].type === "radio" && target[i].checked === false) || target[i].type === "submit" || target[i].type === "button"
                 || target[i].type === "file")
@@ -39,7 +43,7 @@ const JsonService = (function(){
                 result += ",";
         }
         result += "}"
-        alert(result)
+        //alert(result)
         return result;
     }
 

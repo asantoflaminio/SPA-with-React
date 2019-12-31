@@ -17,3 +17,8 @@ h3 {
 	font-size: 30px !important;
 	color: #666 !important;
 }
+
+.errorText{
+    color:red;
+    display: none;
+}

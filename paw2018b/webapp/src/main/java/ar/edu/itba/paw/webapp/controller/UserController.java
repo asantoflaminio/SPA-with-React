@@ -22,6 +22,7 @@ import ar.edu.itba.paw.interfaces.FavPublicationsService;
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.Publication;
+import ar.edu.itba.paw.models.dto.EmailDTO;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.MessageDTO;
 import ar.edu.itba.paw.models.dto.MyPublicationsDTO;
@@ -66,9 +67,20 @@ public class UserController {
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response createUser (final UserDTO userDTO) {
     	us.create(userDTO.getFirstName(), userDTO.getLastName(), 
-    			userDTO.getEmail(), userDTO.getPassword(), userDTO.getPhoneNumber(), "USER");
+    			userDTO.getEmail(), userDTO.getPassword(), userDTO.getRepeatPassword(), userDTO.getPhoneNumber(), "USER");
     	UserLoginDTO loginInfo = new UserLoginDTO(userDTO.getEmail(),userDTO.getPassword());
         return Response.ok().entity(loginInfo).build();
+    }
+    
+    @POST
+    @Path("/checkEmail")
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response checkEmail (final EmailDTO emailDTO) {
+    	if(us.findByUsername(emailDTO.getEmail()) == null)
+    		return Response.ok().build();
+    	else
+    		return rs.conflictRequest();
+    	
     }
     
     @POST

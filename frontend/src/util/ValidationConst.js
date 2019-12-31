@@ -29,8 +29,12 @@ export const AMENITIES_MAX_LENGTH = 140;
 
 export const numbersRegex = new RegExp("^[0-9]*$");
 export const emptyOrNumbersRegex = new RegExp("^$|^[0-9]*$");
+export const lettersAndSpacesRegex = new RegExp("^[a-zA-ZñÑáÁéÉíÍóÓúÚüÜ ]*$")
 export const lettesNumersAndSpacesRegex = new RegExp("^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ ]*$");
 export const lettesNumersAndSpacesRegexOrEmpty = new RegExp("^$|^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ ]*$");
 export const lettesNumersAndSpacesRegexComma = new RegExp("^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ, ]*$");
 export const descriptionRegex = new RegExp("^[-a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ¿?:%!¡,.()$/\n/ ]*$"); //ESTE \n produce excepciones OJO!
+export const emailRegex = new RegExp("(.+)@(.+){2,}\.(.+){2,}")
+export const simpleLettersAndNumbersRegex = new RegExp("^[0-9a-zA-Z]+$");
+export const numbersDashRegex = new RegExp("^[-0-9]*$");
 

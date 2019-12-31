@@ -9,6 +9,7 @@ import {Redirect} from 'react-router-dom';
 import { withRouter } from "react-router";
 import UserService from '../services/UserService'
 import JsonService from '../services/JsonService'
+import * as ValidationConst from '../util/ValidationConst'
 
 
 
@@ -20,23 +21,30 @@ class SignUp extends React.Component {
         };
       }
 
-    handleFormSubmit(event) {
+    handleFormSubmit(event,errors) {
         let currentComponent = this
 
         event.preventDefault();
+        if(Object.keys(errors).length === 0){
         UserService.signUp(event,this.props).then(function (data){
             let names = ["email","password"];
             let values = [data.email,data.password]
             UserService.login(JsonService.createJSONArray(names,values),currentComponent.props).then(function (data){
                 currentComponent.setState({
                     isLogged: true
+                    })
                 })
             })
-        })
+        }
     }
 
-    checkErrors(){
-        let firstName = document.getElementById("firstName")
+    checkEmailAvaiability(event,errors){
+        UserService.checkEmailAvaibility(event,this.props).then(function (status){
+            if(status)
+                document.getElementById("emailTakenError").style.display = "none"
+            else
+                document.getElementById("emailTakenError").style.display = "block"
+        })
         return true;
     }
 
@@ -47,12 +55,27 @@ class SignUp extends React.Component {
 
     const { t } = this.props;
     const schema = yup.object({
-    firstName: yup.string().required( t('errors.requiredField') ).min( t('errors.shortMin') ),
-    lastName: yup.string().required( t('errors.requiredField') ),
-    email: yup.string().required( t('errors.requiredField') ),
-    password: yup.string().required( t('errors.requiredField') ),
-    repeatPassword: yup.string().required( t('errors.requiredField') ),
-    phoneNumber: yup.number( t('errors.phoneField') )
+    firstName: yup.string().required( t('errors.requiredField') )
+                            .matches(ValidationConst.lettersAndSpacesRegex, t('errors.lettersAndSpacesRegex'))
+                            .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(ValidationConst.SHORT_STRING_MAX_LENGTH, t('errors.lengthMax')),
+    lastName: yup.string().required( t('errors.requiredField') )
+                            .matches(ValidationConst.lettersAndSpacesRegex, t('errors.lettersAndSpacesRegex'))
+                            .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(ValidationConst.SHORT_STRING_MAX_LENGTH, t('errors.lengthMax')),
+    email: yup.string().required( t('errors.requiredField') )
+                            .matches(ValidationConst.emailRegex, t('errors.emailRegex'))
+                            .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(ValidationConst.EMAIL_MAX_LENGTH, t('errors.lengthMax')),
+    password: yup.string().required( t('errors.requiredField') )
+                            .matches(ValidationConst.simpleLettersAndNumbersRegex, t('errors.lettersAndNumbersRegex'))
+                            .min(ValidationConst.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(ValidationConst.LONG_STRING_MAX_LENGTH_PASS, t('errors.lengthMax')),
+    repeatPassword: yup.string().oneOf([yup.ref('password'), null], t('errors.passwordMatch')),
+    phoneNumber: yup.string()
+                            .matches(ValidationConst.numbersDashRegex, t('errors.numbersDashRegex'))
+                            .min(ValidationConst.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(ValidationConst.LONG_STRING_MAX_LENGTH, t('errors.lengthMax')),
     });
     return (
         <div className="box_form_signUp">
@@ -62,16 +85,23 @@ class SignUp extends React.Component {
             <hr/>
             <Formik
             validationSchema={schema}
+            initialValues={{ firstName:"", lastName:"", email:"", password:"", repeatPassword:"", phoneNumber:""}}
+            onSubmit={(values, {setSubmitting, resetForm}) => {
+            setSubmitting(true);
+            resetForm();
+            setSubmitting(false);
+           }}
             >
             {({
                 values,
-                touched,
                 errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting
             }) => (
-                <Form noValidate onSubmit={event => {
-                    if(this.checkErrors(schema))
-                        this.handleFormSubmit(event);
-                  }}>
+                <Form noValidate onSubmit={(event) => handleSubmit(event) || this.handleFormSubmit(event,errors)}>
                     <Form.Group as={Col} md="12" controlId="validationFormik01">
                         <Form.Label>{t('signUp.firstName')}</Form.Label>
                         <Form.Control
@@ -79,8 +109,10 @@ class SignUp extends React.Component {
                             name="firstName"
                             placeholder={t('signUp.firstNameHolder')}
                             value={values.firstName}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
                             id="firstName"
-                            isInvalid={!!errors.firstName}
+                            isInvalid={!!errors.firstName && touched.firstName}
                         />
                          <Form.Control.Feedback type="invalid">
                             {errors.firstName}
@@ -93,7 +125,9 @@ class SignUp extends React.Component {
                             placeholder={t('signUp.lastNameHolder')}
                             name="lastName"
                             value={values.lastName}
-                            isInvalid={!!errors.lastName}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            isInvalid={!!errors.lastName && touched.lastName}
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors.lastName}
@@ -107,12 +141,15 @@ class SignUp extends React.Component {
                             placeholder={t('signUp.emailHolder')}
                             name="email"
                             value={values.email}
-                            isInvalid={!!errors.email && !! touched.email}
+                            onChange={handleChange}
+                            onBlur={(event) => this.checkEmailAvaiability(event,errors) && handleBlur(event)}
+                            isInvalid={!!errors.email && touched.email}
                             />
                             <Form.Control.Feedback type="invalid">
                             {errors.email}
                             </Form.Control.Feedback>
                         </InputGroup>
+                        <p className="errorText" id="emailTakenError">{t('errors.emailTaken')}</p>
                     </Form.Group>
                     <Form.Group as={Col} md="12" controlId="validationFormik03">
                         <Form.Label>{t('signUp.password')}</Form.Label>
@@ -121,7 +158,9 @@ class SignUp extends React.Component {
                             placeholder={t('signUp.passwordHolder')}
                             name="password"
                             value={values.password}
-                            isInvalid={!!errors.password}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            isInvalid={!!errors.password && touched.password}
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors.password}
@@ -134,7 +173,9 @@ class SignUp extends React.Component {
                             placeholder={t('signUp.passwordHolder')}
                             name="repeatPassword"
                             value={values.repeatPassword}
-                            isInvalid={!!errors.repeatPassword}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            isInvalid={!!errors.repeatPassword && touched.repeatPassword}
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors.repeatPassword}
@@ -147,13 +188,15 @@ class SignUp extends React.Component {
                             placeholder={t('signUp.phoneNumberHolder')}
                             name="phoneNumber"
                             value={values.phoneNumber}
-                            isInvalid={!!errors.phoneNumber}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            isInvalid={!!errors.phoneNumber && touched.phoneNumber}
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors.phoneNumber}
                         </Form.Control.Feedback>
                     </Form.Group>
-                <Button type="submit">{t('signUp.submit')}</Button>
+                <Button type="submit" id="submitButton" disabled={isSubmitting} onClick={handleChange}>{t('signUp.submit')}</Button>
                 </Form>
             )}
             </Formik>

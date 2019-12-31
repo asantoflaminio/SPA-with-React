@@ -8,7 +8,7 @@ import ar.edu.itba.paw.models.dto.UserDTO;
 public interface UserService {
 	
 	public User create(String firstName, String lastName,String email,
-			String password, String phoneNumber, String role);
+			String password, String repeatPassword, String phoneNumber, String role);
 	
 	public User findById(final long userid);
 

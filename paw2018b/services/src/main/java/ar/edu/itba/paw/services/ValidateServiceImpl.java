@@ -48,11 +48,12 @@ public class ValidateServiceImpl implements ValidateService{
 	
 	
 	@Override
-	public boolean validateUser(String firstName, String lastName, String email, String password, String phoneNumber) {
+	public boolean validateUser(String firstName, String lastName, String email, String password, String repeatPassword, String phoneNumber) {
 		
-		final String lettersAndSpacesRegex = "[\\p{L} ]+";
-		final String lettersAndNumbersRegex = "[0-9\\p{L} ]+";
-		final Pattern emailRegex = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+		final String lettersAndSpacesRegex = "^[a-zA-ZñÑáÁéÉíÍóÓúÚüÜ ]*$";
+		final String lettersAndNumbersRegex = "^[0-9a-zA-Z]+$";
+		final String numbersDashRegex = "^[-0-9]*$";
+		final Pattern emailRegex = Pattern.compile("(.+)@(.+){2,}\\.(.+){2,}");
 		
 		
 		if(
@@ -60,7 +61,9 @@ public class ValidateServiceImpl implements ValidateService{
 			! validateInputText(lastName, SHORT_STRING_MIN_LENGTH, SHORT_STRING_MAX_LENGTH, lettersAndSpacesRegex, "LastName") ||
 			! validateInputEmail(email, SHORT_STRING_MIN_LENGTH, EMAIL_MAX_LENGTH, emailRegex, "Email") ||
 			! validateInputText(password, LONG_STRING_MIN_LENGTH, LONG_STRING_MAX_LENGTH_PASS, lettersAndNumbersRegex, "Password") ||
-			! validateInputText(phoneNumber, LONG_STRING_MIN_LENGTH, LONG_STRING_MAX_LENGTH, lettersAndNumbersRegex, "PhoneNumber"))
+			! password.equals(repeatPassword) ||
+			! validateInputText(phoneNumber, BLANK_LENGTH, LONG_STRING_MAX_LENGTH, numbersDashRegex, "PhoneNumber")
+		)
 		   {
 			return false;
 		}
@@ -70,7 +73,7 @@ public class ValidateServiceImpl implements ValidateService{
 	
 	@Override
 	public boolean validateUserData(String firstName, String lastName, String email, String phoneNumber) {
-		return validateUser(firstName,lastName,email,CORRECT_PASSWORD,phoneNumber);
+		return validateUser(firstName,lastName,email,CORRECT_PASSWORD,CORRECT_PASSWORD,phoneNumber);
 	}
 	
 	@Override

@@ -9,5 +9,7 @@ public interface RequestService {
 	public Locale getLocale(String languaje);
 	
 	public Response badRequest();
+	
+	public Response conflictRequest();
 
 }
