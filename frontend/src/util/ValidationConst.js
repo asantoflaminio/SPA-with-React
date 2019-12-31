@@ -12,23 +12,25 @@ export const LONG_STRING_MAX_LENGTH_PASS = 70;
 export const FIRST_FORM_MIN_LENGTH = 3;
 export const FIRST_FORM_MAX_LENGTH = 50;
 export const FIRST_FORM_MAX_LENGTH_ADDRESS = 140;
-export const PRICE_MIN_LENGTH = 1;
-export const PRICE_MAX_LENGTH = 10;
+export const PRICE_MIN_LENGTH = 0;
+export const PRICE_MAX_LENGTH = 9999999999;
+export const LOW_MIN_NUMBER = 0;
+export const LOW_MAX_NUMBER = 999;
+export const HIGH_MIN_NUMBER = 0;
+export const HIGH_MAX_NUMBER = 99999;
 export const SECOND_FORM_MIN_LENGTH = 1;
 export const SECOND_FORM_MAX_LENGTH = 2500;
 export const THIRD_FORM_MIN_LENGTH = 1;
 export const THIRD_FORM_MAX_LENGTH = 3;
-export const DIMENSION_MAX_LENGTH = 5;
+export const DIMENSION_MAX_LENGTH = 99999;
 export const AMENITIES_MAX_LENGTH = 140;
-export const STORAGE_MIN_LENGTH = 2;
-export const STORAGE_MAX_LENGTH = 140;
-export const BLANK_LENGTH = 0;
 
 //Patterns
 
-export const numbersRegex = "[0-9]+";
-export const emptyOrNumbersRegex = "^$|[0-9]+";
+export const numbersRegex = new RegExp("^[0-9]*$");
+export const emptyOrNumbersRegex = new RegExp("^$|^[0-9]*$");
 export const lettesNumersAndSpacesRegex = new RegExp("^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ ]*$");
-export const lettesNumersAndSpacesRegexOrEmpty = "^$|[\\p{L}0-9 ]+";
-export const lettesNumersAndSpacesRegexComma = "[\\p{L}0-9, ]+";
-export const descriptionRegex = "[-\\p{L}0-9¿?:%!¡,.()$ ]+";
+export const lettesNumersAndSpacesRegexOrEmpty = new RegExp("^$|^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ ]*$");
+export const lettesNumersAndSpacesRegexComma = new RegExp("^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ, ]*$");
+export const descriptionRegex = new RegExp("^[-a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ¿?:%!¡,.()$/\n/ ]*$"); //ESTE \n produce excepciones OJO!
+

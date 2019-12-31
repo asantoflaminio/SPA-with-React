@@ -87,12 +87,12 @@ public class ValidateServiceImpl implements ValidateService{
 			   String bathrooms, String floorSize, String parking, long userid,
 			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses){
 		
-		final String numbersRegex = "[0-9]+";
-		final String emptyOrNumbersRegex = "^$|[0-9]+";
+		final String numbersRegex = "^[0-9]*$";
+		final String emptyOrNumbersRegex = "$|^[0-9]*$";
 		final String lettesNumersAndSpacesRegex = "^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ ]*$";
-		final String lettesNumersAndSpacesRegexOrEmpty = "^$|[\\p{L}0-9 ]+";
-		final String lettesNumersAndSpacesRegexComma = "[\\p{L}0-9, ]+";
-		final String descriptionRegex = "[-\\p{L}0-9¿?:%!¡,.()$ ]+";
+		final String lettesNumersAndSpacesRegexOrEmpty = "^$|^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ ]*$";
+		final String lettesNumersAndSpacesRegexComma = "^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ ,]*$";
+		final String descriptionRegex = "^[-a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ¿?:%!¡,.()$/\n/ ]*$";
 		
 		if(
 			! validateInputText(title, FIRST_FORM_MIN_LENGTH, FIRST_FORM_MAX_LENGTH, lettesNumersAndSpacesRegex, "Title") ||
@@ -110,7 +110,7 @@ public class ValidateServiceImpl implements ValidateService{
 			! validateInputNumber(balconies, THIRD_FORM_MIN_LENGTH, THIRD_FORM_MIN_LENGTH, numbersRegex, "Balconies") ||
 			! validateInputText(amenities, BLANK_LENGTH, AMENITIES_MAX_LENGTH, lettesNumersAndSpacesRegexComma, "Amenities") ||
 			! validateInputText(storage, STORAGE_MIN_LENGTH, STORAGE_MAX_LENGTH, lettesNumersAndSpacesRegexOrEmpty, "Storage") ||
-			! validateInputNumber(expenses, BLANK_LENGTH, PRICE_MAX_LENGTH, emptyOrNumbersRegex, "Expenses")
+			! validateInputText(expenses, BLANK_LENGTH, PRICE_MAX_LENGTH, emptyOrNumbersRegex, "Expenses")
 			
 		  ) {
 			return false;

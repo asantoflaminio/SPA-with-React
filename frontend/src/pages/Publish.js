@@ -162,24 +162,53 @@ class Publish extends React.Component {
         const schema = yup.object({
         title: yup.string().required( t('errors.requiredField') )
                             .matches(ValidationConst.lettesNumersAndSpacesRegex, t('errors.lettesNumersAndSpacesRegex'))
-                            .min(ValidationConst.FIRST_FORM_MIN_LENGTH, t('errors.shortMin'))
-                            .max(ValidationConst.FIRST_FORM_MAX_LENGTH, t('errors.shortMax')),
+                            .min(ValidationConst.FIRST_FORM_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(ValidationConst.FIRST_FORM_MAX_LENGTH, t('errors.lengthMax')),
         provinceID: yup.number().required(t('errors.requiredField')),
         cityID: yup.number().required(t('errors.requiredField')),
         neighborhoodID: yup.number().required(t('errors.requiredField')),
         address: yup.string().required(t('errors.requiredField'))
-                            .min(ValidationConst.FIRST_FORM_MIN_LENGTH, t('errors.shortMin'))
-                            .max(ValidationConst.FIRST_FORM_MAX_LENGTH, t('errors.shortMax')),
-        price: yup.number().required(t('errors.requiredField')).positive(),
-        description: yup.string().required(t('errors.requiredField')),
-        bedrooms: yup.number().required(t('errors.requiredField')).positive(),
-        bathrooms: yup.number().required(t('errors.requiredField')).positive(),
-        dimention: yup.number().required(t('errors.requiredField')).positive(),
-        coveredFloorSize: yup.number().required(t('errors.requiredField')).positive(),
-        parking: yup.number().required(t('errors.requiredField')).positive(),
-        balconies: yup.number().required(t('errors.requiredField')),
-        expenses: yup.number().required(t('errors.requiredField')),
+                            .matches(ValidationConst.lettesNumersAndSpacesRegexComma, t('errors.lettesNumersAndSpacesRegexComma'))
+                            .min(ValidationConst.FIRST_FORM_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(ValidationConst.FIRST_FORM_MAX_LENGTH, t('errors.lengthMax')),
+        price: yup.number().required(t('errors.requiredField'))
+                            .typeError(t('errors.numbersRegex'))                   
+                            .min(ValidationConst.PRICE_MIN_LENGTH, t('errors.minValue'))
+                            .max(ValidationConst.PRICE_MAX_LENGTH, t('errors.maxValue')),
+        description: yup.string().required(t('errors.requiredField'))
+                            .matches(ValidationConst.descriptionRegex, t('errors.descriptionRegex'))
+                            .min(ValidationConst.SECOND_FORM_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(ValidationConst.SECOND_FORM_MAX_LENGTH, t('errors.lengthMax')),
+        bedrooms: yup.number().required(t('errors.requiredField'))
+                            .typeError(t('errors.numbersRegex')) 
+                            .min(ValidationConst.LOW_MIN_NUMBER, t('errors.minValue'))
+                            .max(ValidationConst.LOW_MAX_NUMBER, t('errors.maxValue')),
+        bathrooms: yup.number().required(t('errors.requiredField'))
+                            .typeError(t('errors.numbersRegex')) 
+                            .min(ValidationConst.LOW_MIN_NUMBER, t('errors.minValue'))
+                            .max(ValidationConst.LOW_MAX_NUMBER, t('errors.maxValue')),
+        dimention: yup.number().required(t('errors.requiredField'))
+                            .typeError(t('errors.numbersRegex')) 
+                            .min(ValidationConst.LOW_MIN_NUMBER, t('errors.minValue'))
+                            .max(ValidationConst.DIMENSION_MAX_LENGTH, t('errors.maxValue')),
+        coveredFloorSize: yup.number().required(t('errors.requiredField'))
+                            .typeError(t('errors.numbersRegex')) 
+                            .min(ValidationConst.LOW_MIN_NUMBER, t('errors.minValue'))
+                            .max(ValidationConst.DIMENSION_MAX_LENGTH, t('errors.maxValue')),
+        parking: yup.number().required(t('errors.requiredField'))
+                            .typeError(t('errors.numbersRegex')) 
+                            .min(ValidationConst.LOW_MIN_NUMBER, t('errors.minValue'))
+                            .max(ValidationConst.LOW_MAX_NUMBER, t('errors.maxValue')),
+        balconies: yup.number().required(t('errors.requiredField'))
+                            .typeError(t('errors.numbersRegex')) 
+                            .min(ValidationConst.LOW_MIN_NUMBER, t('errors.minValue'))
+                            .max(ValidationConst.LOW_MAX_NUMBER, t('errors.maxValue')),
+        expenses: yup.number().required(t('errors.requiredField'))
+                            .typeError(t('errors.numbersRegex')) 
+                            .max(ValidationConst.HIGH_MAX_NUMBER, t('errors.maxValue')),
         amenities: yup.string().required(t('errors.requiredField'))
+                            .matches(ValidationConst.lettesNumersAndSpacesRegexComma, t('errors.lettesNumersAndSpacesRegexComma'))
+                            .max(ValidationConst.AMENITIES_MAX_LENGTH, t('errors.lengthMax')),
         });
 
         return (
