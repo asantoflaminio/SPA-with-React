@@ -14,7 +14,13 @@ class ErrorBoundary extends React.Component {
 
     render(){
         const { t } = this.props;
-            var codeMsg = t('errors.errorCode') + this.state.coding;
+            var description;
+            if(this.state.coding.toString().charAt(0) == '4') {
+               description = t('errors.clientError')
+            } else {
+                description = t('errors.serverError')
+            }
+            var codeMsg = t('errors.errorCode') + this.state.coding + " - "+ description;
             return ( 
                 <div>
                     <div id="error-container">

@@ -47,7 +47,9 @@
       "errorCode": "Código de error: ",
       "errorMessage": "Volver a la página de inicio.",
       "errorBack": "Volver a la página anterior",
-      "errorBackHome": "Volver al inicio"
+      "errorBackHome": "Volver al inicio",
+      "serverError": "Error interno del servidor",
+      "clientError": "Error al procesar la solicitud"
     },
     "navbar": {
       "remember": "Recordarme",
@@ -127,7 +129,7 @@
       "searchPlaceholder": "Buscar...",
       "house": "Casa",
       "apartment": "Departamento",
-      "order": "Ordernar por",
+      "order": "Ordenar por",
       "lowest": "Precio más bajo",
       "highest": "Precio más alto",
       "newest": "Lo más nuevo",
