@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import {BrowserRouter} from 'react-router-dom';
+import {Switch, BrowserRouter} from 'react-router-dom';
 import {Route, Redirect} from 'react-router-dom';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home'
@@ -37,18 +37,21 @@ function App() {
       <BrowserRouter>
         <Suspense fallback={(<div>Loading</div>)}>
           <Navbar />
-          <Route exact path="/" component={Home} />
-          <Route path="/SignUp" component={SignUp} />
-          <PrivateRoute path="/Publish" component={Publish} />
-          <Route path="/AdminGenerator" component={AdminGenerator} />
-          <Route path="/AdminUsers" component={AdminUsers} />
-          <Route path="/List" component={List} />
-          <Route path="/publication" component={Details} />
-          <Route path="/error" component={ErrorBoundary} />
-          <PrivateRoute path="/MyPublications" component={MyPublications} />
-          <PrivateRoute path="/MyFavorites" component={MyFavorites} />
-          <PrivateRoute path="/MyInformation" component={MyInformation} />
-          <PrivateRoute path="/EditPublication" component={EditPublication} />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/SignUp" component={SignUp} />
+            <PrivateRoute path="/Publish" component={Publish} />
+            <Route path="/AdminGenerator" component={AdminGenerator} />
+            <Route path="/AdminUsers" component={AdminUsers} />
+            <Route path="/List" component={List} />
+            <Route path="/publication" component={Details} />
+            <Route path="/error" component={ErrorBoundary} />
+            <PrivateRoute path="/MyPublications" component={MyPublications} />
+            <PrivateRoute path="/MyFavorites" component={MyFavorites} />
+            <PrivateRoute path="/MyInformation" component={MyInformation} />
+            <PrivateRoute path="/EditPublication" component={EditPublication} />
+            <Route exact path="*" component={Home} />
+          </Switch>
         </Suspense>
      </BrowserRouter>
     </div>

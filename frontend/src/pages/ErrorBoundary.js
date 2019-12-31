@@ -28,9 +28,6 @@ class ErrorBoundary extends React.Component {
                          <p id="error-status">{codeMsg}</p>		
                           <p id="error-message">{t('errors.errorMessage')}</p>
                       </div>
-                    {/* <div id="link1-container">
-                        <a href="/" id="error-link1">{t('errors.errorBack')}</a>
-                    </div> */}
                     <div id="link2-container">
                     <a href="/" id="error-link1">{t('errors.errorBackHome')}</a>
                     </div>  
