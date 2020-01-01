@@ -60,7 +60,10 @@
     "babel-plugin-transform-es2015-modules-amd": "^6.24.1",
     "grunt": "^1.0.4",
     "grunt-babel": "^8.0.0",
+    "grunt-sass": "^3.1.0",
     "grunt-war": "^0.5.1",
-    "reactotron-react-js": "^3.3.7"
+    "node-sass": "^4.13.0",
+    "reactotron-react-js": "^3.3.7",
+    "sass": "^1.24.0"
   }
 }

@@ -1,7 +1,9 @@
+const sass = require('node-sass');
+
 module.exports = function (grunt) {
     'use strict';
       grunt.initConfig({
-          
+        
         babel: {
             options: {
                 sourceMap: false,
@@ -37,11 +39,24 @@ module.exports = function (grunt) {
                     }
                 ]
             }
+        },
+
+        sass: {
+            options: {
+                implementation: sass,
+                sourceMap: true
+            },
+            dist: {
+                files: {
+                    
+                }
+            }
         }
       });
 
       
       grunt.loadNpmTasks('grunt-babel');
       grunt.loadNpmTasks( 'grunt-war' );
-      grunt.registerTask('default', ['babel','war']);
+      grunt.loadNpmTasks('grunt-sass')
+      grunt.registerTask('default', ['babel','war','sass']);
     };
