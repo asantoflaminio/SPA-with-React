@@ -1,33 +1,11 @@
-Instalar Node.js
+Pasitos para que ande la app:
 
-Fijense de tener: Node.js y npm 
-Para fijarse en windows en cmd poner:
-npm --version
-node --version
+npm install
+#Si hay errores de vulnerabilidad
+npm audit fix
 
-Si esta todo bien seguimos con instalar la create-react-app
-npm install -g create-react-app
-create-react-app --version (verificacion que todo salio bien)
+Para correr la app:
+npm run
 
-Listo ahora creamos un proyecto, este paso salteenlo porque ya va a estar creado
-create-react-app "nombre del proyecto"
-cd "nombre del proyecto"
-npm start (los ultimos 2 pasos son para correrlo nomas)
-
-A partir de ahora los packetes que se instalen es en la carpeta frontend
-
-Ahora pasamos a instalar la parte de traduccion:
-npm install i18next
-npm install react-i18next
-npm install i18next-xhr-backend
-npm install i18next-browser-languagedetector
-
-Para la validacion:
-npm install @material-ui/core
-npm install react-material-ui-form-validator
-
-Para las request:
-npm install axios --save
-
-Para la interconexion:
-npm install --save react-router-dom
+Para las cosas de unificacion y todo lo de "cion":
+grunt
