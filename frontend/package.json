@@ -57,9 +57,10 @@
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "grunt-babel": "^8.0.0",
     "babel-plugin-transform-es2015-modules-amd": "^6.24.1",
     "grunt": "^1.0.4",
+    "grunt-babel": "^8.0.0",
+    "grunt-war": "^0.5.1",
     "reactotron-react-js": "^3.3.7"
   }
 }
