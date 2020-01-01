@@ -49,7 +49,7 @@ const UserService = (function(){
           data: JsonService.getJSONParsed(array)
         })
         .then(function (response) {
-            LocalStorageService.setToken(response.headers.authorization, response.headers.authorities)
+            LocalStorageService.setToken(response.headers.authorization, response.headers.authorities, response.headers.username)
         })
         .catch(function (error) {
             ErrorService.logError(props,error)

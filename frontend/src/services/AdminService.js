@@ -6,10 +6,11 @@ import axios from 'axios';
 const AdminService = (function(){
 
     const ADMIN_PATH = 'admin/'
+    const ROLE_ADMIN = "ROLE_ADMIN"
 
     function _isAdmin(){
         let access = LocalStorageService.getAccessRole()
-        if(access != null && access.includes("ROLE_ADMIN"))
+        if(access != null && access.includes(ROLE_ADMIN))
             return true;
         else
             return false;

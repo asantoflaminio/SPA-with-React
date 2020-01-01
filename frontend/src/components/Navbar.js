@@ -14,15 +14,18 @@ class Navbar extends React.Component {
             isLogged: UserService.isLogged(),
             isAdmin: AdminService.isAdmin()
          };
-         this.rerenderParentCallback = this.rerenderParentCallback.bind(this);
        }
-
-    rerenderParentCallback() {
-        this.setState({
-            isLogged: UserService.isLogged(),
-            isAdmin: AdminService.isAdmin()
-        })
-      }
+    
+    componentDidUpdate(prevProps,prevState){
+        let isLoggedUpdate = UserService.isLogged()
+        let isAdminUpdate = AdminService.isAdmin()
+        if (this.state.isLogged !== isLoggedUpdate || this.state.isAdmin !== isAdminUpdate){
+            this.setState({
+                isLogged : isLoggedUpdate,
+                isAdmin : isAdminUpdate
+            })
+        }
+    }
 
 
     render(){

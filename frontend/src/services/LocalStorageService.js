@@ -1,6 +1,12 @@
 const LocalStorageService = (function(){
     var _service;
 
+    const AUTH_TOKEN = "access_token";
+    const ACCESS_TOKEN = "access_role";
+    const USERNAME_TOKEN = "username";
+    const ROLE_ADMIN = "ROLE_ADMIN"
+    const ROLE_USER = "ROLE_USER"
+
     function _getService() {
         if(!_service) {
           _service = this;
@@ -9,30 +15,36 @@ const LocalStorageService = (function(){
       return _service
     }
 
-    function _setToken(access_token, access_role) {
-      let max_acess = _decideAccess(access_role);
-      localStorage.setItem("access_token", access_token);
-      localStorage.setItem("access_role", max_acess)
+    function _setToken(authorization, access, username) {
+      let max_acess = _decideAccess(access);
+      localStorage.setItem(AUTH_TOKEN, authorization);
+      localStorage.setItem(ACCESS_TOKEN, max_acess)
+      localStorage.setItem(USERNAME_TOKEN,username)
     }
 
     function _getAccessToken() {
-      return localStorage.getItem("access_token");
+      return localStorage.getItem(AUTH_TOKEN);
     }
 
     function _getAccessRole() {
-      return localStorage.getItem("access_role");
+      return localStorage.getItem(ACCESS_TOKEN);
+    }
+
+    function _getUsername(){
+      return localStorage.getItem(USERNAME_TOKEN)
     }
 
     function _clearToken() {
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("access_role");
+      localStorage.removeItem(AUTH_TOKEN);
+      localStorage.removeItem(ACCESS_TOKEN);
+      localStorage.removeItem(USERNAME_TOKEN)
     }
 
     function _decideAccess(access_role){
-      if(access_role.includes("ROLE_ADMIN"))
-        return "[ROLE_ADMIN]"
+      if(access_role.includes(ROLE_ADMIN))
+        return ROLE_ADMIN
       else
-      return "[ROLE_USER]"
+      return ROLE_USER
     }
 
    return {
@@ -40,6 +52,7 @@ const LocalStorageService = (function(){
       setToken : _setToken,
       getAccessToken : _getAccessToken,
       getAccessRole : _getAccessRole,
+      getUsername : _getUsername,
       clearToken : _clearToken
     }
    })();

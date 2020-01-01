@@ -31,7 +31,6 @@ class StandarNavbar extends React.Component {
         let values = [event.target[0].value,event.target[1].value]
         event.preventDefault();
         UserService.login(JsonService.createJSONArray(names,values),this.props).then(function(){
-            currentComponent.props.rerenderParentCallback();
             currentComponent.props.history.push(currentPath)
         })
     }

@@ -15,7 +15,6 @@ class UserNavbar extends React.Component {
     signOut(){
         let currentPath = this.props.location;
         LocalStorageService.clearToken()
-        this.props.rerenderParentCallback();
         this.props.history.push(currentPath)
     }
 
@@ -41,7 +40,7 @@ class UserNavbar extends React.Component {
                         <img src={logo} alt="Home" id="logo"/>
                     </a>
                 </Link>
-                <NavDropdown title={t("userNavbar.options")} id="basic-nav-dropdown">
+                <NavDropdown title={LocalStorageService.getUsername()} id="basic-nav-dropdown">
                     <Link to={{pathname: "/MyInformation"}}>
                         <a href="#" className="dropdown-item">{t('userNavbar.profile')}</a>
                     </Link>

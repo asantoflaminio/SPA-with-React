@@ -23,7 +23,9 @@ import ar.edu.itba.paw.models.dto.UserLoginDTO;
 
 @Component
 public class TokenAuthenticationService {
-    private static final String AUTH_HEADER = "Authorization"; 
+    private static final String AUTH_HEADER = "Authorization";
+    private static final String ACCESS_HEADER = "Authorities";
+    private static final String USERNAME_HEADER = "username";
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -84,7 +86,8 @@ public class TokenAuthenticationService {
         final String token = tokenHandler.createToken(userDetails.getUsername());
         
         response.setHeader(AUTH_HEADER, "Bearer " + token);
-        response.setHeader("Authorities", userDetails.getAuthorities().toString());
+        response.setHeader(ACCESS_HEADER, userDetails.getAuthorities().toString());
+        response.setHeader(USERNAME_HEADER, userDetails.getUsername());
     }
 
     Authentication getAuthenticationForLogin(final HttpServletRequest request) throws UserNotActiveException {
