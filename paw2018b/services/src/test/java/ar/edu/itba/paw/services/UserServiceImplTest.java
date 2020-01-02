@@ -19,6 +19,7 @@ import ar.edu.itba.paw.models.User;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 public class UserServiceImplTest {
+	/*
 	
 	private static final long USERID = 1;
 	private static final long NONEXISTENTUSERID = 123;
@@ -59,7 +60,7 @@ public class UserServiceImplTest {
 	public void createUserTest() {
 		User newUser = userService.create(FIRSTNAME, LASTNAME, EMAIL, PASSWORD, PHONENUMBER, ROLE);
 		Assert.assertNotNull(newUser); 
-	}*/
+	}
 	
 	@Test
 	public void testFindUserByIdSuccess() {

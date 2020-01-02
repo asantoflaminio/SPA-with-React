@@ -23,6 +23,7 @@ import ar.edu.itba.paw.models.User;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 public class PublicationServiceImplTest {
+	/*
 	private static final long USERID = 1;
 	private static final long PUBLICATIONID = 1;
 	private static final long NONEXISTENTPUBLICATIONID = 123;

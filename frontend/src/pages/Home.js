@@ -39,7 +39,7 @@ class HomeReal extends React.Component {
       }
 
 
-    renderNewest(array, table, t) {
+    renderNewest(array, table) {
         if(array.length > 0) {
             const maxResults = 8;
             let loopEnd;
@@ -92,8 +92,8 @@ class HomeReal extends React.Component {
         const { t } = this.props;
         let tableSale = [];
         let tableRent = [];
-        this.renderNewest(this.state.publicationsSale, tableSale, t);
-        this.renderNewest(this.state.publicationsRent, tableRent, t);
+        this.renderNewest(this.state.publicationsSale, tableSale);
+        this.renderNewest(this.state.publicationsRent, tableRent);
         return(
             <div>
                 <header>

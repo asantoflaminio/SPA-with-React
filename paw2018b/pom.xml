@@ -48,6 +48,9 @@
 		<logback-ext-spring.version>0.1.1</logback-ext-spring.version>
 		<org.hibernate.version>5.0.8.Final</org.hibernate.version>
 		<org.hibernate.jpa.version>1.0.0.Final</org.hibernate.jpa.version>
+		<frontend-maven-plugin.version>1.7.6</frontend-maven-plugin.version>
+        <frontend-src-dir>../frontend</frontend-src-dir>
+        <frontend-build-src-dir-relative-webapp-module>../${frontend-src-dir}/build</frontend-build-src-dir-relative-webapp-module>
 	</properties>
 
 
@@ -322,4 +325,53 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+        <profile>
+            <id>frontend</id>
+            <activation>
+                <file>
+                    <exists>${frontend-src-dir}/package.json</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>${frontend-maven-plugin.version}</version>
+                        <configuration>
+                            <workingDirectory>${frontend-src-dir}</workingDirectory>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>Install Node and NPM</id>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                                <configuration>
+                                    <nodeVersion>v8.10.0</nodeVersion>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>npm install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>npm build</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>run build</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

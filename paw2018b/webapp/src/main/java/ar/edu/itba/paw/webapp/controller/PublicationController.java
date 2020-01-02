@@ -54,6 +54,7 @@ public class PublicationController {
     @Path("/getSalePublications")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getSalePublications () {
+    	System.out.println("asd");
     	PublicationsDTO publications = new PublicationsDTO(ps.findNewest("FSale"));
     	return Response.ok().entity(publications).build();
     }
