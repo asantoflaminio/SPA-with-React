@@ -206,10 +206,10 @@ class Publish extends React.Component {
                             .typeError(t('errors.numbersRegex')) 
                             .min(ValidationConst.LOW_MIN_NUMBER, t('errors.minValue'))
                             .max(ValidationConst.LOW_MAX_NUMBER, t('errors.maxValue')),
-        expenses: yup.number().required(t('errors.requiredField'))
+        expenses: yup.number()
                             .typeError(t('errors.numbersRegex')) 
                             .max(ValidationConst.HIGH_MAX_NUMBER, t('errors.maxValue')),
-        amenities: yup.string().required(t('errors.requiredField'))
+        amenities: yup.string()
                             .matches(ValidationConst.lettesNumersAndSpacesRegexComma, t('errors.lettesNumersAndSpacesRegexComma'))
                             .max(ValidationConst.AMENITIES_MAX_LENGTH, t('errors.lengthMax')),
         });

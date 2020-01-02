@@ -17,7 +17,9 @@
   float: left;
   width: 100%;
   border: 2px solid #FD8907;
-  border-left: none;
+  margin-left: 50px;
+  border-left-width: 10px;
+  padding-top: 0px;
   padding: 5px;
   font-size: 15px !important;
   height: 40px;
@@ -28,6 +30,10 @@
   border-top-left-radius: 0;
 }
 
+input#search-holder {
+	margin-left: 110px;
+}
+
 .type-home-select {
   border: 2px solid #FD8907;
   border-radius: 5px;
@@ -36,7 +42,9 @@
   border-top-right-radius: 0;
   font-size: 15px;
   color: #555;
+  padding-top: 8px;
   padding-left: 5px;
+  width: 270%;
 }
 
 .inlineBlock{
@@ -82,6 +90,7 @@ input#search-btn {
 	border-radius: 5px;
 	outline: 0;
 	margin-left: 8px;
+	margin-top: 0px;
 	padding-top: 10px;
 	padding-left: 12px;
 	padding-right: 12px;
@@ -138,22 +147,19 @@ input#search-btn {
 }
 
 #order-title-select {
-	float: right;
 	margin-left: 20px;
 	font-size: 16px !important;
 	margin-top: 25px !important;
+	display: inline-block;
 }
 
 #order-select {
 	display: inline-block;
-	float: right;
 	margin-left: 8px;
 	margin-right: 10px;
 	margin-top: 23px;
-	
   	border: 1px solid #FD8907;
   	border-radius: 5px;
-
   	color: #555;
   	font-family: inherit;
   	font-size: inherit;
@@ -246,7 +252,7 @@ input#search-btn {
 	opacity: 0.8;
 	padding-left: 10px;
 	padding-right: 10px;
-	padding-top: 1px;
+	padding-top: 2px;
 	padding-bottom: 1px;
 	margin-right: 7px;
 	margin-bottom: 7px;
@@ -287,6 +293,7 @@ input#search-btn {
 	font-size: 11px;
 	display: inline;
 	cursor: pointer;
+	text-align: center; 
 }
 
 .delete-btn:focus {
