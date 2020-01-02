@@ -1,4 +1,4 @@
-import defaultBlack from '../resources/blackDefault.png'
+import defaultImage from '../resources/default.jpg'
 
 
 export const appendSelectElement = (selectCity,text,value) => {
@@ -25,7 +25,7 @@ export const decideOperation = (buy,rent,value) => {
 
 export const setSRC = (base64) => {
     if(base64 == null || base64 === "" || base64 === 'undefined'){
-        return defaultBlack;
+        return defaultImage;
     }
     else{
         return "data:image/png;base64," + base64;

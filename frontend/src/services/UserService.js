@@ -107,8 +107,6 @@ const UserService = (function(){
         });
     }
 
-    
-
     async function _getMyPublicationsQuantity(array,props){
         return await axios({
             method: 'post',
@@ -126,7 +124,7 @@ const UserService = (function(){
           });
     }
 
-    async function _getMyFavoritesCount(array,props){
+    async function _getMyFavoritesCount(array, props){
         return await axios({
             method: 'post',
             url: USERS_PATH + 'getMyFavoritesQuantity',
@@ -143,7 +141,7 @@ const UserService = (function(){
           });
     }
 
-    async function _getMyPublications(array, props){
+    async function _getMyPublication(array, props){
         return await axios({
             method: 'post',
             url: USERS_PATH + 'getMyPublicationsMade',
@@ -160,7 +158,25 @@ const UserService = (function(){
           });
     }
 
-    async function _getMyPublicationsCount(array,props){
+    async function _getMyPublications(array, props){
+        return await axios({
+            method: 'post',
+            url: USERS_PATH + 'getMyPublications',
+            data: JsonService.getJSONParsed(array),
+            headers: {
+                authorization: LocalStorageService.getAccessToken(),
+            }
+          })
+          .then(function (response) {
+              return response.data
+          })
+          .catch(function (error) {
+              ErrorService.logError(props,error)
+          });
+    }
+
+    
+    async function _getMyPublicationsCount(array, props){
         return await axios({
             method: 'post',
             url: USERS_PATH + 'getMyPublicationsCount',
@@ -215,6 +231,7 @@ const UserService = (function(){
       sendMessage : _sendMessage,
       getMyPublicationsQuantity : _getMyPublicationsQuantity,
       getMyFavoritesCount : _getMyFavoritesCount,
+      getMyPublication : _getMyPublication,
       getMyPublications : _getMyPublications,
       getMyPublicationsCount : _getMyPublicationsCount,
       favouritePublication : _favouritePublication,

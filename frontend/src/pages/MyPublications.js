@@ -6,6 +6,7 @@ import { withRouter } from "react-router";
 import UserService from '../services/UserService'
 import PublicationService from '../services/PublicationService'
 import JsonService from '../services/JsonService'
+import ReactPaginate from 'react-paginate';
 
 
 class MyPublications extends React.Component {
@@ -17,6 +18,7 @@ class MyPublications extends React.Component {
             myPublications: [],
             images: [],
             page: 1,
+            pageQuantity: 0,
         };
       }
     
@@ -35,13 +37,48 @@ class MyPublications extends React.Component {
     updatePublications(){
         let currentComponent = this; 
         let names = ["id","page"]
-        let values = [this.state.id,this.state.page]
-        UserService.getMyPublications(JsonService.createJSONArray(names,values),this.props).then(function(pubs) {
+        let values = [this.state.id, this.state.page]
+        UserService.getMyPublication(JsonService.createJSONArray(names,values),this.props).then(function(pubs) {
             currentComponent.setState({
                 myPublications: pubs,
+                page: 1
             })
             currentComponent.getImages();
+            currentComponent.updatePublicationsQuantity();
         })
+    }
+
+    updatePublicationsQuantity(){
+        let currentComponent = this
+        let names = ["id"]
+        let values = [this.state.id]
+        
+        UserService.getMyPublicationsCount(JsonService.createJSONArray(names,values),this.props).then(function(data){
+            // alert(data.count);
+            // alert(data.limit);
+            currentComponent.setState({
+                pagesQuantity: Math.ceil(data.count / data.limit),
+            })
+        })
+
+        
+    }
+
+    handlePageClick = data => {
+        let currentComponent = this
+        alert(this.state.page);
+
+        let names = ["id","page"]
+        let values = [this.state.id, this.state.page]
+        UserService.getMyPublications(JsonService.createJSONArray(names,values),this.props).then(function (pubs){
+            currentComponent.setState({
+                publications: pubs,
+                page: data.selected + 1
+            })
+            currentComponent.getImages()
+        })
+        alert(this.state.page);
+
     }
 
     componentDidMount(){
@@ -94,7 +131,24 @@ class MyPublications extends React.Component {
                             <div>
                                 {publications}
                             </div>
-                            
+                            <div class="pubsPagination">
+                                <ReactPaginate
+                                previousLabel={'<'}
+                                nextLabel={'>'}
+                                breakLabel={'...'}
+                                pageCount={this.state.pagesQuantity}
+                                marginPagesDisplayed={2}
+                                pageRangeDisplayed={3}
+                                onPageChange={this.handlePageClick}
+                                activeClassName={'active'}
+                                breakClassName={''}
+                                containerClassName={'container-pagination separation'}
+                                pageClassName={''}
+                                previousClassName={''}
+                                nextClassName={''}
+                                forcePage={this.state.page - 1}
+                            />
+                            </div>
                     </section>
             </div>
         );

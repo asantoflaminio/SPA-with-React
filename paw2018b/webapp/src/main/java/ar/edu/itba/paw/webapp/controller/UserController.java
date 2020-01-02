@@ -149,12 +149,8 @@ public class UserController {
     @Path("/getMyPublicationsMade")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getMyPublications (MyPublicationsDTO pub /*IDResponseDTO id*/) {
-    	System.out.println("entre");
+    public Response getMyPublications (MyPublicationsDTO pub) {
     	List<PublicationDTO> publications = ps.findByUserId(pub.getId(), pub.getPage().toString());
-    	// PageDTO p = new PageDTO(1);
-    	// List<PublicationDTO> publications = ps.findByUserId(id.getId(), p.getPage().toString());
-    	System.out.println("aca" + publications.size());
     	return Response.ok().entity(publications).build();
     }
     
@@ -162,8 +158,8 @@ public class UserController {
     @Path("/getMyPublicationsCount")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getMyPublicationsCount (final IDResponseDTO id) {
-    	int pubs = ps.getCountPublicationsOfUser(id.getId());
+    public Response getMyPublicationsCount (IDResponseDTO iDResponseDTO) {
+    	int pubs = ps.getCountPublicationsOfUser(iDResponseDTO.getId());
     	PaginationDTO quantity = new PaginationDTO(pubs, 1); //cambiar x la constante que dice en persistance
     	return Response.ok().entity(quantity).build();
     }
