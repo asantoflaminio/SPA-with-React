@@ -59,7 +59,10 @@ public class FavPublicationsHibernateDao implements FavPublicationsDao{
 	public List<Publication> getUserFavourites(long userid) {
 		final String queryString = "select distinct pub from Publication as pub "
 								 + "INNER JOIN FavPublications as favPub ON pub.publicationid = favPub.publicationid "
-								
+								 + "LEFT JOIN FETCH pub.images "
+								 + "left join fetch pub.province "
+								 + "left join fetch pub.city "
+								 + "left join fetch pub.neighborhood "
 								 + "WHERE favPub.userid = :userid AND pub.locked != true";
 		TypedQuery<Publication> query = em.createQuery(queryString, Publication.class);
 		query.setParameter("userid", userid);
@@ -71,7 +74,10 @@ public class FavPublicationsHibernateDao implements FavPublicationsDao{
 	public List<Publication> getUserFavouritesPagination(long userid, String pageFav) {
 		final String queryString = "select distinct pub from Publication as pub "
 								 + "INNER JOIN FavPublications as favPub ON pub.publicationid = favPub.publicationid "
-								
+								 + "LEFT JOIN FETCH pub.images "
+								 + "left join fetch pub.province "
+								 + "left join fetch pub.city "
+								 + "left join fetch pub.neighborhood "
 								 + "WHERE favPub.userid = :userid AND pub.locked != true";
 		TypedQuery<Publication> query = em.createQuery(queryString, Publication.class);
 		query.setParameter("userid", userid);
