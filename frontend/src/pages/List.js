@@ -149,6 +149,19 @@ class List extends React.Component {
         return pubComponents;
     }
 
+    createDeleteAll(t){
+        if(this.state.search != "" || this.state.minPrice !="" || this.state.maxPrice !="" ||
+        this.state.minFloorSize !="" || this.state.maxFloorSize !="" || this.state.bedrooms !="" ||
+        this.state.bathrooms !="" || this.state.parking !=""){
+            return(               
+                <div class="clean-all" onClick={() => this.deleteAllFilters(t)}> {t('list.cleanAll')} </div>
+            )
+        }
+
+        return;
+        
+    }
+
     createFiltersNotes(t){
         let filters = [];
         filters.push(this.createFilter("search",this.state.search,""));
@@ -170,8 +183,9 @@ class List extends React.Component {
         return(
             <li class="applied-filters-list-item">
                 <input value="x" class="delete-btn" onClick={() => this.deleteFilter(stateName)}/>
-                <p class="applied-filter-text">{information}</p>{additionalInformation}
+                <p class="applied-filter-text">{information}</p>{additionalInformation}    
             </li>
+            
         )
     }
 
@@ -188,7 +202,16 @@ class List extends React.Component {
 
     }
 
-
+    deleteAllFilters(){
+        this.deleteFilter("search");
+        this.deleteFilter("minPrice");
+        this.deleteFilter("maxPrice");
+        this.deleteFilter("minFloorSize");
+        this.deleteFilter("maxFloorSize");
+        this.deleteFilter("bedrooms");
+        this.deleteFilter("bathrooms");
+        this.deleteFilter("parking");
+    }
 
     deleteFilter(stateName){
         this.updatePublications(stateName,"");
@@ -276,6 +299,7 @@ class List extends React.Component {
         const { t } = this.props;
         let publications = this.initializePublications(t);
         let filters = this.createFiltersNotes(t);
+        let cleanAll = this.createDeleteAll(t);
         let locationFilter = this.createFilterFields("locations","","",t,"search")
         let bedroomFilter = this.createFilterFields("bedrooms","list.bedroomSingular","list.bedroomPlural",t,"bedrooms")
         let bathroomFilter = this.createFilterFields("bathrooms","list.bathroomSingular","list.bathroomPlural",t,"bathrooms")
@@ -325,7 +349,9 @@ class List extends React.Component {
                 <div class="filters">
                     <ul id="applied-filters-list">
                         {filters}
+                        {cleanAll}
                     </ul>
+                    
                 </div>
 
                 <div>

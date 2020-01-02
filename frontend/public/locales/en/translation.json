@@ -155,7 +155,8 @@
       "parkingSingular": "parking space",
       "parkingPlural": "parking spaces",
       "sqmeters": "square meters",
-      "moreInfo": "More information "
+      "moreInfo": "More information ",
+      "cleanAll": "Borrar todo"
       },
       "details": {
         "overview": "Overview",

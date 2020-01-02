@@ -155,7 +155,8 @@
       "parkingSingular": "estacionamiento",
       "parkingPlural": "estacionamientos",
       "sqmeters": "metros cuadrados",
-      "moreInfo": "Mas información "
+      "moreInfo": "Más información ",
+      "cleanAll": "Borrar todo"
     },
     "details": {
        "overview": "Resumen",
