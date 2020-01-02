@@ -19,7 +19,7 @@ import ar.edu.itba.paw.models.Publication;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 
 @Service
-public class PublicationServiceImpl implements PublicationService{
+public class PublicationServiceImpl implements PublicationService {
 	
 	@Autowired
 	private PublicationDao publicationDao;

@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.interfaces;
 
-import ar.edu.itba.paw.models.Publication;
+import ar.edu.itba.paw.models.dto.PublicationDTO;
 
 import java.util.List;
 
@@ -10,9 +10,9 @@ public interface FavPublicationsService {
 	
 	public void removeFavourite(long userid, long publicationid);
 	
-	public List<Publication> getUserFavourites(long userid);
+	public List<PublicationDTO> getUserFavourites(long userid);
 	
-	public List<Publication> getUserFavouritesPagination(long userid, String pageFav);
+	public List<PublicationDTO> getUserFavouritesPagination(long userid, String pageFav);
 	
 	public int getCountUserFavourites(long userid);
 	

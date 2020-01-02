@@ -126,7 +126,7 @@ public class UserController {
     }
     
     @POST
-    @Path("/getQuantity")
+    @Path("/getMyPublicationsQuantity")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response getMyPublicationsQuantity (IDResponseDTO id) {   
@@ -146,11 +146,21 @@ public class UserController {
     }
     
     @POST
-    @Path("/getMyPublicationsMade")
+    @Path("/getMyPublications")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response getMyPublications (MyPublicationsDTO pub) {
     	List<PublicationDTO> publications = ps.findByUserId(pub.getId(), pub.getPage().toString());
+    	return Response.ok().entity(publications).build();
+    }
+    
+    @POST
+    @Path("/getMyFavoritesPublications")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response getMyFavoritesPublications (MyPublicationsDTO pub) {
+    	System.out.println("aaa");
+    	List<PublicationDTO> publications = fps.getUserFavourites(pub.getId());
     	return Response.ok().entity(publications).build();
     }
     
@@ -160,6 +170,16 @@ public class UserController {
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response getMyPublicationsCount (IDResponseDTO iDResponseDTO) {
     	int pubs = ps.getCountPublicationsOfUser(iDResponseDTO.getId());
+    	PaginationDTO quantity = new PaginationDTO(pubs, ps.getMaxResultProfile());
+    	return Response.ok().entity(quantity).build();
+    }
+    
+    @POST
+    @Path("/getMyFavoritesPublicationsCount")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response getMyFavoritesPublicationsCount (IDResponseDTO iDResponseDTO) {
+    	int pubs = fps.getCountUserFavourites(iDResponseDTO.getId());
     	PaginationDTO quantity = new PaginationDTO(pubs, ps.getMaxResultProfile());
     	return Response.ok().entity(quantity).build();
     }

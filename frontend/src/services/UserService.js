@@ -81,7 +81,7 @@ const UserService = (function(){
         }
         axios({
             method: 'post',
-            url: USERS_PATH +  'images',
+            url: USERS_PATH + 'images',
             data: formData,
             headers: {
                 contentType:'multipart/form-data'},
@@ -110,7 +110,7 @@ const UserService = (function(){
     async function _getMyPublicationsQuantity(array,props){
         return await axios({
             method: 'post',
-            url: USERS_PATH + 'getQuantity',
+            url: USERS_PATH + 'getMyPublicationsQuantity',
             data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
@@ -124,7 +124,7 @@ const UserService = (function(){
           });
     }
 
-    async function _getMyFavoritesCount(array, props){
+    async function _getMyFavoritesQuantity(array, props){
         return await axios({
             method: 'post',
             url: USERS_PATH + 'getMyFavoritesQuantity',
@@ -144,7 +144,24 @@ const UserService = (function(){
     async function _getMyPublications(array, props){
         return await axios({
             method: 'post',
-            url: USERS_PATH + 'getMyPublicationsMade',
+            url: USERS_PATH + 'getMyPublications',
+            data: JsonService.getJSONParsed(array),
+            headers: {
+                authorization: LocalStorageService.getAccessToken(),
+            }
+          })
+          .then(function (response) {
+              return response.data
+          })
+          .catch(function (error) {
+              ErrorService.logError(props,error)
+          });
+    }
+
+    async function _getMyFavoritesPublications(array, props){
+        return await axios({
+            method: 'post',
+            url: USERS_PATH + 'getMyFavoritesPublications',
             data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
@@ -162,6 +179,23 @@ const UserService = (function(){
         return await axios({
             method: 'post',
             url: USERS_PATH + 'getMyPublicationsCount',
+            data: JsonService.getJSONParsed(array),
+            headers: {
+                authorization: LocalStorageService.getAccessToken(),
+            }
+          })
+          .then(function (response) {
+              return response.data
+          })
+          .catch(function (error) {
+              ErrorService.logError(props,error)
+          });
+    }
+
+    async function _getMyFavoritesPublicationsCount(array, props){
+        return await axios({
+            method: 'post',
+            url: USERS_PATH + 'getMyFavoritesPublicationsCount',
             data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
@@ -212,9 +246,11 @@ const UserService = (function(){
       postImages : _postImages,
       sendMessage : _sendMessage,
       getMyPublicationsQuantity : _getMyPublicationsQuantity,
-      getMyFavoritesCount : _getMyFavoritesCount,
+      getMyFavoritesQuantity : _getMyFavoritesQuantity,
       getMyPublications : _getMyPublications,
+      getMyFavoritesPublications : _getMyFavoritesPublications,
       getMyPublicationsCount : _getMyPublicationsCount,
+      getMyFavoritesPublicationsCount : _getMyFavoritesPublicationsCount,
       favouritePublication : _favouritePublication,
       unfavouritePublication : _unfavouritePublication
 

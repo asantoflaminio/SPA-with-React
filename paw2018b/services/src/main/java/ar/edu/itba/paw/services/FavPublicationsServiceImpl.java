@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.services;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +12,10 @@ import org.springframework.stereotype.Service;
 import ar.edu.itba.paw.interfaces.FavPublicationsDao;
 import ar.edu.itba.paw.interfaces.FavPublicationsService;
 import ar.edu.itba.paw.models.Publication;
+import ar.edu.itba.paw.models.dto.PublicationDTO;
 
 @Service
-public class FavPublicationsServiceImpl implements FavPublicationsService{
+public class FavPublicationsServiceImpl implements FavPublicationsService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 	
@@ -32,13 +35,13 @@ public class FavPublicationsServiceImpl implements FavPublicationsService{
 	}
 	
 	@Override
-	public List<Publication> getUserFavourites(long userid) {
-		return favPublicationDao.getUserFavourites(userid);
+	public List<PublicationDTO> getUserFavourites(long userid) {
+		return transform(favPublicationDao.getUserFavourites(userid));
 	}
 	
 	@Override
-	public List<Publication> getUserFavouritesPagination(long userid, String pageFav) {
-		return favPublicationDao.getUserFavouritesPagination(userid,pageFav);
+	public List<PublicationDTO> getUserFavouritesPagination(long userid, String pageFav) {
+		return transform(favPublicationDao.getUserFavouritesPagination(userid, pageFav));
 	}
 	
 	@Override
@@ -49,6 +52,28 @@ public class FavPublicationsServiceImpl implements FavPublicationsService{
 	@Override
 	public boolean isFavourite(long userid, long publicationid) {
 		return favPublicationDao.isFavourite(userid, publicationid);
+	}
+	
+	
+	public List<PublicationDTO> transform(List<Publication> publications){ //ojo, codigo repetido
+		List<PublicationDTO> publicationsDTO = new LinkedList<PublicationDTO>();
+		PublicationDTO current;
+		
+		for(Publication pub: publications) {
+			current = new PublicationDTO(pub.getPublicationid(),pub.getTitle(), pub.getProvince().getProvince(), pub.getCity().getCity(), pub.getNeighborhood().getNeighborhood(), pub.getAddress(),
+										pub.getOperation(), pub.getPrice().toString(), pub.getDescription(), pub.getPropertyType(), pub.getBedrooms().toString(), pub.getBathrooms().toString() , 
+										pub.getFloorSize().toString() , pub.getParking().toString(), pub.getPublicationDate().toString(),
+										Optional.ofNullable(pub.getCoveredFloorSize()).toString(),
+										Optional.ofNullable(pub.getBalconies()).toString(), 
+										Optional.ofNullable(pub.getAmenities()).toString(),
+										Optional.ofNullable(pub.getStorage()).toString(),
+										Optional.ofNullable(pub.getExpenses()).toString());
+			current.setImages(pub.getImages().size());
+			
+			publicationsDTO.add(current);
+		}
+		
+		return publicationsDTO;
 	}
 
 }
