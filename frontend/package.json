@@ -30,7 +30,6 @@
     "webfontloader": "^1.6.28",
     "yup": "^0.27.0"
   },
-  "proxy": "http://localhost:8080/",
   "homepage": "http://localhost:8080/",
   "scripts": {
     "start": "react-scripts start",
