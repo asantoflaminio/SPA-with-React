@@ -28,7 +28,7 @@ class List extends React.Component {
             bedrooms:"",
             bathrooms:"",
             parking:"",
-            order:"No order",
+            order:"Newest publications",
             page: 1,
             pagesQuantity: 0,
             filters : null
@@ -150,9 +150,9 @@ class List extends React.Component {
     }
 
     createDeleteAll(t){
-        if(this.state.search != "" || this.state.minPrice !="" || this.state.maxPrice !="" ||
-        this.state.minFloorSize !="" || this.state.maxFloorSize !="" || this.state.bedrooms !="" ||
-        this.state.bathrooms !="" || this.state.parking !=""){
+        if(this.state.search !== "" || this.state.minPrice !=="" || this.state.maxPrice !=="" ||
+        this.state.minFloorSize !=="" || this.state.maxFloorSize !=="" || this.state.bedrooms !=="" ||
+        this.state.bathrooms !=="" || this.state.parking !==""){
             return(               
                 <div class="clean-all" onClick={() => this.deleteAllFilters(t)}> {t('list.cleanAll')} </div>
             )
@@ -324,7 +324,7 @@ class List extends React.Component {
                                         <option value="Apartment" id="Apartment">{t('list.apartment')}</option>
                             </select>
                         </form>
-                        <input type="text" class="searchTerm" placeholder={t('list.searchPlaceholder')} id="search"/>
+                        <input type="text" class="searchTerm" id="search-holder" placeholder={t('list.searchPlaceholder')}/>
                         <input type="submit" id="search-btn" value={t('list.search')} onClick={() => this.handleSearch()} />
                     </div>
                 </div>
@@ -335,14 +335,13 @@ class List extends React.Component {
                         {this.getResults(t)}
                     </div>
                     <div class="results" id="order" onChange={(event) => this.handleSelect(event,"order")}>
-                            <select id="order-select">
-                                <option value="No order"></option>
-                                <option value="Ascending order">{t('list.lowest')}</option>
-                                <option value="Descending order">{t('list.highest')}</option>
-                                <option value="Newest publications">{t('list.newest')}</option>
-                                <option value="Oldest publications">{t('list.oldest')}</option>
-                            </select>
                         <h3 id="order-title-select">{t('list.order')}</h3>
+                        <select id="order-select">
+                            <option value="Newest publications">{t('list.newest')}</option>
+                            <option value="Oldest publications">{t('list.oldest')}</option>
+                            <option value="Ascending order">{t('list.lowest')}</option>
+                            <option value="Descending order">{t('list.highest')}</option>                 
+                        </select>
                     </div>
                 </div>
 

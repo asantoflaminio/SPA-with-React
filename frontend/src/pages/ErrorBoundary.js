@@ -15,7 +15,7 @@ class ErrorBoundary extends React.Component {
     render(){
         const { t } = this.props;
             var description;
-            if(this.state.coding.toString().charAt(0) == '4') {
+            if(this.state.coding.toString().charAt(0) === '4') {
                description = t('errors.clientError')
             } else {
                 description = t('errors.serverError')

@@ -109,19 +109,27 @@ class Details extends React.Component {
                 ownerEmail: yup.string(),
                 title: yup.string()
                 });
-
+                
+                let coveredFloorSize; 
                 if(this.state.coveredFloorSize == "-1") {
-                    this.state.coveredFloorSize = t('details.notAvailable');
-                } 
+                    coveredFloorSize = t('details.notAvailable');
+                } else {
+                    coveredFloorSize = this.state.coveredFloorSize + " m2";
+                }
+                
                 if(this.state.balconies == "-1") {
                     this.state.balconies = t('details.notAvailable');
                 }
                 if(this.state.amenities == "-1") {
                     this.state.amenities = t('details.notAvailable');
                 } 
+                
+                let expenses;
                 if(this.state.expenses == "-1") {
-                    this.state.expenses = t('details.notAvailable');
-                } 
+                    expenses = t('details.notAvailable');
+                } else {
+                    expenses = this.state.expenses + " U$S";
+                }
 
                 if(this.state.storage == "-1") {
                     this.state.storage = t('details.notAvailable');
@@ -156,12 +164,12 @@ class Details extends React.Component {
                                     <p class="agency_text">{t('details.bedrooms')} {this.state.bedrooms}</p>
                                     <p class="agency_text">{t('details.bathrooms')} {this.state.bathrooms}</p>
                                     <p class="agency_text">{t('details.floorSize')} {this.state.floorSize} m2</p>
-                                    <p class="agency_text">{t('details.coveredFloorSize')} {this.state.coveredFloorSize} m2</p>
+                                    <p class="agency_text">{t('details.coveredFloorSize')} {coveredFloorSize} </p>
                                     <p class="agency_text">{t('details.parking')} {this.state.parking}</p>
                                     <p class="agency_text">{t('details.balconies')} {this.state.balconies}</p>
                                     <p class="agency_text">{t('details.amenities')} {this.state.amenities}</p>
                                     <p class="agency_text">{t('details.storage')} {this.state.storage}</p>
-                                    <p class="agency_text">{t('details.expenses')} {this.state.expenses} </p>
+                                    <p class="agency_text">{t('details.expenses')} {expenses}</p>
                                 </div>
                             </div>
                         </div>
