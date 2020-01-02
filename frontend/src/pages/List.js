@@ -30,7 +30,7 @@ class List extends React.Component {
             parking:"",
             order:"No order",
             page: 1,
-            pageQuantity: 0,
+            pagesQuantity: 0,
             filters : null
         };
       }
@@ -260,6 +260,7 @@ class List extends React.Component {
             })
             currentComponent.getImages()
         })
+        
         
     }
 

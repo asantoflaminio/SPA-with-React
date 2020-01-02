@@ -62,5 +62,9 @@ public interface PublicationService {
 	
 	public List<PublicationDTO> transform(List<Publication> publications);
 
+	public Integer getMaxResultProfile();
+
+	public Integer getMaxResultList();
+
 	
 }

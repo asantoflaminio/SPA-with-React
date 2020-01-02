@@ -160,7 +160,7 @@ public class UserController {
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response getMyPublicationsCount (IDResponseDTO iDResponseDTO) {
     	int pubs = ps.getCountPublicationsOfUser(iDResponseDTO.getId());
-    	PaginationDTO quantity = new PaginationDTO(pubs, 1); //cambiar x la constante que dice en persistance
+    	PaginationDTO quantity = new PaginationDTO(pubs, ps.getMaxResultProfile());
     	return Response.ok().entity(quantity).build();
     }
     

@@ -1,8 +1,8 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
+import { withRouter } from "react-router";
 import ProfileAsideBar from '../components/ProfileAsideBar'
 import ProfilePublication from '../components/ProfilePublication';
-import { withRouter } from "react-router";
 import UserService from '../services/UserService'
 import PublicationService from '../services/PublicationService'
 import JsonService from '../services/JsonService'
@@ -21,67 +21,8 @@ class MyPublications extends React.Component {
             pageQuantity: 0,
         };
       }
-    
 
-    updateQuantity(){
-        let currentComponent = this;
-        let names = ["id"]
-        let values = [this.state.id]
-        UserService.getMyPublicationsQuantity(JsonService.createJSONArray(names,values),this.props).then(function (quantity) {
-            currentComponent.setState({
-                myPublicationsCounter: quantity,
-            })
-        })
-    }
-
-    updatePublications(){
-        let currentComponent = this; 
-        let names = ["id","page"]
-        let values = [this.state.id, this.state.page]
-        UserService.getMyPublication(JsonService.createJSONArray(names,values),this.props).then(function(pubs) {
-            currentComponent.setState({
-                myPublications: pubs,
-                page: 1
-            })
-            currentComponent.getImages();
-            currentComponent.updatePublicationsQuantity();
-        })
-    }
-
-    updatePublicationsQuantity(){
-        let currentComponent = this
-        let names = ["id"]
-        let values = [this.state.id]
-        
-        UserService.getMyPublicationsCount(JsonService.createJSONArray(names,values),this.props).then(function(data){
-            // alert(data.count);
-            // alert(data.limit);
-            currentComponent.setState({
-                pagesQuantity: Math.ceil(data.count / data.limit),
-            })
-        })
-
-        
-    }
-
-    handlePageClick = data => {
-        let currentComponent = this
-        alert(this.state.page);
-
-        let names = ["id","page"]
-        let values = [this.state.id, this.state.page]
-        UserService.getMyPublications(JsonService.createJSONArray(names,values),this.props).then(function (pubs){
-            currentComponent.setState({
-                publications: pubs,
-                page: data.selected + 1
-            })
-            currentComponent.getImages()
-        })
-        alert(this.state.page);
-
-    }
-
-    componentDidMount(){
+      componentDidMount(){
         this.updateQuantity();
         this.updatePublications();
     }
@@ -99,6 +40,62 @@ class MyPublications extends React.Component {
             images: imagesRequest
         })
     }
+    
+
+    updateQuantity(){
+        let currentComponent = this;
+        let names = ["id"]
+        let values = [this.state.id]
+        UserService.getMyPublicationsQuantity(JsonService.createJSONArray(names,values),this.props).then(function (quantity) {
+            currentComponent.setState({
+                myPublicationsCounter: quantity,
+            })
+        })
+    }
+
+    updatePublications(){
+        let currentComponent = this; 
+        let names = ["id","page"]
+        let values = [this.state.id, this.state.page]
+        
+        UserService.getMyPublications(JsonService.createJSONArray(names,values),this.props).then(function(pubs) {
+            currentComponent.setState({
+                myPublications: pubs,
+                page: 1
+            })
+            currentComponent.getImages();
+            currentComponent.updatePublicationsQuantity();
+        })
+    }
+
+    updatePublicationsQuantity(){
+        let currentComponent = this
+        let names = ["id"]
+        let values = [this.state.id]
+        
+        UserService.getMyPublicationsCount(JsonService.createJSONArray(names,values),this.props).then(function(data){
+            currentComponent.setState({
+                pagesQuantity: Math.ceil(data.count / data.limit),
+            })
+        })
+
+        
+    }
+
+    handlePageClick = data => {
+        let currentComponent = this
+        let names = ["id","page"]
+        let values = [this.state.id, data.selected + 1]
+        UserService.getMyPublications(JsonService.createJSONArray(names,values),this.props).then(function (pubs){
+            currentComponent.setState({
+                myPublications: pubs,
+                page: data.selected+1,
+            })
+            currentComponent.getImages()
+        })
+
+    }
+
 
     initializePublications(t){
         let pubComponents = [];

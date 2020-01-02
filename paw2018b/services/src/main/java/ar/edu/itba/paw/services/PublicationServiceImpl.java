@@ -42,8 +42,6 @@ public class PublicationServiceImpl implements PublicationService{
 		if(userDao.findById(userid).isLocked())
 			return null;
 		
-		LOGGER.debug("CUACK");
-		
 		LOGGER.debug("expenses era {}", expenses);
 		LOGGER.debug("amenities era {}", amenities);
 		LOGGER.debug("bedrooms era {}", bedrooms);
@@ -256,5 +254,14 @@ public class PublicationServiceImpl implements PublicationService{
 		
 		return publicationsDTO;
 	}
+	
+	public Integer getMaxResultProfile() {
+		return publicationDao.getMaxResultProfile();
+	}
+	
+	public Integer getMaxResultList() {
+		return publicationDao.getMaxResultList();
+	}
+
 
 }

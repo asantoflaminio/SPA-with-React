@@ -74,5 +74,10 @@ public interface PublicationDao {
 	
 	public int getCountAllPublications();
 
+	public Integer getMaxResultProfile();
+	
+	public Integer getMaxResultList();
+
+
 
 }

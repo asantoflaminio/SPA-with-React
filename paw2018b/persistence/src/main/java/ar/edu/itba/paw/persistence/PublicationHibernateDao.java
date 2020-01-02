@@ -37,7 +37,7 @@ public class PublicationHibernateDao implements PublicationDao{
 	
 	private static Integer MAX_RESULTS_HOME = 9;
 	private static Integer MAX_RESULTS_PROFILE = 3;
-	private static Integer MAX_RESULTS_LIST = 1;
+	private static Integer MAX_RESULTS_LIST = 3;
 	
 	private static String NO_ORDER = "No order";
 	private static String ASCENDANT_ORDER = "Ascending order";
@@ -405,6 +405,14 @@ public class PublicationHibernateDao implements PublicationDao{
 		query.setParameter("publicationid", publicationid);
 		query.executeUpdate();
 		
+	}
+	
+	public Integer getMaxResultProfile() {
+		return MAX_RESULTS_PROFILE;
+	}
+	
+	public Integer getMaxResultList() {
+		return MAX_RESULTS_LIST;
 	}
 
 }

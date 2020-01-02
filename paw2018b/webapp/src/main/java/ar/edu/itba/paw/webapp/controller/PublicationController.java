@@ -76,7 +76,7 @@ public class PublicationController {
     	int pubs = ps.getSearchFilteringCount(queryDTO.getOperation(), queryDTO.getPropertyType(), queryDTO.getSearch(), queryDTO.getMinPrice(),
     											queryDTO.getMaxPrice(), queryDTO.getMinFloorSize(), queryDTO.getMaxFloorSize(), queryDTO.getBedrooms(),
     											queryDTO.getBathrooms(), queryDTO.getParking());
-    	PaginationDTO quantity = new PaginationDTO(pubs, 1); //cambiar x la constante que dice en persistance
+    	PaginationDTO quantity = new PaginationDTO(pubs, ps.getMaxResultList()); 
     	return Response.ok().entity(quantity).build();
     }
     
