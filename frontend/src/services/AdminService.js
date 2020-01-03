@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const AdminService = (function(){
 
-    const ADMIN_PATH = 'admin/'
+    const ADMIN_PATH = 'meinHaus/admin/'
     const ROLE_ADMIN = "ROLE_ADMIN"
 
     function _isAdmin(){
