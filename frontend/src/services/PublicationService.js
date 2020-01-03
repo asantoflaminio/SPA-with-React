@@ -5,7 +5,7 @@ import LocalStorageService from './LocalStorageService'
 
 const PublicationService = (function(){
 
-    const PUBLICATIONS_PATH = '/paw-2018b-10/meinHaus/publications/'
+    const PUBLICATIONS_PATH = process.env.PUBLIC_URL + '/meinHaus/publications/'
     
     async function _getSalePublications(props){
       alert(PUBLICATIONS_PATH)

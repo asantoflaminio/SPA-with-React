@@ -31,11 +31,11 @@ const PrivateRoute = ({component: Component, ...rest}) => {
 
 
 function App() {
-  alert("called")
+  alert(process.env.PUBLIC_URL)
   return (
     
     <div className="App">
-      <BrowserRouter basename={"/paw-2018b-10"}>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Suspense fallback={(<div>Loading</div>)}>
           <Navbar />
           <Switch>

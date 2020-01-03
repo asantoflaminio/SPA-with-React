@@ -88,7 +88,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		ds.setUrl("jdbc:postgresql://localhost/postgres");
 		ds.setUsername("postgres");
 		ds.setPassword("Bvma141511");
-	*/
+	
 		//local con base de producción
 		/*
 		ds.setUrl("jdbc:postgresql://localhost:9091/paw-2018b-10");
