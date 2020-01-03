@@ -31,9 +31,7 @@ const PrivateRoute = ({component: Component, ...rest}) => {
 
 
 function App() {
-  alert(process.env.PUBLIC_URL)
   return (
-    
     <div className="App">
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Suspense fallback={(<div>Loading</div>)}>
@@ -51,6 +49,7 @@ function App() {
             <PrivateRoute exact path="/MyFavorites" component={MyFavorites} />
             <PrivateRoute exact path="/MyInformation" component={MyInformation} />
             <PrivateRoute exact path="/EditPublication" component={EditPublication} />
+            <Route exact path="*" component={Home} />
           </Switch>
         </Suspense>
      </BrowserRouter>
@@ -58,5 +57,5 @@ function App() {
     
   );
 }
-//            <Route exact path="*" component={Home} />
+           
 export default App;

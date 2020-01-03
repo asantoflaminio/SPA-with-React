@@ -8,7 +8,6 @@ const PublicationService = (function(){
     const PUBLICATIONS_PATH = process.env.PUBLIC_URL + '/meinHaus/publications/'
     
     async function _getSalePublications(props){
-      alert(PUBLICATIONS_PATH)
         return await axios({
             method: 'get',
             url: PUBLICATIONS_PATH + 'getSalePublications',
