@@ -32,25 +32,26 @@ const PrivateRoute = ({component: Component, ...rest}) => {
 
 function App() {
 
+  alert(process.env.REACT_APP_ROUTER_BASE)
+
   return (
     <div className="App">
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.REACT_APP_ROUTER_BASE || ""}>
         <Suspense fallback={(<div>Loading</div>)}>
           <Navbar />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/SignUp" component={SignUp} />
-            <PrivateRoute path="/Publish" component={Publish} />
-            <Route path="/AdminGenerator" component={AdminGenerator} />
-            <Route path="/AdminUsers" component={AdminUsers} />
-            <Route path="/List" component={List} />
-            <Route path="/publication" component={Details} />
-            <Route path="/error" component={ErrorBoundary} />
-            <PrivateRoute path="/MyPublications" component={MyPublications} />
-            <PrivateRoute path="/MyFavorites" component={MyFavorites} />
-            <PrivateRoute path="/MyInformation" component={MyInformation} />
-            <PrivateRoute path="/EditPublication" component={EditPublication} />
-            <Route exact path="*" component={Home} />
+            <Route exact path="/SignUp" component={SignUp} />
+            <PrivateRoute exact path="/Publish" component={Publish} />
+            <Route exact path="/AdminGenerator" component={AdminGenerator} />
+            <Route exact path="/AdminUsers" component={AdminUsers} />
+            <Route exact path="/List" component={List} />
+            <Route exact path="/publication" component={Details} />
+            <Route exact path="/error" component={ErrorBoundary} />
+            <PrivateRoute exact path="/MyPublications" component={MyPublications} />
+            <PrivateRoute exact path="/MyFavorites" component={MyFavorites} />
+            <PrivateRoute exact path="/MyInformation" component={MyInformation} />
+            <PrivateRoute exact path="/EditPublication" component={EditPublication} />
           </Switch>
         </Suspense>
      </BrowserRouter>
@@ -58,5 +59,5 @@ function App() {
     
   );
 }
-
+//            <Route exact path="*" component={Home} />
 export default App;

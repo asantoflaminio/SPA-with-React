@@ -38,7 +38,7 @@ class SignUp extends React.Component {
         }
     }
 
-    checkEmailAvaiability(event,errors){
+    checkEmailAvaiability(event){
         UserService.checkEmailAvaibility(event,this.props).then(function (status){
             if(status)
                 document.getElementById("emailTakenError").style.display = "none"
@@ -149,7 +149,7 @@ class SignUp extends React.Component {
                             {errors.email}
                             </Form.Control.Feedback>
                         </InputGroup>
-                        <p className="errorText" id="emailTakenError">{t('errors.emailTaken')}</p>
+                        <p id="emailTakenError" className="errorText">{t('errors.emailTaken')}</p>
                     </Form.Group>
                     <Form.Group as={Col} md="12" controlId="validationFormik03">
                         <Form.Label>{t('signUp.password')}</Form.Label>

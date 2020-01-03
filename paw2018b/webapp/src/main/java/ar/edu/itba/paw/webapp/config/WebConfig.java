@@ -83,20 +83,27 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		ds.setDriverClass(org.postgresql.Driver.class);
 		
 		//local
+		
+		/*
 		ds.setUrl("jdbc:postgresql://localhost/postgres");
 		ds.setUsername("postgres");
 		ds.setPassword("Bvma141511");
-
+	*/
 		//local con base de producción
-//		ds.setUrl("jdbc:postgresql://localhost:9091/paw-2018b-10");
-//		ds.setUsername("paw-2018b-10");
-//		ds.setPassword("eWAh0kb4x");
+		/*
+		ds.setUrl("jdbc:postgresql://localhost:9091/paw-2018b-10");
+		ds.setUsername("paw-2018b-10");
+		ds.setPassword("eWAh0kb4x");
+		/*
+		/*deploy*/
+		/**/
+		ds.setUrl("jdbc:postgresql://localhost/paw-2018b-10");
+		ds.setUsername("paw-2018b-10");
+		ds.setPassword("eWAh0kb4x");
 		
-		//deploy
-//		ds.setUrl("jdbc:postgresql://localhost/paw-2018b-10");
-//		ds.setUsername("paw-2018b-10");
-//		ds.setPassword("eWAh0kb4x");
+		
 		return ds;
+		
 	}
 	
 	@Bean

@@ -5,9 +5,10 @@ import LocalStorageService from './LocalStorageService'
 
 const PublicationService = (function(){
 
-    const PUBLICATIONS_PATH = 'publications/'
+    const PUBLICATIONS_PATH = (process.env.REACT_APP_ROUTER_BASE === null) ? '/meinHaus/publications/' : '/meinHaus/publications/'
     
     async function _getSalePublications(props){
+      alert(PUBLICATIONS_PATH)
         return await axios({
             method: 'get',
             url: PUBLICATIONS_PATH + 'getSalePublications',

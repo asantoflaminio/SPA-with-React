@@ -18,3 +18,5 @@ public class PlainTextBasicAuthenticationEntryPoint extends BasicAuthenticationE
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authenticationException.getMessage());
     }
 }
+
+

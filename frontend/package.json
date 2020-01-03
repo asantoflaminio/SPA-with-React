@@ -30,7 +30,6 @@
     "webfontloader": "^1.6.28",
     "yup": "^0.27.0"
   },
-  "homepage": "http://localhost:8080/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -65,5 +64,7 @@
     "node-sass": "^4.13.0",
     "reactotron-react-js": "^3.3.7",
     "sass": "^1.24.0"
-  }
+  },
+  "homepage": "./",
+  "proxy": "http://localhost:8080/"
 }

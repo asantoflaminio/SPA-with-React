@@ -34,7 +34,7 @@
 	</listener>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-       </listener>
+    </listener>
 
 	<!--  NEW SERVLET-->
 	<servlet>
@@ -52,7 +52,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>jersey-servlet</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/meinHaus/*</url-pattern>
     </servlet-mapping>  
 	
 	<!-- OLD SERVLET
