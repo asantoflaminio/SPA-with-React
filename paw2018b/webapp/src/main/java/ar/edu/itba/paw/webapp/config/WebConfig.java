@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.config;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.CacheControl;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -60,11 +62,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	    return multipartResolver;
 	}
 	
-	
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-	}
+	/* Just modified resource location and set up cache control */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**").addResourceLocations("classpath:static/")
+                .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS));
+    }
 	
 	@Bean
 	public ViewResolver viewResolver() {
@@ -96,7 +99,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		ds.setPassword("eWAh0kb4x");
 		/*
 		/*deploy*/
-		/**/
+		
 		ds.setUrl("jdbc:postgresql://localhost/paw-2018b-10");
 		ds.setUsername("paw-2018b-10");
 		ds.setPassword("eWAh0kb4x");
@@ -162,6 +165,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	    final EntityManagerFactory emf) {
 	    return new JpaTransactionManager(emf);
     }
+    
+
 
     
 

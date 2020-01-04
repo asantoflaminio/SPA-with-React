@@ -17,7 +17,6 @@ import UserService from './services/UserService'
 import Navbar from './components/Navbar'
 
 
-
 const PrivateRoute = ({component: Component, ...rest}) => {
 
   return (
