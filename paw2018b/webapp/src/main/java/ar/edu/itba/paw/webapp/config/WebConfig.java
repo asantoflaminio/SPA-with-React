@@ -33,6 +33,9 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.templatemode.StandardTemplateModeHandlers;
 
 @EnableWebMvc
 @ComponentScan({ "ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services", "ar.edu.itba.paw.persistence", "ar.edu.itba.paw.models" })
@@ -87,10 +90,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		
 		//local
 		
-		/*
+		
 		ds.setUrl("jdbc:postgresql://localhost/postgres");
 		ds.setUsername("postgres");
-		ds.setPassword("Bvma141511");
+		ds.setPassword("123456");
 	
 		//local con base de producción
 		/*
@@ -100,9 +103,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		/*
 		/*deploy*/
 		
-		ds.setUrl("jdbc:postgresql://localhost/paw-2018b-10");
-		ds.setUsername("paw-2018b-10");
-		ds.setPassword("eWAh0kb4x");
+//		ds.setUrl("jdbc:postgresql://localhost/paw-2018b-10");
+//		ds.setUsername("paw-2018b-10");
+//		ds.setPassword("eWAh0kb4x");
 		
 		
 		return ds;
@@ -138,6 +141,23 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         mailSender.setJavaMailProperties(javaMailProperties);
         return mailSender;
     }
+    
+    @Bean
+	public SpringTemplateEngine springTemplateEngine() {
+		SpringTemplateEngine engine = new SpringTemplateEngine();
+		engine.addTemplateResolver(htmlSolver());
+		return engine;
+	}
+
+	@Bean
+	public SpringResourceTemplateResolver htmlSolver() {
+		SpringResourceTemplateResolver templateSolver = new SpringResourceTemplateResolver();
+		templateSolver.setPrefix("classpath:/mail/");
+		templateSolver.setSuffix(".html");
+		templateSolver.setTemplateMode(StandardTemplateModeHandlers.HTML5.getTemplateModeName());
+		templateSolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
+		return templateSolver;
+	}
     
     @Bean 
     public RequestContextListener requestContextListener(){

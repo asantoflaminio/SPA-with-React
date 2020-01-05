@@ -51,6 +51,7 @@
         <org.glassfish.hk2.version>2.5.0-b05</org.glassfish.hk2.version>
         <javax.mail.version>1.5.0-b01</javax.mail.version>
         <javax.mail-api.version>1.5.5</javax.mail-api.version>
+        <org.thymeleaf.version>2.1.4.RELEASE</org.thymeleaf.version>
         <org.mockito.core.version>2.10.0</org.mockito.core.version>
         <junit.version>4.11</junit.version>
         <io.jsonwebtoken.jjwt.version>0.7.0</io.jsonwebtoken.jjwt.version>
@@ -307,6 +308,18 @@
                 <groupId>javax.mail</groupId>
                 <artifactId>javax.mail-api</artifactId>
                 <version>${javax.mail-api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.thymeleaf</groupId>
+                <artifactId>thymeleaf</artifactId>
+                <version>${org.thymeleaf.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.thymeleaf</groupId>
+                <artifactId>thymeleaf-spring4</artifactId>
+                <version>${org.thymeleaf.version}</version>
             </dependency>
 
             <dependency>

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.util.Locale;
 
 import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
@@ -14,9 +15,12 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import ar.edu.itba.paw.interfaces.MailService;
 import ar.edu.itba.paw.models.Mail;
@@ -46,6 +50,11 @@ public class MailServiceImpl implements MailService {
     
     @Autowired
     private RequestServiceImpl rs;
+    
+    @Autowired
+	private SpringTemplateEngine engine;
+    
+    private Locale locale = LocaleContextHolder.getLocale();
  
     public void sendEmail(Mail mail) {
     	SimpleMailMessage message = new SimpleMailMessage();
@@ -67,84 +76,14 @@ public class MailServiceImpl implements MailService {
 
     @Override
 	public String prepareMessage(String message, String email, String info, String languaje) {
-    	String html = "<!DOCTYPE html><html><body>\r\n" + 
-				"		    \r\n" + 
-				"<head>\r\n" + 
-				"<meta http-equiv=\\\"Content-Type\\\" content=\\\"text/html; charset=UTF-8\\\" />\r\n" + 
-				"<link href=\\\"https://fonts.googleapis.com/css?family=Rubik\\\" rel=\\\"stylesheet\\\">\r\n" + 
-				"<meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1.0\\\"/>\r\n" + 
-				"</head>\r\n" + 
-				"<html>					\r\n" + 
-				"	<body style=\"margin: 0;padding: 0;\">\r\n" + 
-				"		<table style=\"border-spacing: 0; padding: 0; border: 0; width: 100%;\">	\r\n" + 
-				"			<tr>\r\n" + 
-				"				<td style=\"padding: 10px 0 30px 0;\">\r\n" + 
-				"					<table style=\"border: 1px solid #cccccc; border-collapse: collapse; width: 600px;	margin-left:auto; margin-right:auto; border-spacing: 0;	padding: 0;\">\r\n" + 
-				"						<tr>\r\n" + 
-				"							<td style=\"padding: 30px 0 30px 0; color: #153643; font-size: 28px; font-weight: bold; font-family: 'Rubik', sans-serif;\" align=\"center\" bgcolor=\"#ccc\" >\r\n" + 
-				"								<img style=\"display: block;\" src=\"http://i66.tinypic.com/30u8z8m.jpg\" alt=\"MeinHaus\" width=\"150\" height=\"50\"  />\r\n" + 
-				"							</td>\r\n" + 
-				"								</tr>\r\n" + 
-				"								<tr>\r\n" + 
-				"							<td bgcolor=\"#ffffff\" style=\"padding: 40px 30px 40px 30px;\">\r\n" + 
-				"								<table style=\"border-spacing: 0; padding: 0; border: 0; width: 100%;\">\r\n" + 
-				"									<tr>\r\n" + 
-				"										<td style=\"color: #153643; font-family: 'Rubik', sans-serif; font-size: 24px;\">\r\n" + 
-				"											<b>Contact</b>\r\n" + 
-				"												</td>\r\n" + 
-				"									</tr>\r\n" + 
-				"									<tr>\r\n" + 
-				"										<td style=\"padding: 20px 0 10px 0; color: #153643; font-family: 'Rubik', sans-serif; font-size: 15px; line-height: 20px;\">\r\n" + 
-				"											MailFrom \r\n" + 
-				"											<a href=\"#\" style=\"color:#FD8907; margin-left:5px;\">Email</a>\r\n" + 
-				"										</td>\r\n" + 
-				"									</tr>\r\n" + 
-				"									<tr>\r\n" + 
-				"										<td style=\"padding: 5px 0 15px 0; color: #153643; font-family: 'Rubik', sans-serif; font-size: 15px; line-height: 20px;\">\r\n" + 
-				"											FollowMessage\r\n" + 
-				"										</td>\r\n" + 
-				"									</tr>\r\n" + 
-				"									<tr>\r\n" + 
-				"										<td style=\"font-style: italic; font-family: 'Rubik', sans-serif; color: #999; font-size: 15px;\">\r\n" + 
-				"											Message\r\n" + 
-				"										</td>\r\n" + 
-				"									</tr>\r\n" + 
-				"									<tr>\r\n" + 
-				"										<td style=\"padding: 20px 0 10px 0; color: #153643; font-family: 'Rubik', sans-serif; font-size: 15px; line-height: 20px;\">\r\n" + 
-				"											Property: \r\n" + 
-				"										</td>\r\n" + 
-				"									</tr>\r\n" + 
-				"									<tr>\r\n" + 
-				"										<td style=\"font-style: italic; font-family: 'Rubik', sans-serif; color: #999; font-size: 15px;\">PropertyTitle</td>\r\n" + 
-				"									</tr>\r\n" + 
-				"								</table>\r\n" + 
-				"							</td>\r\n" + 
-				"						</tr>\r\n" + 
-				"						<tr>\r\n" + 
-				"							<td bgcolor=\"#FD8907\" style=\"padding: 30px 30px 30px 30px;\">\r\n" + 
-				"								<table style=\"border-spacing: 0; padding: 0; border: 0; width: 100%;\">\r\n" + 
-				"									<tr>\r\n" + 
-				"										<td style=\"color: #ffffff; font-family: 'Rubik', sans-serif; font-size: 14px;\" width=\"75%\">\r\n" + 
-				"											&reg; Meinhaus, 2018<br/>\r\n" + 
-				"										</td>\r\n" + 
-				"									</tr>\r\n" + 
-				"								</table>\r\n" + 
-				"							</td>\r\n" + 
-				"						</tr>\r\n" + 
-				"					</table>\r\n" + 
-				"				</td>\r\n" + 
-				"			</tr>\r\n" + 
-				"		</table>\r\n" + 
-				"	</body>\r\n" + 
-				"</html>\r\n" + 
-				"";		
-/*		try {
+    	String html = null;
+		try {
 			html = getHTML();
 		} catch (Exception e) {
 			LOGGER.trace("Error parsing email");
 			return html;
 		}
-*/
+
 		sms.setLocale(rs.getLocale(languaje));
 		html = html.replaceAll(CONTACT, sms.get("mail.contact"));
 		html = html.replaceAll(MAILFROM, sms.get("mail.mailFrom"));
@@ -158,11 +97,23 @@ public class MailServiceImpl implements MailService {
 	
     @Override
 	public void sendEmail (String to,String from, String body, String info){
-    	System.out.println("to: " + to + " from: " + from + "body: " + body + " info: " + info);
+    	
 		User user = us.findByUsername(to);
-		String message = prepareMessage(body,from, info, user.getLanguaje());
+		
+		//String message = prepareMessage(body,from, info, user.getLanguaje());
 
 		MimeMessage email = mailSender.createMimeMessage();
+		sms.setLocale(rs.getLocale(user.getLanguaje()));
+		Context context = new Context(locale);
+		//context.setVariable("contact", sms.get("mail.contact"));
+		//context.setVariable("mailFrom", sms.get("mailFrom"));
+//		context.setVariable("email", from);
+//		context.setVariable("message", body);
+		//context.setVariable("followMessage", sms.get("mail.followMessage"));
+		//context.setVariable("property",sms.get("mail.property"));
+		//context.setVariable("propertyTitle", info);
+		
+		String message = engine.process("mailContent", context);
 		
 		try {
 			email.setSubject("Contact message");
