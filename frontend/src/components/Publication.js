@@ -12,7 +12,6 @@ const Publication = ({ t , publication, image}) => (
                 price={publication.price}
                 maxImages={publication.images}
                 page="List"
-                image={image}
                 imageClass="polaroid-property-img"
                 containerClass="img-with-tag"
                 nextClass="next-image pointer"

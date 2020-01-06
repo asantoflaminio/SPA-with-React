@@ -15,13 +15,52 @@ class ImageVisualizer extends React.Component {
         super(props);
         this.state = {
             index : 0,
-            isFavourite : false
+            isFavourite : false,
         }
       }
 
-    getNextImage = (partID) => {
-        let id = partID + this.props.publicationID;
+    componentDidMount(){
+        let currentComponent = this;
+        let names;
+        let values;
+        if(UserService.isLogged()){
+            names = ["id"]
+            values = [this.props.publicationID]
+
+            PublicationService.isFavourite(JsonService.createJSONArray(names,values),this.props).then(function (request){
+                currentComponent.setState({
+                    isFavourite : request.response
+                })
+            })
+        }
+
+        this.updateImage(this.state.index)
+    }
+
+    componentDidUpdate(prevProps,prevState){
+        if (this.props !== prevProps){
+            this.setState({
+                index: 0
+            })
+            this.updateImage(0)
+        }
+    }
+    
+    updateImage(newIndex){
+        let component = this;
+        let id = this.props.page + this.props.publicationID;
         let img = document.getElementById(id);
+        let names = ["publicationID","index"]
+        let values = [this.props.publicationID,newIndex]
+        PublicationService.getImage(JsonService.createJSONArray(names,values), this.props).then(function (src){
+            img.src = utilFunction.setSRC(src)
+            component.setState({
+                index: newIndex
+            })
+        })
+    }
+
+    getNextImage = () => {
         let currentIndex = this.state.index
         let nextIndex;
         
@@ -29,22 +68,11 @@ class ImageVisualizer extends React.Component {
             nextIndex = 0;
         else
             nextIndex = currentIndex + 1;
-    
-        let component = this;
-        let names = ["publicationID","index"]
-        let values = [this.props.publicationID,nextIndex]
-        PublicationService.getImage(JsonService.createJSONArray(names,values), this.props).then(function (src){
-            img.src = utilFunction.setSRC(src)
-            component.setState({
-                index: nextIndex
-            })
-        })
-
+        
+        this.updateImage(nextIndex)
     }
     
-    getPreviousImage = (partID) => {
-        let id = partID + this.props.publicationID;
-        let img = document.getElementById(id);
+    getPreviousImage = () => {
         let currentIndex = this.state.index
         let previousIndex;
     
@@ -53,29 +81,9 @@ class ImageVisualizer extends React.Component {
         else
             previousIndex = currentIndex - 1;
     
-        let component = this
-        let names = ["publicationID","index"]
-        let values = [this.props.publicationID,previousIndex]
-        PublicationService.getImage(JsonService.createJSONArray(names,values), this.props).then(function (src){
-            img.src = utilFunction.setSRC(src)
-            component.setState({
-                index: previousIndex
-            })
-        })
+        this.updateImage(previousIndex)
     }
 
-    componentDidMount(){
-        let currentComponent = this
-        if(UserService.isLogged()){
-            let names = ["id"]
-            let values = [this.props.publicationID]
-            PublicationService.isFavourite(JsonService.createJSONArray(names,values),this.props).then(function (request){
-                currentComponent.setState({
-                    isFavourite : request.response
-                })
-            })
-        }
-    }
 
     favouritePublication(boolean){
         let names = ["id"]
@@ -115,10 +123,10 @@ class ImageVisualizer extends React.Component {
 
         return(
             <div class={this.props.containerClass}>
-                <img class={this.props.imageClass} alt="img" id={this.props.page + this.props.publicationID} src={utilFunction.setSRC(this.props.image)} />
+                <img class={this.props.imageClass} alt="img" id={this.props.page + this.props.publicationID} />
                 {favIcon}
-                <img class={this.props.previousClass} src={previousArrow} alt="Previous" onClick={() => this.getPreviousImage(this.props.page)}/>
-                <img class={this.props.nextClass} src={nextArrow} alt="Next" onClick={() => this.getNextImage(this.props.page)}/>
+                <img class={this.props.previousClass} src={previousArrow} alt="Previous" onClick={() => this.getPreviousImage()}/>
+                <img class={this.props.nextClass} src={nextArrow} alt="Next" onClick={() => this.getNextImage()}/>
                 {price}
             </div>
            

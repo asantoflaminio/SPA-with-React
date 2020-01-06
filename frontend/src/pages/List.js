@@ -17,7 +17,6 @@ class List extends React.Component {
         this.state = {
             resultsQuantity: 0,
             publications: [],
-            images: [],
             operation:"",
             propertyType:"",
             search: "",
@@ -58,24 +57,8 @@ class List extends React.Component {
                 [stateName2] : query[stateName2],
                 [stateName3] : query[stateName3]
             })
-            currentComponent.getImages()
             currentComponent.updatePublicationsQuantity()
             currentComponent.updateFilters()
-        })
-    }
-
-    async getImages(){
-        let imagesRequest = []
-        
-        for(let i = 0; i < this.state.publications.length ; i++){
-            let names = ["publicationID","index"]
-            let values = [this.state.publications[i].publicationID,0]
-            await PublicationService.getImage(JsonService.createJSONArray(names,values), this.props).then(function (image){
-                imagesRequest.push(image);
-            })
-        }
-        this.setState({
-            images: imagesRequest
         })
     }
 
@@ -143,7 +126,7 @@ class List extends React.Component {
         let pubComponents = [];
         for(let i = 0; i < this.state.publications.length; i++){
             pubComponents.push(
-                <Publication t={t} publication={this.state.publications[i]} image={this.state.images[i]}></Publication>
+                <Publication t={t} publication={this.state.publications[i]}></Publication>
             )
         }
         return pubComponents;
@@ -281,10 +264,7 @@ class List extends React.Component {
                 publications: pubs,
                 page: query.page
             })
-            currentComponent.getImages()
         })
-        
-        
     }
 
     expand(id){

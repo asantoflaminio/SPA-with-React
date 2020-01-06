@@ -7,6 +7,7 @@ import List from './pages/List'
 import Publish from './pages/Publish'
 import AdminGenerator from './pages/AdminGenerator'
 import AdminUsers from './pages/AdminUsers'
+import AdminPublications from './pages/AdminPublications'
 import Details from './pages/Details'
 import ErrorBoundary from './pages/ErrorBoundary'
 import MyPublications from './pages/MyPublications'
@@ -38,12 +39,13 @@ function App() {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/SignUp" component={SignUp} />
-            <PrivateRoute exact path="/Publish" component={Publish} />
-            <Route exact path="/AdminGenerator" component={AdminGenerator} />
-            <Route exact path="/AdminUsers" component={AdminUsers} />
             <Route exact path="/List" component={List} />
             <Route exact path="/publication" component={Details} />
             <Route exact path="/error" component={ErrorBoundary} />
+            <PrivateRoute exact path="/Publish" component={Publish} />
+            <PrivateRoute exact path="/AdminGenerator" component={AdminGenerator} />
+            <PrivateRoute exact path="/AdminUsers" component={AdminUsers} />
+            <PrivateRoute exact path="/AdminPublications" component={AdminPublications} />
             <PrivateRoute exact path="/MyPublications" component={MyPublications} />
             <PrivateRoute exact path="/MyFavorites" component={MyFavorites} />
             <PrivateRoute exact path="/MyInformation" component={MyInformation} />

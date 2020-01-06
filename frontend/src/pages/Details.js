@@ -32,7 +32,6 @@ class Details extends React.Component {
             price: null,
             title: null,
             description: null,
-            image: null,
             maxImages: null,
             ownerEmail: null,
             phoneNumber: null,
@@ -55,32 +54,27 @@ class Details extends React.Component {
         let names = ["id"]
         let values = [query.publicationID]
         PublicationService.getPublication(JsonService.createJSONArray(names,values), this.props).then(function (pub){
-            let names = ["publicationID","index"]
-            let values = [query.publicationID,0]
-            PublicationService.getImage(JsonService.createJSONArray(names,values),component.props,pub).then(function (img){
-                    component.setState({
-                        publicationID: pub.publicationID, 
-                        province: pub.provinceID,
-                        city: pub.cityID,
-                        neighborhood: pub.neighborhoodID,
-                        address: pub.address,
-                        bedrooms: pub.bedrooms,
-                        bathrooms: pub.bathrooms,
-                        floorSize: pub.dimention,
-                        coveredFloorSize: pub.coveredFloorSize,
-                        parking: pub.parking,
-                        price: pub.price,
-                        title: pub.title,
-                        description: pub.description,
-                        image: img,
-                        maxImages: pub.images,
-                        phoneNumber: pub.phoneNumber,
-                        ownerEmail: pub.userEmail,
-                        amenities: pub.amenities,
-                        storage: pub.storage,
-                        expenses: pub.expenses,
-                        balconies: pub.balconies
-                    })
+                component.setState({
+                    publicationID: pub.publicationID, 
+                    province: pub.provinceID,
+                    city: pub.cityID,
+                    neighborhood: pub.neighborhoodID,
+                    address: pub.address,
+                    bedrooms: pub.bedrooms,
+                    bathrooms: pub.bathrooms,
+                    floorSize: pub.dimention,
+                    coveredFloorSize: pub.coveredFloorSize,
+                    parking: pub.parking,
+                    price: pub.price,
+                    title: pub.title,
+                    description: pub.description,
+                    maxImages: pub.images,
+                    phoneNumber: pub.phoneNumber,
+                    ownerEmail: pub.userEmail,
+                    amenities: pub.amenities,
+                    storage: pub.storage,
+                    expenses: pub.expenses,
+                    balconies: pub.balconies
                 })
             })
 
@@ -97,11 +91,9 @@ class Details extends React.Component {
     }
 
     render(){
-
-        
-        
-
         const { t } = this.props;
+        const queryString = require('query-string');
+        const query = queryString.parse(this.props.location.search)
             const schema = yup.object({
                 name: yup.string().required( t('errors.requiredField') ),
                 email: yup.string().required(t('errors.requiredField')),
@@ -144,9 +136,8 @@ class Details extends React.Component {
                         <div id="left-col">   
                             <div class="polaroid">
                                 <ImageVisualizer 
-                                    publicationID={this.state.publicationID}
+                                    publicationID={query.publicationID}
                                     maxImages={this.state.maxImages}
-                                    image={this.state.image}
                                     page="Details"
                                     imageClass="imageSize"
                                     containerClass="img-with-tag mySlides"

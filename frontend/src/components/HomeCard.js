@@ -3,38 +3,17 @@ import '../css/HomeCard.css';
 import ImgVisualizer from './ImageVisualizer';
 import {Link} from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
-import PublicationService from '../services/PublicationService'
-import JsonService from '../services/JsonService';
 
 class HomeCard extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            image: null
-        };
-      }
-
-      componentDidMount(){
-          let component = this
-          let names = ["publicationID","index"]
-          let values = [this.props.publication.publicationID,0]
-          PublicationService.getImage(JsonService.createJSONArray(names,values), this.props).then(function (img){
-              component.setState({
-                  image: img
-              })
-          })
-      }
-
-      render(){
-          const {t} = this.props
-          return(
+    render(){
+        const {t} = this.props
+        return(
             <div>
                 <li class="polaroid">
                     <ImgVisualizer
                         publicationID={this.props.publication.publicationID}
                         price={this.props.publication.price}
                         maxImages={this.props.publication.images}
-                        image={this.state.image}
                         page="Home"
                         imageClass="polaroid-property-img-home"
                         containerClass="arrows-div"
