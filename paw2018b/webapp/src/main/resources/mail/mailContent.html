@@ -24,11 +24,11 @@
 												</td>
 											</tr>
 											<tr>
-												<td style="padding: 20px 0 10px 0; color: #153643; font-family: 'Rubik', sans-serif; font-size: 15px; line-height: 20px;" th:text="#{mailContent.mailFrom}"> 
-													Mail From 
+												<td style="padding: 20px 0 10px 0; color: #153643; font-family: 'Rubik', sans-serif; font-size: 15px; line-height: 20px;" > 
+													<span th:text="#{mailContent.mailFrom}" th:remove="tag"> Mail from: </span>
+													<a href="#" style="color:#FD8907; margin-left:5px;" th:text="${email}"> </a>
+													<a  style="margin-left:5px;" th:text="'(' + ${name} + ')'"></a>
 												</td> 
-												<a href="#" style="color:#FD8907; margin-left:5px;" th:text="${email}"> </a>
-												<a  style="margin-left:5px;" th:text="'(' + ${name} + ')'"></a>
 											</tr>
 											<tr>
 												<td style="padding: 5px 0 15px 0; color: #153643; font-family: 'Rubik', sans-serif; font-size: 15px; line-height: 20px;" th:text="#{mailContent.followingMessage}" > 

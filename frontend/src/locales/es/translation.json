@@ -184,7 +184,8 @@
        "storage": "Baulera:",
        "expenses": "Expensas:",
        "Yes": "Sí",
-       "No": "No"
+       "No": "No",
+       "messageSent": "Mensaje enviado."
     },
     "mypublications": {
         "title_section": "Mis publicaciones"

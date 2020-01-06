@@ -11,9 +11,14 @@ import { withRouter } from "react-router";
 import PublicationService from '../services/PublicationService'
 import UserService from '../services/UserService'
 import JsonService from '../services/JsonService'
+import toast from 'toasted-notes' 
+import 'toasted-notes/src/styles.css';
 
 const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credentials.mapsKey}` ;
+
 class Details extends React.Component {
+
+
     constructor(props) {
         super(props);
         this.state = {
@@ -85,9 +90,13 @@ class Details extends React.Component {
 
     handleSendMessage(event){
         event.preventDefault();
+        const { t } = this.props;
         UserService.sendMessage(event, this.props).then(function (status){
-            alert("Message sent")
+            toast.notify(t('details.messageSent'));
         })
+        event.target[0].value = '';
+        event.target[1].value = '';
+        event.target[2].value = '';
     }
 
     render(){
@@ -189,7 +198,7 @@ class Details extends React.Component {
                                             {({
                                                 values,
                                                 handleChange,
-                                                errors,
+                                                errors
                                             }) => (
                                                 <Form noValidate id="messageForm" onSubmit={(event) => {this.handleSendMessage(event)}}>
                                                         <Form.Group as={Col} md="12" controlId="validationFormik01">

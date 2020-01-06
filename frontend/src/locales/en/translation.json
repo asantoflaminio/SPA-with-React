@@ -183,7 +183,8 @@
         "storage": "Storage:",
         "expenses": "Expenses:",
         "Yes": "Yes",
-        "No": "No"
+        "No": "No",
+        "messageSent": "Message sent."
      }, 
      "mypublications": {
       "title_section": "Mis publicaciones"

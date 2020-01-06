@@ -70,7 +70,7 @@ public class MailServiceImpl implements MailService {
 		String message = engine.process("mailContent", context);
 		
 		try {
-			email.setSubject("Contact message");
+			email.setSubject("MeinHaus");
 			email.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			email.setContent(message, "text/html; charset=utf-8");
 		} catch (Exception e) {
