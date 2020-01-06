@@ -2,19 +2,19 @@ package ar.edu.itba.paw.models.dto;
 
 public class PageDTO {
 	
-	private Integer page;
+	private String page;
 	
-	public PageDTO(Integer page) {
+	public PageDTO(String page) {
 		this.setPage(page);
 	}
 	
 	public PageDTO() {}
 
-	public Integer getPage() {
+	public String getPage() {
 		return page;
 	}
 
-	public void setPage(Integer page) {
+	public void setPage(String page) {
 		this.page = page;
 	}
 	

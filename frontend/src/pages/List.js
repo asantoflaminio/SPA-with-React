@@ -8,7 +8,6 @@ import Publication from '../components/Publication';
 import * as utilFunction from '../util/function';
 import ReactPaginate from 'react-paginate';
 import PublicationService from '../services/PublicationService'
-import JsonService from '../services/JsonService'
 
 
 class List extends React.Component {
@@ -126,7 +125,11 @@ class List extends React.Component {
         let pubComponents = [];
         for(let i = 0; i < this.state.publications.length; i++){
             pubComponents.push(
-                <Publication t={t} publication={this.state.publications[i]}></Publication>
+                <Publication t={t} 
+                    publication={this.state.publications[i]}
+                    page="List"
+                />
+
             )
         }
         return pubComponents;

@@ -24,6 +24,7 @@ import ar.edu.itba.paw.models.dto.BooleanResponseDTO;
 import ar.edu.itba.paw.models.dto.FiltersDTO;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.ImageDTO;
+import ar.edu.itba.paw.models.dto.PageDTO;
 import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.PublicationsDTO;
@@ -49,7 +50,22 @@ public class PublicationController {
 	@Autowired
 	private TokenAuthenticationService tas;
 	
+    @POST
+    @Path("/getAllPublications")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response getAllPublications (final PageDTO pageDTO) {
+    	PublicationsDTO publications = new PublicationsDTO(ps.findAllPublications(pageDTO.getPage()));
+    	return Response.ok().entity(publications).build();
+    }
     
+    @GET
+    @Path("/getAllPublicationsCount")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response getAllPublicationsCount () {
+    	PaginationDTO quantity = new PaginationDTO(ps.getCountAllPublications(), ps.getMaxResultList());
+    	return Response.ok().entity(quantity).build();
+    }
+	
     @GET
     @Path("/getSalePublications")
     @Produces(value = { MediaType.APPLICATION_JSON, })

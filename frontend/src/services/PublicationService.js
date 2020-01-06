@@ -6,6 +6,33 @@ import LocalStorageService from './LocalStorageService'
 const PublicationService = (function(){
 
     const PUBLICATIONS_PATH = process.env.PUBLIC_URL + '/meinHaus/publications/'
+
+    async function _getAllPublications(array,props){
+      return await axios({
+          method: 'post',
+          url: PUBLICATIONS_PATH + 'getAllPublications',
+          data: JsonService.getJSONParsed(array)
+        })
+        .then(function (response) {
+            return response.data.publications
+        })
+        .catch(function (error) {
+          ErrorService.logError(props,error)
+        });
+  }
+
+    async function _getAllPublicationsCount(props){
+      return await axios({
+          method: 'get',
+          url: PUBLICATIONS_PATH + 'getAllPublicationsCount',
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(function (error) {
+          ErrorService.logError(props,error)
+        });
+  }
     
     async function _getSalePublications(props){
         return await axios({
@@ -123,6 +150,8 @@ const PublicationService = (function(){
     
 
     return {
+        getAllPublications : _getAllPublications,
+        getAllPublicationsCount : _getAllPublicationsCount,
         getSalePublications : _getSalePublications,
         getRentPublications : _getRentPublications,
         getPublicationsCount : _getPublicationsCount,

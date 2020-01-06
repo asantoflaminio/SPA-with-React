@@ -61,6 +61,7 @@ class ImageVisualizer extends React.Component {
     }
 
     getNextImage = () => {
+        alert(this.props.maxImages)
         let currentIndex = this.state.index
         let nextIndex;
         
@@ -111,7 +112,7 @@ class ImageVisualizer extends React.Component {
         if(this.props.price != null){
             price = <h2 class="price-tag">U$S {this.props.price}</h2>
         }
-        if(UserService.isLogged()){
+        if(UserService.isLogged() && this.props.favourites !== false){
             if(this.state.isFavourite)
                 favIcon = <img class="favorite-icon" src={heartFilled} onClick={() => this.favouritePublication(! this.state.isFavourite)} alt="Fave" />
             else

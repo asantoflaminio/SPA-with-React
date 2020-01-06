@@ -5,13 +5,14 @@ import ImgVisualizer from './ImageVisualizer';
 import {Link} from 'react-router-dom';
 
 
-const Publication = ({ t , publication, image}) => (
+const Publication = ({ t , publication, page, favourites }) => (
         <div class="polaroid-property">
             <ImgVisualizer
                 publicationID={publication.publicationID}
                 price={publication.price}
                 maxImages={publication.images}
-                page="List"
+                page={page}
+                favourites={favourites}
                 imageClass="polaroid-property-img"
                 containerClass="img-with-tag"
                 nextClass="next-image pointer"
