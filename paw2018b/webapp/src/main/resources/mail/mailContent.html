@@ -20,32 +20,31 @@
 										<table style="border-spacing: 0; padding: 0; border: 0; width: 100%;"> 
 											<tr>
 												<td style="color: #153643; font-family: 'Rubik', sans-serif; font-size: 24px;"> 
-													<b>Contact</b> 
+													<b th:text="#{mailContent.title}"> You have been contacted by MeinHaus! </b> 
 												</td>
 											</tr>
 											<tr>
-												<td style="padding: 20px 0 10px 0; color: #153643; font-family: 'Rubik', sans-serif; font-size: 15px; line-height: 20px;"> 
+												<td style="padding: 20px 0 10px 0; color: #153643; font-family: 'Rubik', sans-serif; font-size: 15px; line-height: 20px;" th:text="#{mailContent.mailFrom}"> 
 													Mail From 
-													<a href="#" style="color:#FD8907; margin-left:5px;">email</a>
+													<a href="#" style="color:#FD8907; margin-left:5px;" th:text="${email}"> </a>
 												</td> 
 											</tr>
 											<tr>
-												<td style="padding: 5px 0 15px 0; color: #153643; font-family: 'Rubik', sans-serif; font-size: 15px; line-height: 20px;"> 
-													Follow Message
+												<td style="padding: 5px 0 15px 0; color: #153643; font-family: 'Rubik', sans-serif; font-size: 15px; line-height: 20px;" th:text="#{mailContent.followingMessage}" > 
+													With the following message:
 												</td>
 											</tr>
 											<tr> 
-												<td style="font-style: italic; font-family: 'Rubik', sans-serif; color: #999; font-size: 15px;"> 
-													message
+												<td style="font-style: italic; font-family: 'Rubik', sans-serif; color: #999; font-size: 15px;" th:text="${message}"> 
 												</td> 
 											</tr>
 											<tr>
-												<td style="padding: 20px 0 10px 0; color: #153643; font-family: 'Rubik', sans-serif; font-size: 15px; line-height: 20px;">
-													Property: 
+												<td style="padding: 20px 0 10px 0; color: #153643; font-family: 'Rubik', sans-serif; font-size: 15px; line-height: 20px;" th:text="#{mailContent.property}">
+													Property:
 												</td>
 											</tr>
 											<tr>
-												<td style="font-style: italic; font-family: 'Rubik', sans-serif; color: #999; font-size: 15px;"> propertyTitle</td>
+												<td style="font-style: italic; font-family: 'Rubik', sans-serif; color: #999; font-size: 15px;" th:text="${propertyTitle}"> </td>
 											</tr>
 										</table>
 									</td>
