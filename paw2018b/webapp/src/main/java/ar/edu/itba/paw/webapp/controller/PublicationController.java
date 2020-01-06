@@ -166,4 +166,13 @@ public class PublicationController {
     {
     	return Response.ok().entity(new BooleanResponseDTO(fs.isFavourite(tas.getUserIdAuthentication(request), iDResponseDTO.getId()))).build();
     }
+    
+    @POST
+    @Path("/erasePublication")
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response erasePublication(final IDResponseDTO iDResponseDTO)
+    {
+    	ps.deleteById(iDResponseDTO.getId());
+    	return Response.ok().build();
+    }
 }

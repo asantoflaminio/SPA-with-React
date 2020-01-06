@@ -147,6 +147,23 @@ const PublicationService = (function(){
       });   
     }
 
+    async function _erasePublication(array,props){
+      return await axios({
+        method: 'post',
+        url: PUBLICATIONS_PATH + 'erasePublication',
+        data: JsonService.getJSONParsed(array),
+        headers: {
+          authorization: LocalStorageService.getAccessToken(),
+      }
+      })
+      .then(function (response) {
+        return response.data
+      })
+      .catch(function (error) {
+        ErrorService.logError(props,error)
+      });   
+    }
+
     
 
     return {
@@ -159,7 +176,8 @@ const PublicationService = (function(){
         getPublications : _getPublications,
         getFilters : _getFilters,
         getImage : _getImage,
-        isFavourite : _isFavourite
+        isFavourite : _isFavourite,
+        erasePublication : _erasePublication
       }
      })();
   

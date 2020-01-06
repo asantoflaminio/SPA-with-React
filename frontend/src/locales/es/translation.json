@@ -120,7 +120,8 @@
       "neighborhoodHolder": "Barrio...",
       "neighborhood": "Barrio:",
       "unlocked": "NO BLOQUEADO",
-      "locked": "BLOQUEADO"
+      "locked": "BLOQUEADO",
+      "delete": "Borrar"
     },
     "list": {
       "buy": "Comprar",

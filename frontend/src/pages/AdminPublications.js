@@ -17,11 +17,13 @@ class AdminPublications extends React.Component {
             publications: [],
             resultsQuantity: 0
         };
+
+        this.erasePublication = this.erasePublication.bind(this);
     }
 
     componentDidMount(){
-        this.updatePublications(this.state.page)
         this.updatePublicationsQuantity()
+        this.updatePublications(this.state.page)
     }
 
     handlePageClick = data => {
@@ -40,12 +42,16 @@ class AdminPublications extends React.Component {
         })
     }
 
-    updatePublicationsQuantity(){
+    async updatePublicationsQuantity(){
         let currentComponent = this
         PublicationService.getAllPublicationsCount(this.props).then(function (data){
+            let newPage = currentComponent.state.page
+            if(data.count % data.limit === 0)
+                newPage = currentComponent.state.page - 1
             currentComponent.setState({
                 pagesQuantity: Math.ceil(data.count / data.limit),
-                resultsQuantity: data.count
+                resultsQuantity: data.count,
+                page: newPage
             })
         })
     }
@@ -53,15 +59,28 @@ class AdminPublications extends React.Component {
     initializePublications(t){
         let pubComponents = [];
         for(let i = 0; i < this.state.publications.length; i++){
+            alert(this.state.publications[i].publicationID)
             pubComponents.push(
                 <Publication t={t} 
                     publication={this.state.publications[i]}
                     page="AdminPublications"
                     favourites={false}
+                    eraseFunction={this.erasePublication}
                 />
             )
         }
         return pubComponents;
+    }
+
+    erasePublication(publicationID){
+        alert(publicationID)
+        let currentComponent = this
+        let names = ["id"]
+        let values = [publicationID]
+        PublicationService.erasePublication(JsonService.createJSONArray(names,values),this.props).then(function (){
+            alert("deleted " + publicationID)
+            currentComponent.updatePublicationsQuantity()
+        })
     }
 
     render(){
