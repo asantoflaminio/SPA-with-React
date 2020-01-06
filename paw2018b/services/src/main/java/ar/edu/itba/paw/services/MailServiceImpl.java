@@ -55,14 +55,14 @@ public class MailServiceImpl implements MailService {
     }
 	
     @Override
-	public void sendEmail (String to,String from, String body, String info){
+	public void sendEmail (String name, String to,String from, String body, String info){
     	
 
 		MimeMessage email = mailSender.createMimeMessage();
 		
 		User user = us.findByUsername(to);
 		Context context = new Context(rs.getLocale(user.getLanguaje()));
-
+		context.setVariable("name", name);
 		context.setVariable("email", from);
 		context.setVariable("message", body);
 		context.setVariable("propertyTitle", info);

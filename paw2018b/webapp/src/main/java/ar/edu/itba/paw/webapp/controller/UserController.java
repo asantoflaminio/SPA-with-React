@@ -121,7 +121,7 @@ public class UserController {
     @Path("/sendMessage")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response sendMessage (MessageDTO messageDTO) {
-    	ms.sendEmail(messageDTO.getOwnerEmail(), messageDTO.getEmail(), messageDTO.getMessage(), messageDTO.getTitle());
+    	ms.sendEmail(messageDTO.getName() ,messageDTO.getOwnerEmail(), messageDTO.getEmail(), messageDTO.getMessage(), messageDTO.getTitle());
         return Response.ok().build();
     }
     
