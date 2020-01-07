@@ -21,6 +21,21 @@ public class UserDTO {
 		this.repeatPassword = repeatPassword;
 	}
 	
+	public UserDTO(String firstName, String lastName, String email, String phoneNumber, String password) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.password = password;
+	}
+	
+	public UserDTO(String firstName, String lastName, String email, String phoneNumber) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+	}
+	
 	public UserDTO(String email, boolean locked, long id) {
 		this.email = email;
 		this.locked = locked;

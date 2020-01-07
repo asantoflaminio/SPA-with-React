@@ -107,11 +107,10 @@ const UserService = (function(){
         });
     }
 
-    async function _getMyPublicationsQuantity(array,props){
+    async function _getMyPublicationsQuantity(props){
         return await axios({
-            method: 'post',
+            method: 'get',
             url: USERS_PATH + 'getMyPublicationsQuantity',
-            data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
@@ -124,11 +123,10 @@ const UserService = (function(){
           });
     }
 
-    async function _getMyFavoritesQuantity(array, props){
+    async function _getMyFavoritesQuantity(props){
         return await axios({
-            method: 'post',
+            method: 'get',
             url: USERS_PATH + 'getMyFavoritesQuantity',
-            data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
@@ -158,11 +156,10 @@ const UserService = (function(){
           });
     }
 
-    async function _getMyFavoritesPublications(array, props){
+    async function _getMyFavoritesPublications(props){
         return await axios({
-            method: 'post',
+            method: 'get',
             url: USERS_PATH + 'getMyFavoritesPublications',
-            data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
@@ -175,11 +172,10 @@ const UserService = (function(){
           });
     }
 
-    async function _getMyPublicationsCount(array, props){
+    async function _getMyPublicationsCount(props){
         return await axios({
-            method: 'post',
+            method: 'get',
             url: USERS_PATH + 'getMyPublicationsCount',
-            data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
@@ -192,11 +188,10 @@ const UserService = (function(){
           });
     }
 
-    async function _getMyFavoritesPublicationsCount(array, props){
+    async function _getMyFavoritesPublicationsCount(props){
         return await axios({
-            method: 'post',
+            method: 'get',
             url: USERS_PATH + 'getMyFavoritesPublicationsCount',
-            data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
@@ -237,6 +232,39 @@ const UserService = (function(){
           });
     }
 
+    async function _updateInformation(array, props) {
+        return await axios({
+            method: 'post',
+            url: USERS_PATH + 'updateInformation',
+            data: JsonService.getJSONParsed(array),
+            headers: {
+                authorization: LocalStorageService.getAccessToken(),
+            }
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(function (error) {
+              ErrorService.logError(props,error)
+          });
+    }
+
+    async function _retrievePersonalInformation(props){
+        return await axios({
+            method: 'get',
+            url: USERS_PATH + 'retrievePersonalInformation',
+            headers: {
+                authorization: LocalStorageService.getAccessToken(),
+            }
+          })
+          .then(function (response) {
+              return response.data
+          })
+          .catch(function (error) {
+              ErrorService.logError(props,error)
+          });
+    }
+
    return {
       isLogged : _isLogged,
       signUp : _signUp,
@@ -246,16 +274,16 @@ const UserService = (function(){
       postImages : _postImages,
       sendMessage : _sendMessage,
       getMyPublicationsQuantity : _getMyPublicationsQuantity,
-      getMyFavoritesQuantity : _getMyFavoritesQuantity,
-      getMyPublications : _getMyPublications,
-      getMyFavoritesPublications : _getMyFavoritesPublications,
-      getMyPublicationsCount : _getMyPublicationsCount,
-      getMyFavoritesPublicationsCount : _getMyFavoritesPublicationsCount,
-      favouritePublication : _favouritePublication,
-      unfavouritePublication : _unfavouritePublication
-
-      
-    }
+        getMyFavoritesQuantity : _getMyFavoritesQuantity,
+        getMyPublications : _getMyPublications,
+        getMyFavoritesPublications : _getMyFavoritesPublications,
+        getMyPublicationsCount : _getMyPublicationsCount,
+        getMyFavoritesPublicationsCount : _getMyFavoritesPublicationsCount,
+        favouritePublication : _favouritePublication,
+        unfavouritePublication : _unfavouritePublication,
+        updateInformation: _updateInformation,
+        retrievePersonalInformation: _retrievePersonalInformation
+   }
    })();
 
    export default UserService;

@@ -186,6 +186,23 @@
        "Yes": "Sí",
        "No": "No",
        "messageSent": "Mensaje enviado."
+    }, 
+    "profile": {
+     "titlePersonalData": "DATOS PERSONALES",
+     "profile.titleNewPassword": "CAMBIÁ TU CONTRASEÑA",
+     "firstName": "NOMBRE",
+     "firstNameHolder": "Nombre",
+     "lastName": "APELLIDO",
+      "lastNameHolder": "Apellido",
+      "email": "EMAIL",
+      "emailHolder": "Email",
+      "phonenumber": "CELULAR",
+      "phonenumberHolder": "Celular",
+      "password": "CONTRASEÑA ACTUAL",
+      "passwordHolder": "Contraseña actual",
+      "newpassword": "CONTRASEÑA NUEVA",
+      "newpasswordHolder": "Contraseña nueva",
+      "submit": "Enviar"
     },
     "mypublications": {
         "title_section": "Mis publicaciones"

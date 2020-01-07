@@ -13,7 +13,6 @@ class MyPublications extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: 1,
             myPublicationsCounter: 0,
             myPublications: [],
             images: [],
@@ -44,9 +43,7 @@ class MyPublications extends React.Component {
 
     updateQuantity(){
         let currentComponent = this;
-        let names = ["id"]
-        let values = [this.state.id]
-        UserService.getMyPublicationsQuantity(JsonService.createJSONArray(names,values),this.props).then(function (quantity) {
+        UserService.getMyPublicationsQuantity(this.props).then(function (quantity) {
             currentComponent.setState({
                 myPublicationsCounter: quantity,
             })
@@ -55,9 +52,8 @@ class MyPublications extends React.Component {
 
     updatePublications(){
         let currentComponent = this; 
-        let names = ["id","page"]
-        let values = [this.state.id, this.state.page]
-        
+        let names = ["page"]
+        let values = [currentComponent.state.page]
         UserService.getMyPublications(JsonService.createJSONArray(names,values),this.props).then(function(pubs) {
             currentComponent.setState({
                 myPublications: pubs,
@@ -70,10 +66,8 @@ class MyPublications extends React.Component {
 
     updatePublicationsQuantity(){
         let currentComponent = this
-        let names = ["id"]
-        let values = [this.state.id]
         
-        UserService.getMyPublicationsCount(JsonService.createJSONArray(names,values),this.props).then(function(data){
+        UserService.getMyPublicationsCount(this.props).then(function(data){
             currentComponent.setState({
                 pagesQuantity: Math.ceil(data.count / data.limit),
             })
@@ -84,8 +78,8 @@ class MyPublications extends React.Component {
 
     handlePageClick = data => {
         let currentComponent = this
-        let names = ["id","page"]
-        let values = [this.state.id, data.selected + 1]
+        let names = ["page"]
+        let values = [data.selected + 1]
         UserService.getMyPublications(JsonService.createJSONArray(names,values),this.props).then(function (pubs){
             currentComponent.setState({
                 myPublications: pubs,

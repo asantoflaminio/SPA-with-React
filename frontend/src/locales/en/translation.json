@@ -186,8 +186,25 @@
         "No": "No",
         "messageSent": "Message sent."
      }, 
+     "profile": {
+      "titlePersonalData": "PERSONAL INFORMATION",
+      "profile.titleNewPassword": "CHANGE YOUR PASSWORD",
+      "firstName": "NAME",
+      "firstNameHolder": "Name",
+      "lastName": "LAST NAME",
+      "lastNameHolder": "Last name",
+      "email": "EMAIL",
+      "emailHolder": "Email",
+      "phonenumber": "PHONE NUMBER",
+      "phonenumberHolder": "Phone number",
+      "password": "CURRENT PASSWORD",
+      "passwordHolder": "Current password",
+      "newpassword": "NEW PASSWORD",
+      "newpasswordHolder": "New password",
+      "submit": "Submit"
+    }, 
      "mypublications": {
-      "title_section": "Mis publicaciones"
+      "title_section": "My publications"
     },
     "profileAsideBar": {
         "optionPublications": "MY PUBLICATIONS",

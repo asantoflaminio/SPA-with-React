@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -22,10 +23,11 @@ import ar.edu.itba.paw.interfaces.FavPublicationsService;
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.Publication;
+import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.dto.EmailDTO;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.MessageDTO;
-import ar.edu.itba.paw.models.dto.MyPublicationsDTO;
+import ar.edu.itba.paw.models.dto.PageDTO;
 import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.UserDTO;
@@ -125,22 +127,20 @@ public class UserController {
         return Response.ok().build();
     }
     
-    @POST
+    @GET
     @Path("/getMyPublicationsQuantity")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getMyPublicationsQuantity (IDResponseDTO id) {   
-    	int quantity = ps.getCountPublicationsOfUser(id.getId());
+    public Response getMyPublicationsQuantity (@Context HttpServletRequest request) {   
+    	int quantity = ps.getCountPublicationsOfUser(tas.getUserIdAuthentication(request));
     	return Response.ok().entity(quantity).build();
     	
     }
     
-    @POST
+    @GET
     @Path("/getMyFavoritesQuantity")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getMyFavoritesQuantity (IDResponseDTO id) {   	
-    	int quantity = fps.getCountUserFavourites(id.getId());
+    public Response getMyFavoritesQuantity (@Context HttpServletRequest request) {   	
+    	int quantity = fps.getCountUserFavourites(tas.getUserIdAuthentication(request));
     	return Response.ok().entity(quantity).build();
     	
     }
@@ -149,37 +149,33 @@ public class UserController {
     @Path("/getMyPublications")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getMyPublications (MyPublicationsDTO pub) {
-    	List<PublicationDTO> publications = ps.findByUserId(pub.getId(), pub.getPage().toString());
+    public Response getMyPublications (@Context HttpServletRequest request, final PageDTO page) {
+    	List<PublicationDTO> publications = ps.findByUserId(tas.getUserIdAuthentication(request), page.getPage().toString());
     	return Response.ok().entity(publications).build();
     }
     
-    @POST
+    @GET
     @Path("/getMyFavoritesPublications")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getMyFavoritesPublications (MyPublicationsDTO pub) {
-    	System.out.println("aaa");
-    	List<PublicationDTO> publications = fps.getUserFavourites(pub.getId());
+    public Response getMyFavoritesPublications (@Context HttpServletRequest request) {
+    	List<PublicationDTO> publications = fps.getUserFavourites(tas.getUserIdAuthentication(request));
     	return Response.ok().entity(publications).build();
     }
     
-    @POST
+    @GET
     @Path("/getMyPublicationsCount")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getMyPublicationsCount (IDResponseDTO iDResponseDTO) {
-    	int pubs = ps.getCountPublicationsOfUser(iDResponseDTO.getId());
+    public Response getMyPublicationsCount (@Context HttpServletRequest request) {
+    	int pubs = ps.getCountPublicationsOfUser(tas.getUserIdAuthentication(request));
     	PaginationDTO quantity = new PaginationDTO(pubs, ps.getMaxResultProfile());
     	return Response.ok().entity(quantity).build();
     }
     
-    @POST
+    @GET
     @Path("/getMyFavoritesPublicationsCount")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getMyFavoritesPublicationsCount (IDResponseDTO iDResponseDTO) {
-    	int pubs = fps.getCountUserFavourites(iDResponseDTO.getId());
+    public Response getMyFavoritesPublicationsCount (@Context HttpServletRequest request) {
+    	int pubs = fps.getCountUserFavourites(tas.getUserIdAuthentication(request));
     	PaginationDTO quantity = new PaginationDTO(pubs, ps.getMaxResultProfile());
     	return Response.ok().entity(quantity).build();
     }
@@ -198,6 +194,28 @@ public class UserController {
     public Response unfavouritePublication (@Context HttpServletRequest request, final IDResponseDTO iDResponseDTO) {
     	fps.removeFavourite(tas.getUserIdAuthentication(request), iDResponseDTO.getId());
     	return Response.ok().build();
+    }
+    
+    @GET
+    @Path("/retrievePersonalInformation")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response retrievePersonalInformation (@Context HttpServletRequest request) {
+    	User user = us.findById(tas.getUserIdAuthentication(request));
+    	UserDTO profileInformationDto = new UserDTO(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhoneNumber(), user.getPassword());
+    	return Response.ok().entity(profileInformationDto).build();
+    }
+    
+    @POST
+    @Path("/updateInformation")
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response updateInformation (@Context HttpServletRequest request, final UserDTO userDTO) {
+    	Long id = tas.getUserIdAuthentication(request);
+    	us.editData(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPhoneNumber(),
+    			us.findById(id).getEmail());
+    	User user = us.findById(id);
+    	UserLoginDTO userLoginDTO = new UserLoginDTO(user.getEmail(), user.getPassword());
+    	return Response.ok().entity(userLoginDTO).build();
     }
 
 }
