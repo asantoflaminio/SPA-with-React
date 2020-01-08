@@ -12,7 +12,7 @@ public interface FavPublicationsDao {
 	
 	public void removeFavouriteByPublication(long publicationid);
 	
-	public List<Publication> getUserFavourites(long userid);
+	public List<Long> getUserFavourites(long userid);
 	
 	public List<Publication> getUserFavouritesPagination(long userid, String pageFav);
 	

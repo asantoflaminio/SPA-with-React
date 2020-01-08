@@ -30,7 +30,7 @@ public class PublicationHibernateDao implements PublicationDao{
 	private EntityManager em;
 	
 	@Autowired
-	private UserDao userDaoInt;
+	private UserDao userDao;
 	
 	@Autowired
 	private FavPublicationsDao favPublicationsDao;
@@ -82,7 +82,7 @@ public class PublicationHibernateDao implements PublicationDao{
 				   Integer.valueOf(bathrooms), Integer.valueOf(floorSize), Integer.valueOf(parking), new Date(),
 				   Integer.valueOf(coveredFloorSize), Integer.valueOf(balconies), amenities, storage, Integer.valueOf(expenses));
 
-		User user = userDaoInt.findById(userid);
+		User user = userDao.findById(userid);
 		pub.setUser(user);
 		Neighborhood n = em.find(Neighborhood.class, Long.parseLong(neighborhood));
 		City c = em.find(City.class, Long.parseLong(city));

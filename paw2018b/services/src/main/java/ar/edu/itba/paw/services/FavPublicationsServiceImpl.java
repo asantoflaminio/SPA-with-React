@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.itba.paw.interfaces.FavPublicationsDao;
 import ar.edu.itba.paw.interfaces.FavPublicationsService;
+import ar.edu.itba.paw.interfaces.PublicationDao;
+import ar.edu.itba.paw.models.FavPublications;
 import ar.edu.itba.paw.models.Publication;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 
@@ -21,6 +23,9 @@ public class FavPublicationsServiceImpl implements FavPublicationsService {
 	
 	@Autowired
 	private FavPublicationsDao favPublicationDao;
+	
+	@Autowired
+	private PublicationDao publicationDao;
 
 	@Override
 	public void addFavourite(long userid, long publicationid) {
@@ -36,12 +41,19 @@ public class FavPublicationsServiceImpl implements FavPublicationsService {
 	
 	@Override
 	public List<PublicationDTO> getUserFavourites(long userid) {
-		return transform(favPublicationDao.getUserFavourites(userid));
+		List<Long> ids = favPublicationDao.getUserFavourites(userid);
+		List<Publication> publications = new LinkedList<Publication>();
+		for(Long publicationid: ids) {
+			publications.add(publicationDao.findById(publicationid));
+		}
+		return transform(publications);
 	}
+	
 	
 	@Override
 	public List<PublicationDTO> getUserFavouritesPagination(long userid, String pageFav) {
-		return transform(favPublicationDao.getUserFavouritesPagination(userid, pageFav));
+		//return transform(favPublicationDao.getUserFavouritesPagination(userid, pageFav));
+		return null;
 	}
 	
 	@Override
@@ -61,8 +73,8 @@ public class FavPublicationsServiceImpl implements FavPublicationsService {
 		
 		for(Publication pub: publications) {
 			current = new PublicationDTO(pub.getPublicationid(),pub.getTitle(), pub.getProvince().getProvince(), pub.getCity().getCity(), pub.getNeighborhood().getNeighborhood(), pub.getAddress(),
-										pub.getOperation(), pub.getPrice().toString(), pub.getDescription(), pub.getPropertyType(), pub.getBedrooms().toString(), pub.getBathrooms().toString() , 
-										pub.getFloorSize().toString() , pub.getParking().toString(), pub.getPublicationDate().toString(),
+					pub.getOperation(), pub.getPrice().toString(), pub.getDescription(), pub.getPropertyType(), pub.getBedrooms().toString(), pub.getBathrooms().toString() , 
+					pub.getFloorSize().toString() , pub.getParking().toString(), pub.getPublicationDate().toString(),
 										Optional.ofNullable(pub.getCoveredFloorSize()).toString(),
 										Optional.ofNullable(pub.getBalconies()).toString(), 
 										Optional.ofNullable(pub.getAmenities()).toString(),

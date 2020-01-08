@@ -2,9 +2,12 @@ package ar.edu.itba.paw.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -18,18 +21,16 @@ public class FavPublications {
 	@Column(name="favPublicationid")
 	private long favPublicationid;
 
-	@Column(name="publicationid")
-	private long publicationid;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "publicationid", nullable = false)
+	private Publication publication;
 	
-	@Column(name="userid")
-	private long userid;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "userid", nullable = false)
+	private User user;
 	
 	public FavPublications() { }
 	
-	public FavPublications(final long publicationid, final long userid) { 
-		this.publicationid = publicationid;
-		this.userid = userid;
-	}
 	
 	public long getFavPublicationid() {
 		return favPublicationid;
@@ -38,21 +39,21 @@ public class FavPublications {
 	public void setFavPublicationid(long favPublicationid) {
 		this.favPublicationid = favPublicationid;
 	}
-
-	public long getPublicationid() {
-		return publicationid;
+	
+	public User getUser() {
+		return user;
 	}
-
-	public void setPublicationid(long publicationid) {
-		this.publicationid = publicationid;
+	
+	public void setUser(User user) {
+		this.user = user;
 	}
-
-	public long getUserid() {
-		return userid;
+	
+	public Publication getPublication() {
+		return publication;
 	}
-
-	public void setUserid(long userid) {
-		this.userid = userid;
+	
+	public void setPublication(Publication publication) {
+		this.publication = publication;
 	}
 
 

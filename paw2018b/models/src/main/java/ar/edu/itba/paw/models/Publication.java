@@ -95,6 +95,9 @@ public class Publication {
 	@OneToMany(mappedBy = "publication", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<UploadFile> images;
 	
+	@OneToMany(mappedBy = "publication", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<FavPublications> favPublications;
+	
 	@Column(nullable = false, unique = false)
 	private boolean locked;
 
@@ -281,6 +284,14 @@ public class Publication {
 	
 	public void setImages(List<UploadFile> images) {
 		this.images = images;
+	}
+	
+	public List<FavPublications> getFavPublications(){
+		return favPublications;
+	}
+	
+	public void setFavPublications(List<FavPublications> favPublications) {
+		this.favPublications = favPublications;
 	}
 
 

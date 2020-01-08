@@ -50,6 +50,9 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Publication> publications;
 	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<FavPublications> favPublications;
+	
 	
 	User(){ }
 	
@@ -117,6 +120,14 @@ public class User {
 	
 	public List<Publication> getPublications(){
 		return publications;
+	}
+	
+	public List<FavPublications> getFavPublications(){
+		return favPublications;
+	}
+	
+	public void setFavPublications(List<FavPublications> favPublications) {
+		this.favPublications = favPublications;
 	}
 
 

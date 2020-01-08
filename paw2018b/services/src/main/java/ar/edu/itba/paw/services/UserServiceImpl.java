@@ -20,8 +20,8 @@ public class UserServiceImpl implements UserService{
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 	
 	@Autowired
-	private UserDao userDaoInt;
-
+	private UserDao userDao;
+	
 	@Autowired
 	private ValidateServiceImpl vs;
 	
@@ -34,25 +34,25 @@ public class UserServiceImpl implements UserService{
 		if(! vs.validateUser(firstName, lastName, email, password, repeatPassword, phoneNumber))
 			return null;
 		
-		if(userDaoInt.findByUsername(email) != null)
+		if(userDao.findByUsername(email) != null)
 			return null;
 		
 		LOGGER.trace("Creating user with email {}", email);
-		return userDaoInt.create(firstName, lastName, email, passwordEncoder.encode(password), phoneNumber, role);
+		return userDao.create(firstName, lastName, email, passwordEncoder.encode(password), phoneNumber, role);
 	}
 	
 	@Override
 	public boolean editData(String firstName, String lastName, String email, String phoneNumber, String oldEmail) {
 		if(! vs.validateUserData(firstName,lastName, email, phoneNumber))
 			return false;
-		userDaoInt.editData(firstName, lastName, email, phoneNumber,userDaoInt.findByUsername(oldEmail).getUserid());
+		userDao.editData(firstName, lastName, email, phoneNumber,userDao.findByUsername(oldEmail).getUserid());
 		LOGGER.trace("Editing data of user with email {}", email);
 		return true;
 	}
 	
 	@Override
 	public boolean editPassword(String oldPassword,String newPassword, String oldEmail) {
-		User user = userDaoInt.findByUsername(oldEmail);
+		User user = userDao.findByUsername(oldEmail);
 		
 		if(! vs.validateUserPassword(newPassword)) 
 			return false;
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService{
 			return false;
 		
 		
-		userDaoInt.editPassword(passwordEncoder.encode(newPassword), user.getUserid());
+		userDao.editPassword(passwordEncoder.encode(newPassword), user.getUserid());
 		LOGGER.trace("Editing password of user with email {}", oldEmail);
 		return true;
 	}
@@ -74,20 +74,20 @@ public class UserServiceImpl implements UserService{
         }
 		
         LOGGER.trace("Looking up user with id {}", userid);
-        return userDaoInt.findById(userid);
+        return userDao.findById(userid);
 	}
 	
 	@Override
 	public User findByUsername(String email) {
 		LOGGER.debug("Looking up user with email {}", email);
-		return userDaoInt.findByUsername(email);
+		return userDao.findByUsername(email);
 	}
 	
 	@Override
 	public List<UserDTO> findAllUsers(String pageUsers){
 		LOGGER.debug("Looking for all users in DB");
 		List<UserDTO> users = new ArrayList<UserDTO>();
-		for(User user: userDaoInt.findAllUsers(pageUsers)) {
+		for(User user: userDao.findAllUsers(pageUsers)) {
 			users.add(new UserDTO(user.getEmail(),user.isLocked(),user.getUserid()));
 		}
 		return users;
@@ -95,13 +95,13 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public int getCountAllUsers() {
-		return userDaoInt.getCountAllUsers();
+		return userDao.getCountAllUsers();
 	}
 	
 	@Override
 	public void lockUnlockUser(boolean status, long userid) {
 		LOGGER.debug("Lock user with userid {} ", userid);
-		userDaoInt.lockUnlockUser(status,userid);
+		userDao.lockUnlockUser(status,userid);
 	}
 
 }
