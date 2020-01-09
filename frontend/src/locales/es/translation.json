@@ -54,7 +54,17 @@
     "navbar": {
       "remember": "Recordarme",
       "signIn": "Ingresar",
-      "signUp": "Registrarse"
+      "signUp": "Registrarse",
+      "mail": "Correo electrónico",
+      "password": "Contraseña",
+      "recoverPass": "Olvidé mi contraseña",
+      "mailHolder": "Dirección de correo",
+      "passHolder": "Contraseña"
+    },
+    "forgottenPassword": {
+      "title": "¿Olvidaste tu contraseña?",
+      "message": "Completá con tu dirección de correo y te enviaremos un link para restablecerla.",
+      "send": "Enviar"
     },
     "publish": {
       "publish": "Publicar",

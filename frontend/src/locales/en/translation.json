@@ -54,7 +54,17 @@
     "navbar": {
       "remember": "Remember me",
       "signIn": "Sign In",
-      "signUp": "Sign Up"
+      "signUp": "Sign Up",
+      "mail": "Correo electrónico",
+      "password": "Password",
+      "recoverPass": "I forgot my password",
+      "mailHolder": "Email address",
+      "passHolder": "Password"
+    },
+    "forgottenPassword": {
+      "title": "Forgot your password?",
+      "message": "Complete your email address and we'll send you an email to restablish your password.",
+      "send": "Send"
     },
     "publish": {
       "publish": "Publish",

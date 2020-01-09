@@ -64,11 +64,11 @@ class StandarNavbar extends React.Component {
                                             this.handleFormSubmit(event)
                                     }}>
                                         <Form.Group as={Col} md="12" controlId="validationFormik01">
-                                            <Form.Label>{t('signUp.firstName')}</Form.Label>
+                                            <Form.Label>{t('navbar.mail')}</Form.Label>
                                             <Form.Control
                                                 type="text"
                                                 name="email"
-                                                placeholder={t('login.emailHolder')}
+                                                placeholder={t('navbar.mailHolder')}
                                                 value={values.email}
                                                 id="email"
                                                 isInvalid={!!errors.email}
@@ -78,10 +78,10 @@ class StandarNavbar extends React.Component {
                                             </Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="12" controlId="validationFormik02">
-                                            <Form.Label>{t('login.password')}</Form.Label>
+                                            <Form.Label>{t('navbar.password')}</Form.Label>
                                             <Form.Control
                                                 type="password"
-                                                placeholder={t('login.passwordHolder')}
+                                                placeholder={t('navbar.passHolder')}
                                                 name="password"
                                                 isInvalid={!!errors.password}
                                             />
@@ -93,6 +93,9 @@ class StandarNavbar extends React.Component {
                                     </Form>
                                 )}
                             </Formik>
+                            <Link to={{pathname: "/ForgottenPassword"}}>
+                                <a id="recover_pass" href="./ForgottenPassword">{t('navbar.recoverPass')}</a>
+                            </Link>
                         </div>
                     </div>
                 <div>

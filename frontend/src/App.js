@@ -10,6 +10,7 @@ import AdminUsers from './pages/AdminUsers'
 import AdminPublications from './pages/AdminPublications'
 import Details from './pages/Details'
 import ErrorBoundary from './pages/ErrorBoundary'
+import ForgottenPassword from './pages/ForgottenPassword'
 import MyPublications from './pages/MyPublications'
 import MyFavorites from './pages/MyFavorites'
 import MyInformation from './pages/MyInformation'
@@ -25,6 +26,17 @@ const PrivateRoute = ({component: Component, ...rest}) => {
         UserService.isLogged() ?
               <Component {...props} />
           : <Redirect to="/SignUp" />
+      )} />
+  );
+};
+
+const OnlyPublicRoute = ({component: Component, ...rest}) => {
+
+  return (
+      <Route {...rest} render={props => (
+        !UserService.isLogged() ?
+              <Component {...props} />
+          : <Redirect to="/" />
       )} />
   );
 };
@@ -50,6 +62,7 @@ function App() {
             <PrivateRoute exact path="/MyFavorites" component={MyFavorites} />
             <PrivateRoute exact path="/MyInformation" component={MyInformation} />
             <PrivateRoute exact path="/EditPublication" component={EditPublication} />
+            <OnlyPublicRoute exact path="/ForgottenPassword" component={ForgottenPassword} />
             <Route exact path="*" component={Home} />
           </Switch>
         </Suspense>
