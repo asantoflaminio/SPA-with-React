@@ -15,7 +15,7 @@ public interface PublicationService {
 			   String bathrooms, String floorSize, String parking,
 			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses, long userid);
 	
-	public List<PublicationDTO> findNewest(String operation);
+	public List<PublicationDTO> findByOperation(String operation);
 	
 	public List<PublicationDTO> findByUserId(long id, String pagePub);
 	

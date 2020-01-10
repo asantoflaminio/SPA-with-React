@@ -10,9 +10,6 @@ import {Link} from 'react-router-dom';
 import PublicationService from '../services/PublicationService'
 
 class HomeReal extends React.Component {
-
-    
-
    constructor(props) {
         super(props);
         this.state = {

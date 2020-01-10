@@ -19,7 +19,7 @@ public interface PublicationDao {
 			   String bathrooms, String floorSize, String parking,
 			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses, long userid);
 	
-	public List<Publication> findNewest(String operation);
+	public List<Publication> findByOperation(String operation);
 	
 	public List<Publication> findByUserId(long id, String pagePub);
 	

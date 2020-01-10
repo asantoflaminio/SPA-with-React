@@ -14,7 +14,7 @@ const PublicationService = (function(){
           data: JsonService.getJSONParsed(array)
         })
         .then(function (response) {
-            return response.data.publications
+            return response.data
         })
         .catch(function (error) {
           ErrorService.logError(props,error)
@@ -40,7 +40,7 @@ const PublicationService = (function(){
             url: PUBLICATIONS_PATH + 'getSalePublications',
           })
           .then(function (response) {
-              return response.data.publications
+              return response.data
           })
           .catch(function (error) {
             ErrorService.logError(props,error)
@@ -53,7 +53,7 @@ const PublicationService = (function(){
             url: PUBLICATIONS_PATH + 'getRentPublications',
           })
           .then(function (response) {
-              return response.data.publications
+              return response.data
           })
           .catch(function (error) {
             ErrorService.logError(props,error)

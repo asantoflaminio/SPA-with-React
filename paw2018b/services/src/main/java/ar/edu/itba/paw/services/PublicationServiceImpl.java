@@ -132,22 +132,9 @@ public class PublicationServiceImpl implements PublicationService {
 	}
 	
 	@Override
-	public List<PublicationDTO> findNewest(String operation){
-		LOGGER.debug("Getting most recently updated publications");
-		
-		List<PublicationDTO> publications = new ArrayList<PublicationDTO>();
-		for(Publication publication: publicationDao.findNewest(operation)) {
-			publications.add(new PublicationDTO(publication.getPublicationid(),publication.getTitle(), publication.getProvince().getProvince(),
-					publication.getCity().getCity(), publication.getNeighborhood().getNeighborhood(), publication.getAddress(), 
-					publication.getOperation(), publication.getPrice().toString(), publication.getDescription(),
-					publication.getPropertyType(), publication.getBedrooms().toString(), publication.getBathrooms().toString(),
-					publication.getFloorSize().toString(), publication.getParking().toString(), publication.getPublicationDate().toString(),
-					Optional.ofNullable(publication.getCoveredFloorSize()).toString(),
-					Optional.ofNullable(publication.getBalconies()).toString(), 
-					Optional.ofNullable(publication.getAmenities()).toString(),
-					Optional.ofNullable(publication.getStorage()).toString(),
-					Optional.ofNullable(publication.getExpenses()).toString()));
-		}
+	public List<PublicationDTO> findByOperation(String operation){
+		LOGGER.debug("Getting most recently updated publications by operation");
+		List<PublicationDTO> publications = transform(publicationDao.findByOperation(operation));
 		return publications;
 	}
 	

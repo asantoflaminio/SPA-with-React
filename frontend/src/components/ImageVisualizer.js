@@ -61,7 +61,6 @@ class ImageVisualizer extends React.Component {
     }
 
     getNextImage = () => {
-        alert(this.props.maxImages)
         let currentIndex = this.state.index
         let nextIndex;
         

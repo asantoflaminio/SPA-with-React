@@ -27,7 +27,6 @@ import ar.edu.itba.paw.models.dto.ImageDTO;
 import ar.edu.itba.paw.models.dto.PageDTO;
 import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
-import ar.edu.itba.paw.models.dto.PublicationsDTO;
 import ar.edu.itba.paw.models.dto.QueryDTO;
 import ar.edu.itba.paw.services.FavPublicationsServiceImpl;
 import ar.edu.itba.paw.services.ImageServiceImpl;
@@ -54,7 +53,7 @@ public class PublicationController {
     @Path("/getAllPublications")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getAllPublications (final PageDTO pageDTO) {
-    	PublicationsDTO publications = new PublicationsDTO(ps.findAllPublications(pageDTO.getPage()));
+    	List<PublicationDTO> publications = ps.findAllPublications(pageDTO.getPage());
     	return Response.ok().entity(publications).build();
     }
     
@@ -70,7 +69,7 @@ public class PublicationController {
     @Path("/getSalePublications")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getSalePublications () {
-    	PublicationsDTO publications = new PublicationsDTO(ps.findNewest("FSale"));
+    	List<PublicationDTO> publications = ps.findByOperation("FSale");
     	return Response.ok().entity(publications).build();
     }
     
@@ -78,7 +77,7 @@ public class PublicationController {
     @Path("/getRentPublications")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getRentPublications () {
-    	PublicationsDTO publications = new PublicationsDTO(ps.findNewest("FRent"));
+    	List<PublicationDTO> publications = ps.findByOperation("FRent");
     	return Response.ok().entity(publications).build();
     }
     

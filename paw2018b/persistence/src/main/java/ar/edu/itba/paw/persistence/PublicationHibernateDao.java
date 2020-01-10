@@ -96,7 +96,7 @@ public class PublicationHibernateDao implements PublicationDao{
 	
 	@Override
 	@Transactional
-	public List<Publication> findNewest(String operation){
+	public List<Publication> findByOperation(String operation){
 		String queryString = SELECT_STATEMENT_SEARCH + "where pub.operation = :operation";
 		queryString = setOrder(queryString,NEWSEST_PUBLICATION);
 		final TypedQuery<Publication> query = em.createQuery(queryString, Publication.class);
