@@ -88,6 +88,17 @@ public class UserController {
     }
     
     @POST
+    @Path("/isAccount")
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response checkForExistingMail (final EmailDTO emailDTO) {
+    	if(us.findByUsername(emailDTO.getEmail()) != null)
+    		return Response.ok().build();
+    	else
+    		return rs.notFound();
+    	
+    }
+    
+    @POST
     @Path("/forgottenPasswordEmail")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response forgottenPasswordEmail (RecoveryMessageDTO recoveryMessageDTO) {

@@ -64,7 +64,9 @@
     "forgottenPassword": {
       "title": "Forgot your password?",
       "message": "Complete your email address and we'll send you an email to restablish your password.",
-      "send": "Send"
+      "send": "Send",
+      "emailSent": "An email was sent to you.",
+      "emailNotSent": "An error ocurred. Make sure the email is valid."
     },
     "publish": {
       "publish": "Publish",

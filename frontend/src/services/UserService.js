@@ -42,6 +42,22 @@ const UserService = (function(){
         });
     }
 
+    async function _isAccount(event, props){
+        return await axios({
+          method: 'post',
+          url: USERS_PATH + 'isAccount',
+          data: JsonService.getJSONParsed(event.target)
+        }).then(function (response) {
+            return response.status;
+        })
+        .catch(function (error) {
+            if(String(error).includes(statusCode.NOT_FOUND))
+                return statusCode.NOT_FOUND;
+            else 
+                ErrorService.logError(props,error)
+        });
+    }
+
     async function _forgottenPasswordEmail(event, props){
         return await axios({
           method: 'post',
@@ -283,6 +299,7 @@ const UserService = (function(){
       isLogged : _isLogged,
       signUp : _signUp,
       checkEmailAvaibility : _checkEmailAvaibility,
+      isAccount : _isAccount,
       forgottenPasswordEmail: _forgottenPasswordEmail,
       login : _login,
       postPublication : _postPublication,

@@ -16,6 +16,8 @@ public interface RequestService {
 	
 	public Response badRequest();
 	
+	public Response notFound();
+	
 	public Response conflictRequest();
 	
 
