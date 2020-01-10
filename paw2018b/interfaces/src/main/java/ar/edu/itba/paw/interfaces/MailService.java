@@ -11,5 +11,7 @@ public interface MailService {
 	public void sendEmail(Mail mail);
 	
 	public void sendEmail (String name, String to,String from, String body, String info);
+	
+	public void sendPasswordRecoveryEmail (String to);
 
 }

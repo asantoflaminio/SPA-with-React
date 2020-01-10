@@ -20,32 +20,15 @@
 										<table style="border-spacing: 0; padding: 0; border: 0; width: 100%;"> 
 											<tr>
 												<td style="color: #153643; font-family: 'Rubik', sans-serif; font-size: 24px;"> 
-													<b th:text="#{mailContent.title}"> You have been contacted by MeinHaus! </b> 
+													<b th:text="#{mailContent.resetPasswordTitle}"> Password Reset </b> 
 												</td>
 											</tr>
 											<tr>
-												<td style="padding: 20px 0 10px 0; color: #153643; font-family: 'Rubik', sans-serif; font-size: 15px; line-height: 20px;" > 
-													<span th:text="#{mailContent.mailFrom}" th:remove="tag"> Mail from: </span>
-													<a href="#" style="color:#FD8907; margin-left:5px;" th:text="${email}"> </a>
-													<a  style="margin-left:5px;" th:text="'(' + ${name} + ')'"></a>
+												<td style="font-style: italic; font-family: 'Rubik', sans-serif; color: #999; font-size: 15px;" th:text="#{mailContent.resetMsg1} + ${email} + #{mailContent.resetMsg2}"> This is an email to reset the password for the account 123@gmail.com. If you don't wish to change your password please ignore this email. </td>
+											</tr>
+											<tr>
+												<td style="padding: 20px 0 10px 0; color: #153643; font-family: 'Rubik', sans-serif; font-size: 15px; line-height: 20px;" th:text="#{mailContent.resetPassword}"> 
 												</td> 
-											</tr>
-											<tr>
-												<td style="padding: 5px 0 15px 0; color: #153643; font-family: 'Rubik', sans-serif; font-size: 15px; line-height: 20px;" th:text="#{mailContent.followingMessage}" > 
-													With the following message:
-												</td>
-											</tr>
-											<tr> 
-												<td style="font-style: italic; font-family: 'Rubik', sans-serif; color: #999; font-size: 15px;" th:text="${message}"> 
-												</td> 
-											</tr>
-											<tr>
-												<td style="padding: 20px 0 10px 0; color: #153643; font-family: 'Rubik', sans-serif; font-size: 15px; line-height: 20px;" th:text="#{mailContent.property}">
-													Property:
-												</td>
-											</tr>
-											<tr>
-												<td style="font-style: italic; font-family: 'Rubik', sans-serif; color: #999; font-size: 15px;" th:text="${propertyTitle}"> </td>
 											</tr>
 										</table>
 									</td>

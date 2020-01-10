@@ -42,6 +42,20 @@ const UserService = (function(){
         });
     }
 
+    async function _forgottenPasswordEmail(event, props){
+        return await axios({
+          method: 'post',
+          url: USERS_PATH + 'forgottenPasswordEmail',
+          data: JsonService.getJSONParsed(event.target)
+        })
+        .then(function (response) {
+            return response;
+        })
+        .catch(function (error) {
+            ErrorService.logError(props,error)
+        });
+    }
+
     async function _login(array, props){
         return await axios({
           method: 'post',
@@ -269,6 +283,7 @@ const UserService = (function(){
       isLogged : _isLogged,
       signUp : _signUp,
       checkEmailAvaibility : _checkEmailAvaibility,
+      forgottenPasswordEmail: _forgottenPasswordEmail,
       login : _login,
       postPublication : _postPublication,
       postImages : _postImages,

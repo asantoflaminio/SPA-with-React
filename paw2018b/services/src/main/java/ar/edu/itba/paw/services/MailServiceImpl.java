@@ -15,6 +15,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -35,9 +36,6 @@ public class MailServiceImpl implements MailService {
     private JavaMailSender mailSender;
     
     @Autowired
-    private SpringMessageServiceImpl sms;
-    
-    @Autowired
     private UserServiceImpl us;
     
     @Autowired
@@ -45,6 +43,9 @@ public class MailServiceImpl implements MailService {
     
     @Autowired
 	private SpringTemplateEngine engine;
+    
+    @Autowired
+	public MessageSource messageSource;
  
     public void sendEmail(Mail mail) {
     	SimpleMailMessage message = new SimpleMailMessage();
@@ -70,7 +71,7 @@ public class MailServiceImpl implements MailService {
 		String message = engine.process("mailContent", context);
 		
 		try {
-			email.setSubject("MeinHaus");
+			email.setSubject(messageSource.getMessage("subject.messageFromMeinhaus", null, rs.getLocale(user.getLanguaje())));
 			email.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			email.setContent(message, "text/html; charset=utf-8");
 		} catch (Exception e) {
@@ -81,6 +82,33 @@ public class MailServiceImpl implements MailService {
 		
 		mailSender.send(email);
 		LOGGER.trace("Sending email to {} from {} ", to, from);
+	}
+
+	@Override
+	public void sendPasswordRecoveryEmail(String to) {
+
+
+		MimeMessage email = mailSender.createMimeMessage();
+		
+		User user = us.findByUsername(to);
+		Context context = new Context(rs.getLocale(user.getLanguaje()));
+		context.setVariable("email", to);
+		
+		String message = engine.process("recoveryMailContent", context);
+		
+		try {
+			email.setSubject(messageSource.getMessage("subject.passwordRecovery", null, rs.getLocale(user.getLanguaje())));
+			email.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+			email.setContent(message, "text/html; charset=utf-8");
+		} catch (Exception e) {
+			LOGGER.trace("Error sending email");
+			return;
+		}
+
+		
+		mailSender.send(email);
+		LOGGER.trace("Sending email to {}", to);
+		
 	}
  
 }

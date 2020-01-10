@@ -94,7 +94,7 @@ class StandarNavbar extends React.Component {
                                 )}
                             </Formik>
                             <Link to={{pathname: "/ForgottenPassword"}}>
-                                <a id="recover_pass" href="./ForgottenPassword">{t('navbar.recoverPass')}</a>
+                                <a id="recover_pass" href="./ForgottenPassword" onClick={this.showlogin}>{t('navbar.recoverPass')}</a>
                             </Link>
                         </div>
                     </div>

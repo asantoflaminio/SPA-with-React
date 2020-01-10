@@ -31,6 +31,7 @@ import ar.edu.itba.paw.models.dto.MessageDTO;
 import ar.edu.itba.paw.models.dto.PageDTO;
 import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
+import ar.edu.itba.paw.models.dto.RecoveryMessageDTO;
 import ar.edu.itba.paw.models.dto.UserDTO;
 import ar.edu.itba.paw.models.dto.UserLoginDTO;
 import ar.edu.itba.paw.services.ImageServiceImpl;
@@ -84,6 +85,14 @@ public class UserController {
     	else
     		return rs.conflictRequest();
     	
+    }
+    
+    @POST
+    @Path("/forgottenPasswordEmail")
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response forgottenPasswordEmail (RecoveryMessageDTO recoveryMessageDTO) {
+    	ms.sendPasswordRecoveryEmail(recoveryMessageDTO.getEmail());
+        return Response.ok().build();
     }
     
     @POST

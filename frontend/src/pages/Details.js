@@ -112,29 +112,29 @@ class Details extends React.Component {
                 });
                 
                 let coveredFloorSize; 
-                if(this.state.coveredFloorSize == "-1") {
+                if(this.state.coveredFloorSize === "-1") {
                     coveredFloorSize = t('details.notAvailable');
                 } else {
                     coveredFloorSize = this.state.coveredFloorSize + " m2";
                 }
                 
-                if(this.state.balconies == "-1") {
+                if(this.state.balconies === "-1") {
                     this.state.balconies = t('details.notAvailable');
                 }
-                if(this.state.amenities == "-1") {
+                if(this.state.amenities === "-1") {
                     this.state.amenities = t('details.notAvailable');
                 } 
                 
                 let expenses;
-                if(this.state.expenses == "-1") {
+                if(this.state.expenses === "-1") {
                     expenses = t('details.notAvailable');
                 } else {
                     expenses = this.state.expenses + " U$S";
                 }
 
-                if(this.state.storage == "-1") {
+                if(this.state.storage === "-1") {
                     this.state.storage = t('details.notAvailable');
-                } else if (this.state.storage == "yes") {
+                } else if (this.state.storage === "yes") {
                     this.state.storage = t('details.Yes');
                 } else {
                     this.state.storage = t('details.No');
