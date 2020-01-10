@@ -8,8 +8,16 @@ public interface RequestService {
 	
 	public Locale getLocale(String languaje);
 	
+	public Response okRequest();
+	
+	public Response createRequest();
+	
+	public Response createRequest(Object objectDTO);
+	
 	public Response badRequest();
 	
 	public Response conflictRequest();
+	
+
 
 }

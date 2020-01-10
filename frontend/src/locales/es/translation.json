@@ -235,5 +235,11 @@
       "profile": "Mi perfil",
       "signOut": "Cerrar sesión",
       "manage": "Administrar"
+    },
+    "modal":{
+      "close" : "Cerrar",
+      "accept" : "Aceptar",
+      "postLocation" : "Se ha agregado una ubicación",
+      "postLocationDetail" : "Se ha agregado {{location}} a la base de datos"
     }
   }

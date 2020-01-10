@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "favPublications")
-public class FavPublications {
+public class FavPublication {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "favPublications_favPublicationid_seq")
@@ -29,7 +29,7 @@ public class FavPublications {
 	@JoinColumn(name = "userid", nullable = false)
 	private User user;
 	
-	public FavPublications() { }
+	public FavPublication() { }
 	
 	
 	public long getFavPublicationid() {

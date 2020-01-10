@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import ar.edu.itba.paw.interfaces.FavPublicationsDao;
 import ar.edu.itba.paw.interfaces.FavPublicationsService;
 import ar.edu.itba.paw.interfaces.PublicationDao;
-import ar.edu.itba.paw.models.FavPublications;
+import ar.edu.itba.paw.models.FavPublication;
 import ar.edu.itba.paw.models.Publication;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 
@@ -28,9 +28,13 @@ public class FavPublicationsServiceImpl implements FavPublicationsService {
 	private PublicationDao publicationDao;
 
 	@Override
-	public void addFavourite(long userid, long publicationid) {
+	public FavPublication addFavourite(long userid, long publicationid) {
+		if(userid == publicationDao.findById(publicationid).getUser().getUserid()) {
+			LOGGER.debug("The publication belongs to the user");
+			return null;
+		}
 		LOGGER.debug("Adding publiction with id {} to favourites of user with id {}", publicationid, userid);
-		favPublicationDao.addFavourite(userid, publicationid);
+		return favPublicationDao.addFavourite(userid, publicationid);
 	}
 	
 	@Override

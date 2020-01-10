@@ -16,7 +16,7 @@ const AdminService = (function(){
             return false;
     }
 
-    function _postProvice(event,props){
+    async function _postProvice(event,props){
         axios({
             method: 'post',
             url: ADMIN_PATH + 'province',
@@ -25,12 +25,15 @@ const AdminService = (function(){
                 authorization: LocalStorageService.getAccessToken(),
             }
         })
+        .then(function (response){
+            return response.status
+        })
         .catch(function (error) {
             ErrorService.logError(props,error)
         });
     }
     
-    function _postCity(event,props){
+    async function _postCity(event,props){
         axios({
           method: 'post',
           url: ADMIN_PATH + 'city',
@@ -39,12 +42,15 @@ const AdminService = (function(){
             authorization: LocalStorageService.getAccessToken(),
         }
         })
+        .then(function (response){
+            return response.status
+        })
         .catch(function (error) {
             ErrorService.logError(props,error)
         });
     }
 
-    function _postNeighborhood(event,props){
+    async function _postNeighborhood(event,props){
         axios({
           method: 'post',
           url: ADMIN_PATH + 'neighborhood',
@@ -52,6 +58,9 @@ const AdminService = (function(){
           headers: {
             authorization: LocalStorageService.getAccessToken(),
         }
+        })
+        .then(function (response){
+            return response.status
         })
         .catch(function (error) {
             ErrorService.logError(props,error)

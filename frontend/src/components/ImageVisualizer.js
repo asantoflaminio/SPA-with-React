@@ -9,6 +9,7 @@ import * as utilFunction from '../util/function';
 import PublicationService from '../services/PublicationService';
 import JsonService from '../services/JsonService'
 import UserService from '../services/UserService'
+import * as statusCode from '../util/StatusCode'
 
 class ImageVisualizer extends React.Component {
     constructor(props) {
@@ -90,7 +91,9 @@ class ImageVisualizer extends React.Component {
         let values = [this.props.publicationID]
         let currentComponent = this;
         if(boolean){
-            UserService.favouritePublication(JsonService.createJSONArray(names,values),this.props).then(function (){
+            UserService.favouritePublication(JsonService.createJSONArray(names,values),this.props).then(function (data){
+                if(data.status === statusCode.OK)
+                    return;
                 currentComponent.setState({
                     isFavourite: boolean
                 })

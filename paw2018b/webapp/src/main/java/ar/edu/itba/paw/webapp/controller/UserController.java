@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import ar.edu.itba.paw.interfaces.FavPublicationsService;
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.FavPublication;
 import ar.edu.itba.paw.models.Publication;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.dto.EmailDTO;
@@ -184,8 +185,11 @@ public class UserController {
     @Path("/favouritePublication")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response favouritePublication (@Context HttpServletRequest request, final IDResponseDTO iDResponseDTO) {
-    	fps.addFavourite(tas.getUserIdAuthentication(request), iDResponseDTO.getId());
-    	return Response.ok().build();
+    	FavPublication favPublication = fps.addFavourite(tas.getUserIdAuthentication(request), iDResponseDTO.getId());
+    	if(favPublication == null)
+    		return rs.okRequest();
+    	else
+    		return rs.createRequest();
     }
     
     @POST

@@ -22,6 +22,21 @@ public class RequestServiceImpl implements RequestService{
     		return new Locale(ENGLISH);
     	}
     }
+	
+	@Override
+	public Response okRequest() {
+		return Response.ok().build();
+	}
+	
+	@Override
+	public Response createRequest() {
+		return Response.status(Response.Status.CREATED).build();
+	}
+	
+	@Override
+	public Response createRequest(Object objectDTO) {
+		return Response.status(Response.Status.CREATED).entity(objectDTO).build();
+	}
 
 	@Override
 	public Response badRequest() {
@@ -32,7 +47,7 @@ public class RequestServiceImpl implements RequestService{
 	public Response conflictRequest() {
 		return Response.status(Response.Status.CONFLICT).entity("Conflict").build();
 	}
-	
-	
+
+
 
 }
