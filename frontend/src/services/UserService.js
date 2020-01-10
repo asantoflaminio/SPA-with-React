@@ -256,7 +256,7 @@ const UserService = (function(){
             }
         })
         .then(function (response) {
-            return response.data
+            LocalStorageService.setToken(response.headers.authorization, response.headers.authorities, response.headers.username)
         })
         .catch(function (error) {
               ErrorService.logError(props,error)

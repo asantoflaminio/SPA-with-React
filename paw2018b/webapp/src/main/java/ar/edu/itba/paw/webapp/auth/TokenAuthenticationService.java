@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.auth;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,6 +16,9 @@ import org.springframework.stereotype.Component;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
@@ -35,6 +40,9 @@ public class TokenAuthenticationService {
     
     @Autowired
     private UserService us;
+    
+    @Context
+    private HttpServletResponse response;
     
 
     private final TokenHandler tokenHandler;
@@ -80,6 +88,8 @@ public class TokenAuthenticationService {
         return authentication;
     }
     
+    
+    
     //Aca se agrega el token de la autorizacion
    //Adicionalmente agregamos el header de las autoridades que tiene
     void addAuthentication(final HttpServletResponse response, final UserDetails userDetails) throws IOException, ServletException {
@@ -89,6 +99,8 @@ public class TokenAuthenticationService {
         response.setHeader(ACCESS_HEADER, userDetails.getAuthorities().toString());
         response.setHeader(USERNAME_HEADER, userDetails.getUsername());
     }
+    
+    
 
     Authentication getAuthenticationForLogin(final HttpServletRequest request) throws UserNotActiveException {
         try {
@@ -112,5 +124,19 @@ public class TokenAuthenticationService {
 
         return null;
     }
+    
+    // tas recibe el username anterior del chabon, el nuevo, busco la pass y crear un nuevo token con el nuevo uername
+    // 
+    public void refreshToken(final HttpServletRequest request, String username)  {
+    	
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+    	final String token = tokenHandler.createToken(username);
+    	System.out.println(token);
+    	 response.setHeader(AUTH_HEADER, "Bearer " + token);
+         response.setHeader(ACCESS_HEADER, userDetails.getAuthorities().toString());
+         response.setHeader(USERNAME_HEADER, userDetails.getUsername());
+
+    }
+    
 }
 

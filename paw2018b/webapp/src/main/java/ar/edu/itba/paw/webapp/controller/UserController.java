@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -18,6 +19,9 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import ar.edu.itba.paw.interfaces.FavPublicationsService;
 import ar.edu.itba.paw.interfaces.PublicationService;
@@ -38,6 +42,14 @@ import ar.edu.itba.paw.services.ImageServiceImpl;
 import ar.edu.itba.paw.services.MailServiceImpl;
 import ar.edu.itba.paw.services.RequestServiceImpl;
 import ar.edu.itba.paw.webapp.auth.TokenAuthenticationService;
+import ar.edu.itba.paw.webapp.auth.TokenHandler;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @Path("users")
 @Component
@@ -64,7 +76,6 @@ public class UserController {
 	@Autowired
 	private ImageServiceImpl is;
 	
-
     @POST
     @Path("/signUp")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
@@ -220,15 +231,13 @@ public class UserController {
     
     @POST
     @Path("/updateInformation")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response updateInformation (@Context HttpServletRequest request, final UserDTO userDTO) {
     	Long id = tas.getUserIdAuthentication(request);
     	us.editData(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPhoneNumber(),
     			us.findById(id).getEmail());
-    	User user = us.findById(id);
-    	UserLoginDTO userLoginDTO = new UserLoginDTO(user.getEmail(), user.getPassword());
-    	return Response.ok().entity(userLoginDTO).build();
+    	tas.refreshToken(request, userDTO.getEmail());
+    	return Response.ok().build();
     }
 
 }

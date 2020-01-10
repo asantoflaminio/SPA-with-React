@@ -15,6 +15,11 @@ const LocalStorageService = (function(){
       return _service
     }
 
+    function _refreshToken(authorization, access, username) {
+        _clearToken();
+        _setToken(authorization, access, username);
+    }
+
     function _setToken(authorization, access, username) {
       let max_acess = _decideAccess(access);
       localStorage.setItem(AUTH_TOKEN, authorization);
@@ -49,11 +54,12 @@ const LocalStorageService = (function(){
 
    return {
       getService : _getService,
+      refreshToken : _refreshToken,
       setToken : _setToken,
       getAccessToken : _getAccessToken,
       getAccessRole : _getAccessRole,
       getUsername : _getUsername,
-      clearToken : _clearToken
+      clearToken : _clearToken,
     }
    })();
    export default LocalStorageService;

@@ -25,11 +25,11 @@ class MyInformation extends React.Component {
         };
     }
 
-    signOut(){
-        let currentPath = this.props.location;
-        LocalStorageService.clearToken()
-        this.props.history.push(currentPath)
-    }
+    // signOut(){
+    //     let currentPath = this.props.location;
+    //     LocalStorageService.clearToken()
+    //     this.props.history.push(currentPath)
+    // }
 
     componentDidMount() {
         this.retrievePersonalInformation();
@@ -77,19 +77,19 @@ class MyInformation extends React.Component {
         if(Object.keys(errors).length === 0) {
             let names = ["firstName","lastName","email","phoneNumber"];
             let values = [val.firstName, val.lastName, val.email, val.phoneNumber]
-            let oldemail = val.email;
+            //let oldemail = val.email;
             UserService.updateInformation(JsonService.createJSONArray(names,values),currentComponent.props).then(function(data){
-                if(currentComponent.state.email !== (oldemail)) {
-                    currentComponent.signOut();
-                    let names1 = ["email","password"];
-                    let values1 = [data.email, data.password]
-                    //faltaria la parte de desencriptar
-                    UserService.login(JsonService.createJSONArray(names1,values1),currentComponent.props).then(function (){
-                        currentComponent.setState({
-                            isLogged: true
-                        })
-                    })
-                }
+                // if(currentComponent.state.email !== (oldemail)) {
+                //     currentComponent.signOut();
+                //     let names1 = ["email","password"];
+                //     let values1 = [data.email, data.password]
+                //     //faltaria la parte de desencriptar
+                //     UserService.login(JsonService.createJSONArray(names1,values1),currentComponent.props).then(function (){
+                //         currentComponent.setState({
+                //             isLogged: true
+                //         })
+                //     })
+                // }
                 currentComponent.updatePersonalInformation(values);
                 currentComponent.componentDidMount();
             })
