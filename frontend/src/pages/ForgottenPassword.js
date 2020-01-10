@@ -8,19 +8,29 @@ import * as yup from 'yup';
 import * as ValidationConst from '../util/ValidationConst';
 import UserService from '../services/UserService';
 import JsonService from '../services/JsonService';
+import toast from 'toasted-notes' 
+import 'toasted-notes/src/styles.css';
+import * as statusCode from '../util/StatusCode'
 
 class ForgottenPassword extends React.Component {
 
     handleFormSubmit(event){
         let currentComponent = this;
-        let currentPath = this.props.location;
-        let names = ["email"]
-        let values = [event.target[0].value]
+        const { t } = this.props;
         event.preventDefault();
-        UserService.forgottenPasswordEmail(event, this.props).then(function (status){
-           // toast.notify(t('details.messageSent'));
-        })
+
+        UserService.isAccount(event, this.props).then(function(status) {
+            if(status === statusCode.OK) {
+                UserService.forgottenPasswordEmail(event, currentComponent.props).then(function (status){
+                   toast.notify("t('forgottenPassword.emailSent')");  
+                 }) 
+            } else {
+               toast.notify(t('forgottenPassword.emailNotSent'));
+            }  
+        })     
     }
+
+
 
     render(){
         const { t } = this.props;
