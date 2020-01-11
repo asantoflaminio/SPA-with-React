@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.paw.interfaces.UserDao;
-import ar.edu.itba.paw.models.EnumContainer;
+import ar.edu.itba.paw.models.Constants;
 import ar.edu.itba.paw.models.User;
 
 @Repository
@@ -25,16 +25,12 @@ public class UserHibernateDao implements UserDao {
 	@Autowired
 	private HttpServletRequest request;
 	
-	private static final Integer MAX_LANGUAJE = 4; 
-	
-	private static Integer MAX_RESULTS_USERS = 2;
-	
 	
 	@Transactional
 	public User create(final String firstName, final String lastName, final String email,
 						final String password, final String phoneNumber, String role) {
 		
-		final User user = new User(firstName, lastName, email, password, phoneNumber, role, request.getHeader("Accept-Language").substring(0, MAX_LANGUAJE));
+		final User user = new User(firstName, lastName, email, password, phoneNumber, role, request.getHeader("Accept-Language").substring(0, Constants.MAX_LANGUAJE));
 		em.persist(user);
 		return user;
 	}
@@ -83,19 +79,19 @@ public class UserHibernateDao implements UserDao {
 	
 	@Override
 	@Transactional
-	public List<User> findAllUsers(String pageUsers) {
+	public List<User> findAllUsers(int pageUsers) {
 		final TypedQuery<User> query = em.createQuery("select distinct u from User as u where u.role != :role Order by u.email ASC", User.class);
-		query.setParameter("role", EnumContainer.Role.ADMIN.getRole());
-		query.setFirstResult((Integer.parseInt(pageUsers) - 1) * MAX_RESULTS_USERS);
-		query.setMaxResults(MAX_RESULTS_USERS);
+		query.setParameter("role", Constants.Role.ADMIN.getRole());
+		query.setFirstResult((pageUsers - 1) * Constants.MAX_RESULTS_USERS);
+		query.setMaxResults(Constants.MAX_RESULTS_USERS);
 		return query.getResultList();
 	}
 	
 	@Override
 	@Transactional
-	public int getCountAllUsers() {
+	public int getAllUsersCount() {
 		final TypedQuery<Long> query = em.createQuery("select distinct COUNT(u) from User as u where u.role != :role", Long.class);
-		query.setParameter("role", EnumContainer.Role.ADMIN.getRole());
+		query.setParameter("role", Constants.Role.ADMIN.getRole());
 		return query.getResultList().get(0).intValue();
 	}
 	

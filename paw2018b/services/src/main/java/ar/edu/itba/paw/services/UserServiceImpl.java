@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public List<UserDTO> findAllUsers(String pageUsers){
+	public List<UserDTO> findAllUsers(int pageUsers){
 		LOGGER.debug("Looking for all users in DB");
 		List<UserDTO> users = new ArrayList<UserDTO>();
 		for(User user: userDao.findAllUsers(pageUsers)) {
@@ -94,8 +94,8 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public int getCountAllUsers() {
-		return userDao.getCountAllUsers();
+	public int getAllUsersCount() {
+		return userDao.getAllUsersCount();
 	}
 	
 	@Override

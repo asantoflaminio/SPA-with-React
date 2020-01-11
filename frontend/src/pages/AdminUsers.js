@@ -16,18 +16,21 @@ class AdminUsers extends React.Component {
         super(props);
          this.state = { 
              usersList: [],
+             page: 1,
              pagesQuantity: 0
         };
     }
 
     componentDidMount(){
         let currentComponent = this
-        AdminService.getUsers(1, this.props).then(function (users){
+        let queryParameters = {}
+        queryParameters.page = this.state.page;
+        AdminService.allUsers(queryParameters, this.props).then(function (users){
             currentComponent.setState({
                 usersList: users
             })
         })
-        AdminService.getUsersCount(this.props).then(function (data){
+        AdminService.allUsersCount(this.props).then(function (data){
             currentComponent.setState({
                 pagesQuantity: Math.ceil(data.count / data.limit)
             })
@@ -80,11 +83,13 @@ class AdminUsers extends React.Component {
     }
 
     handlePageClick = data => {
-        let selected = data.selected + 1;
-        let currentComponent = this
-        AdminService.getUsers(selected, this.props).then(function (users){
+        let currentComponent = this;
+        let queryParameters = {}
+        queryParameters.page = data.selected + 1;
+        AdminService.allUsers(queryParameters, this.props).then(function (users){
             currentComponent.setState({
-                usersList: users
+                usersList: users,
+                page: queryParameters.page
             })
         })
     }
@@ -95,7 +100,7 @@ class AdminUsers extends React.Component {
         this.generateUsers(tableUsers,this.state.usersList, t);
         return(
             <div>
-                <AdminManagment t={t}/>
+                <AdminManagment t={t} active={"AdminUsers"}/>
                 <div>
                     <div class="polaroid data">
                         <div class="title-container">

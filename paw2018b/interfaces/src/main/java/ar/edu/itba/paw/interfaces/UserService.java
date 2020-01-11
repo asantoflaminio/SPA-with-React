@@ -18,9 +18,9 @@ public interface UserService {
 	
 	public boolean editPassword(String oldPassword,String newPassword, String oldEmail);
 	
-	public List<UserDTO> findAllUsers(String pageUsers);
+	public List<UserDTO> findAllUsers(int pageUsers);
 	
-	public int getCountAllUsers();
+	public int getAllUsersCount();
 	
 	public void lockUnlockUser(boolean status, long userid);
 	

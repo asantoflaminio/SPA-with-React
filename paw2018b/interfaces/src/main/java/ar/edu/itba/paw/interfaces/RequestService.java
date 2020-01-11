@@ -10,6 +10,8 @@ public interface RequestService {
 	
 	public Response okRequest();
 	
+	public Response okRequest(Object objectDTO);
+	
 	public Response createRequest();
 	
 	public Response createRequest(Object objectDTO);

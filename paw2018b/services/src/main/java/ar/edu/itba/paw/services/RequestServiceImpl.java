@@ -29,6 +29,11 @@ public class RequestServiceImpl implements RequestService{
 	}
 	
 	@Override
+	public Response okRequest(Object objectDTO) {
+		return Response.ok().entity(objectDTO).build();
+	}
+	
+	@Override
 	public Response createRequest() {
 		return Response.status(Response.Status.CREATED).build();
 	}

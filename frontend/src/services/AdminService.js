@@ -113,14 +113,11 @@ const AdminService = (function(){
           });
       }
 
-    async function _getUsers(page, props){
-        const pageJSON = {
-            "page": page
-        }
+    async function _allUsers(queryParameters, props){
         return await axios({
-            method: 'post',
-            url: ADMIN_PATH + '/getUsers',
-            data: pageJSON
+            method: 'get',
+            url: `${ADMIN_PATH}/allUsers`,
+            params: queryParameters
           })
           .then(function (response) {
               return response.data
@@ -130,10 +127,10 @@ const AdminService = (function(){
           });
     }
 
-    async function _getUsersCount(props){
+    async function _allUsersCount(props){
         return await axios({
             method: 'get',
-            url: ADMIN_PATH + '/getUsersQuantity',
+            url: `${ADMIN_PATH}/allUsersCount`,
           })
           .then(function (response) {
               return response.data
@@ -149,7 +146,7 @@ const AdminService = (function(){
             "locked" : status
         }
         return axios({
-            method: 'post',
+            method: 'put',
             url: ADMIN_PATH + '/lockUser',
             data: idJSON
           })
@@ -169,8 +166,8 @@ const AdminService = (function(){
       allProvinces : _allProvinces,
       allCities : _allCities,
       allNeighborhoods : _allNeighborhoods,
-      getUsers : _getUsers,
-      getUsersCount : _getUsersCount,
+      allUsers : _allUsers,
+      allUsersCount : _allUsersCount,
       lockUser : _lockUser,
     }
    })();

@@ -1,6 +1,9 @@
 package ar.edu.itba.paw.models;
 
-public class EnumContainer {
+public class Constants {
+	
+	public static final Integer MAX_LANGUAJE = 4; 
+	public static Integer MAX_RESULTS_USERS = 7;
 	
 	public static enum Operation {
 		FSALE ("FSale"),

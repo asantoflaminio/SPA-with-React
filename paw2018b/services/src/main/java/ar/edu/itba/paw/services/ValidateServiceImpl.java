@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import ar.edu.itba.paw.interfaces.ValidateService;
-import ar.edu.itba.paw.models.EnumContainer;
+import ar.edu.itba.paw.models.Constants;
 
 @Service
 public class ValidateServiceImpl implements ValidateService{
@@ -119,10 +119,10 @@ public class ValidateServiceImpl implements ValidateService{
 			return false;
 		}
 		
-		if(! operation.equals(EnumContainer.Operation.FSALE.getOperation()) && ! operation.equals(EnumContainer.Operation.FRENT.getOperation()))
+		if(! operation.equals(Constants.Operation.FSALE.getOperation()) && ! operation.equals(Constants.Operation.FRENT.getOperation()))
 			return false;
 		
-		if(! propertyType.equals(EnumContainer.PropertyType.HOUSE.getPropertyType()) && ! propertyType.equals(EnumContainer.PropertyType.APARTMENT.getPropertyType()))
+		if(! propertyType.equals(Constants.PropertyType.HOUSE.getPropertyType()) && ! propertyType.equals(Constants.PropertyType.APARTMENT.getPropertyType()))
 			return false;
 		
 		LOGGER.debug("The publication with title {} of user {} is valid", title, userid);
