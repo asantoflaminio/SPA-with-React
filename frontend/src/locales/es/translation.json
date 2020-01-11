@@ -64,7 +64,9 @@
     "forgottenPassword": {
       "title": "¿Olvidaste tu contraseña?",
       "message": "Completá con tu dirección de correo y te enviaremos un link para restablecerla.",
-      "send": "Enviar"
+      "send": "Enviar",
+      "emailSent": "Te enviamos un correo.",
+      "emailNotSent": "Ocurrió un error. Asegurate de que la dirección proporcionada es válida."
     },
     "publish": {
       "publish": "Publicar",

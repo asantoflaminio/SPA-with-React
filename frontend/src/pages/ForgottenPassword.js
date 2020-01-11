@@ -18,17 +18,20 @@ class ForgottenPassword extends React.Component {
         let currentComponent = this;
         const { t } = this.props;
         event.preventDefault();
-
+        event.persist();
         UserService.isAccount(event, this.props).then(function(status) {
             if(status === statusCode.OK) {
                 UserService.forgottenPasswordEmail(event, currentComponent.props).then(function (status){
-                   toast.notify("t('forgottenPassword.emailSent')");  
+                   toast.notify(t('forgottenPassword.emailSent'));  
+                   currentComponent.props.history.push("/home")
                  }) 
             } else {
                toast.notify(t('forgottenPassword.emailNotSent'));
             }  
         })     
     }
+
+
 
 
 
