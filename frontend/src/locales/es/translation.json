@@ -239,7 +239,9 @@
     "modal":{
       "close" : "Cerrar",
       "accept" : "Aceptar",
-      "postLocation" : "Se ha agregado una ubicación",
-      "postLocationDetail" : "Se ha agregado {{location}} a la base de datos"
+      "postLocation" : "Ubicación agregada",
+      "postLocationError" : "Error al agregar ubicación",
+      "postLocationDetail" : "Se ha agregado {{location}} a la base de datos",
+      "postLocationDetailError" : "Se ha producido un error al agregar {{location}} a la base de datos"
     }
   }

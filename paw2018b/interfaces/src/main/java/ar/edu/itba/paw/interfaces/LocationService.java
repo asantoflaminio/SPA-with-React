@@ -22,5 +22,11 @@ public interface LocationService {
 	public List<CityDTO> getCities(long provinceID);
 	
 	public List<NeighborhoodDTO> getNeighborhoods(long cityID);
+	
+	public Province findByProvinceName(String province);
+	
+	public City findByCityName(long provinceid, String city);
+	
+	public Neighborhood findByNeighborhoodName(long cityid, String neighborhood);
 
 }

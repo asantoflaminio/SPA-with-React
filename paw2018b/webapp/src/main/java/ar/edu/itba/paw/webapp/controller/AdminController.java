@@ -6,6 +6,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -13,75 +14,93 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ar.edu.itba.paw.interfaces.LocationService;
-import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.dto.CitiesDTO;
 import ar.edu.itba.paw.models.dto.CityDTO;
 import ar.edu.itba.paw.models.dto.UserDTO;
+import ar.edu.itba.paw.services.LocationServiceImpl;
+import ar.edu.itba.paw.services.RequestServiceImpl;
+import ar.edu.itba.paw.services.UserServiceImpl;
+import ar.edu.itba.paw.services.ValidateServiceImpl;
 import ar.edu.itba.paw.models.dto.NeighborhoodDTO;
-import ar.edu.itba.paw.models.dto.NeighborhoodsDTO;
 import ar.edu.itba.paw.models.dto.PageDTO;
 import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.ProvinceDTO;
-import ar.edu.itba.paw.models.dto.ProvincesDTO;
 
 @Path("admin")
 @Component
 public class AdminController {
 	
 	@Autowired
-	private LocationService ls;
+	private LocationServiceImpl ls;
 	
 	@Autowired
-	private UserService us;
+	private UserServiceImpl us;
+	
+	@Autowired
+	private ValidateServiceImpl vs;
+	
+	@Autowired
+	private RequestServiceImpl rs;
 	
     @POST
     @Path("/province")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response createProvince (final ProvinceDTO provinceDTO) {
+    	if(! vs.validateLocationAdmin(provinceDTO.getProvince(), "Province"))
+    		return rs.badRequest();
+    	if(ls.findByProvinceName(provinceDTO.getProvince()) != null)
+    		return rs.conflictRequest();
+    	
     	ls.createProvince(provinceDTO.getProvince());
-        return Response.ok().build();
+        return rs.createRequest();
     }
     
     @POST
     @Path("/city")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response createCity (final CityDTO cityDTO) {
+		if(! vs.validateLocationAdmin(cityDTO.getCity(), "City"))
+			return rs.badRequest();
+    	if(ls.findByCityName(cityDTO.getProvinceID(),cityDTO.getCity()) != null)
+    		return rs.conflictRequest();
+    	
     	ls.createCity(cityDTO.getCity(),cityDTO.getProvinceID());
-        return Response.ok().build();
+        return rs.createRequest();
     }
     
     @POST
     @Path("/neighborhood")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response createNeighborhood (final NeighborhoodDTO neighborhoodDTO) {
+		if(! vs.validateLocationAdmin(neighborhoodDTO.getNeighborhood(), "Neighborhood"))
+			return rs.badRequest();
+    	if(ls.findByNeighborhoodName(neighborhoodDTO.getCityID(),neighborhoodDTO.getNeighborhood()) != null)
+    		return rs.conflictRequest();
+    	
     	ls.createNeighborhood(neighborhoodDTO.getNeighborhood(),neighborhoodDTO.getCityID());
         return Response.ok().build();
     }
     
     @GET
-    @Path("/getProvinces")
+    @Path("/allProvinces")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getProvinces () {
-    	ProvincesDTO provinces = new ProvincesDTO(ls.getProvinces());
+    	List<ProvinceDTO> provinces = ls.getProvinces();
     	return Response.ok().entity(provinces).build();
     }
     
-    @POST
-    @Path("/getCities")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    @GET
+    @Path("/allCities/{provinceID}")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getCities (ProvinceDTO province) {
-    	CitiesDTO cities = new CitiesDTO(ls.getCities(province.getProvinceID()));
+    public Response getCities (@PathParam("provinceID") long provinceID) {
+    	List<CityDTO> cities = ls.getCities(provinceID);
     	return Response.ok().entity(cities).build();
     }
     
-    @POST
-    @Path("/getNeighborhoods")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    @GET
+    @Path("/allNeighborhoods/{cityID}")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getNeighborhoods (CityDTO city) {
-    	NeighborhoodsDTO neighborhoods = new NeighborhoodsDTO(ls.getNeighborhoods(city.getCityID()));
+    public Response getNeighborhoods (@PathParam("cityID") long cityID) {
+    	List<NeighborhoodDTO> neighborhoods = ls.getNeighborhoods(cityID);
     	return Response.ok().entity(neighborhoods).build();
     }
     

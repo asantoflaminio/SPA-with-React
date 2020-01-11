@@ -23,32 +23,22 @@ public class LocationServiceImpl implements LocationService{
 	@Autowired
 	private LocationDao locationDao;
 	
-	@Autowired
-	private ValidateServiceImpl vs;
-	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Override
 	public Province createProvince(String province) {
-		if(! vs.validateLocationAdmin(province, "Province"))
-			return null;
-		
 		LOGGER.debug("Creating province with name {}", province);
 		return locationDao.createProvince(province);
 	}
 
 	@Override
 	public City createCity(String city, long provinceid) {
-		if(! vs.validateLocationAdmin(city, "City"))
-			return null;
 		LOGGER.debug("Creating city with name {}", city);
 		return locationDao.createCity(city,provinceid);
 	}
 
 	@Override
 	public Neighborhood createNeighborhood(String neighborhood, long cityid) {
-		if(! vs.validateLocationAdmin(neighborhood, "Neighborhood"))
-			return null;
 		LOGGER.debug("Creating neighborhood with name {}", neighborhood);
 		return locationDao.createNeighborhood(neighborhood,cityid);
 	}
@@ -78,6 +68,21 @@ public class LocationServiceImpl implements LocationService{
 			neighborhoods.add(new NeighborhoodDTO(neighborhood.getNeighborhood(),neighborhood.getNeighborhoodid()));
 		}
 		return neighborhoods;
+	}
+
+	@Override
+	public Province findByProvinceName(String province) {
+		return locationDao.findByProvinceName(province);
+	}
+
+	@Override
+	public City findByCityName(long provinceid, String city) {
+		return locationDao.findByCityName(provinceid, city);
+	}
+
+	@Override
+	public Neighborhood findByNeighborhoodName(long cityid, String neighborhood) {
+		return locationDao.findByNeighborhoodName(cityid, neighborhood);
 	}
 
 }

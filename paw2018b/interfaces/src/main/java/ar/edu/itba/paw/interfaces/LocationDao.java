@@ -19,5 +19,11 @@ public interface LocationDao {
 	public List<City> getCities(long provinceID);
 	
 	public List<Neighborhood> getNeighborhoods(long cityID);
+	
+	public Province findByProvinceName(String province);
+	
+	public City findByCityName(long provinceid, String city);
+	
+	public Neighborhood findByNeighborhoodName(long cityid, String neighborhood);
 
 }

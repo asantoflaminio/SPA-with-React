@@ -1,11 +1,12 @@
 import LocalStorageService from './LocalStorageService'
 import ErrorService from './ErrorService'
 import JsonService from './JsonService'
+import * as statusCode from '../util/StatusCode'
 import axios from 'axios';
 
 const AdminService = (function(){
 
-    const ADMIN_PATH = 'meinHaus/admin/'
+    const ADMIN_PATH = 'meinHaus/admin'
     const ROLE_ADMIN = "ROLE_ADMIN"
 
     function _isAdmin(){
@@ -16,10 +17,10 @@ const AdminService = (function(){
             return false;
     }
 
-    async function _postProvice(event,props){
-        axios({
+    async function _province(event,props){
+        return await axios({
             method: 'post',
-            url: ADMIN_PATH + 'province',
+            url: `${ADMIN_PATH}/province`,
             data: JsonService.getJSONParsed(event.target),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
@@ -29,14 +30,16 @@ const AdminService = (function(){
             return response.status
         })
         .catch(function (error) {
+            if(String(error).includes(statusCode.CONFLICT))
+                return statusCode.CONFLICT;
             ErrorService.logError(props,error)
         });
     }
     
-    async function _postCity(event,props){
-        axios({
+    async function _city(event,props){
+        return await axios({
           method: 'post',
-          url: ADMIN_PATH + 'city',
+          url: `${ADMIN_PATH}/city`,
           data: JsonService.getJSONParsed(event.target),
           headers: {
             authorization: LocalStorageService.getAccessToken(),
@@ -46,14 +49,16 @@ const AdminService = (function(){
             return response.status
         })
         .catch(function (error) {
+            if(String(error).includes(statusCode.CONFLICT))
+                return statusCode.CONFLICT;
             ErrorService.logError(props,error)
         });
     }
 
-    async function _postNeighborhood(event,props){
-        axios({
+    async function _neighborhood(event,props){
+        return await axios({
           method: 'post',
-          url: ADMIN_PATH + 'neighborhood',
+          url: `${ADMIN_PATH}/neighborhood`,
           data: JsonService.getJSONParsed(event.target),
           headers: {
             authorization: LocalStorageService.getAccessToken(),
@@ -63,45 +68,45 @@ const AdminService = (function(){
             return response.status
         })
         .catch(function (error) {
+            if(String(error).includes(statusCode.CONFLICT))
+                return statusCode.CONFLICT;
             ErrorService.logError(props,error)
         });
     }
 
-    async function _getProvinces(props){
+    async function _allProvinces(props){
         return await axios({
             method: 'get',
-            url: ADMIN_PATH + 'getProvinces',
+            url: `${ADMIN_PATH}/allProvinces`,
           })
           .then(function (response) {
-              return response.data.provinces
+              return response.data
           })
           .catch(function (error) {
             ErrorService.logError(props,error)
           });
     }
 
-    async function _getCities(event,props){
+    async function _allCities(provinceID,props){
         return await axios({
-            method: 'post',
-            url: ADMIN_PATH + 'getCities',
-            data: JsonService.getJSONParsed(event.target),
+            method: 'get',
+            url: `${ADMIN_PATH}/allCities/${provinceID}`,
           })
           .then(function (response) {
-              return response.data.cities
+              return response.data
           })
           .catch(function (error) {
             ErrorService.logError(props,error)
           });
       }
 
-    async function _getNeighborhoods(event, props){
+    async function _allNeighborhoods(cityID, props){
         return await axios({
-            method: 'post',
-            url: ADMIN_PATH + 'getNeighborhoods',
-            data: JsonService.getJSONParsed(event.target),
+            method: 'get',
+            url: `${ADMIN_PATH}/allNeighborhoods/${cityID}`,
           })
           .then(function (response) {
-              return response.data.neighborhoods
+              return response.data
           })
           .catch(function (error) {
             ErrorService.logError(props,error)
@@ -114,7 +119,7 @@ const AdminService = (function(){
         }
         return await axios({
             method: 'post',
-            url: ADMIN_PATH + 'getUsers',
+            url: ADMIN_PATH + '/getUsers',
             data: pageJSON
           })
           .then(function (response) {
@@ -128,7 +133,7 @@ const AdminService = (function(){
     async function _getUsersCount(props){
         return await axios({
             method: 'get',
-            url: ADMIN_PATH + 'getUsersQuantity',
+            url: ADMIN_PATH + '/getUsersQuantity',
           })
           .then(function (response) {
               return response.data
@@ -145,7 +150,7 @@ const AdminService = (function(){
         }
         return axios({
             method: 'post',
-            url: ADMIN_PATH + 'lockUser',
+            url: ADMIN_PATH + '/lockUser',
             data: idJSON
           })
           .then(function (response) {
@@ -158,12 +163,12 @@ const AdminService = (function(){
 
    return {
       isAdmin : _isAdmin,
-      postProvince : _postProvice,
-      postCity : _postCity,
-      postNeighborhood : _postNeighborhood,
-      getProvinces : _getProvinces,
-      getCities : _getCities,
-      getNeighborhoods : _getNeighborhoods,
+      province : _province,
+      city : _city,
+      neighborhood : _neighborhood,
+      allProvinces : _allProvinces,
+      allCities : _allCities,
+      allNeighborhoods : _allNeighborhoods,
       getUsers : _getUsers,
       getUsersCount : _getUsersCount,
       lockUser : _lockUser,

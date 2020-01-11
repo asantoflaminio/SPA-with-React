@@ -72,6 +72,38 @@ public class LocationHibernateDao implements LocationDao{
 		return query.getResultList();
 	}
 	
+	@Override
+	@Transactional
+	public Province findByProvinceName(String province) {
+		String queryString = "select distinct prov from Province as prov where upper(prov.province) = upper(:province)";
+		final TypedQuery<Province> query = em.createQuery(queryString, Province.class);
+		query.setParameter("province", province);
+		final List<Province> list = query.getResultList();
+		return list.isEmpty() ? null : list.get(0);
+	}
+	
+	@Override
+	@Transactional
+	public City findByCityName(long provinceid, String city) {
+		String queryString = "select distinct c from City as c where c.province.provinceid = :provinceid AND upper(c.city) = upper(:city)";
+		final TypedQuery<City> query = em.createQuery(queryString, City.class);
+		query.setParameter("provinceid", provinceid);
+		query.setParameter("city", city);
+		final List<City> list = query.getResultList();
+		return list.isEmpty() ? null : list.get(0);
+	}
+	
+	@Override
+	@Transactional
+	public Neighborhood findByNeighborhoodName(long cityid, String neighborhood) {
+		String queryString = "select distinct neigh from Neighborhood as neigh where neigh.city.cityid = :cityid AND upper(neigh.neighborhood) = upper(:neighborhood)";
+		final TypedQuery<Neighborhood> query = em.createQuery(queryString, Neighborhood.class);
+		query.setParameter("cityid", cityid);
+		query.setParameter("neighborhood", neighborhood);
+		final List<Neighborhood> list = query.getResultList();
+		return list.isEmpty() ? null : list.get(0);
+	}
+	
 
 
 }

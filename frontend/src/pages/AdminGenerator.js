@@ -10,7 +10,7 @@ import {appendSelectElement} from '../util/function'
 import AdminService from '../services/AdminService'
 import { withRouter } from "react-router";
 import ToastNotification from '../components/ToastNotification'
-import ErrorService from '../services/ErrorService';
+import * as statusCode from '../util/StatusCode'
 
 class AdminGenerator extends React.Component {
 
@@ -22,14 +22,15 @@ class AdminGenerator extends React.Component {
             neighborhoods: [],
             showModal: false,
             titleModal: null,
-            informationModal: null
+            informationModal: null,
+            typeModal: null
 
         };
     }
 
     componentDidMount(){
         let currentComponent = this
-        AdminService.getProvinces(this.props).then(function (provincesList){
+        AdminService.allProvinces(this.props).then(function (provincesList){
             currentComponent.setState({
                 provinces: provincesList,
             })
@@ -41,8 +42,16 @@ class AdminGenerator extends React.Component {
         let currentComponent = this
         let province = event.target[0].value
         if(Object.keys(errors).length === 0){
-            AdminService.postProvince(event, this.props).then(function (status){
-                currentComponent.setModalInformation(province)
+            AdminService.province(event, this.props).then(function (status){
+                if(status === statusCode.CONFLICT)
+                    currentComponent.setModalError(province)
+                else
+                    currentComponent.setModalInformation(province)
+                AdminService.allProvinces(currentComponent.props).then(function (provinceList){
+                    currentComponent.setState({
+                        provinces: provinceList
+                    })
+                })
             })
         }
 
@@ -53,8 +62,11 @@ class AdminGenerator extends React.Component {
         let currentComponent = this
         let city = event.target[1].value
         if(Object.keys(errors).length === 0){
-            AdminService.postCity(event, this.props).then(function (status){
-                currentComponent.setModalInformation(city)
+            AdminService.city(event, this.props).then(function (status){
+                if(status === statusCode.CONFLICT)
+                    currentComponent.setModalError(city)
+                else
+                    currentComponent.setModalInformation(city)
             })
         }
        
@@ -65,27 +77,21 @@ class AdminGenerator extends React.Component {
         let currentComponent = this
         let neighborhood = event.target[2].value
         if(Object.keys(errors).length === 0){
-            AdminService.postNeighborhood(event, this.props).then(function (status){
-                currentComponent.setModalInformation(neighborhood)
+            AdminService.neighborhood(event, this.props).then(function (status){
+                if(status === statusCode.CONFLICT)
+                    currentComponent.setModalError(neighborhood)
+                else
+                    currentComponent.setModalInformation(neighborhood)
             })
         }
     }
-
-    setModalInformation(location){
-        const { t } = this.props;
-        this.setState({
-            showModal: true,
-            titleModal: t('modal.postLocation'),
-            informationModal: t('modal.postLocationDetail', {location: location})
-        })
-    }
-
 
     updateCity(event,values){
         event.preventDefault();
         values.provinceID = event.target.value
         event.target.blur();
-        AdminService.getCities(event, this.props).then(function (cities){
+        let provinceID = event.target[0].parentElement.value
+        AdminService.allCities(provinceID, this.props).then(function (cities){
             let select = document.getElementById("city_neighborhood")
             select.selectedIndex = 0;
             while (select.childNodes[1]) {
@@ -109,6 +115,26 @@ class AdminGenerator extends React.Component {
         event.target.blur();
     }
 
+    setModalInformation(location){
+        const { t } = this.props;
+        this.setState({
+            showModal: true,
+            titleModal: t('modal.postLocation'),
+            informationModal: t('modal.postLocationDetail', {location: location}),
+            typeModal:"Information"
+        })
+    }
+
+    setModalError(location){
+        const { t } = this.props;
+        this.setState({
+            showModal: true,
+            titleModal: t('modal.postLocationError'),
+            informationModal: t('modal.postLocationDetailError', {location: location}),
+            typeModal:"Error"
+        })
+    }
+
 
 
     render(){
@@ -130,11 +156,12 @@ class AdminGenerator extends React.Component {
         });
         return(
             <div>
-                <AdminManagment t={t}/>
+                <AdminManagment t={t} active={"AdminGenerator"}/>
                 <ToastNotification 
                     show={this.state.showModal}
                     title={this.state.titleModal}
                     information={this.state.informationModal}
+                    type={this.state.typeModal}
                 />
                 <div className="polaroid data">
                     <div className="title-container">       
@@ -152,27 +179,33 @@ class AdminGenerator extends React.Component {
                            }}
                         >{({
                             values,
+                            touched,
                             errors,
                             handleChange,
                             handleSubmit,
-                            isSubmitting
+                            isSubmitting,
+                            handleBlur
                             }) => (
                                 <Form noValidate className="form-inline" onSubmit={(event) => handleSubmit(event) || this.handleProvinceSubmit(event,errors)}>
                                     <Form.Group controlId="validationFormik01">
-                                        <Form.Label className="location-label">{t('admin.province')}</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            name="province"
-                                            className="location-input"
-                                            placeholder={t('admin.provinceHolder')}
-                                            value={values.province}
-                                            onChange={handleChange}
-                                            isInvalid={!!errors.province}
-                                        />
+                                        <div>
+                                            <Form.Label className="location-label">{t('admin.province')}</Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                name="province"
+                                                className="location-input"
+                                                placeholder={t('admin.provinceHolder')}
+                                                value={values.province}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                isInvalid={!!errors.province && touched.province}
+                                            />
+                                            <Form.Control.Feedback type="invalid">
+                                                    {errors.province}
+                                            </Form.Control.Feedback>
+                                        </div>
                                     <Button type="submit" id="submitProvinceButton" className="signup-submit" disabled={isSubmitting} onClick={handleChange}>{t('admin.create')}</Button>
-                                    <Form.Control.Feedback type="invalid">
-                                            {errors.province}
-                                    </Form.Control.Feedback>
+
                                     </Form.Group>
                                 </Form>
                                     )}
@@ -200,6 +233,7 @@ class AdminGenerator extends React.Component {
                             }) => (
                                 <Form noValidate className="form-inline" onSubmit={(event) => handleSubmit(event) || this.handleCitySubmit(event,errors)}>
                                     <Form.Group controlId="validationFormik02">
+                                        <div>
                                         <Form.Label className="location-label">{t('admin.province')}</Form.Label>
                                         <Form.Control
                                             as="select"
@@ -216,8 +250,10 @@ class AdminGenerator extends React.Component {
                                         <Form.Control.Feedback type="invalid">
                                             {errors.provinceID}
                                         </Form.Control.Feedback>
+                                        </div>
                                     </Form.Group>
                                     <Form.Group controlId="validationFormik03">
+                                        <div>
                                         <Form.Label className="location-label">{t('admin.city')}</Form.Label>
                                         <Form.Control
                                             type="text"
@@ -232,6 +268,7 @@ class AdminGenerator extends React.Component {
                                         <Form.Control.Feedback type="invalid">
                                             {errors.city}
                                         </Form.Control.Feedback>
+                                        </div>
                                     <Button type="submit" id="submitCityButton" className="signup-submit" disabled={isSubmitting} onClick={handleChange}>{t('admin.create')}</Button>
                                     </Form.Group>  
                                 </Form>
@@ -258,10 +295,10 @@ class AdminGenerator extends React.Component {
                             }) => (
                                 <Form noValidate className="form-inline" onSubmit={(event) => handleSubmit(event) || this.handleNeighborhoodSubmit(event,errors)}>
                                     <Form.Group controlId="validationFormik04">
+                                        <div>
                                         <Form.Label className="location-label">{t('admin.province')}</Form.Label>
                                         <Form.Control
                                             as="select"
-                                            type="text"
                                             name="provinceID"
                                             className="location-select"
                                             value={values.provinceID}
@@ -275,8 +312,10 @@ class AdminGenerator extends React.Component {
                                         <Form.Control.Feedback type="invalid">
                                             {errors.provinceID}
                                         </Form.Control.Feedback>
+                                        </div>
                                     </Form.Group>
                                     <Form.Group controlId="validationFormik05">
+                                        <div>
                                         <Form.Label className="location-label">{t('admin.city')}</Form.Label>
                                         <Form.Control
                                             as="select"
@@ -294,8 +333,10 @@ class AdminGenerator extends React.Component {
                                         <Form.Control.Feedback type="invalid">
                                             {errors.cityID}
                                         </Form.Control.Feedback>
+                                        </div>
                                     </Form.Group>
                                     <Form.Group controlId="validationFormik06">
+                                        <div>
                                         <Form.Label className="location-label">{t('admin.neighborhood')}</Form.Label>
                                         <Form.Control
                                             type="text"
@@ -304,11 +345,13 @@ class AdminGenerator extends React.Component {
                                             placeholder={t('admin.neighborhoodHolder')}
                                             value={values.neighborhood}
                                             onChange={handleChange}
+                                            onBlur={handleBlur}
                                             isInvalid={!!errors.neighborhood && touched.neighborhood}
                                         />
                                         <Form.Control.Feedback type="invalid">
                                             {errors.neighborhood}
                                         </Form.Control.Feedback>
+                                        </div>
                                     <Button type="submit" id="submitNeighborhoodButton" className="signup-submit" disabled={isSubmitting} onClick={handleChange}>{t('admin.create')}</Button>
                                     </Form.Group>
                                 </Form>

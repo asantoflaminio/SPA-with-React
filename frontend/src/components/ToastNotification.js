@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal , Button } from 'react-bootstrap';
 import { withTranslation } from 'react-i18next';
+import '../css/modal.css';
 
 class ToastNotification extends React.Component{
   constructor(props) {
@@ -43,9 +44,13 @@ class ToastNotification extends React.Component{
 
 
   render(){
-    setTimeout(() => {this.setState({show: false})}, 4000)
+    setTimeout(() => {this.setState({show: false})}, 8000)
     return (
-      <Modal show={this.state.show} onHide={this.handleClose} backdrop={false}>
+      <Modal 
+        show={this.state.show} 
+        onHide={this.handleClose} 
+        backdrop={false}
+      >
         <Modal.Header closeButton>
           <Modal.Title>{this.props.title}</Modal.Title>
         </Modal.Header>

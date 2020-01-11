@@ -42,7 +42,6 @@ import ar.edu.itba.paw.services.ImageServiceImpl;
 import ar.edu.itba.paw.services.MailServiceImpl;
 import ar.edu.itba.paw.services.RequestServiceImpl;
 import ar.edu.itba.paw.webapp.auth.TokenAuthenticationService;
-import ar.edu.itba.paw.webapp.auth.TokenHandler;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
