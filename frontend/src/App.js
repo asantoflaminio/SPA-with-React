@@ -11,6 +11,7 @@ import AdminPublications from './pages/AdminPublications'
 import Details from './pages/Details'
 import ErrorBoundary from './pages/ErrorBoundary'
 import ForgottenPassword from './pages/ForgottenPassword'
+import NewPassword from './pages/NewPassword'
 import MyPublications from './pages/MyPublications'
 import MyFavorites from './pages/MyFavorites'
 import MyInformation from './pages/MyInformation'
@@ -63,6 +64,7 @@ function App() {
             <PrivateRoute exact path="/MyInformation" component={MyInformation} />
             <PrivateRoute exact path="/EditPublication" component={EditPublication} />
             <OnlyPublicRoute exact path="/ForgottenPassword" component={ForgottenPassword} />
+            <Route exact path="/newPassword/token=:token" component={NewPassword} />
             <Route exact path="*" component={Home} />
           </Switch>
         </Suspense>

@@ -68,6 +68,11 @@
       "emailSent": "Te enviamos un correo.",
       "emailNotSent": "Ocurrió un error. Asegurate de que la dirección proporcionada es válida."
     },
+    "newPassword": {
+      "title": "Cambio de contraseña",
+      "message": "Por favor, completá el formulario con tu nueva contraseña.",
+      "send": "Enviar"
+    },
     "publish": {
       "publish": "Publicar",
       "title": "Titulo",

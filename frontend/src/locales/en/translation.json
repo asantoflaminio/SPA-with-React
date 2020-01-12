@@ -68,6 +68,11 @@
       "emailSent": "An email was sent to you.",
       "emailNotSent": "An error ocurred. Make sure the email is valid."
     },
+    "newPassword": {
+      "title": "Password reset",
+      "message": "Please fill the form with your new password.",
+      "send": "Send"
+    },
     "publish": {
       "publish": "Publish",
       "title": "Title",
