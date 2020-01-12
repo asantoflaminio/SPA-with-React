@@ -45,7 +45,7 @@ public class ChangePasswordServiceImpl implements ChangePasswordService {
 
         ChangePassword cp = changePasswordDao.createRequest(encryptedToken.toString(), user.getUserid(), date);
         ms.sendPasswordRecoveryEmail(user.getEmail(), pureToken);
-
+        
         return cp;
     }
     

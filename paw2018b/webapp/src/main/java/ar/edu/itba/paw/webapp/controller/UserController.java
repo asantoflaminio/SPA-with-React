@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -130,7 +131,7 @@ public class UserController {
     public Response forgottenPasswordEmail (RecoveryMessageDTO recoveryMessageDTO) {
     	String token = UUID.randomUUID().toString();
     	User user = us.findByUsername(recoveryMessageDTO.getEmail());
-    	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd");
+    	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
     	ChangePassword changePassword = cps.createRequest(user, dtf.format(now));
         return Response.ok().build();
@@ -147,10 +148,14 @@ public class UserController {
     		Integer token = passwordsCheckDTO.getToken().hashCode();
             Optional<ChangePassword> cp =  cps.getRequest(token.toString());
             
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd");
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
             
-            if(cp.isPresent() && dtf.format(now).equals(cp.get().getDate())) {
+            LocalDateTime tokenDate = LocalDateTime.parse(cp.get().getDate(), dtf);
+            
+            long minutes = ChronoUnit.MINUTES.between(tokenDate, now);
+            
+            if(cp.isPresent() && minutes <= 60) {
             	
             	User userRequesting = cp.get().getUserRequesting();
             	us.editPassword(userRequesting.getPassword(), passwordsCheckDTO.getNewPassword1(), userRequesting.getEmail());

@@ -17,7 +17,7 @@ public class ChangePassword {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private User userRequesting;
 
-    @Column(length = 10)
+    @Column(length = 20)
     private String date;
 
     @Column(length = 32)
