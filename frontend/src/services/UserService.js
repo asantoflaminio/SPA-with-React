@@ -264,25 +264,28 @@ const UserService = (function(){
 
     async function _updateInformation(array, props) {
         return await axios({
-            method: 'post',
-            url: USERS_PATH + 'updateInformation',
+            method: 'put',
+            url: USERS_PATH + 'information',
             data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
         })
         .then(function (response) {
+            alert(response.headers.authorization)
+            alert(response.headers.authorities)
+            alert(response.headers.username)
             LocalStorageService.setToken(response.headers.authorization, response.headers.authorities, response.headers.username)
         })
         .catch(function (error) {
               ErrorService.logError(props,error)
-          });
+        });
     }
 
     async function _retrievePersonalInformation(props){
         return await axios({
             method: 'get',
-            url: USERS_PATH + 'retrievePersonalInformation',
+            url: USERS_PATH + 'profile',
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }

@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -40,10 +41,6 @@ public class TokenAuthenticationService {
     
     @Autowired
     private UserService us;
-    
-    @Context
-    private HttpServletResponse response;
-    
 
     private final TokenHandler tokenHandler;
 
@@ -88,10 +85,8 @@ public class TokenAuthenticationService {
         return authentication;
     }
     
-    
-    
     //Aca se agrega el token de la autorizacion
-   //Adicionalmente agregamos el header de las autoridades que tiene
+    //Adicionalmente agregamos el header de las autoridades que tiene
     void addAuthentication(final HttpServletResponse response, final UserDetails userDetails) throws IOException, ServletException {
         final String token = tokenHandler.createToken(userDetails.getUsername());
         
@@ -101,7 +96,6 @@ public class TokenAuthenticationService {
     }
     
     
-
     Authentication getAuthenticationForLogin(final HttpServletRequest request) throws UserNotActiveException {
         try {
             final UserLoginDTO user = new ObjectMapper().readValue(request.getInputStream(), UserLoginDTO.class); // Attempt
@@ -125,17 +119,12 @@ public class TokenAuthenticationService {
         return null;
     }
     
-    // tas recibe el username anterior del chabon, el nuevo, busco la pass y crear un nuevo token con el nuevo uername
-    // 
-    public void refreshToken(final HttpServletRequest request, String username)  {
-    	
+    public Response refreshToken(String username)  {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
     	final String token = tokenHandler.createToken(username);
-    	System.out.println(token);
-    	 response.setHeader(AUTH_HEADER, "Bearer " + token);
-         response.setHeader(ACCESS_HEADER, userDetails.getAuthorities().toString());
-         response.setHeader(USERNAME_HEADER, userDetails.getUsername());
-
+    	return Response.ok().header(AUTH_HEADER, "Bearer " + token)
+    			.header(ACCESS_HEADER, userDetails.getAuthorities().toString())
+    			.header(USERNAME_HEADER, userDetails.getUsername()).build();
     }
     
 }

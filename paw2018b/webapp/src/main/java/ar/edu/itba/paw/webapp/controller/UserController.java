@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -231,7 +232,7 @@ public class UserController {
     }
     
     @GET
-    @Path("/retrievePersonalInformation")
+    @Path("/profile")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response retrievePersonalInformation (@Context HttpServletRequest request) {
     	User user = us.findById(tas.getUserIdAuthentication(request));
@@ -239,15 +240,20 @@ public class UserController {
     	return Response.ok().entity(profileInformationDto).build();
     }
     
-    @POST
-    @Path("/updateInformation")
+    @PUT
+    @Path("/information")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response updateInformation (@Context HttpServletRequest request, final UserDTO userDTO) {
     	Long id = tas.getUserIdAuthentication(request);
+    	User user = us.findById(id);
     	us.editData(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPhoneNumber(),
-    			us.findById(id).getEmail());
-    	tas.refreshToken(request, userDTO.getEmail());
-    	return Response.ok().build();
+    			user.getEmail());
+    	
+    	
+    	return tas.refreshToken(userDTO.getEmail());
+    	
+   
+    	//return Response.ok().entity(tas.refreshToken(userDTO.getEmail())).build();
     }
 
 }
