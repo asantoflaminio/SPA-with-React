@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -161,16 +162,14 @@ public class PublicationController {
     @POST
     @Path("/isFavourite")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response isFavourite(@Context HttpServletRequest request, final IDResponseDTO iDResponseDTO)
-    {
+    public Response isFavourite(@Context HttpServletRequest request, final IDResponseDTO iDResponseDTO){
     	return Response.ok().entity(new BooleanResponseDTO(fs.isFavourite(tas.getUserIdAuthentication(request), iDResponseDTO.getId()))).build();
     }
     
-    @POST
+    @DELETE
     @Path("/erasePublication")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response erasePublication(final IDResponseDTO iDResponseDTO)
-    {
+    public Response erasePublication(final IDResponseDTO iDResponseDTO){
     	ps.deleteById(iDResponseDTO.getId());
     	return Response.ok().build();
     }

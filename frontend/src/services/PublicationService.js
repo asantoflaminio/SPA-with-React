@@ -149,7 +149,7 @@ const PublicationService = (function(){
 
     async function _erasePublication(array,props){
       return await axios({
-        method: 'post',
+        method: 'delete',
         url: PUBLICATIONS_PATH + 'erasePublication',
         data: JsonService.getJSONParsed(array),
         headers: {
