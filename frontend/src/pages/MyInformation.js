@@ -95,34 +95,35 @@ class MyInformation extends React.Component {
     render(){
         const { t } = this.props;
         
-        const schema = yup.object({
-            // firstName: yup.string().required( t('errors.requiredField') )
-            //                         .matches(ValidationConst.lettersAndSpacesRegex, t('errors.lettersAndSpacesRegex'))
-            //                         .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
-            //                         .max(ValidationConst.SHORT_STRING_MAX_LENGTH, t('errors.lengthMax')),
-            // lastName: yup.string().required( t('errors.requiredField') )
-            //                         .matches(ValidationConst.lettersAndSpacesRegex, t('errors.lettersAndSpacesRegex'))
-            //                         .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
-            //                         .max(ValidationConst.SHORT_STRING_MAX_LENGTH, t('errors.lengthMax')),
-            // email: yup.string().required( t('errors.requiredField') )
-            //                         .matches(ValidationConst.emailRegex, t('errors.emailRegex'))
-            //                         .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
-            //                         .max(ValidationConst.EMAIL_MAX_LENGTH, t('errors.lengthMax')),
-            // phoneNumber: yup.string()
-            //                         .matches(ValidationConst.numbersDashRegex, t('errors.numbersDashRegex'))
-            //                         .min(ValidationConst.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
-            //                         .max(ValidationConst.LONG_STRING_MAX_LENGTH, t('errors.lengthMax')),
+        const personalInformationSchema = yup.object({
+            firstName: yup.string().required( t('errors.requiredField') )
+                                    .matches(ValidationConst.lettersAndSpacesRegex, t('errors.lettersAndSpacesRegex'))
+                                    .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                                    .max(ValidationConst.SHORT_STRING_MAX_LENGTH, t('errors.lengthMax')),
+            lastName: yup.string().required( t('errors.requiredField') )
+                                    .matches(ValidationConst.lettersAndSpacesRegex, t('errors.lettersAndSpacesRegex'))
+                                    .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                                    .max(ValidationConst.SHORT_STRING_MAX_LENGTH, t('errors.lengthMax')),
+            email: yup.string().required( t('errors.requiredField') )
+                                    .matches(ValidationConst.emailRegex, t('errors.emailRegex'))
+                                    .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                                    .max(ValidationConst.EMAIL_MAX_LENGTH, t('errors.lengthMax')),
+            phoneNumber: yup.string()
+                                    .matches(ValidationConst.numbersDashRegex, t('errors.numbersDashRegex'))
+                                    .min(ValidationConst.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                                    .max(ValidationConst.LONG_STRING_MAX_LENGTH, t('errors.lengthMax')),
+        });
 
+        const passwordSchema = yup.object({
             password: yup.string().required( t('errors.requiredField') )
                             .matches(ValidationConst.simpleLettersAndNumbersRegex, t('errors.lettersAndNumbersRegex'))
                             .min(ValidationConst.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
                             .max(ValidationConst.LONG_STRING_MAX_LENGTH_PASS, t('errors.lengthMax')),
-
             newpassword: yup.string().required( t('errors.requiredField') )
                             .matches(ValidationConst.simpleLettersAndNumbersRegex, t('errors.lettersAndNumbersRegex'))
                             .min(ValidationConst.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
                             .max(ValidationConst.LONG_STRING_MAX_LENGTH_PASS, t('errors.lengthMax')),
-        });
+        })
         
         return(
             <div>
@@ -135,7 +136,7 @@ class MyInformation extends React.Component {
                             <div className="form">
                                 <hr/>
                                 <Formik
-                                validationSchema={schema}
+                                validationSchema={personalInformationSchema}
                                 enableReinitialize={true}
                                 initialValues={{firstName:this.state.firstName, lastName:this.state.lastName
                                 , email:this.state.email, phoneNumber:this.state.phoneNumber}}
@@ -230,7 +231,7 @@ class MyInformation extends React.Component {
                             <div className="form">
                                 <hr/>
                                 <Formik
-                                validationSchema={schema}
+                                validationSchema={passwordSchema}
                                 initialValues={{password:"", newpassword:""}}
                                 onSubmit={(values, {setSubmitting, resetForm}) => {
                                 setSubmitting(true);

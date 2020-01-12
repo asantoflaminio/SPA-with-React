@@ -302,7 +302,6 @@ public class UserController {
     @Path("/password")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response updatePassword (@Context HttpServletRequest request, PasswordDTO passwordDTO) {
-    	System.out.println("aca");
     	Long id = tas.getUserIdAuthentication(request);
     	if(encoder.matches(passwordDTO.getPassword(), us.findById(id).getPassword())) {
     		us.editPassword(passwordDTO.getPassword(), passwordDTO.getNewpassword(), us.findById(id).getEmail());
