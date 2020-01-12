@@ -85,7 +85,7 @@ public class MailServiceImpl implements MailService {
 	}
 
 	@Override
-	public void sendPasswordRecoveryEmail(String to) {
+	public void sendPasswordRecoveryEmail(String to, String token) {
 
 
 		MimeMessage email = mailSender.createMimeMessage();
@@ -93,7 +93,7 @@ public class MailServiceImpl implements MailService {
 		User user = us.findByUsername(to);
 		Context context = new Context(rs.getLocale(user.getLanguaje()));
 		context.setVariable("email", to);
-		
+		context.setVariable("token", token);
 		String message = engine.process("recoveryMailContent", context);
 		
 		try {

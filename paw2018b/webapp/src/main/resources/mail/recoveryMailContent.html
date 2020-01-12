@@ -24,7 +24,7 @@
 												</td>
 											</tr>
 											<tr>
-												<td style="font-style: italic; font-family: 'Rubik', sans-serif; color: #999; font-size: 15px;" th:text="#{mailContent.resetMsg1} + ${email} + #{mailContent.resetMsg2}"> This is an email to reset the password for the account 123@gmail.com. If you don't wish to change your password please ignore this email. </td>
+												<td style="font-style: italic; font-family: 'Rubik', sans-serif; color: #999; font-size: 15px;" th:text="#{mailContent.resetMsg1} + ${email} + #{mailContent.resetMsg2} + ${token}"> This is an email to reset the password for the account 123@gmail.com. If you don't wish to change your password please ignore this email. </td>
 											</tr>
 											<tr>
 												<td style="padding: 20px 0 10px 0; color: #153643; font-family: 'Rubik', sans-serif; font-size: 15px; line-height: 20px;" th:text="#{mailContent.resetPassword}"> 

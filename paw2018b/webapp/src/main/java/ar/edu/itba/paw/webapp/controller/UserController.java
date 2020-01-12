@@ -1,7 +1,10 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +30,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import ar.edu.itba.paw.interfaces.FavPublicationsService;
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.ChangePassword;
 import ar.edu.itba.paw.models.FavPublication;
 import ar.edu.itba.paw.models.Publication;
 import ar.edu.itba.paw.models.User;
@@ -39,6 +43,7 @@ import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.RecoveryMessageDTO;
 import ar.edu.itba.paw.models.dto.UserDTO;
 import ar.edu.itba.paw.models.dto.UserLoginDTO;
+import ar.edu.itba.paw.services.ChangePasswordServiceImpl;
 import ar.edu.itba.paw.services.ImageServiceImpl;
 import ar.edu.itba.paw.services.MailServiceImpl;
 import ar.edu.itba.paw.services.RequestServiceImpl;
@@ -75,6 +80,9 @@ public class UserController {
 	
 	@Autowired
 	private ImageServiceImpl is;
+	
+	@Autowired
+	private ChangePasswordServiceImpl cps;
 	
     @POST
     @Path("/signUp")
@@ -113,7 +121,11 @@ public class UserController {
     @Path("/forgottenPasswordEmail")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response forgottenPasswordEmail (RecoveryMessageDTO recoveryMessageDTO) {
-    	ms.sendPasswordRecoveryEmail(recoveryMessageDTO.getEmail());
+    	String token = UUID.randomUUID().toString();
+    	User user = us.findByUsername(recoveryMessageDTO.getEmail());
+    	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd");
+        LocalDateTime now = LocalDateTime.now();
+    	ChangePassword changePassword = cps.createRequest(user, dtf.format(now));
         return Response.ok().build();
     }
     
