@@ -71,7 +71,9 @@
     "newPassword": {
       "title": "Password reset",
       "message": "Please fill the form with your new password.",
-      "send": "Send"
+      "send": "Send",
+      "passwordUpdated": "Password updated.",
+      "passwordNotUpdated": "An error ocurred. Remember the link provided only lasts one hour."
     },
     "publish": {
       "publish": "Publish",

@@ -145,13 +145,17 @@ public class UserController {
             
             long minutes = ChronoUnit.MINUTES.between(tokenDate, now);
             
+            System.out.println("minutes es " + minutes);
+            
             if(cp.isPresent() && minutes <= 60) {
             	
             	User userRequesting = cp.get().getUserRequesting();
-            	us.editPassword(userRequesting.getPassword(), passwordsCheckDTO.getNewPassword1(), userRequesting.getEmail());
-                cps.deleteRequest(cp.get().getRequestId());
+            	us.setPassword(passwordsCheckDTO.getNewPassword1(), userRequesting.getEmail());
+            	cps.deleteRequest(cp.get().getRequestId());
+                
+                return Response.ok().build();
             	
-            } else {
+            } else { 	
             	return rs.badRequest();
             }          		
     		
@@ -159,7 +163,6 @@ public class UserController {
     		return rs.badRequest();
     	}
 
-        return Response.ok().build();
     }
     
     @POST

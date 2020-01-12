@@ -65,7 +65,21 @@ const UserService = (function(){
           data: JsonService.getJSONParsed(event.target)
         })
         .then(function (response) {
-            return response;
+            return response.status;
+        })
+        .catch(function (error) {
+            ErrorService.logError(props,error)
+        });
+    }
+
+    async function _createNewPassword(event, props){
+        return await axios({
+          method: 'post',
+          url: USERS_PATH + 'createNewPassword',
+          data: JsonService.getJSONParsed(event.target)
+        })
+        .then(function (response) {
+            return response.status;
         })
         .catch(function (error) {
             ErrorService.logError(props,error)
@@ -314,6 +328,7 @@ const UserService = (function(){
         checkEmailAvailability : _checkEmailAvailability,
         isAccount : _isAccount,
         forgottenPasswordEmail: _forgottenPasswordEmail,
+        createNewPassword: _createNewPassword,
         login : _login,
         postPublication : _postPublication,
         postImages : _postImages,

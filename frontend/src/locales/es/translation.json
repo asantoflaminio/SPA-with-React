@@ -71,7 +71,9 @@
     "newPassword": {
       "title": "Cambio de contraseña",
       "message": "Por favor, completá el formulario con tu nueva contraseña.",
-      "send": "Enviar"
+      "send": "Enviar",
+      "passwordUpdated": "Contraseña actualizada.",
+      "passwordNotUpdated": "Ocurrió un error. Recordá que el vínculo tiene una duración de una hora."
     },
     "publish": {
       "publish": "Publicar",

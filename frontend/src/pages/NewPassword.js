@@ -17,18 +17,15 @@ class NewPassword extends React.Component {
         let currentComponent = this;
         const { t } = this.props;
         event.preventDefault();
-        alert("cuack");
-        // event.persist();
-        // UserService.isAccount(event, this.props).then(function(status) {
-        //     if(status === statusCode.OK) {
-        //         UserService.forgottenPasswordEmail(event, currentComponent.props).then(function (status){
-        //            toast.notify(t('forgottenPassword.emailSent'));  
-        //            currentComponent.props.history.push("/home")
-        //          }) 
-        //     } else {
-        //        toast.notify(t('forgottenPassword.emailNotSent'));
-        //     }  
-        // })     
+        UserService.createNewPassword(event, this.props).then(function(status) {
+            if(status === statusCode.OK) {
+                toast.notify(t('newPassword.passwordUpdated'));  
+                currentComponent.props.history.push("/home");
+            } else {
+                toast.notify(t('newPassword.passwordNotUpdated')); 
+                alert(status); 
+            }  
+        })     
     }
 
 
@@ -43,6 +40,7 @@ class NewPassword extends React.Component {
                             .min(ValidationConst.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
                             .max(ValidationConst.LONG_STRING_MAX_LENGTH_PASS, t('errors.lengthMax')),
             newPassword2: yup.string().oneOf([yup.ref('newPassword1'), null], t('errors.passwordMatch')),
+            token: yup.string()
             });
             return ( 
                 <div>
@@ -91,6 +89,17 @@ class NewPassword extends React.Component {
                                             <Form.Control.Feedback type="invalid">
                                                 {errors.newPassword2}
                                             </Form.Control.Feedback>
+                                        </Form.Group>
+                                        <Form.Group as={Col} md="6" bsPrefix="hidden" controlId="validationFormik03">
+                                            <Form.Label bsPrefix="contact-title">{t('details.message')}</Form.Label>
+                                            <Form.Control
+                                                as="input"
+                                                placeholder={t('details.messagePlaceholder')}
+                                                name="token"
+                                                onChange={handleChange}
+                                                value={this.props.match.params.token}
+                                            >
+                                            </Form.Control>
                                         </Form.Group>
                                     <Button id="newPasswordButton" type="submit">{t('newPassword.send')}</Button>
                                     </Form>

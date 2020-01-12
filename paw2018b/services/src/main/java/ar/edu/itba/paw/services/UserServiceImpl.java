@@ -61,10 +61,17 @@ public class UserServiceImpl implements UserService{
 		if(! passwordEncoder.matches(oldPassword, user.getPassword())) 
 			return false;
 		
-		
 		userDao.editPassword(passwordEncoder.encode(newPassword), user.getUserid());
 		LOGGER.trace("Editing password of user with email {}", oldEmail);
 		return true;
+	}
+	
+	@Override
+	public void setPassword(String newPassword, String oldEmail) {
+		
+		User user = userDao.findByUsername(oldEmail);
+		userDao.editPassword(passwordEncoder.encode(newPassword), user.getUserid());
+		LOGGER.trace("New password set for user with email {}", oldEmail);
 	}
 	
 	@Override

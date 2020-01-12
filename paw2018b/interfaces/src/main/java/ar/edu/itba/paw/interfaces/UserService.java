@@ -18,6 +18,8 @@ public interface UserService {
 	
 	public boolean editPassword(String oldPassword,String newPassword, String oldEmail);
 	
+	public void setPassword(String newPassword, String oldEmail);
+	
 	public List<UserDTO> findAllUsers(int pageUsers);
 	
 	public int getAllUsersCount();
