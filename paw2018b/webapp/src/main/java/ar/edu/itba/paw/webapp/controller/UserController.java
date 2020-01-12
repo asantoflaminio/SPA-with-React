@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +41,7 @@ import ar.edu.itba.paw.models.dto.MessageDTO;
 import ar.edu.itba.paw.models.dto.PageDTO;
 import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PasswordDTO;
+import ar.edu.itba.paw.models.dto.PasswordsCheckDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.RecoveryMessageDTO;
 import ar.edu.itba.paw.models.dto.UserDTO;
@@ -131,6 +133,37 @@ public class UserController {
     	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd");
         LocalDateTime now = LocalDateTime.now();
     	ChangePassword changePassword = cps.createRequest(user, dtf.format(now));
+        return Response.ok().build();
+    }
+    
+    @POST
+    @Path("/createNewPassword")
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response changePassword (PasswordsCheckDTO passwordsCheckDTO) {
+
+    	if(passwordsCheckDTO.getNewPassword1().equals(passwordsCheckDTO.getNewPassword2())) {
+    		
+    		Integer token = passwordsCheckDTO.getToken().hashCode();
+            Optional<ChangePassword> cp =  cps.getRequest(token.toString());
+            
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd");
+            LocalDateTime now = LocalDateTime.now();
+            
+            if(cp.isPresent() && dtf.format(now).equals(cp.get().getDate())) {
+            	
+            	User userRequesting = cp.get().getUserRequesting();
+            	us.editPassword(userRequesting.getPassword(), passwordsCheckDTO.getNewPassword1(), userRequesting.getEmail());
+                cps.deleteRequest(cp.get().getRequestId());
+            	
+            } else {
+            	return rs.badRequest();
+            }          		
+    		
+    	} else {
+    		return rs.badRequest();
+    	}
+
         return Response.ok().build();
     }
     

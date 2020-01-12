@@ -51,7 +51,7 @@ public class ChangePassword {
         return date;
     }
 
-    public void setRequestDate(String date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

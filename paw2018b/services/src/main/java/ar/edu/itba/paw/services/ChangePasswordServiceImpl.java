@@ -30,7 +30,7 @@ public class ChangePasswordServiceImpl implements ChangePasswordService {
     @Override
     public ChangePassword createRequest(User user, String date) {
     	
-        boolean check = true;
+        boolean inUse = true;
         String pureToken = "";
         Integer encryptedToken = 0;
 
@@ -39,9 +39,9 @@ public class ChangePasswordServiceImpl implements ChangePasswordService {
             encryptedToken = pureToken.hashCode();
 
             if(changePasswordDao.checkToken(encryptedToken.toString())) {
-            	check = false;
+            	inUse = false;
             }            
-        } while (check);
+        } while (inUse);
 
         ChangePassword cp = changePasswordDao.createRequest(encryptedToken.toString(), user.getUserid(), date);
         ms.sendPasswordRecoveryEmail(user.getEmail(), pureToken);
