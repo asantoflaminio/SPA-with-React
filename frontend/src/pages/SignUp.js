@@ -142,7 +142,7 @@ class SignUp extends React.Component {
                             name="email"
                             value={values.email}
                             onChange={handleChange}
-                            onBlur={(event) => this.checkEmailAvaiability(event,errors) && handleBlur(event)}
+                            onBlur={(event) => this.checkEmailAvailability(event,errors) && handleBlur(event)}
                             isInvalid={!!errors.email && touched.email}
                             />
                             <Form.Control.Feedback type="invalid">

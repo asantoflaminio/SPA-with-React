@@ -9,7 +9,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -25,9 +24,6 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 import ar.edu.itba.paw.interfaces.FavPublicationsService;
 import ar.edu.itba.paw.interfaces.PublicationService;
@@ -53,12 +49,6 @@ import ar.edu.itba.paw.services.MailServiceImpl;
 import ar.edu.itba.paw.services.RequestServiceImpl;
 import ar.edu.itba.paw.webapp.auth.TokenAuthenticationService;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Path("users")
@@ -233,7 +223,7 @@ public class UserController {
     }
     
     @POST
-    @Path("/getMyPublications")
+    @Path("/publications")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response getMyPublications (@Context HttpServletRequest request, final PageDTO page) {
@@ -242,7 +232,7 @@ public class UserController {
     }
     
     @GET
-    @Path("/getMyFavoritesPublications")
+    @Path("/favorites")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getMyFavoritesPublications (@Context HttpServletRequest request) {
     	List<PublicationDTO> publications = fps.getUserFavourites(tas.getUserIdAuthentication(request));
@@ -311,16 +301,13 @@ public class UserController {
     @PUT
     @Path("/password")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response updatePassword (@Context HttpServletRequest request, final PasswordDTO passwordDTO) {
+    public Response updatePassword (@Context HttpServletRequest request, PasswordDTO passwordDTO) {
     	System.out.println("aca");
     	Long id = tas.getUserIdAuthentication(request);
     	if(encoder.matches(passwordDTO.getPassword(), us.findById(id).getPassword())) {
-    		System.out.println("matchea");
     		us.editPassword(passwordDTO.getPassword(), passwordDTO.getNewpassword(), us.findById(id).getEmail());
     		return Response.ok().build();
     	} else {
-    		System.out.println("no matchea");
     		return Response.serverError().build();
     	}
     }

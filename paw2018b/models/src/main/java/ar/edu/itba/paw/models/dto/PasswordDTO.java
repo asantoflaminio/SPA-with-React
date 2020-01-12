@@ -7,9 +7,9 @@ public class PasswordDTO {
 	
 	public PasswordDTO() {}
 	
-	public PasswordDTO(String password, String newpassword) {
-		this.password = password;
-		this.newpassword = newpassword;
+	public PasswordDTO (String password, String newpassword) {
+		this.setPassword(password);
+		this.setNewpassword(newpassword);
 	}
 
 	public String getPassword() {

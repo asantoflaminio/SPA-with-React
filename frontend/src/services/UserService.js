@@ -29,7 +29,7 @@ const UserService = (function(){
         });
     }
 
-    async function _checkEmailAvaibility(event, props){
+    async function _checkEmailAvailability(event, props){
         return await axios({
           method: 'post',
           url: USERS_PATH + 'checkEmail',
@@ -129,7 +129,7 @@ const UserService = (function(){
           url: USERS_PATH + 'sendMessage',
           data: JsonService.getJSONParsed(event.target)
         })
-        .then(function (response) {
+        .then(function (response) { //creo q este then no va
             return response;
         })
         .catch(function (error) {
@@ -172,7 +172,7 @@ const UserService = (function(){
     async function _getMyPublications(array, props){
         return await axios({
             method: 'post',
-            url: USERS_PATH + 'getMyPublications',
+            url: USERS_PATH + 'publications',
             data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
@@ -189,7 +189,7 @@ const UserService = (function(){
     async function _getMyFavoritesPublications(props){
         return await axios({
             method: 'get',
-            url: USERS_PATH + 'getMyFavoritesPublications',
+            url: USERS_PATH + 'favorites',
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
@@ -303,27 +303,22 @@ const UserService = (function(){
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
-        })
-        .then(function (response) {
-            return response.data
-        })
-        .catch(function (error) {
-            alert("error")
+        }).catch(function (error) {
             ErrorService.logError(props,error)
         });
     }
 
    return {
-      isLogged : _isLogged,
-      signUp : _signUp,
-      checkEmailAvaibility : _checkEmailAvaibility,
-      isAccount : _isAccount,
-      forgottenPasswordEmail: _forgottenPasswordEmail,
-      login : _login,
-      postPublication : _postPublication,
-      postImages : _postImages,
-      sendMessage : _sendMessage,
-      getMyPublicationsQuantity : _getMyPublicationsQuantity,
+        isLogged : _isLogged,
+        signUp : _signUp,
+        checkEmailAvailability : _checkEmailAvailability,
+        isAccount : _isAccount,
+        forgottenPasswordEmail: _forgottenPasswordEmail,
+        login : _login,
+        postPublication : _postPublication,
+        postImages : _postImages,
+        sendMessage : _sendMessage,
+        getMyPublicationsQuantity : _getMyPublicationsQuantity,
         getMyFavoritesQuantity : _getMyFavoritesQuantity,
         getMyPublications : _getMyPublications,
         getMyFavoritesPublications : _getMyFavoritesPublications,

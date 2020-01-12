@@ -29,8 +29,8 @@ class MyInformation extends React.Component {
         this.retrievePersonalInformation();
     }
 
-    checkEmailAvaiability(event) {
-        UserService.checkEmailAvaibility(event,this.props).then(function (status){
+    checkEmailAvailability(event) {
+        UserService.checkEmailAvailability(event,this.props).then(function (status){
             if(status)
                 document.getElementById("emailTakenError").style.display = "none"
             else
@@ -38,7 +38,6 @@ class MyInformation extends React.Component {
         })
         return true;
     }
-
 
     retrievePersonalInformation() {
         let currentComponent = this;
@@ -71,7 +70,7 @@ class MyInformation extends React.Component {
         if(Object.keys(errors).length === 0) {
             let names = ["firstName","lastName","email","phoneNumber"];
             let values = [val.firstName, val.lastName, val.email, val.phoneNumber]
-            UserService.updateInformation(JsonService.createJSONArray(names,values),currentComponent.props).then(function(){
+            UserService.updateInformation(JsonService.createJSONArray(names,values),currentComponent.props).then(function(data){
                 currentComponent.updatePersonalInformation(values);
                 currentComponent.componentDidMount();
             })
@@ -97,22 +96,22 @@ class MyInformation extends React.Component {
         const { t } = this.props;
         
         const schema = yup.object({
-            firstName: yup.string().required( t('errors.requiredField') )
-                                    .matches(ValidationConst.lettersAndSpacesRegex, t('errors.lettersAndSpacesRegex'))
-                                    .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
-                                    .max(ValidationConst.SHORT_STRING_MAX_LENGTH, t('errors.lengthMax')),
-            lastName: yup.string().required( t('errors.requiredField') )
-                                    .matches(ValidationConst.lettersAndSpacesRegex, t('errors.lettersAndSpacesRegex'))
-                                    .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
-                                    .max(ValidationConst.SHORT_STRING_MAX_LENGTH, t('errors.lengthMax')),
-            email: yup.string().required( t('errors.requiredField') )
-                                    .matches(ValidationConst.emailRegex, t('errors.emailRegex'))
-                                    .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
-                                    .max(ValidationConst.EMAIL_MAX_LENGTH, t('errors.lengthMax')),
-            phoneNumber: yup.string()
-                                    .matches(ValidationConst.numbersDashRegex, t('errors.numbersDashRegex'))
-                                    .min(ValidationConst.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
-                                    .max(ValidationConst.LONG_STRING_MAX_LENGTH, t('errors.lengthMax')),
+            // firstName: yup.string().required( t('errors.requiredField') )
+            //                         .matches(ValidationConst.lettersAndSpacesRegex, t('errors.lettersAndSpacesRegex'))
+            //                         .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
+            //                         .max(ValidationConst.SHORT_STRING_MAX_LENGTH, t('errors.lengthMax')),
+            // lastName: yup.string().required( t('errors.requiredField') )
+            //                         .matches(ValidationConst.lettersAndSpacesRegex, t('errors.lettersAndSpacesRegex'))
+            //                         .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
+            //                         .max(ValidationConst.SHORT_STRING_MAX_LENGTH, t('errors.lengthMax')),
+            // email: yup.string().required( t('errors.requiredField') )
+            //                         .matches(ValidationConst.emailRegex, t('errors.emailRegex'))
+            //                         .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
+            //                         .max(ValidationConst.EMAIL_MAX_LENGTH, t('errors.lengthMax')),
+            // phoneNumber: yup.string()
+            //                         .matches(ValidationConst.numbersDashRegex, t('errors.numbersDashRegex'))
+            //                         .min(ValidationConst.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
+            //                         .max(ValidationConst.LONG_STRING_MAX_LENGTH, t('errors.lengthMax')),
 
             password: yup.string().required( t('errors.requiredField') )
                             .matches(ValidationConst.simpleLettersAndNumbersRegex, t('errors.lettersAndNumbersRegex'))
@@ -195,7 +194,7 @@ class MyInformation extends React.Component {
                                                 name="email"
                                                 value={values.email}
                                                 onChange={handleChange}
-                                                onBlur={(event) => this.checkEmailAvaiability(event,errors) && handleBlur(event)}
+                                                onBlur={(event) => this.checkEmailAvailability(event,errors) && handleBlur(event)}
                                                 isInvalid={!!errors.email && touched.email}
                                                 />
                                                 <Form.Control.Feedback type="invalid">
