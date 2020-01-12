@@ -56,18 +56,19 @@ public class LocationHibernateDao implements LocationDao{
 
 	@Override
 	@Transactional
-	public List<City> getCities(long provinceID) {
+	public List<City> getCities(long provinceid) {
 		String queryString = "select distinct c from City as c left join fetch c.neighborhoods where c.province.provinceid = :provinceid order by c.city ASC";
 		final TypedQuery<City> query = em.createQuery(queryString, City.class);
-		query.setParameter("provinceid", provinceID);
+		query.setParameter("provinceid", provinceid);
 		return query.getResultList();
 	}
 	
 	@Override
 	@Transactional
-	public List<Neighborhood> getNeighborhoods(long cityid) {
-		String queryString = "select neigh from Neighborhood as neigh where neigh.city.cityid = :cityid order by neigh.neighborhood ASC";
+	public List<Neighborhood> getNeighborhoods(long provinceid, long cityid) {
+		String queryString = "select neigh from Neighborhood as neigh where neigh.city.province.provinceid = :provinceid AND neigh.city.cityid = :cityid order by neigh.neighborhood ASC";
 		final TypedQuery<Neighborhood> query = em.createQuery(queryString, Neighborhood.class);
+		query.setParameter("provinceid", provinceid);
 		query.setParameter("cityid", cityid);
 		return query.getResultList();
 	}
@@ -95,8 +96,9 @@ public class LocationHibernateDao implements LocationDao{
 	
 	@Override
 	@Transactional
-	public Neighborhood findByNeighborhoodName(long cityid, String neighborhood) {
-		String queryString = "select distinct neigh from Neighborhood as neigh where neigh.city.cityid = :cityid AND upper(neigh.neighborhood) = upper(:neighborhood)";
+	public Neighborhood findByNeighborhoodName(long porvinceid, long cityid, String neighborhood) {
+		String queryString = "select distinct neigh from Neighborhood as neigh where neigh.city.province.provinceid = :provinceid "
+							+ "AND neigh.city.cityid = :cityid AND upper(neigh.neighborhood) = upper(:neighborhood)";
 		final TypedQuery<Neighborhood> query = em.createQuery(queryString, Neighborhood.class);
 		query.setParameter("cityid", cityid);
 		query.setParameter("neighborhood", neighborhood);

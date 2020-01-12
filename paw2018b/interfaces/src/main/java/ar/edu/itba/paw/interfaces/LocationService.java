@@ -19,14 +19,14 @@ public interface LocationService {
 	
 	public List<ProvinceDTO> getProvinces();
 	
-	public List<CityDTO> getCities(long provinceID);
+	public List<CityDTO> getCities(long provinceid);
 	
-	public List<NeighborhoodDTO> getNeighborhoods(long cityID);
+	public List<NeighborhoodDTO> getNeighborhoods(long provinceid, long cityid);
 	
 	public Province findByProvinceName(String province);
 	
 	public City findByCityName(long provinceid, String city);
 	
-	public Neighborhood findByNeighborhoodName(long cityid, String neighborhood);
+	public Neighborhood findByNeighborhoodName(long porvinceid, long cityid, String neighborhood);
 
 }

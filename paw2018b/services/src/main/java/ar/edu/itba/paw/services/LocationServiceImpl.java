@@ -53,18 +53,18 @@ public class LocationServiceImpl implements LocationService{
 	}
 
 	@Override
-	public List<CityDTO> getCities(long provinceID) {
+	public List<CityDTO> getCities(long provinceid) {
 		List<CityDTO> cities = new ArrayList<CityDTO>();
-		for(City city: locationDao.getCities(provinceID)) {
+		for(City city: locationDao.getCities(provinceid)) {
 			cities.add(new CityDTO(city.getCity(),city.getCityid()));
 		}
 		return cities;
 	}
 	
 	@Override
-	public List<NeighborhoodDTO> getNeighborhoods(long cityID) {
+	public List<NeighborhoodDTO> getNeighborhoods(long provinceid, long cityid) {
 		List<NeighborhoodDTO> neighborhoods = new ArrayList<NeighborhoodDTO>();
-		for(Neighborhood neighborhood: locationDao.getNeighborhoods(cityID)) {
+		for(Neighborhood neighborhood: locationDao.getNeighborhoods(provinceid, cityid)) {
 			neighborhoods.add(new NeighborhoodDTO(neighborhood.getNeighborhood(),neighborhood.getNeighborhoodid()));
 		}
 		return neighborhoods;
@@ -81,8 +81,8 @@ public class LocationServiceImpl implements LocationService{
 	}
 
 	@Override
-	public Neighborhood findByNeighborhoodName(long cityid, String neighborhood) {
-		return locationDao.findByNeighborhoodName(cityid, neighborhood);
+	public Neighborhood findByNeighborhoodName(long provinceid, long cityid, String neighborhood) {
+		return locationDao.findByNeighborhoodName(provinceid, cityid, neighborhood);
 	}
 
 }

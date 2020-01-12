@@ -16,14 +16,14 @@ public interface LocationDao {
 	
 	public List<Province> getProvinces();
 	
-	public List<City> getCities(long provinceID);
+	public List<City> getCities(long provinceid);
 	
-	public List<Neighborhood> getNeighborhoods(long cityID);
+	public List<Neighborhood> getNeighborhoods(long provinceid, long cityid);
 	
 	public Province findByProvinceName(String province);
 	
 	public City findByCityName(long provinceid, String city);
 	
-	public Neighborhood findByNeighborhoodName(long cityid, String neighborhood);
+	public Neighborhood findByNeighborhoodName(long porvinceid, long cityid, String neighborhood);
 
 }

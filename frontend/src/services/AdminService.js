@@ -17,10 +17,10 @@ const AdminService = (function(){
             return false;
     }
 
-    async function _province(event,props){
+    async function _postProvince(event,props){
         return await axios({
             method: 'post',
-            url: `${ADMIN_PATH}/province`,
+            url: `${ADMIN_PATH}/provinces`,
             data: JsonService.getJSONParsed(event.target),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
@@ -36,10 +36,10 @@ const AdminService = (function(){
         });
     }
     
-    async function _city(event,props){
+    async function _postCity(event,props){
         return await axios({
           method: 'post',
-          url: `${ADMIN_PATH}/city`,
+          url: `${ADMIN_PATH}/cities`,
           data: JsonService.getJSONParsed(event.target),
           headers: {
             authorization: LocalStorageService.getAccessToken(),
@@ -55,10 +55,10 @@ const AdminService = (function(){
         });
     }
 
-    async function _neighborhood(event,props){
+    async function _postNeighborhood(event,props){
         return await axios({
           method: 'post',
-          url: `${ADMIN_PATH}/neighborhood`,
+          url: `${ADMIN_PATH}/neighborhoods`,
           data: JsonService.getJSONParsed(event.target),
           headers: {
             authorization: LocalStorageService.getAccessToken(),
@@ -74,10 +74,10 @@ const AdminService = (function(){
         });
     }
 
-    async function _allProvinces(props){
+    async function _getProvinces(props){
         return await axios({
             method: 'get',
-            url: `${ADMIN_PATH}/allProvinces`,
+            url: `${ADMIN_PATH}/provinces`,
           })
           .then(function (response) {
               return response.data
@@ -87,10 +87,10 @@ const AdminService = (function(){
           });
     }
 
-    async function _allCities(provinceID,props){
+    async function _getCities(provinceID,props){
         return await axios({
             method: 'get',
-            url: `${ADMIN_PATH}/allCities/${provinceID}`,
+            url: `${ADMIN_PATH}/provinces/${provinceID}/cities`,
           })
           .then(function (response) {
               return response.data
@@ -100,10 +100,10 @@ const AdminService = (function(){
           });
       }
 
-    async function _allNeighborhoods(cityID, props){
+    async function _getNeighborhoods(provinceID,cityID, props){
         return await axios({
             method: 'get',
-            url: `${ADMIN_PATH}/allNeighborhoods/${cityID}`,
+            url: `${ADMIN_PATH}/provinces/${provinceID}/cities/${cityID}/neighborhoods`,
           })
           .then(function (response) {
               return response.data
@@ -113,10 +113,10 @@ const AdminService = (function(){
           });
       }
 
-    async function _allUsers(queryParameters, props){
+    async function _getUsers(queryParameters, props){
         return await axios({
             method: 'get',
-            url: `${ADMIN_PATH}/allUsers`,
+            url: `${ADMIN_PATH}/users`,
             params: queryParameters
           })
           .then(function (response) {
@@ -127,10 +127,10 @@ const AdminService = (function(){
           });
     }
 
-    async function _allUsersCount(props){
+    async function _getUsersCount(props){
         return await axios({
             method: 'get',
-            url: `${ADMIN_PATH}/allUsersCount`,
+            url: `${ADMIN_PATH}/usersCount`,
           })
           .then(function (response) {
               return response.data
@@ -160,14 +160,14 @@ const AdminService = (function(){
 
    return {
       isAdmin : _isAdmin,
-      province : _province,
-      city : _city,
-      neighborhood : _neighborhood,
-      allProvinces : _allProvinces,
-      allCities : _allCities,
-      allNeighborhoods : _allNeighborhoods,
-      allUsers : _allUsers,
-      allUsersCount : _allUsersCount,
+      postProvince : _postProvince,
+      postCity : _postCity,
+      postNeighborhood : _postNeighborhood,
+      getProvinces : _getProvinces,
+      getCities : _getCities,
+      getNeighborhoods : _getNeighborhoods,
+      getUsers : _getUsers,
+      getUsersCount : _getUsersCount,
       lockUser : _lockUser,
     }
    })();

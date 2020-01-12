@@ -44,7 +44,7 @@ public class AdminController {
 	private RequestServiceImpl rs;
 	
     @POST
-    @Path("/province")
+    @Path("/provinces")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response createProvince (final ProvinceDTO provinceDTO) {
     	if(! vs.validateLocationAdmin(provinceDTO.getProvince(), "Province"))
@@ -57,7 +57,7 @@ public class AdminController {
     }
     
     @POST
-    @Path("/city")
+    @Path("/cities")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response createCity (final CityDTO cityDTO) {
 		if(! vs.validateLocationAdmin(cityDTO.getCity(), "City"))
@@ -70,12 +70,12 @@ public class AdminController {
     }
     
     @POST
-    @Path("/neighborhood")
+    @Path("/neighborhoods")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response createNeighborhood (final NeighborhoodDTO neighborhoodDTO) {
 		if(! vs.validateLocationAdmin(neighborhoodDTO.getNeighborhood(), "Neighborhood"))
 			return rs.badRequest();
-    	if(ls.findByNeighborhoodName(neighborhoodDTO.getCityID(),neighborhoodDTO.getNeighborhood()) != null)
+    	if(ls.findByNeighborhoodName(neighborhoodDTO.getProvinceID() ,neighborhoodDTO.getCityID(),neighborhoodDTO.getNeighborhood()) != null)
     		return rs.conflictRequest();
     	
     	ls.createNeighborhood(neighborhoodDTO.getNeighborhood(),neighborhoodDTO.getCityID());
@@ -84,7 +84,7 @@ public class AdminController {
     
     //HAY Q VER CASO 404 Y 400 EN ESTOS GET
     @GET
-    @Path("/allProvinces")
+    @Path("/provinces")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getProvinces () {
     	List<ProvinceDTO> provinces = ls.getProvinces();
@@ -93,7 +93,7 @@ public class AdminController {
     
     
     @GET
-    @Path("/allCities/{provinceID}")
+    @Path("/provinces/{provinceID}/cities")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getCities (@PathParam("provinceID") long provinceID) {
     	List<CityDTO> cities = ls.getCities(provinceID);
@@ -101,15 +101,15 @@ public class AdminController {
     }
     
     @GET
-    @Path("/allNeighborhoods/{cityID}")
+    @Path("provinces/{provinceID}/cities/{cityID}/neighborhoods")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getNeighborhoods (@PathParam("cityID") long cityID) {
-    	List<NeighborhoodDTO> neighborhoods = ls.getNeighborhoods(cityID);
+    public Response getNeighborhoods (@PathParam("provinceID") long provinceID, @PathParam("cityID") long cityID) {
+    	List<NeighborhoodDTO> neighborhoods = ls.getNeighborhoods(provinceID, cityID);
     	return rs.okRequest(neighborhoods);
     }
     
     @GET
-    @Path("/allUsers")
+    @Path("/users")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getUsers (@QueryParam("page") int page) {
     	List<UserDTO> users = us.findAllUsers(page);
@@ -117,10 +117,10 @@ public class AdminController {
     }
     
     @GET
-    @Path("/allUsersCount")
+    @Path("/usersCount")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getUsersQuantity () {
-    	PaginationDTO quantity = new PaginationDTO(us.getAllUsersCount(), Constants.MAX_RESULTS_USERS);
+    	PaginationDTO quantity = new PaginationDTO(us.getAllUsersCount(), 2); //Constants.MAX_RESULTS_USERS
     	return rs.okRequest(quantity);
     }
     

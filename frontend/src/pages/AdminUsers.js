@@ -16,26 +16,20 @@ class AdminUsers extends React.Component {
         super(props);
          this.state = { 
              usersList: [],
-             page: 1,
-             pagesQuantity: 0
+             pagesQuantity: 0,
+             initialPage: this.getInitialPage()
         };
     }
 
     componentDidMount(){
         let currentComponent = this
-        let queryParameters = {}
-        queryParameters.page = this.state.page;
-        AdminService.allUsers(queryParameters, this.props).then(function (users){
+        AdminService.getUsersCount(this.props).then(function (data){
             currentComponent.setState({
-                usersList: users
-            })
-        })
-        AdminService.allUsersCount(this.props).then(function (data){
-            currentComponent.setState({
-                pagesQuantity: Math.ceil(data.count / data.limit)
+                pagesQuantity: Math.ceil(data.count / data.limit),
             })
         })
       }
+
 
     lockUser(event,index){
         let status = event.target.checked;
@@ -43,7 +37,7 @@ class AdminUsers extends React.Component {
         newList[index].locked = !event.target.checked;
         AdminService.lockUser(status,event.target.id)
         this.setState({
-            userList: newList
+            userList: newList,
         })
     }
 
@@ -82,14 +76,32 @@ class AdminUsers extends React.Component {
         
     }
 
+    getInitialPage(){
+        const params = new URLSearchParams(this.props.location.search); 
+        const queryPageParam = params.get('page');
+        return parseInt(queryPageParam) || 0;
+    }
+
+    pushPageParam(page){
+        this.props.history.push({
+            path: '/AdminUsers',
+            search: '?page=' + page
+        })
+    }
+
+
+
     handlePageClick = data => {
         let currentComponent = this;
         let queryParameters = {}
-        queryParameters.page = data.selected + 1;
-        AdminService.allUsers(queryParameters, this.props).then(function (users){
+
+        if(data.selected === null)
+            return;
+        queryParameters.page = parseInt(data.selected) + 1;
+        AdminService.getUsers(queryParameters, this.props).then(function (users){
+            currentComponent.pushPageParam(queryParameters.page);
             currentComponent.setState({
-                usersList: users,
-                page: queryParameters.page
+                usersList: users
             })
         })
     }
@@ -97,6 +109,7 @@ class AdminUsers extends React.Component {
     render(){
         const { t } = this.props;
         let tableUsers = [];
+        let initialPageParam = this.getInitialPage();
         this.generateUsers(tableUsers,this.state.usersList, t);
         return(
             <div>
@@ -110,6 +123,7 @@ class AdminUsers extends React.Component {
                         {tableUsers}
                         </div>
                         <ReactPaginate
+                            initialPage={initialPageParam}
                             previousLabel={'<'}
                             nextLabel={'>'}
                             breakLabel={'...'}
