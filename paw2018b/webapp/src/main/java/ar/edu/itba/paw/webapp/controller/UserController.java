@@ -39,6 +39,7 @@ import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.MessageDTO;
 import ar.edu.itba.paw.models.dto.PageDTO;
 import ar.edu.itba.paw.models.dto.PaginationDTO;
+import ar.edu.itba.paw.models.dto.PasswordDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.RecoveryMessageDTO;
 import ar.edu.itba.paw.models.dto.UserDTO;
@@ -55,6 +56,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Path("users")
 @Component
@@ -83,6 +85,9 @@ public class UserController {
 	
 	@Autowired
 	private ChangePasswordServiceImpl cps;
+	
+	@Autowired
+	private PasswordEncoder encoder;
 	
     @POST
     @Path("/signUp")
@@ -255,17 +260,31 @@ public class UserController {
     @PUT
     @Path("/information")
     @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response updateInformation (@Context HttpServletRequest request, final UserDTO userDTO) {
     	Long id = tas.getUserIdAuthentication(request);
     	User user = us.findById(id);
     	us.editData(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPhoneNumber(),
     			user.getEmail());
     	
-    	
     	return tas.refreshToken(userDTO.getEmail());
-    	
-   
-    	//return Response.ok().entity(tas.refreshToken(userDTO.getEmail())).build();
+    }
+    
+    @PUT
+    @Path("/password")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response updatePassword (@Context HttpServletRequest request, final PasswordDTO passwordDTO) {
+    	System.out.println("aca");
+    	Long id = tas.getUserIdAuthentication(request);
+    	if(encoder.matches(passwordDTO.getPassword(), us.findById(id).getPassword())) {
+    		System.out.println("matchea");
+    		us.editPassword(passwordDTO.getPassword(), passwordDTO.getNewpassword(), us.findById(id).getEmail());
+    		return Response.ok().build();
+    	} else {
+    		System.out.println("no matchea");
+    		return Response.serverError().build();
+    	}
     }
 
 }

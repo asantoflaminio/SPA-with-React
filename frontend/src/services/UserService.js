@@ -272,9 +272,6 @@ const UserService = (function(){
             }
         })
         .then(function (response) {
-            alert(response.headers.authorization)
-            alert(response.headers.authorities)
-            alert(response.headers.username)
             LocalStorageService.setToken(response.headers.authorization, response.headers.authorities, response.headers.username)
         })
         .catch(function (error) {
@@ -298,6 +295,24 @@ const UserService = (function(){
           });
     }
 
+    async function _updatePassword(array, props) {
+        return await axios({
+            method: 'put',
+            url: USERS_PATH + 'password',
+            data: JsonService.getJSONParsed(array),
+            headers: {
+                authorization: LocalStorageService.getAccessToken(),
+            }
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(function (error) {
+            alert("error")
+            ErrorService.logError(props,error)
+        });
+    }
+
    return {
       isLogged : _isLogged,
       signUp : _signUp,
@@ -317,7 +332,8 @@ const UserService = (function(){
         favouritePublication : _favouritePublication,
         unfavouritePublication : _unfavouritePublication,
         updateInformation: _updateInformation,
-        retrievePersonalInformation: _retrievePersonalInformation
+        retrievePersonalInformation: _retrievePersonalInformation,
+        updatePassword: _updatePassword
    }
    })();
 

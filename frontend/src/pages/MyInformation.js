@@ -25,12 +25,6 @@ class MyInformation extends React.Component {
         };
     }
 
-    // signOut(){
-    //     let currentPath = this.props.location;
-    //     LocalStorageService.clearToken()
-    //     this.props.history.push(currentPath)
-    // }
-
     componentDidMount() {
         this.retrievePersonalInformation();
     }
@@ -77,20 +71,23 @@ class MyInformation extends React.Component {
         if(Object.keys(errors).length === 0) {
             let names = ["firstName","lastName","email","phoneNumber"];
             let values = [val.firstName, val.lastName, val.email, val.phoneNumber]
-            //let oldemail = val.email;
-            UserService.updateInformation(JsonService.createJSONArray(names,values),currentComponent.props).then(function(data){
-                // if(currentComponent.state.email !== (oldemail)) {
-                //     currentComponent.signOut();
-                //     let names1 = ["email","password"];
-                //     let values1 = [data.email, data.password]
-                //     //faltaria la parte de desencriptar
-                //     UserService.login(JsonService.createJSONArray(names1,values1),currentComponent.props).then(function (){
-                //         currentComponent.setState({
-                //             isLogged: true
-                //         })
-                //     })
-                // }
+            UserService.updateInformation(JsonService.createJSONArray(names,values),currentComponent.props).then(function(){
                 currentComponent.updatePersonalInformation(values);
+                currentComponent.componentDidMount();
+            })
+        }
+    }
+
+    handlePasswordFormSubmit(values,event,errors) {
+        let currentComponent = this
+        let val = values;
+        event.preventDefault();
+        alert("aca");
+        
+        if(Object.keys(errors).length === 0) {
+            let names = ["password","newpassword"];
+            let values = [val.password, val.newpassword];
+            UserService.updatePassword(JsonService.createJSONArray(names,values),currentComponent.props).then(function(){
                 currentComponent.componentDidMount();
             })
         }
@@ -116,6 +113,16 @@ class MyInformation extends React.Component {
                                     .matches(ValidationConst.numbersDashRegex, t('errors.numbersDashRegex'))
                                     .min(ValidationConst.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
                                     .max(ValidationConst.LONG_STRING_MAX_LENGTH, t('errors.lengthMax')),
+
+            password: yup.string().required( t('errors.requiredField') )
+                            .matches(ValidationConst.simpleLettersAndNumbersRegex, t('errors.lettersAndNumbersRegex'))
+                            .min(ValidationConst.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(ValidationConst.LONG_STRING_MAX_LENGTH_PASS, t('errors.lengthMax')),
+
+            newpassword: yup.string().required( t('errors.requiredField') )
+                            .matches(ValidationConst.simpleLettersAndNumbersRegex, t('errors.lettersAndNumbersRegex'))
+                            .min(ValidationConst.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(ValidationConst.LONG_STRING_MAX_LENGTH_PASS, t('errors.lengthMax')),
         });
         
         return(
@@ -241,36 +248,36 @@ class MyInformation extends React.Component {
                                     handleSubmit,
                                     isSubmitting
                                 }) => (
-                                    <Form noValidate onSubmit={(event) => handleSubmit(event) || this.handleFormSubmit(values,event,errors)}>
+                                    <Form noValidate onSubmit={(event) => handleSubmit(event) || this.handlePasswordFormSubmit(values,event,errors)}>
                                         <Form.Group as={Col} md="8" controlId="validationFormik01">
                                             <Form.Label>{t('profile.password')}</Form.Label>
                                             <Form.Control
-                                                type="text"
+                                                type="password"
                                                 name="password"
                                                 placeholder={t('profile.passwordHolder')}
-                                                value={values.firstName}
+                                                value={values.password}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                                 id="password"
-                                                isInvalid={!!errors.firstName && touched.firstName}
+                                                isInvalid={!!errors.password && touched.password}
                                             />
                                             <Form.Control.Feedback type="invalid">
-                                                {errors.firstName}
+                                                {errors.password}
                                             </Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="8" controlId="validationFormik02">
                                             <Form.Label>{t('profile.newpassword')}</Form.Label>
                                             <Form.Control
-                                                type="text"
+                                                type="password"
                                                 placeholder={t('profile.newpasswordHolder')}
                                                 name="newpassword"
-                                                value={values.lastName}
+                                                value={values.newpassword}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
-                                                isInvalid={!!errors.lastName && touched.lastName}
+                                                isInvalid={!!errors.newpassword && touched.newpassword}
                                             />
                                             <Form.Control.Feedback type="invalid">
-                                                {errors.lastName}
+                                                {errors.newpassword}
                                             </Form.Control.Feedback>
                                         </Form.Group>
                                         <Button type="submit" id="editdata-submit" disabled={isSubmitting} onClick={handleChange}>{t('profile.submit')}</Button>
