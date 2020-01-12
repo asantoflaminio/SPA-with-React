@@ -5,10 +5,23 @@ import trash from '../resources/trash.png';
 import pencil from '../resources/pencil.png';
 import ProfileImageVisualizer from './ProfileImageVisualizer';
 import {Link} from 'react-router-dom';
+import PublicationService from '../services/PublicationService';
+import JsonService from '../services/JsonService'
 
-
-const ProfilePublication = ({ t , publication, image}) => (
-    <div class="polaroid-property">
+const ProfilePublication = ({ t , publication, image}) => {
+    
+    const handleClick = (publication) => {
+        let names = ["id"]
+        let values = [publication.publicationID]
+        //TODO: hay un error aca en this.props, pero sino anda y borra bien
+        
+       PublicationService.erasePublication(JsonService.createJSONArray(names,values), this.props).then(function(){
+            ;
+        }) 
+    }
+    
+    return(
+        <div class="polaroid-property">
             <ProfileImageVisualizer
                 publicationID={publication.publicationID}
                 price={publication.price}
@@ -50,11 +63,12 @@ const ProfilePublication = ({ t , publication, image}) => (
                     </div>
                     <div class="more-info">
                         <img class="delete" src={trash} alt="Delete" />
-                        <a class="more-info-title">{t('profilepublication.delete')}</a>
+                        <a class="more-info-title" onClick={handleClick.bind(this, publication)}>{t('profilepublication.delete')}</a>
                     </div>	
                 </div>
             </div>
         </div>
-)
+    )
+}
 
 export default ProfilePublication;
