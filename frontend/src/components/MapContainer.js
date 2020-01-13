@@ -26,14 +26,12 @@ class MapContainer extends React.Component {
       };
     }
 
-    componentDidUpdate(prevProps) {
-      if (prevProps.neighborhood !== this.props.neighborhood) {
+    componentDidMount() {
           this.setState({neighborhood: this.props.neighborhood});;
           let component = this
           Geocode.setApiKey(credentials.mapsKey);
           Geocode.setRegion("AR");
-          const fullAddress = this.props.address + ", " + this.props.neighborhood + ", " + this.props.city + ", " + this.props.province
-          //alert(fullAddress);
+          const fullAddress = this.props.address + ", " + this.props.neighborhood + ", " + this.props.city + ", " + this.props.province;
           Geocode.fromAddress(fullAddress).then(
             response => {
               const latResponse = response.results[0].geometry.location.lat;
@@ -47,7 +45,6 @@ class MapContainer extends React.Component {
               console.error(error);
             }
           );
-      }
     }
 
 
@@ -60,8 +57,7 @@ class MapContainer extends React.Component {
           
           <GoogleMap 
           zoom={16}
-          center={{lat: X, lng: Y}}
-         >
+          center={{lat: X, lng: Y}}>
           <Marker position={{lat: X, lng: Y}}/>
           </GoogleMap>
   

@@ -91,9 +91,6 @@ class Details extends React.Component {
                     circleloading: false
                 })
             })
-
-            
-
         
     }
 
@@ -323,7 +320,7 @@ class Details extends React.Component {
                         </div>
                     </div>                               
                 </div>
-                ) } 
+                 ) }  
                 </div>
                 
             )

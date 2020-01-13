@@ -1,9 +1,0 @@
-.MuiCircularProgress-colorPrimary {
-    color: #FD8907 !important;
-}
-
-.MuiCircularProgress-root {
-    left: 50%;
-    position: absolute;
-    top: 44vh;
-}
