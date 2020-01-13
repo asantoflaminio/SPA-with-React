@@ -13,6 +13,8 @@ import UserService from '../services/UserService'
 import JsonService from '../services/JsonService'
 import toast from 'toasted-notes' 
 import 'toasted-notes/src/styles.css';
+import ColoredLinearProgress from '../components/ColoredLinearProgress';
+import ColoredCircularProgress from '../components/ColoredCircularProgress';
 
 const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credentials.mapsKey}` ;
 
@@ -43,7 +45,9 @@ class Details extends React.Component {
             balconies: null,
             amenities: null,
             storage: null,
-            expenses: null
+            expenses: null,
+            loading: false,
+            circleloading: false
         }
       }
 
@@ -58,6 +62,9 @@ class Details extends React.Component {
         const component = this
         let names = ["id"]
         let values = [query.publicationID]
+        this.setState({
+            circleloading: true
+        });
         PublicationService.getPublication(JsonService.createJSONArray(names,values), this.props).then(function (pub){
                 component.setState({
                     publicationID: pub.publicationID, 
@@ -79,7 +86,9 @@ class Details extends React.Component {
                     amenities: pub.amenities,
                     storage: pub.storage,
                     expenses: pub.expenses,
-                    balconies: pub.balconies
+                    balconies: pub.balconies,
+                    loading: false,
+                    circleloading: false
                 })
             })
 
@@ -88,15 +97,25 @@ class Details extends React.Component {
         
     }
 
-    handleSendMessage(event){
+    handleSendMessage(event, values){
         event.preventDefault();
+        let currentComponent = this;
         const { t } = this.props;
+
+        values.name = '';
+        values.email = '';
+        values.message = '';
+        
+        this.setState({
+            loading: true
+        });
+
         UserService.sendMessage(event, this.props).then(function (status){
             toast.notify(t('details.messageSent'));
+            currentComponent.setState({
+                loading: false
+            });
         })
-        event.target[0].value = '';
-        event.target[1].value = '';
-        event.target[2].value = '';
     }
 
     render(){
@@ -139,8 +158,13 @@ class Details extends React.Component {
                 } else {
                     this.state.storage = t('details.No');
                 }
-            return(                                            
-                <div>
+            return(   
+                    <div>
+                    {this.state.loading ? <ColoredLinearProgress /> : null}  
+                    {this.state.circleloading ? 
+                     ( <ColoredCircularProgress /> )
+                    : (          
+                    <div>
                     <div id="cols">
                         <div id="left-col">   
                             <div class="polaroid">
@@ -200,7 +224,7 @@ class Details extends React.Component {
                                                 handleChange,
                                                 errors
                                             }) => (
-                                                <Form noValidate id="messageForm" onSubmit={(event) => {this.handleSendMessage(event)}}>
+                                                <Form noValidate id="messageForm" onSubmit={(event) => this.handleSendMessage(event, values)}>
                                                         <Form.Group as={Col} md="12" controlId="validationFormik01">
                                                             <Form.Label bsPrefix="contact-title">{t('details.name')}</Form.Label>
                                                             <Form.Control
@@ -296,10 +320,12 @@ class Details extends React.Component {
                             mapElement= {<div style={{height:'100%'}} />}
                             loadingElement= {<p>t('details.loadingMap')</p>}
                             />
-                            
                         </div>
-                    </div>               
+                    </div>                               
                 </div>
+                ) } 
+                </div>
+                
             )
                      
     }

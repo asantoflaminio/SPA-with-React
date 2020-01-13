@@ -139,13 +139,9 @@ public class UserController {
             Optional<ChangePassword> cp =  cps.getRequest(token.toString());
             
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            LocalDateTime now = LocalDateTime.now();
-            
-            LocalDateTime tokenDate = LocalDateTime.parse(cp.get().getDate(), dtf);
-            
+            LocalDateTime now = LocalDateTime.now();           
+            LocalDateTime tokenDate = LocalDateTime.parse(cp.get().getDate(), dtf);       
             long minutes = ChronoUnit.MINUTES.between(tokenDate, now);
-            
-            System.out.println("minutes es " + minutes);
             
             if(cp.isPresent() && minutes <= 60) {
             	

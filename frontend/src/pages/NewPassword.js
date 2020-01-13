@@ -10,10 +10,24 @@ import UserService from '../services/UserService';
 import toast from 'toasted-notes' 
 import 'toasted-notes/src/styles.css';
 import * as statusCode from '../util/StatusCode'
+import LinearProgress from "@material-ui/core/LinearProgress";
+import ColoredLinearProgress from '../components/ColoredLinearProgress';
 
 class NewPassword extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            loading: false
+        };
+    }
+
     handleFormSubmit(event){
+
+        this.setState({
+            loading: true
+          });
+        
         let currentComponent = this;
         const { t } = this.props;
         event.preventDefault();
@@ -23,8 +37,10 @@ class NewPassword extends React.Component {
                 currentComponent.props.history.push("/home");
             } else {
                 toast.notify(t('newPassword.passwordNotUpdated')); 
-                alert(status); 
             }  
+            currentComponent.setState({
+                loading: false
+            });
         })     
     }
 
@@ -44,6 +60,7 @@ class NewPassword extends React.Component {
             });
             return ( 
                 <div>
+                    {this.state.loading ? <ColoredLinearProgress /> : null}
                     <div id="newpassword-container">
                         <h1 id="newpassword-title">{t('newPassword.title')}</h1>				
                         <p id="newpassword-message">{t('newPassword.message')}</p>

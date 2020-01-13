@@ -9,15 +9,28 @@ import * as ValidationConst from '../util/ValidationConst';
 import UserService from '../services/UserService';
 import toast from 'toasted-notes' 
 import 'toasted-notes/src/styles.css';
-import * as statusCode from '../util/StatusCode'
+import * as statusCode from '../util/StatusCode';
+import ColoredLinearProgress from '../components/ColoredLinearProgress';
 
 class ForgottenPassword extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            loading: false
+        };
+    }
 
     handleFormSubmit(event){
         let currentComponent = this;
         const { t } = this.props;
         event.preventDefault();
         event.persist();
+
+        this.setState({
+            loading: true
+          });
+
         UserService.isAccount(event, this.props).then(function(status) {
             if(status === statusCode.OK) {
                 UserService.forgottenPasswordEmail(event, currentComponent.props).then(function (status){
@@ -26,7 +39,10 @@ class ForgottenPassword extends React.Component {
                  }) 
             } else {
                toast.notify(t('forgottenPassword.emailNotSent'));
-            }  
+            }
+            currentComponent.setState({
+                loading: false
+            });  
         })     
     }
 
@@ -43,6 +59,7 @@ class ForgottenPassword extends React.Component {
             });
             return ( 
                 <div>
+                    {this.state.loading ? <ColoredLinearProgress /> : null}
                     <div id="forgotten-container">
                         <h1 id="forgotten-title">{t('forgottenPassword.title')}</h1>				
                         <p id="forgotten-message">{t('forgottenPassword.message')}</p>
