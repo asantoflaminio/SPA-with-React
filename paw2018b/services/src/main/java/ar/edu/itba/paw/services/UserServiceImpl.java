@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.itba.paw.interfaces.UserDao;
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.ChangePassword;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.dto.UserDTO;
 
@@ -92,10 +91,10 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public List<UserDTO> findAllUsers(int pageUsers){
+	public List<UserDTO> findAllUsers(int page, int limit){
 		LOGGER.debug("Looking for all users in DB");
 		List<UserDTO> users = new ArrayList<UserDTO>();
-		for(User user: userDao.findAllUsers(pageUsers)) {
+		for(User user: userDao.findAllUsers(page,limit)) {
 			users.add(new UserDTO(user.getEmail(),user.isLocked(),user.getUserid()));
 		}
 		return users;

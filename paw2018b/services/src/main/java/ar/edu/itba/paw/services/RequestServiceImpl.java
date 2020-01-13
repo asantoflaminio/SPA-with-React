@@ -45,17 +45,22 @@ public class RequestServiceImpl implements RequestService{
 
 	@Override
 	public Response badRequest() {
-		return Response.status(Response.Status.BAD_REQUEST).entity("Bad request").build();
+		return Response.status(Response.Status.BAD_REQUEST).build();
 	}
 	
 	@Override
 	public Response notFound() {
-		return Response.status(Response.Status.NOT_FOUND).entity("Not Found").build();
+		return Response.status(Response.Status.NOT_FOUND).build();
 	}
 
 	@Override
 	public Response conflictRequest() {
-		return Response.status(Response.Status.CONFLICT).entity("Conflict").build();
+		return Response.status(Response.Status.CONFLICT).build();
+	}
+	
+	@Override
+	public Response noContent() {
+		return Response.status(Response.Status.NO_CONTENT).build();
 	}
 
 

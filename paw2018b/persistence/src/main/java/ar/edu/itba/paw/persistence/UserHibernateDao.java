@@ -79,11 +79,11 @@ public class UserHibernateDao implements UserDao {
 	
 	@Override
 	@Transactional
-	public List<User> findAllUsers(int pageUsers) {
+	public List<User> findAllUsers(int page, int limit) {
 		final TypedQuery<User> query = em.createQuery("select distinct u from User as u where u.role != :role Order by u.email ASC", User.class);
 		query.setParameter("role", Constants.Role.ADMIN.getRole());
-		query.setFirstResult((pageUsers - 1) * 2); //Constants.MAX_RESULTS_USERS
-		query.setMaxResults(2); //Constants.MAX_RESULTS_USERS
+		query.setFirstResult(page * limit);
+		query.setMaxResults(limit);
 		return query.getResultList();
 	}
 	

@@ -6,12 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -20,17 +24,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import ar.edu.itba.paw.interfaces.PublicationService;
+import ar.edu.itba.paw.models.Constants;
 import ar.edu.itba.paw.models.UploadFile;
 import ar.edu.itba.paw.models.dto.BooleanResponseDTO;
 import ar.edu.itba.paw.models.dto.FiltersDTO;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.ImageDTO;
-import ar.edu.itba.paw.models.dto.PageDTO;
 import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.QueryDTO;
 import ar.edu.itba.paw.services.FavPublicationsServiceImpl;
 import ar.edu.itba.paw.services.ImageServiceImpl;
+import ar.edu.itba.paw.services.RequestServiceImpl;
+import ar.edu.itba.paw.services.ValidateServiceImpl;
 import ar.edu.itba.paw.webapp.auth.TokenAuthenticationService;
 
 
@@ -50,27 +56,19 @@ public class PublicationController {
 	@Autowired
 	private TokenAuthenticationService tas;
 	
-    @POST
-    @Path("/getAllPublications")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getAllPublications (final PageDTO pageDTO) {
-    	List<PublicationDTO> publications = ps.findAllPublications(pageDTO.getPage());
-    	return Response.ok().entity(publications).build();
-    }
-    
-    @GET
-    @Path("/getAllPublicationsCount")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getAllPublicationsCount () {
-    	PaginationDTO quantity = new PaginationDTO(ps.getCountAllPublications(), ps.getMaxResultList());
-    	return Response.ok().entity(quantity).build();
-    }
+	@Autowired
+	private ValidateServiceImpl vs;
+	
+	@Autowired
+	private RequestServiceImpl rs;
 	
     @GET
-    @Path("/getSalePublications")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getSalePublications () {
-    	List<PublicationDTO> publications = ps.findByOperation("FSale");
+    public Response getAllPublications (@Context HttpServletResponse response, @NotNull @QueryParam("page") int page, @NotNull @QueryParam("limit") int limit) {
+    	if(!vs.validatePagination(page,limit))
+    		return rs.badRequest();
+    	List<PublicationDTO> publications = ps.findAllPublications(page,limit);
+    	response.setHeader(Constants.COUNT_HEADER, Integer.toString(ps.getCountAllPublications()));
     	return Response.ok().entity(publications).build();
     }
     
@@ -110,9 +108,9 @@ public class PublicationController {
     @Path("/getPublicationByID")
     @Produces(value = { MediaType.APPLICATION_JSON})
     @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getPublicationsFilter (IDResponseDTO id) {
-    	PublicationDTO publication = ps.findById(id.getId());
-    	return Response.ok().entity(publication).build();
+    public Response getPublicationById (IDResponseDTO id) {
+    	PublicationDTO publicationDTO = ps.findById(id.getId());
+    	return Response.ok().entity(publicationDTO).build();
     }
     
     @POST
@@ -167,10 +165,14 @@ public class PublicationController {
     }
     
     @DELETE
-    @Path("/erasePublication")
+    @Path("/{publicationID}")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response erasePublication(final IDResponseDTO iDResponseDTO){
-    	ps.deleteById(iDResponseDTO.getId());
-    	return Response.ok().build();
+    public Response deletePublication(@PathParam("publicationID") long publicationID){
+    	if(! vs.validateID(publicationID))
+    		return rs.badRequest();
+    	if(! ps.deletePublication(publicationID))
+    		return rs.notFound();
+    	
+    	return rs.noContent();
     }
 }

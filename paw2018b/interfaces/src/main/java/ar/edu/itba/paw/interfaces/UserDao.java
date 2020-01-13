@@ -21,7 +21,7 @@ public interface UserDao{
 	
 	public void editPassword(String newPassword, long userid);
 	
-	public List<User> findAllUsers(int pageUsers);
+	public List<User> findAllUsers(int page, int limit);
 	
 	public int getAllUsersCount();
 	

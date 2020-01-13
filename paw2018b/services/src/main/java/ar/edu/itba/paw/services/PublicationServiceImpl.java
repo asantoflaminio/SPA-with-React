@@ -98,15 +98,11 @@ public class PublicationServiceImpl implements PublicationService {
         return publication;
 	}
 	
+	
 	@Override
-	public void deleteById(final long publicationdid) {
-		if(publicationdid < 0){
-            LOGGER.error("Attempted to find a publication with a negative id");
-            throw new IllegalArgumentException("id must be positive");
-        }
-		
-        LOGGER.trace("Looking up publication with id {}", publicationdid);
-		publicationDao.deleteById(publicationdid);
+	public boolean deletePublication(long publicationid) {	
+        LOGGER.trace("Deleting publication with id {}", publicationid);
+		return  publicationDao.deletePublication(publicationid);
 	}
 	
 	@Override
@@ -133,15 +129,21 @@ public class PublicationServiceImpl implements PublicationService {
 	@Override
 	public List<PublicationDTO> findByOperation(String operation){
 		LOGGER.debug("Getting most recently updated publications by operation");
-		List<PublicationDTO> publications = transform(publicationDao.findByOperation(operation));
-		return publications;
+		List<PublicationDTO> publicationsDTO = new LinkedList<PublicationDTO>();
+		for(Publication publication: publicationDao.findByOperation(operation)) {
+			publicationsDTO.add(transform(publication));
+		}
+		return publicationsDTO;
 	}
 	
 	@Override
 	public List<PublicationDTO> findByUserId(long id, String pagePub){
 		LOGGER.debug("Looking for publications of user with id {}", id);
-		List<PublicationDTO> publications = transform(publicationDao.findByUserId(id,pagePub));
-		return publications;
+		List<PublicationDTO> publicationsDTO = new LinkedList<PublicationDTO>();
+		for(Publication publication: publicationDao.findByUserId(id, pagePub)) {
+			publicationsDTO.add(transform(publication));
+		}
+		return publicationsDTO;
 		
 	}
 	
@@ -154,13 +156,19 @@ public class PublicationServiceImpl implements PublicationService {
 	public List<PublicationDTO> findSearchFiltering(String operation, String propertyType,  String address, String minPrice, String maxPrice,
 												 String minFloorSize, String maxFloorSize,
 												 String bedrooms, String bathrooms, String parking, String order, String page){
-		List<PublicationDTO> publications;
+		List<PublicationDTO> publicationsDTO = new LinkedList<PublicationDTO>();
+
 		if(! vs.validateSearch(address, minPrice , maxPrice, minFloorSize, maxFloorSize)) {
 			return null;
 		}
-		publications = transform(publicationDao.findSearchFiltering(operation,propertyType,address,minPrice,maxPrice,minFloorSize,
-												  maxFloorSize,bedrooms,bathrooms, parking, order, page));
-		return publications;
+		
+		List<Publication> publications = publicationDao.findSearchFiltering(operation,propertyType,address,minPrice,maxPrice,minFloorSize,
+				  maxFloorSize,bedrooms,bathrooms, parking, order, page);
+		
+		for(Publication publication: publications) {
+			publicationsDTO.add(transform(publication));
+		}
+		return publicationsDTO;
 	}
 
 	@Override
@@ -206,12 +214,14 @@ public class PublicationServiceImpl implements PublicationService {
 	}
 	
 	@Override
-	public List<PublicationDTO> findAllPublications(String pagePub){
-		List<PublicationDTO> publications;
+	public List<PublicationDTO> findAllPublications(int page, int limit){
+		List<PublicationDTO> publicationsDTO = new LinkedList<PublicationDTO>();
 		
-		publications = transform(publicationDao.findAllPublications(pagePub));
+		for(Publication publication: publicationDao.findAllPublications(page,limit)) {
+			publicationsDTO.add(transform(publication));
+		}
 		LOGGER.debug("Looking up for all publications in data base");
-		return publications;
+		return publicationsDTO;
 	}
 	
 	@Override
@@ -220,25 +230,22 @@ public class PublicationServiceImpl implements PublicationService {
 	}
 	
 	@Override
-	public List<PublicationDTO> transform(List<Publication> publications){
-		List<PublicationDTO> publicationsDTO = new LinkedList<PublicationDTO>();
-		PublicationDTO current;
+	public PublicationDTO transform(Publication publication){
+		PublicationDTO publicationDTO;
 		
-		for(Publication pub: publications) {
-			current = new PublicationDTO(pub.getPublicationid(),pub.getTitle(), pub.getProvince().getProvince(), pub.getCity().getCity(), pub.getNeighborhood().getNeighborhood(), pub.getAddress(),
-										pub.getOperation(), pub.getPrice().toString(), pub.getDescription(), pub.getPropertyType(), pub.getBedrooms().toString(), pub.getBathrooms().toString() , 
-										pub.getFloorSize().toString() , pub.getParking().toString(), pub.getPublicationDate().toString(),
-										Optional.ofNullable(pub.getCoveredFloorSize()).toString(),
-										Optional.ofNullable(pub.getBalconies()).toString(), 
-										Optional.ofNullable(pub.getAmenities()).toString(),
-										Optional.ofNullable(pub.getStorage()).toString(),
-										Optional.ofNullable(pub.getExpenses()).toString());
-			current.setImages(pub.getImages().size());
-			
-			publicationsDTO.add(current);
-		}
+		publicationDTO = new PublicationDTO(publication.getPublicationid(),publication.getTitle(), publication.getProvince().getProvince(), publication.getCity().getCity(), 
+										publication.getNeighborhood().getNeighborhood(), publication.getAddress(),publication.getOperation(), publication.getPrice().toString(), 
+										publication.getDescription(), publication.getPropertyType(), publication.getBedrooms().toString(), publication.getBathrooms().toString(), 
+										publication.getFloorSize().toString() , publication.getParking().toString(), publication.getPublicationDate().toString(),
+										Optional.ofNullable(publication.getCoveredFloorSize()).orElse(-1).toString(),
+										Optional.ofNullable(publication.getBalconies()).orElse(-1).toString(), 
+										Optional.ofNullable(publication.getAmenities()).orElse("-1").toString(),
+										Optional.ofNullable(publication.getStorage()).orElse("-1").toString(),
+										Optional.ofNullable(publication.getExpenses()).orElse(-1).toString());
+		publicationDTO.setImages(publication.getImages().size());
 		
-		return publicationsDTO;
+		
+		return publicationDTO;
 	}
 	
 	public Integer getMaxResultProfile() {

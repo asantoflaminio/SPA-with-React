@@ -27,9 +27,13 @@ public interface ValidateService {
 	public boolean valideBothInputNumberFields(String minInput, String maxInput, Integer minLength, Integer maxLength, 
 			   String firstInput, String secondInput);
 	
-	public boolean validateLocation(String location, String field);
+	public boolean validateLocation(String locationid, String field);
 	
 	public boolean validateLocationAdmin(String location, String field);
+
+	boolean validatePagination(int page, int limit);
+
+	boolean validateID(long id);
 
 
 }

@@ -205,15 +205,14 @@ public class ValidateServiceImpl implements ValidateService{
 	}
 
 	@Override
-	public boolean validateLocation(String location, String field) {
+	public boolean validateLocation(String locationid, String field) {
 		final String numbersRegex = "[0-9]+";
-		if(! location.matches(numbersRegex)) {
+		if(! locationid.matches(numbersRegex)) {
 			LOGGER.debug("The field {} has not a correct id for a location ", field);
 			return false;
 		}
-		
-		if(Long.parseLong(location) <= 0) {
-			LOGGER.debug("The field {} has has a negative ", field);
+		if(Long.parseLong(locationid) <= 0) {
+			LOGGER.debug("The field {} has a negative ", field);
 			return false;
 		}
 		return true;
@@ -223,6 +222,24 @@ public class ValidateServiceImpl implements ValidateService{
 	public boolean validateLocationAdmin(String location, String field) {
 		final String lettersAndSpacesRegex = "[\\p{L} ]+";
 		return validateInputText(location, MIN_LOCATION_LENGTH, MAX_LOCATION_LENGTH, lettersAndSpacesRegex, field);
+	}
+	
+	@Override
+	public boolean validatePagination(int page, int limit) {
+		if(page < 0 || limit <= 0) {
+			LOGGER.debug("Some paginations parameters were negative");
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean validateID(long id) {
+		if(id <= 0) {
+			LOGGER.debug("The id is negative");
+			return false;
+		}
+		return true;
 	}
 
 }

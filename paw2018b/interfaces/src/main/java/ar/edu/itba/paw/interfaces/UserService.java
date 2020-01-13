@@ -20,7 +20,7 @@ public interface UserService {
 	
 	public void setPassword(String newPassword, String oldEmail);
 	
-	public List<UserDTO> findAllUsers(int pageUsers);
+	public List<UserDTO> findAllUsers(int page, int limit);
 	
 	public int getAllUsersCount();
 	

@@ -3,7 +3,9 @@ package ar.edu.itba.paw.models;
 public class Constants {
 	
 	public static final Integer MAX_LANGUAJE = 4; 
-	public static Integer MAX_RESULTS_USERS = 7;
+	public static final Integer MAX_RESULTS_USERS = 7;
+	
+	public static final String COUNT_HEADER = "X-Total-Count";
 	
 	public static enum Operation {
 		FSALE ("FSale"),
@@ -47,6 +49,22 @@ public class Constants {
 	
 		public String getRole() {
 			return role;
+		}
+	}
+	
+	public static enum Location{
+		PROVINCE("Province"),
+		CITY("City"),
+		NEIGHBORHOOD("Neighborhood");
+		
+		private final String location;
+	
+		Location(String location){
+			this.location = location;
+		}
+	
+		public String getLocation() {
+			return location;
 		}
 	}
 

@@ -21,6 +21,8 @@ public interface RequestService {
 	public Response notFound();
 	
 	public Response conflictRequest();
+
+	public Response noContent();
 	
 
 

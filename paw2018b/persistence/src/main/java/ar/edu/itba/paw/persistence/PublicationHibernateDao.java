@@ -71,6 +71,7 @@ public class PublicationHibernateDao implements PublicationDao{
 		return query.getResultList().get(0);
 	}
 
+
 	@Override
 	@Transactional
 	public Publication create(String title, String address,String neighborhood, String city, String province, String operation, String price,
@@ -153,10 +154,15 @@ public class PublicationHibernateDao implements PublicationDao{
 
 	@Override
 	@Transactional
-	public void deleteById(long publicationdid) {
-		em.remove(em.find(Publication.class, publicationdid));
-		favPublicationsDao.removeFavouriteByPublication(publicationdid);
+	public boolean deletePublication(long publicationid) {
+		Publication publication = em.find(Publication.class, publicationid);
+		if(publication == null)
+			return false;
+		em.remove(publication);
+		favPublicationsDao.removeFavouriteByPublication(publicationid); //ver q onda esto en deploy
+		return true;
 	}
+	
 	
 	private String setOrder(String queryString, String order) {
 		if(order.equals(NO_ORDER)) 
@@ -380,10 +386,10 @@ public class PublicationHibernateDao implements PublicationDao{
 	
 	@Override
 	@Transactional
-	public List<Publication> findAllPublications(String pagePub) {
+	public List<Publication> findAllPublications(int page, int limit) {
 		final TypedQuery<Publication> query = em.createQuery(SELECT_STATEMENT_SEARCH + "Order by pub.locked DESC", Publication.class);
-		query.setFirstResult((Integer.parseInt(pagePub) - 1) * MAX_RESULTS_PROFILE);
-		query.setMaxResults(MAX_RESULTS_PROFILE);
+		query.setFirstResult(page * limit);
+		query.setMaxResults(limit);
 		return query.getResultList();
 	}
 	

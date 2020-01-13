@@ -8,7 +8,7 @@ import ar.edu.itba.paw.models.dto.PublicationDTO;
 
 public interface PublicationService {
 	
-	public PublicationDTO findById(final long id); 
+	public PublicationDTO findById(final long publicationid);
 	
 	public Publication create(String title, String address,String neighborhood, String city, String province, String operation, String price,
 			   String description, String propertyType, String bedrooms,
@@ -46,7 +46,7 @@ public interface PublicationService {
 			  String minFloorSize, String maxFloorSize,
 			  String bedrooms, String parking, String bathrooms);
 	
-	public void deleteById(final long publicationdid);
+	public boolean deletePublication(long publicationid);
 	
 	public boolean editData(String title, String address,String neighborhood, String city, String province, String operation, String price,
 			   String description, String propertyType, String bedrooms,
@@ -56,11 +56,11 @@ public interface PublicationService {
 	
 	public void lockUnlockPublication(boolean status, long publicationid);
 	
-	public List<PublicationDTO> findAllPublications(String pagePub);
+	public List<PublicationDTO> findAllPublications(int page, int limit);
 	
 	public int getCountAllPublications();
 	
-	public List<PublicationDTO> transform(List<Publication> publications);
+	public PublicationDTO transform(Publication publication);
 
 	public Integer getMaxResultProfile();
 

@@ -1,9 +1,5 @@
 package ar.edu.itba.paw.interfaces;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-
-
 
 import ar.edu.itba.paw.models.Mail;
 
