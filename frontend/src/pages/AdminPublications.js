@@ -6,14 +6,16 @@ import ReactPaginate from 'react-paginate';
 import { withRouter } from "react-router";
 import PublicationService from '../services/PublicationService'
 import JsonService from '../services/JsonService'
+import * as Constants from '../util/Constants'
 
 class AdminPublications extends React.Component {
 
     constructor(props) {
         super(props);
          this.state = { 
+            initialPage: this.getInitialPage(),
             pagesQuantity: 0,
-            page: 1,
+            page: 0,
             publications: [],
             resultsQuantity: 0
         };
@@ -21,37 +23,23 @@ class AdminPublications extends React.Component {
         this.erasePublication = this.erasePublication.bind(this);
     }
 
-    componentDidMount(){
-        this.updatePublicationsQuantity()
-        this.updatePublications(this.state.page)
-    }
 
     handlePageClick = data => {
-        this.updatePublications(data.selected + 1)
+        this.updatePublications(data.selected)
     }
 
-    updatePublications(newPage){
+    updatePublications(page){
         let currentComponent = this
-        let names = ["page"]
-        let values = [newPage]
-        PublicationService.getAllPublications(JsonService.createJSONArray(names,values),this.props).then(function (pubs){
+        let queryParameters = {}
+        queryParameters.page = parseInt(page)
+        queryParameters.limit = Constants.PUBLICATIONS_PAGE_LIMIT
+        PublicationService.getPublications(queryParameters,this.props).then(function (response){
+            currentComponent.pushPageParam(queryParameters.page + 1);
             currentComponent.setState({
-                publications: pubs,
-                page: newPage
-            })
-        })
-    }
-
-    async updatePublicationsQuantity(){
-        let currentComponent = this
-        PublicationService.getAllPublicationsCount(this.props).then(function (data){
-            let newPage = currentComponent.state.page
-            if(data.count % data.limit === 0)
-                newPage = currentComponent.state.page - 1
-            currentComponent.setState({
-                pagesQuantity: Math.ceil(data.count / data.limit),
-                resultsQuantity: data.count,
-                page: newPage
+                publications: response.data,
+                resultsQuantity: response.headers["x-total-count"],
+                pagesQuantity: Math.ceil(response.headers["x-total-count"] / Constants.USERS_PAGE_LIMIT),
+                page: queryParameters.page
             })
         })
     }
@@ -59,7 +47,6 @@ class AdminPublications extends React.Component {
     initializePublications(t){
         let pubComponents = [];
         for(let i = 0; i < this.state.publications.length; i++){
-            alert(this.state.publications[i].publicationID)
             pubComponents.push(
                 <Publication t={t} 
                     publication={this.state.publications[i]}
@@ -72,14 +59,33 @@ class AdminPublications extends React.Component {
         return pubComponents;
     }
 
+    
+
     erasePublication(publicationID){
-        alert(publicationID)
         let currentComponent = this
-        let names = ["id"]
-        let values = [publicationID]
-        PublicationService.erasePublication(JsonService.createJSONArray(names,values),this.props).then(function (){
-            alert("deleted " + publicationID)
-            currentComponent.updatePublicationsQuantity()
+        let data = {}
+        PublicationService.erasePublication(publicationID,this.props).then(function (){
+            /*
+            if(Math.ceil(currentComponent.state.resultsQuantity / Constants.USERS_PAGE_LIMIT) < currentComponent.state.pagesQuantity)
+                data.selected = currentComponent.state.page - 1;
+            else
+                data.selected = currentComponent.state.page;*/
+                //El error esta x aca al refreshear las publicaciones
+            currentComponent.handlePageClick(data)
+
+        })
+    }
+
+    getInitialPage(){
+        const params = new URLSearchParams(this.props.location.search); 
+        const queryPageParam = params.get('page');
+        return parseInt(queryPageParam) - 1 || 0;
+    }
+
+    pushPageParam(page){
+        this.props.history.push({
+            path: '/AdminPublications',
+            search: '?page=' + page
         })
     }
 
@@ -98,6 +104,7 @@ class AdminPublications extends React.Component {
                     </div>
                     <div class="pubsPagination">
                                 <ReactPaginate
+                                initialPage={this.state.initialPage}
                                 previousLabel={'<'}
                                 nextLabel={'>'}
                                 breakLabel={'...'}
@@ -111,7 +118,6 @@ class AdminPublications extends React.Component {
                                 pageClassName={''}
                                 previousClassName={''}
                                 nextClassName={''}
-                                forcePage={this.state.page - 1}
                             />
                     </div>
                 </div>

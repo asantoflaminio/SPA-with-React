@@ -120,20 +120,7 @@ const AdminService = (function(){
             params: queryParameters
           })
           .then(function (response) {
-              return response.data
-          })
-          .catch(function (error) {
-            ErrorService.logError(props,error)
-          });
-    }
-
-    async function _getUsersCount(props){
-        return await axios({
-            method: 'get',
-            url: `${ADMIN_PATH}/usersCount`,
-          })
-          .then(function (response) {
-              return response.data
+              return response
           })
           .catch(function (error) {
             ErrorService.logError(props,error)
@@ -167,7 +154,6 @@ const AdminService = (function(){
       getCities : _getCities,
       getNeighborhoods : _getNeighborhoods,
       getUsers : _getUsers,
-      getUsersCount : _getUsersCount,
       lockUser : _lockUser,
     }
    })();

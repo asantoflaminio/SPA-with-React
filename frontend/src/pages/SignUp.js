@@ -9,7 +9,7 @@ import {Redirect} from 'react-router-dom';
 import { withRouter } from "react-router";
 import UserService from '../services/UserService'
 import JsonService from '../services/JsonService'
-import * as ValidationConst from '../util/ValidationConst'
+import * as Constants from '../util/Constants'
 
 
 
@@ -56,26 +56,26 @@ class SignUp extends React.Component {
     const { t } = this.props;
     const schema = yup.object({
     firstName: yup.string().required( t('errors.requiredField') )
-                            .matches(ValidationConst.lettersAndSpacesRegex, t('errors.lettersAndSpacesRegex'))
-                            .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
-                            .max(ValidationConst.SHORT_STRING_MAX_LENGTH, t('errors.lengthMax')),
+                            .matches(Constants.lettersAndSpacesRegex, t('errors.lettersAndSpacesRegex'))
+                            .min(Constants.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(Constants.SHORT_STRING_MAX_LENGTH, t('errors.lengthMax')),
     lastName: yup.string().required( t('errors.requiredField') )
-                            .matches(ValidationConst.lettersAndSpacesRegex, t('errors.lettersAndSpacesRegex'))
-                            .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
-                            .max(ValidationConst.SHORT_STRING_MAX_LENGTH, t('errors.lengthMax')),
+                            .matches(Constants.lettersAndSpacesRegex, t('errors.lettersAndSpacesRegex'))
+                            .min(Constants.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(Constants.SHORT_STRING_MAX_LENGTH, t('errors.lengthMax')),
     email: yup.string().required( t('errors.requiredField') )
-                            .matches(ValidationConst.emailRegex, t('errors.emailRegex'))
-                            .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
-                            .max(ValidationConst.EMAIL_MAX_LENGTH, t('errors.lengthMax')),
+                            .matches(Constants.emailRegex, t('errors.emailRegex'))
+                            .min(Constants.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(Constants.EMAIL_MAX_LENGTH, t('errors.lengthMax')),
     password: yup.string().required( t('errors.requiredField') )
-                            .matches(ValidationConst.simpleLettersAndNumbersRegex, t('errors.lettersAndNumbersRegex'))
-                            .min(ValidationConst.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
-                            .max(ValidationConst.LONG_STRING_MAX_LENGTH_PASS, t('errors.lengthMax')),
+                            .matches(Constants.simpleLettersAndNumbersRegex, t('errors.lettersAndNumbersRegex'))
+                            .min(Constants.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(Constants.LONG_STRING_MAX_LENGTH_PASS, t('errors.lengthMax')),
     repeatPassword: yup.string().oneOf([yup.ref('password'), null], t('errors.passwordMatch')),
     phoneNumber: yup.string()
-                            .matches(ValidationConst.numbersDashRegex, t('errors.numbersDashRegex'))
-                            .min(ValidationConst.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
-                            .max(ValidationConst.LONG_STRING_MAX_LENGTH, t('errors.lengthMax')),
+                            .matches(Constants.numbersDashRegex, t('errors.numbersDashRegex'))
+                            .min(Constants.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(Constants.LONG_STRING_MAX_LENGTH, t('errors.lengthMax')),
     });
     return (
         <div className="box_form_signUp">

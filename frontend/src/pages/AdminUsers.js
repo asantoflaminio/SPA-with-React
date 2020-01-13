@@ -9,26 +9,19 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withRouter } from "react-router";
 import AdminService from '../services/AdminService'
+import * as Constants from '../util/Constants'
 
 class AdminUsers extends React.Component {
 
     constructor(props) {
         super(props);
          this.state = { 
-             usersList: [],
-             pagesQuantity: 0,
-             initialPage: this.getInitialPage()
+            initialPage: this.getInitialPage(),
+            pagesQuantity: 0,
+            usersList: [],
+            resultsQuantity: 0
         };
     }
-
-    componentDidMount(){
-        let currentComponent = this
-        AdminService.getUsersCount(this.props).then(function (data){
-            currentComponent.setState({
-                pagesQuantity: Math.ceil(data.count / data.limit),
-            })
-        })
-      }
 
 
     lockUser(event,index){
@@ -79,7 +72,7 @@ class AdminUsers extends React.Component {
     getInitialPage(){
         const params = new URLSearchParams(this.props.location.search); 
         const queryPageParam = params.get('page');
-        return parseInt(queryPageParam) || 0;
+        return parseInt(queryPageParam) - 1 || 0;
     }
 
     pushPageParam(page){
@@ -95,13 +88,14 @@ class AdminUsers extends React.Component {
         let currentComponent = this;
         let queryParameters = {}
 
-        if(data.selected === null)
-            return;
-        queryParameters.page = parseInt(data.selected) + 1;
-        AdminService.getUsers(queryParameters, this.props).then(function (users){
-            currentComponent.pushPageParam(queryParameters.page);
+        queryParameters.page = parseInt(data.selected);
+        queryParameters.limit = Constants.USERS_PAGE_LIMIT
+        AdminService.getUsers(queryParameters, this.props).then(function (response){
+            currentComponent.pushPageParam(queryParameters.page + 1);
             currentComponent.setState({
-                usersList: users
+                usersList: response.data,
+                resultsQuantity: response.headers["x-total-count"],
+                pagesQuantity: Math.ceil(response.headers["x-total-count"] / Constants.USERS_PAGE_LIMIT)
             })
         })
     }
@@ -109,7 +103,6 @@ class AdminUsers extends React.Component {
     render(){
         const { t } = this.props;
         let tableUsers = [];
-        let initialPageParam = this.getInitialPage();
         this.generateUsers(tableUsers,this.state.usersList, t);
         return(
             <div>
@@ -123,7 +116,7 @@ class AdminUsers extends React.Component {
                         {tableUsers}
                         </div>
                         <ReactPaginate
-                            initialPage={initialPageParam}
+                            initialPage={this.state.initialPage}
                             previousLabel={'<'}
                             nextLabel={'>'}
                             breakLabel={'...'}

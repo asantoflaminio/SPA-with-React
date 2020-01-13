@@ -5,7 +5,7 @@ import { withRouter } from "react-router";
 import { Form, Button, Col } from 'react-bootstrap';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import * as ValidationConst from '../util/ValidationConst';
+import * as Constants from '../util/Constants';
 import UserService from '../services/UserService';
 import toast from 'toasted-notes' 
 import 'toasted-notes/src/styles.css';
@@ -52,9 +52,9 @@ class NewPassword extends React.Component {
         const { t } = this.props;
         const schema = yup.object({
             newPassword1: yup.string().required( t('errors.requiredField') )
-                            .matches(ValidationConst.simpleLettersAndNumbersRegex, t('errors.lettersAndNumbersRegex'))
-                            .min(ValidationConst.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
-                            .max(ValidationConst.LONG_STRING_MAX_LENGTH_PASS, t('errors.lengthMax')),
+                            .matches(Constants.simpleLettersAndNumbersRegex, t('errors.lettersAndNumbersRegex'))
+                            .min(Constants.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(Constants.LONG_STRING_MAX_LENGTH_PASS, t('errors.lengthMax')),
             newPassword2: yup.string().oneOf([yup.ref('newPassword1'), null], t('errors.passwordMatch')),
             token: yup.string()
             });

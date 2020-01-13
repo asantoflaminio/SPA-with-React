@@ -27,7 +27,7 @@ class ImageVisualizer extends React.Component {
         if(UserService.isLogged()){
             names = ["id"]
             values = [this.props.publicationID]
-
+            
             PublicationService.isFavourite(JsonService.createJSONArray(names,values),this.props).then(function (request){
                 currentComponent.setState({
                     isFavourite : request.response

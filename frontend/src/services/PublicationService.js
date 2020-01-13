@@ -5,29 +5,16 @@ import LocalStorageService from './LocalStorageService'
 
 const PublicationService = (function(){
 
-    const PUBLICATIONS_PATH = process.env.PUBLIC_URL + '/meinHaus/publications/'
+    const PUBLICATIONS_PATH = process.env.PUBLIC_URL + '/meinHaus/publications'
 
-    async function _getAllPublications(array,props){
-      return await axios({
-          method: 'post',
-          url: PUBLICATIONS_PATH + 'getAllPublications',
-          data: JsonService.getJSONParsed(array)
-        })
-        .then(function (response) {
-            return response.data
-        })
-        .catch(function (error) {
-          ErrorService.logError(props,error)
-        });
-  }
-
-    async function _getAllPublicationsCount(props){
+    async function _getPublications(queryParameters,props){
       return await axios({
           method: 'get',
-          url: PUBLICATIONS_PATH + 'getAllPublicationsCount',
+          url: `${PUBLICATIONS_PATH}`,
+          params: queryParameters
         })
         .then(function (response) {
-            return response.data
+            return response
         })
         .catch(function (error) {
           ErrorService.logError(props,error)
@@ -37,7 +24,7 @@ const PublicationService = (function(){
     async function _getSalePublications(props){
         return await axios({
             method: 'get',
-            url: PUBLICATIONS_PATH + 'getSalePublications',
+            url: PUBLICATIONS_PATH + '/getSalePublications',
           })
           .then(function (response) {
               return response.data
@@ -50,7 +37,7 @@ const PublicationService = (function(){
     async function _getRentPublications(props){
         return await axios({
             method: 'get',
-            url: PUBLICATIONS_PATH + 'getRentPublications',
+            url: PUBLICATIONS_PATH + '/getRentPublications',
           })
           .then(function (response) {
               return response.data
@@ -63,7 +50,7 @@ const PublicationService = (function(){
     async function _getPublicationsCount(query, props){
         return await axios({
             method: 'post',
-            url: PUBLICATIONS_PATH + 'getPublicationsQuantity',
+            url: PUBLICATIONS_PATH + '/getPublicationsQuantity',
             data: query
           })
           .then(function (response) {
@@ -77,7 +64,7 @@ const PublicationService = (function(){
     async function _getPublication(array, props){
         return await axios({
             method: 'post',
-            url: PUBLICATIONS_PATH + 'getPublicationByID',
+            url: PUBLICATIONS_PATH + '/getPublicationByID',
             data: JsonService.getJSONParsed(array)
           })
           .then(function (response) {
@@ -88,10 +75,10 @@ const PublicationService = (function(){
           });
     }
 
-    async function _getPublications(query, props){
+    async function _getPublicationsFiltered(query, props){
         return await axios({
             method: 'post',
-            url: PUBLICATIONS_PATH + 'getPublications',
+            url: PUBLICATIONS_PATH + '/getPublications',
             data: query
           })
           .then(function (response) {
@@ -105,7 +92,7 @@ const PublicationService = (function(){
     async function _getFilters(query, props){
         return await axios({
             method: 'post',
-            url: PUBLICATIONS_PATH + 'getFilters',
+            url: PUBLICATIONS_PATH + '/getFilters',
             data: query
           })
           .then(function (response) {
@@ -119,7 +106,7 @@ const PublicationService = (function(){
     async function _getImage(array,props){
         return await axios({
             method: 'post',
-            url: PUBLICATIONS_PATH + 'getPublicationImage',
+            url: PUBLICATIONS_PATH + '/getPublicationImage',
             data: JsonService.getJSONParsed(array)
           })
           .then(function (response) {
@@ -133,7 +120,7 @@ const PublicationService = (function(){
     async function _isFavourite(array,props){
       return await axios({
         method: 'post',
-        url: PUBLICATIONS_PATH + 'isFavourite',
+        url: PUBLICATIONS_PATH + '/isFavourite',
         data: JsonService.getJSONParsed(array),
         headers: {
           authorization: LocalStorageService.getAccessToken(),
@@ -147,11 +134,10 @@ const PublicationService = (function(){
       });   
     }
 
-    async function _erasePublication(array,props){
+    async function _erasePublication(publicationID,props){
       return await axios({
         method: 'delete',
-        url: PUBLICATIONS_PATH + 'erasePublication',
-        data: JsonService.getJSONParsed(array),
+        url: `${PUBLICATIONS_PATH}/${publicationID}`,
         headers: {
           authorization: LocalStorageService.getAccessToken(),
       }
@@ -167,13 +153,12 @@ const PublicationService = (function(){
     
 
     return {
-        getAllPublications : _getAllPublications,
-        getAllPublicationsCount : _getAllPublicationsCount,
+        getPublications : _getPublications,
         getSalePublications : _getSalePublications,
         getRentPublications : _getRentPublications,
         getPublicationsCount : _getPublicationsCount,
         getPublication : _getPublication,
-        getPublications : _getPublications,
+        getPublicationsFiltered : _getPublicationsFiltered,
         getFilters : _getFilters,
         getImage : _getImage,
         isFavourite : _isFavourite,

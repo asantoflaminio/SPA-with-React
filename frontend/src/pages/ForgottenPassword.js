@@ -5,7 +5,7 @@ import { withRouter } from "react-router";
 import { Form, Button, Col } from 'react-bootstrap';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import * as ValidationConst from '../util/ValidationConst';
+import * as Constants from '../util/Constants';
 import UserService from '../services/UserService';
 import toast from 'toasted-notes' 
 import 'toasted-notes/src/styles.css';
@@ -57,9 +57,9 @@ class ForgottenPassword extends React.Component {
     render(){
         const { t } = this.props;
         const schema = yup.object({
-            email: yup.string().required( t('errors.requiredField') ).matches(ValidationConst.emailRegex, t('errors.emailRegex'))
-            .min(ValidationConst.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
-            .max(ValidationConst.EMAIL_MAX_LENGTH, t('errors.lengthMax')),
+            email: yup.string().required( t('errors.requiredField') ).matches(Constants.emailRegex, t('errors.emailRegex'))
+            .min(Constants.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
+            .max(Constants.EMAIL_MAX_LENGTH, t('errors.lengthMax')),
             });
             return ( 
                 <div>

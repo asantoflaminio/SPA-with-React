@@ -10,7 +10,7 @@ import {appendSelectElement} from '../util/function'
 import ImageUploader from 'react-images-upload';
 import AdminService from '../services/AdminService'
 import UserService from '../services/UserService'
-import * as ValidationConst from '../util/ValidationConst'
+import * as Constants from '../util/Constants'
 
 class Publish extends React.Component {
 
@@ -105,7 +105,7 @@ class Publish extends React.Component {
         event.preventDefault();
         values.provinceID = event.target.value
         event.target.blur();
-        AdminService.getCities(event, this.props).then(function (cities){
+        AdminService.getCities(values.provinceID, this.props).then(function (cities){
             let select = document.getElementById("city-Select")
             let selectNeighborhood = document.getElementById("neighborhood-Select")
             select.selectedIndex = 0;
@@ -123,7 +123,7 @@ class Publish extends React.Component {
         event.preventDefault();
         values.cityID = event.target.value
         event.target.blur();
-        AdminService.getNeighborhoods(event, this.props).then(function (neighborhoods){
+        AdminService.getNeighborhoods(values.provinceID,values.cityID, this.props).then(function (neighborhoods){
             let select = document.getElementById("neighborhood-Select")
             select.selectedIndex = 0;
             while (select.childNodes[1]) {
@@ -164,54 +164,54 @@ class Publish extends React.Component {
           });
         const schema = yup.object({
         title: yup.string().required( t('errors.requiredField') )
-                            .matches(ValidationConst.lettesNumersAndSpacesRegex, t('errors.lettesNumersAndSpacesRegex'))
-                            .min(ValidationConst.FIRST_FORM_MIN_LENGTH, t('errors.lengthMin'))
-                            .max(ValidationConst.FIRST_FORM_MAX_LENGTH, t('errors.lengthMax')),
+                            .matches(Constants.lettesNumersAndSpacesRegex, t('errors.lettesNumersAndSpacesRegex'))
+                            .min(Constants.FIRST_FORM_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(Constants.FIRST_FORM_MAX_LENGTH, t('errors.lengthMax')),
         provinceID: yup.number().required(t('errors.requiredField')),
         cityID: yup.number().required(t('errors.requiredField')),
         neighborhoodID: yup.number().required(t('errors.requiredField')),
         address: yup.string().required(t('errors.requiredField'))
-                            .matches(ValidationConst.lettesNumersAndSpacesRegexComma, t('errors.lettesNumersAndSpacesRegexComma'))
-                            .min(ValidationConst.FIRST_FORM_MIN_LENGTH, t('errors.lengthMin'))
-                            .max(ValidationConst.FIRST_FORM_MAX_LENGTH, t('errors.lengthMax')),
+                            .matches(Constants.lettesNumersAndSpacesRegexComma, t('errors.lettesNumersAndSpacesRegexComma'))
+                            .min(Constants.FIRST_FORM_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(Constants.FIRST_FORM_MAX_LENGTH, t('errors.lengthMax')),
         price: yup.number().required(t('errors.requiredField'))
                             .typeError(t('errors.numbersRegex'))                   
-                            .min(ValidationConst.PRICE_MIN_LENGTH, t('errors.minValue'))
-                            .max(ValidationConst.PRICE_MAX_LENGTH, t('errors.maxValue')),
+                            .min(Constants.PRICE_MIN_LENGTH, t('errors.minValue'))
+                            .max(Constants.PRICE_MAX_LENGTH, t('errors.maxValue')),
         description: yup.string().required(t('errors.requiredField'))
-                            .matches(ValidationConst.descriptionRegex, t('errors.descriptionRegex'))
-                            .min(ValidationConst.SECOND_FORM_MIN_LENGTH, t('errors.lengthMin'))
-                            .max(ValidationConst.SECOND_FORM_MAX_LENGTH, t('errors.lengthMax')),
+                            .matches(Constants.descriptionRegex, t('errors.descriptionRegex'))
+                            .min(Constants.SECOND_FORM_MIN_LENGTH, t('errors.lengthMin'))
+                            .max(Constants.SECOND_FORM_MAX_LENGTH, t('errors.lengthMax')),
         bedrooms: yup.number().required(t('errors.requiredField'))
                             .typeError(t('errors.numbersRegex')) 
-                            .min(ValidationConst.LOW_MIN_NUMBER, t('errors.minValue'))
-                            .max(ValidationConst.LOW_MAX_NUMBER, t('errors.maxValue')),
+                            .min(Constants.LOW_MIN_NUMBER, t('errors.minValue'))
+                            .max(Constants.LOW_MAX_NUMBER, t('errors.maxValue')),
         bathrooms: yup.number().required(t('errors.requiredField'))
                             .typeError(t('errors.numbersRegex')) 
-                            .min(ValidationConst.LOW_MIN_NUMBER, t('errors.minValue'))
-                            .max(ValidationConst.LOW_MAX_NUMBER, t('errors.maxValue')),
+                            .min(Constants.LOW_MIN_NUMBER, t('errors.minValue'))
+                            .max(Constants.LOW_MAX_NUMBER, t('errors.maxValue')),
         dimention: yup.number().required(t('errors.requiredField'))
                             .typeError(t('errors.numbersRegex')) 
-                            .min(ValidationConst.LOW_MIN_NUMBER, t('errors.minValue'))
-                            .max(ValidationConst.DIMENSION_MAX_LENGTH, t('errors.maxValue')),
+                            .min(Constants.LOW_MIN_NUMBER, t('errors.minValue'))
+                            .max(Constants.DIMENSION_MAX_LENGTH, t('errors.maxValue')),
         coveredFloorSize: yup.number().required(t('errors.requiredField'))
                             .typeError(t('errors.numbersRegex')) 
-                            .min(ValidationConst.LOW_MIN_NUMBER, t('errors.minValue'))
-                            .max(ValidationConst.DIMENSION_MAX_LENGTH, t('errors.maxValue')),
+                            .min(Constants.LOW_MIN_NUMBER, t('errors.minValue'))
+                            .max(Constants.DIMENSION_MAX_LENGTH, t('errors.maxValue')),
         parking: yup.number().required(t('errors.requiredField'))
                             .typeError(t('errors.numbersRegex')) 
-                            .min(ValidationConst.LOW_MIN_NUMBER, t('errors.minValue'))
-                            .max(ValidationConst.LOW_MAX_NUMBER, t('errors.maxValue')),
+                            .min(Constants.LOW_MIN_NUMBER, t('errors.minValue'))
+                            .max(Constants.LOW_MAX_NUMBER, t('errors.maxValue')),
         balconies: yup.number().required(t('errors.requiredField'))
                             .typeError(t('errors.numbersRegex')) 
-                            .min(ValidationConst.LOW_MIN_NUMBER, t('errors.minValue'))
-                            .max(ValidationConst.LOW_MAX_NUMBER, t('errors.maxValue')),
+                            .min(Constants.LOW_MIN_NUMBER, t('errors.minValue'))
+                            .max(Constants.LOW_MAX_NUMBER, t('errors.maxValue')),
         expenses: yup.number()
                             .typeError(t('errors.numbersRegex')) 
-                            .max(ValidationConst.HIGH_MAX_NUMBER, t('errors.maxValue')),
+                            .max(Constants.HIGH_MAX_NUMBER, t('errors.maxValue')),
         amenities: yup.string()
-                            .matches(ValidationConst.lettesNumersAndSpacesRegexComma, t('errors.lettesNumersAndSpacesRegexComma'))
-                            .max(ValidationConst.AMENITIES_MAX_LENGTH, t('errors.lengthMax')),
+                            .matches(Constants.lettesNumersAndSpacesRegexComma, t('errors.lettesNumersAndSpacesRegexComma'))
+                            .max(Constants.AMENITIES_MAX_LENGTH, t('errors.lengthMax')),
         });
 
         return (
