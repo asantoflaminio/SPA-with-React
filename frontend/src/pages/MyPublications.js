@@ -97,7 +97,7 @@ class MyPublications extends React.Component {
         for(let i = 0; i < this.state.myPublications.length; i++){
             pubComponents.push(
                 <ProfilePublication t={t} publication={this.state.myPublications[i]} 
-                    image={this.state.images[i]}></ProfilePublication>
+                    image={this.state.images[i]} pubprops={this.props}></ProfilePublication>
             )
         }
         

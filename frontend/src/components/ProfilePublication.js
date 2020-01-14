@@ -8,16 +8,12 @@ import {Link} from 'react-router-dom';
 import PublicationService from '../services/PublicationService';
 import JsonService from '../services/JsonService'
 
-const ProfilePublication = ({ t , publication, image}) => {
+const ProfilePublication = ({ t , publication, image, pubprops}) => {
     
     const handleClick = (publication) => {
-        let names = ["id"]
-        let values = [publication.publicationID]
-        //TODO: hay un error aca en this.props, pero sino anda y borra bien
-        
-       PublicationService.erasePublication(JsonService.createJSONArray(names,values), this.props).then(function(){
-            ;
-        }) 
+    
+       PublicationService.erasePublication(publication.publicationID, pubprops).then(function(){
+;}) 
     }
     
     return(
