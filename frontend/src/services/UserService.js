@@ -103,7 +103,7 @@ const UserService = (function(){
     async function _login(array, props){
         return await axios({
           method: 'post',
-          url: USERS_PATH + '/login',
+          url: USERS_PATH + '/users/login',
           data: JsonService.getJSONParsed(array)
         })
         .then(function (response) {
