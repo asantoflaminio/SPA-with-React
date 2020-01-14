@@ -72,9 +72,6 @@ public class PublicationController {
     		return rs.badRequest();
     	List<PublicationDTO> publications = ps.findAllPublications(page,limit);
     	response.setHeader(Constants.COUNT_HEADER, Integer.toString(ps.getCountAllPublications()));
-    	for(PublicationDTO pub: publications) {
-    		System.out.println("Showing: " + pub.getPublicationID());
-    	}
     	return Response.ok().entity(publications).build();
     }
     
@@ -174,7 +171,6 @@ public class PublicationController {
     @Path("/{publicationID}")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response deletePublication(@PathParam("publicationID") long publicationID){
-    	System.out.println("Delenting: " + publicationID);
     	if(! vs.validateID(publicationID))
     		return rs.badRequest();
     	if(! ps.deletePublication(publicationID))

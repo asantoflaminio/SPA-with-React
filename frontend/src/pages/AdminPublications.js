@@ -23,6 +23,7 @@ class AdminPublications extends React.Component {
         };
 
         this.showModalErasePublication = this.showModalErasePublication.bind(this);
+        this.erasePublication = this.erasePublication.bind(this);
     }
 
 
@@ -75,9 +76,10 @@ class AdminPublications extends React.Component {
         PublicationService.erasePublication(publicationID,this.props).then(function (){
             currentComponent.setState({
                 publications: [],
-
+                showModal: false
             })
-            if(Math.ceil(currentComponent.state.resultsQuantity - 1 / Constants.USERS_PAGE_LIMIT) > currentComponent.state.pagesQuantity
+            alert(Math.ceil((currentComponent.state.resultsQuantity - 1) / Constants.USERS_PAGE_LIMIT))
+            if(Math.ceil((currentComponent.state.resultsQuantity - 1) / Constants.USERS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
                 && currentComponent.state.page == currentComponent.state.pagesQuantity - 1)
                 data.selected = currentComponent.state.page - 1;
             else
@@ -112,6 +114,7 @@ class AdminPublications extends React.Component {
                     information={t('modal.deletePublicationDetail')}
                     checkModal={true}
                     acceptFunction={this.erasePublication}
+                    functionParameter={this.state.publicationIDToDelete}
                 />
                 <div class="polaroid data">
                     <div class="title-container">

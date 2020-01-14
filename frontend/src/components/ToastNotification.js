@@ -10,6 +10,7 @@ class ToastNotification extends React.Component{
         show: false
     };
     this.handleClose = this.handleClose.bind(this)
+    this.handleShow = this.handleShow.bind(this)
 }
 
   componentDidUpdate(prevProps,prevState){
@@ -26,6 +27,11 @@ class ToastNotification extends React.Component{
     })
   }
 
+  handleShow(){
+    if(this.props.checkModal === false)
+      setTimeout(() => {this.setState({show: false})}, 8000)
+  }
+
   showButtons(){
     const { t } = this.props;
     if(this.props.checkModal === true){
@@ -34,7 +40,7 @@ class ToastNotification extends React.Component{
           <Button variant="secondary" onClick={this.handleClose}>
           {t('modal.close')}
           </Button>
-          <Button variant="primary" onClick={this.handleClose}>
+          <Button variant="primary" onClick={() => this.props.acceptFunction(this.props.functionParameter) & this.handleClose()}>
           {t('modal.accept')}
           </Button>
         </>
@@ -44,13 +50,13 @@ class ToastNotification extends React.Component{
 
 
   render(){
-    setTimeout(() => {this.setState({show: false})}, 8000)
     let buttons = this.showButtons()
     return (
       <Modal 
         show={this.state.show} 
         onHide={this.handleClose} 
         backdrop={false}
+        onShow={this.handleShow}
       >
         <Modal.Header closeButton>
           <Modal.Title>{this.props.title}</Modal.Title>
