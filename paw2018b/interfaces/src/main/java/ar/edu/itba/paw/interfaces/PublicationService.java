@@ -3,6 +3,7 @@ package ar.edu.itba.paw.interfaces;
 import java.util.HashMap;
 import java.util.List;
 
+import ar.edu.itba.paw.models.Filter;
 import ar.edu.itba.paw.models.Publication;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 
@@ -14,8 +15,6 @@ public interface PublicationService {
 			   String description, String propertyType, String bedrooms,
 			   String bathrooms, String floorSize, String parking,
 			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses, long userid);
-	
-	public List<PublicationDTO> findByOperation(String operation);
 	
 	public List<PublicationDTO> findByUserId(long id, String pagePub);
 	
@@ -65,6 +64,11 @@ public interface PublicationService {
 	public Integer getMaxResultProfile();
 
 	public Integer getMaxResultList();
+
+	public List<Filter> generateFilters(String operation, String propertyType, Integer minPrice, Integer maxPrice,
+			Integer minFloorSize, Integer maxFloorSize, Integer bedrooms, Integer bathrooms, Integer parking);
+
+	public List<PublicationDTO> getPublications(String address, List<Filter> filters, Integer page, Integer limit, String order);
 
 	
 }

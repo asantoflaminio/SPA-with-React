@@ -14,6 +14,10 @@ import org.springframework.stereotype.Service;
 import ar.edu.itba.paw.interfaces.PublicationDao;
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserDao;
+import ar.edu.itba.paw.models.Constants;
+import ar.edu.itba.paw.models.Constants.QueryFilterName;
+import ar.edu.itba.paw.models.Constants.QueryOperator;
+import ar.edu.itba.paw.models.Filter;
 import ar.edu.itba.paw.models.Publication;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 
@@ -124,16 +128,6 @@ public class PublicationServiceImpl implements PublicationService {
 				   bathrooms, floorSize, parking, publicationid,
 				   coveredFloorSize, balconies, amenities, storage, expenses);
 
-	}
-	
-	@Override
-	public List<PublicationDTO> findByOperation(String operation){
-		LOGGER.debug("Getting most recently updated publications by operation");
-		List<PublicationDTO> publicationsDTO = new LinkedList<PublicationDTO>();
-		for(Publication publication: publicationDao.findByOperation(operation)) {
-			publicationsDTO.add(transform(publication));
-		}
-		return publicationsDTO;
 	}
 	
 	@Override
@@ -255,6 +249,48 @@ public class PublicationServiceImpl implements PublicationService {
 	public Integer getMaxResultList() {
 		return publicationDao.getMaxResultList();
 	}
+	
+	@Override
+	public List<PublicationDTO> getPublications(String address, List<Filter> filters, Integer page, Integer limit, String order){
+		List<PublicationDTO> publicationsDTO = new LinkedList<PublicationDTO>();
+		for(Publication publication: publicationDao.getPublications(address, filters, page, limit, order)) {
+			publicationsDTO.add(transform(publication));
+		}
+		return publicationsDTO;
+	}
+	
+	@Override
+	public List<Filter> generateFilters(String operation, String propertyType, Integer minPrice, Integer maxPrice, Integer minFloorSize, Integer maxFloorSize,
+										Integer bedrooms, Integer bathrooms, Integer parking){
+		List<Filter> filters = new LinkedList<Filter>();
+		addStringFilter(filters,operation,Constants.QueryFilterName.OPERATION,Constants.QueryOperator.EQUAL);
+		addStringFilter(filters,propertyType,Constants.QueryFilterName.PROPERTYTYPE,Constants.QueryOperator.EQUAL);
+		addIntegerFilter(filters,minPrice,Constants.QueryFilterName.PRICE,Constants.QueryOperator.LESS_OR_EQUAL);
+		addIntegerFilter(filters,maxPrice,Constants.QueryFilterName.PRICE,Constants.QueryOperator.GREATER_OR_EQUAL);
+		addIntegerFilter(filters,minFloorSize,Constants.QueryFilterName.FLOORSIZE,Constants.QueryOperator.LESS_OR_EQUAL);
+		addIntegerFilter(filters,maxFloorSize,Constants.QueryFilterName.FLOORSIZE,Constants.QueryOperator.GREATER_OR_EQUAL);
+		addIntegerFilter(filters,bedrooms,Constants.QueryFilterName.BEDROOMS,Constants.QueryOperator.EQUAL);
+		addIntegerFilter(filters,bathrooms,Constants.QueryFilterName.BATHROOMS,Constants.QueryOperator.EQUAL);
+		addIntegerFilter(filters,parking,Constants.QueryFilterName.PARKING,Constants.QueryOperator.EQUAL);
+		
+		return filters;
+	}
+	
+	public void addStringFilter(List<Filter> filters, String value, QueryFilterName name, QueryOperator operator) {
+		if(value != null) {
+			Filter filter = new Filter(value,name,operator);
+			filters.add(filter);
+		}
+	}
+	
+	public void addIntegerFilter(List<Filter> filters, Integer value, QueryFilterName name, QueryOperator operator) {
+		if(value != null) {
+			Filter filter = new Filter(value,name,operator);
+			filters.add(filter);
+		}
+	}
+	
+	
 
 
 }

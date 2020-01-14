@@ -42,3 +42,17 @@ export const numbersDashRegex = new RegExp("^[-0-9]*$");
 
 export const USERS_PAGE_LIMIT = 2;
 export const PUBLICATIONS_PAGE_LIMIT = 2;
+
+//Logic Constants
+
+export const FSALE = "FSale"
+export const FRENT = "FRent"
+
+export const HOUSE = "House"
+export const APARTMENT = "Apartment"
+
+export const NO_ORDER = "No order"
+export const ASCENDANT_ORDER = "Ascending order"
+export const DESCENDANT_ORDER = "Descending order"
+export const OLDEST_PUBLICATION = "Oldest publications"
+export const NEWEST_PUBLICATION = "Newest publications"

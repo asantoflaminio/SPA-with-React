@@ -78,7 +78,6 @@ class AdminPublications extends React.Component {
                 publications: [],
                 showModal: false
             })
-            alert(Math.ceil((currentComponent.state.resultsQuantity - 1) / Constants.USERS_PAGE_LIMIT))
             if(Math.ceil((currentComponent.state.resultsQuantity - 1) / Constants.USERS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
                 && currentComponent.state.page == currentComponent.state.pagesQuantity - 1)
                 data.selected = currentComponent.state.page - 1;

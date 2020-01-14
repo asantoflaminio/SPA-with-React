@@ -8,9 +8,9 @@ import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.models.Constants;
-import ar.edu.itba.paw.models.Publication;
+import ar.edu.itba.paw.models.Filter;
 import ar.edu.itba.paw.models.UploadFile;
 import ar.edu.itba.paw.models.dto.BooleanResponseDTO;
 import ar.edu.itba.paw.models.dto.FiltersDTO;
@@ -67,19 +67,16 @@ public class PublicationController {
     @GET
     @Path("/publications")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getAllPublications (@Context HttpServletResponse response, @NotNull @QueryParam("page") int page, @NotNull @QueryParam("limit") int limit) {
+    public Response getAllPublications (@Context HttpServletResponse response, @DefaultValue("0") @QueryParam("page") Integer page, @DefaultValue("10") @QueryParam("limit") Integer limit,
+    									@QueryParam("operation") String operation, @QueryParam("propertyType") String propertyType, @QueryParam("address") String address,
+    									@QueryParam("minPrice") Integer minPrice, @QueryParam("maxPrice") Integer maxPrice, @QueryParam("minFloorSize") Integer minFloorSize,
+    									@QueryParam("maxFloorSize") Integer maxFloorSize, @QueryParam("bedrooms") Integer bedrooms, @QueryParam("bathrooms") Integer bathrooms,
+    									@QueryParam("parking") Integer parking, @QueryParam("order") String order) {
     	if(!vs.validatePagination(page,limit))
     		return rs.badRequest();
-    	List<PublicationDTO> publications = ps.findAllPublications(page,limit);
+    	List<Filter> filters = ps.generateFilters(operation, propertyType, minPrice, maxPrice, minFloorSize, maxFloorSize, bedrooms, bathrooms, parking);
+    	List<PublicationDTO> publications = ps.getPublications(address,filters,page,limit,order);
     	response.setHeader(Constants.COUNT_HEADER, Integer.toString(ps.getCountAllPublications()));
-    	return Response.ok().entity(publications).build();
-    }
-    
-    @GET
-    @Path("/getRentPublications")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getRentPublications () {
-    	List<PublicationDTO> publications = ps.findByOperation("FRent");
     	return Response.ok().entity(publications).build();
     }
     
@@ -168,7 +165,7 @@ public class PublicationController {
     }
     
     @DELETE
-    @Path("/{publicationID}")
+    @Path("publications/{publicationID}")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response deletePublication(@PathParam("publicationID") long publicationID){
     	if(! vs.validateID(publicationID))
@@ -205,7 +202,7 @@ public class PublicationController {
     	publicationDTO.setCoveredFloorSize(Integer.toString(random.nextInt(5 + 1 - 0) + 0));
     	publicationDTO.setBalconies(Integer.toString(random.nextInt(5 + 1 - 0) + 0));
     	publicationDTO.setStorage("notCorresponding");
-    	Publication pub = ps.create(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodID(), 
+    	ps.create(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodID(), 
     			publicationDTO.getCityID(), publicationDTO.getProvinceID(), publicationDTO.getOperation(), 
     			publicationDTO.getPrice(), publicationDTO.getDescription(), publicationDTO.getPropertyType(), 
     			publicationDTO.getBedrooms(), publicationDTO.getBathrooms(), publicationDTO.getDimention(), 

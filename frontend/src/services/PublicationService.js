@@ -137,7 +137,7 @@ const PublicationService = (function(){
     async function _erasePublication(publicationID,props){
       return await axios({
         method: 'delete',
-        url: `${PUBLICATIONS_PATH}/${publicationID}`,
+        url: `${PUBLICATIONS_PATH}/publications/${publicationID}`,
         headers: {
           authorization: LocalStorageService.getAccessToken(),
       }

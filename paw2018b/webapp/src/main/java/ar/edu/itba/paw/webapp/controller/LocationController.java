@@ -91,9 +91,6 @@ public class LocationController {
     		return rs.badRequest();
     	
     	List<CityDTO> cities = ls.getCities(provinceid);
-    	if(cities.size() == 0)
-    		return rs.notFound();
-    	
     	return rs.okRequest(cities);
     }
     
@@ -105,9 +102,6 @@ public class LocationController {
     		!vs.validateLocation(Long.toString(cityid), Constants.Location.CITY.toString()))
     		return rs.badRequest();
     	List<NeighborhoodDTO> neighborhoods = ls.getNeighborhoods(provinceid, cityid);
-    	
-    	if(neighborhoods.size() == 0)
-    		return rs.notFound();
     	
     	return rs.okRequest(neighborhoods);
     }

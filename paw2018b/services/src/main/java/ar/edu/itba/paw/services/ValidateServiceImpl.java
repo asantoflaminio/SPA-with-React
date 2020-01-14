@@ -225,7 +225,7 @@ public class ValidateServiceImpl implements ValidateService{
 	}
 	
 	@Override
-	public boolean validatePagination(int page, int limit) {
+	public boolean validatePagination(Integer page, Integer limit) {
 		if(page < 0 || limit <= 0) {
 			LOGGER.debug("Some paginations parameters were negative");
 			return false;

@@ -31,7 +31,7 @@ public interface ValidateService {
 	
 	public boolean validateLocationAdmin(String location, String field);
 
-	boolean validatePagination(int page, int limit);
+	boolean validatePagination(Integer page, Integer limit);
 
 	boolean validateID(long id);
 

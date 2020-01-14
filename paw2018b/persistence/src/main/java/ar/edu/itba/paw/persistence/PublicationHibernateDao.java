@@ -17,6 +17,8 @@ import ar.edu.itba.paw.interfaces.FavPublicationsDao;
 import ar.edu.itba.paw.interfaces.PublicationDao;
 import ar.edu.itba.paw.interfaces.UserDao;
 import ar.edu.itba.paw.models.City;
+import ar.edu.itba.paw.models.Constants;
+import ar.edu.itba.paw.models.Filter;
 import ar.edu.itba.paw.models.FilterCountQuery;
 import ar.edu.itba.paw.models.Neighborhood;
 import ar.edu.itba.paw.models.Province;
@@ -35,15 +37,9 @@ public class PublicationHibernateDao implements PublicationDao{
 	@Autowired
 	private FavPublicationsDao favPublicationsDao;
 	
-	private static Integer MAX_RESULTS_HOME = 9;
 	private static Integer MAX_RESULTS_PROFILE = 3;
 	private static Integer MAX_RESULTS_LIST = 3;
 	
-	private static String NO_ORDER = "No order";
-	private static String ASCENDANT_ORDER = "Ascending order";
-	private static String DESCENDANT_ORDER = "Descending order";
-	private static String OLDEST_PUBLICATION = "Oldest publications";
-	private static String NEWSEST_PUBLICATION = "Newest publications";
 	
 	private static String SELECT_STATEMENT_SEARCH = "select distinct pub from Publication as pub "
 										   + "left join fetch pub.province "
@@ -60,6 +56,9 @@ public class PublicationHibernateDao implements PublicationDao{
 		   	   									  + "AND (UPPER(pub.address) LIKE UPPER(:address) OR UPPER(pub.province.province) LIKE UPPER(:address) "  
 		   	   									  + "OR UPPER(pub.city.city) LIKE UPPER(:address) OR UPPER(pub.neighborhood.neighborhood) LIKE UPPER(:address)) "
 		   	   									  + "AND pub.locked != true ";
+	
+	private static String SEARCH_STATEMENT = " (UPPER(pub.address) LIKE UPPER(:address) OR UPPER(pub.province.province) LIKE UPPER(:address) "
+				  									+ "OR UPPER(pub.city.city) LIKE UPPER(:address) OR UPPER(pub.neighborhood.neighborhood) LIKE UPPER(:address)) ";
 	
 
 	@Override
@@ -93,17 +92,6 @@ public class PublicationHibernateDao implements PublicationDao{
 		pub.setProvince(p);
 		em.persist(pub);
 		return pub;
-	}
-	
-	@Override
-	@Transactional
-	public List<Publication> findByOperation(String operation){
-		String queryString = SELECT_STATEMENT_SEARCH + "where pub.operation = :operation";
-		queryString = setOrder(queryString,NEWSEST_PUBLICATION);
-		final TypedQuery<Publication> query = em.createQuery(queryString, Publication.class);
-		query.setParameter("operation", operation);
-		query.setMaxResults(MAX_RESULTS_HOME);
-		return query.getResultList();
 	}
 
 	@Override
@@ -165,13 +153,13 @@ public class PublicationHibernateDao implements PublicationDao{
 	
 	
 	private String setOrder(String queryString, String order) {
-		if(order.equals(NO_ORDER)) 
+		if(order.equals(Constants.QueryOrder.NO_ORDER.getQueryOrder())) 
 			return queryString;
-		else if(order.equals(ASCENDANT_ORDER))
+		else if(order.equals(Constants.QueryOrder.ASCENDANT_ORDER.getQueryOrder()))
 			queryString += " ORDER BY pub.price ASC";
-		else if(order.equals(DESCENDANT_ORDER))
+		else if(order.equals(Constants.QueryOrder.DESCENDANT_ORDER.getQueryOrder()))
 			queryString += " ORDER BY pub.price DESC";
-		else if(order.equals(OLDEST_PUBLICATION))
+		else if(order.equals(Constants.QueryOrder.OLDEST_PUBLICATION.getQueryOrder()))
 			queryString += " ORDER BY pub.publicationDate ASC";
 		else
 			queryString += " ORDER BY pub.publicationDate DESC";
@@ -420,5 +408,78 @@ public class PublicationHibernateDao implements PublicationDao{
 	public Integer getMaxResultList() {
 		return MAX_RESULTS_LIST;
 	}
+	
+	@Override
+	@Transactional
+	public List<Publication> getPublications(String address, List<Filter> filters, Integer page, Integer limit, String order) {
+		String queryString = SELECT_STATEMENT_SEARCH;
+		queryString = addFiltersStatement(queryString,filters,address);
+		queryString = setOrderFilter(queryString,order);
+		TypedQuery<Publication> query = em.createQuery(queryString, Publication.class);
+		addFiltersValues(query,filters,address);
+		setPagination(query,page,limit);
+		return query.getResultList();
+	}
+	
+	@Override
+	public String addFiltersStatement(String query, List<Filter> filters, String address) {
+		Filter current;
+		if(address != null || filters.size() > 0)
+			query += "where";
+		
+		if(address != null)
+			query += SEARCH_STATEMENT;
+		
+		for(int i = 0; i < filters.size(); i++) {
+			current = filters.get(i);
+			if(i == 0)
+				query += " pub." + current.getNameValue().getQueryFilterName() + " " +  current.getOperator().getQueryOperator() + " :" + current.getNameValue().getQueryFilterName() + " ";
+			else
+				query += " AND pub." + current.getNameValue().getQueryFilterName() + " " +  current.getOperator().getQueryOperator()  + " :" + current.getNameValue().getQueryFilterName() + " ";
+		}
+		
+		return query;
+	}
+	
+	@Override
+	public String setOrderFilter(String query, String order) {
+		if(order == null)
+			return query;
+		if(order.equals(Constants.QueryOrder.ASCENDANT_ORDER.getQueryOrder()))
+			query += " ORDER BY pub.price ASC";
+		else if(order.equals(Constants.QueryOrder.DESCENDANT_ORDER.getQueryOrder()))
+			query += " ORDER BY pub.price DESC";
+		else if(order.equals(Constants.QueryOrder.OLDEST_PUBLICATION.getQueryOrder()))
+			query += " ORDER BY pub.publicationDate ASC";
+		else if(order.equals(Constants.QueryOrder.NEWEST_PUBLICATION.getQueryOrder()))
+			query += " ORDER BY pub.publicationDate DESC";
+		return query;
+	}
+	
+	@Override
+	public void addFiltersValues(TypedQuery<?> query, List<Filter> filters, String address) {
+		if(address != null) {
+			String queryAddress =  "%" + address + "%";
+			query.setParameter("address", queryAddress);
+		}
+		
+		for(Filter filter: filters) {
+			if(filter.getIntValue() != null)
+				query.setParameter(filter.getNameValue().getQueryFilterName(), filter.getIntValue());
+			else
+				query.setParameter(filter.getNameValue().getQueryFilterName(), filter.getStringValue());
+		}
+		
+	}
+	
 
+	
+	@Override
+	public void setPagination(TypedQuery<?> query, Integer page, Integer limit) {
+		if(page != null && limit != null) {
+			query.setFirstResult(page * limit);
+			query.setMaxResults(limit);
+		}
+
+	}
 }

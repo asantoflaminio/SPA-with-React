@@ -8,6 +8,7 @@ import image2 from '../resources/examples/2.jpg'
 import HomeCard from '../components/HomeCard'
 import {Link} from 'react-router-dom';
 import PublicationService from '../services/PublicationService'
+import * as Constants from '../util/Constants'
 
 class HomeReal extends React.Component {
    constructor(props) {
@@ -23,14 +24,21 @@ class HomeReal extends React.Component {
     
     componentDidMount(){
         let currentComponent = this
-        PublicationService.getSalePublications(this.props).then(function (publications){
+        let queryParameters_1 = {}
+        let queryParameters_2 = {}
+
+        queryParameters_1.operation = Constants.FSALE
+        queryParameters_1.order = Constants.NEWEST_PUBLICATION
+        PublicationService.getPublications(queryParameters_1,this.props).then(function (response){
             currentComponent.setState({
-                publicationsSale: publications
+                publicationsSale: response.data
             })
         })
-        PublicationService.getRentPublications(this.props).then(function (publications){
+        queryParameters_2.operation = Constants.FSALE
+        queryParameters_2.operation = Constants.FRENT
+        PublicationService.getPublications(queryParameters_2,this.props).then(function (response){
             currentComponent.setState({
-                publicationsRent: publications
+                publicationsRent: response.data
             })
         })
       }
@@ -59,7 +67,7 @@ class HomeReal extends React.Component {
         let buy = document.getElementById("buy")
         let rent = document.getElementById("rent")
 
-        if(operation === "FSale"){
+        if(operation === Constants.FSALE){
             rent.classList.remove("selected")
             buy.classList.add("selected");
         }else{

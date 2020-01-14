@@ -8,6 +8,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Service;
 
 import ar.edu.itba.paw.models.Publication;
+import ar.edu.itba.paw.models.Filter;
 
 @Service
 public interface PublicationDao {
@@ -19,7 +20,6 @@ public interface PublicationDao {
 			   String bathrooms, String floorSize, String parking,
 			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses, long userid);
 	
-	public List<Publication> findByOperation(String operation);
 	
 	public List<Publication> findByUserId(long id, String pagePub);
 	
@@ -77,6 +77,18 @@ public interface PublicationDao {
 	public Integer getMaxResultProfile();
 	
 	public Integer getMaxResultList();
+
+	public List<Publication> getPublications(String address, List<Filter> filters, Integer page, Integer limit, String order);
+
+	public String addFiltersStatement(String query, List<Filter> filters, String address);
+
+	public String setOrderFilter(String query, String order);
+	
+	public void addFiltersValues(TypedQuery<?> query, List<Filter> filters, String address);
+
+	public void setPagination(TypedQuery<?> query, Integer page, Integer limit);
+
+	
 
 
 
