@@ -38,8 +38,8 @@ class SignUp extends React.Component {
         }
     }
 
-    checkEmailAvaiability(event){
-        UserService.checkEmailAvaibility(event,this.props).then(function (status){
+    checkEmailAvailability(event){
+        UserService.checkEmailAvailability(event,this.props).then(function (status){
             if(status)
                 document.getElementById("emailTakenError").style.display = "none"
             else
