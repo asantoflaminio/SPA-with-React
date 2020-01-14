@@ -8,8 +8,8 @@ import ReactPaginate from 'react-paginate';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withRouter } from "react-router";
-import AdminService from '../services/AdminService'
 import * as Constants from '../util/Constants'
+import UserService from '../services/UserService';
 
 class AdminUsers extends React.Component {
 
@@ -25,10 +25,12 @@ class AdminUsers extends React.Component {
 
 
     lockUser(event,index){
-        let status = event.target.checked;
+        let queryParameters = {}
+        queryParameters.lock = event.target.checked;
+        let useid = event.target.id;
         let newList = this.state.usersList
-        newList[index].locked = !event.target.checked;
-        AdminService.lockUser(status,event.target.id)
+        newList[index].locked = event.target.checked;
+        UserService.lockUser(queryParameters,useid)
         this.setState({
             userList: newList,
         })
@@ -53,7 +55,7 @@ class AdminUsers extends React.Component {
                         <FormControlLabel
                             value="start"
                             control={<Switch color="primary" id={users[i].id}/>}
-                            checked={!users[i].locked}
+                            checked={users[i].locked}
                             onChange={(event) => this.lockUser(event,i)}
                             label={label}
                             labelPlacement="start"
@@ -90,7 +92,7 @@ class AdminUsers extends React.Component {
 
         queryParameters.page = parseInt(data.selected);
         queryParameters.limit = Constants.USERS_PAGE_LIMIT
-        AdminService.getUsers(queryParameters, this.props).then(function (response){
+        UserService.getUsers(queryParameters, this.props).then(function (response){
             currentComponent.pushPageParam(queryParameters.page + 1);
             currentComponent.setState({
                 usersList: response.data,

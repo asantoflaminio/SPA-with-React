@@ -106,9 +106,9 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public void lockUnlockUser(boolean status, long userid) {
+	public void lock(boolean lock, long userid) {
 		LOGGER.debug("Lock user with userid {} ", userid);
-		userDao.lockUnlockUser(status,userid);
+		userDao.lock(lock,userid);
 	}
 
 }

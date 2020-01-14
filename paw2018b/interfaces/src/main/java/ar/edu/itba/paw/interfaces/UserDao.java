@@ -25,6 +25,6 @@ public interface UserDao{
 	
 	public int getAllUsersCount();
 	
-	public void lockUnlockUser(boolean status, long userid);
+	public void lock(boolean lock, long userid);
 	
 }

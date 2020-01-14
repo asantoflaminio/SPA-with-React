@@ -96,10 +96,11 @@ public class LocationHibernateDao implements LocationDao{
 	
 	@Override
 	@Transactional
-	public Neighborhood findByNeighborhoodName(long porvinceid, long cityid, String neighborhood) {
+	public Neighborhood findByNeighborhoodName(long provinceid, long cityid, String neighborhood) {
 		String queryString = "select distinct neigh from Neighborhood as neigh where neigh.city.province.provinceid = :provinceid "
 							+ "AND neigh.city.cityid = :cityid AND upper(neigh.neighborhood) = upper(:neighborhood)";
 		final TypedQuery<Neighborhood> query = em.createQuery(queryString, Neighborhood.class);
+		query.setParameter("provinceid", provinceid);
 		query.setParameter("cityid", cityid);
 		query.setParameter("neighborhood", neighborhood);
 		final List<Neighborhood> list = query.getResultList();

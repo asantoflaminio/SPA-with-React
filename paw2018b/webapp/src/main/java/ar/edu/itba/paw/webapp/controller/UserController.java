@@ -9,12 +9,16 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -29,6 +33,7 @@ import ar.edu.itba.paw.interfaces.FavPublicationsService;
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.ChangePassword;
+import ar.edu.itba.paw.models.Constants;
 import ar.edu.itba.paw.models.FavPublication;
 import ar.edu.itba.paw.models.Publication;
 import ar.edu.itba.paw.models.User;
@@ -47,16 +52,20 @@ import ar.edu.itba.paw.services.ChangePasswordServiceImpl;
 import ar.edu.itba.paw.services.ImageServiceImpl;
 import ar.edu.itba.paw.services.MailServiceImpl;
 import ar.edu.itba.paw.services.RequestServiceImpl;
+import ar.edu.itba.paw.services.ValidateServiceImpl;
 import ar.edu.itba.paw.webapp.auth.TokenAuthenticationService;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Path("users")
+@Path("users-managment")
 @Component
 public class UserController {
 	
 	@Autowired
 	private UserService us;
+	
+	@Autowired
+	private ValidateServiceImpl vs;
 	
 	@Autowired
 	private PublicationService ps;
@@ -81,6 +90,17 @@ public class UserController {
 	
 	@Autowired
 	private PasswordEncoder encoder;
+	
+    @GET
+    @Path("/users")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response getUsers (@Context HttpServletResponse response, @NotNull @QueryParam("page") int page, @NotNull @QueryParam("limit") int limit) {
+    	if(!vs.validatePagination(page,limit))
+    		return rs.badRequest();
+    	List<UserDTO> users = us.findAllUsers(page,limit);
+    	response.setHeader(Constants.COUNT_HEADER, Integer.toString(us.getAllUsersCount()));
+    	return rs.okRequest(users);
+    }
 	
     @POST
     @Path("/signUp")
@@ -308,6 +328,18 @@ public class UserController {
     	} else {
     		return Response.serverError().build();
     	}
+    }
+    
+    @PUT
+    @Path("/users/{userid}/lock")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response lockUser (@PathParam("userid") long userid, @NotNull @QueryParam("lock") boolean lock) {
+    	if(!vs.validateID(userid))
+    		return rs.badRequest();
+    	if(us.findById(userid) == null)
+    		return rs.notFound();
+    	us.lock(lock, userid);
+    	return rs.okRequest();
     }
 
 }

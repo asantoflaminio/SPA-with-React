@@ -24,6 +24,6 @@ public interface LocationDao {
 	
 	public City findByCityName(long provinceid, String city);
 	
-	public Neighborhood findByNeighborhoodName(long porvinceid, long cityid, String neighborhood);
+	public Neighborhood findByNeighborhoodName(long provinceid, long cityid, String neighborhood);
 
 }

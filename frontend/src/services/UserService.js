@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const UserService = (function(){
 
-    const USERS_PATH = process.env.PUBLIC_URL + '/meinHaus/users/'
+    const USERS_PATH = process.env.PUBLIC_URL + '/meinHaus/users-managment'
 
     function _isLogged(){
         if(LocalStorageService.getAccessToken() != null)
@@ -15,10 +15,24 @@ const UserService = (function(){
             return false;
     }
 
+    async function _getUsers(queryParameters, props){
+        return await axios({
+            method: 'get',
+            url: `${USERS_PATH}/users`,
+            params: queryParameters
+          })
+          .then(function (response) {
+              return response
+          })
+          .catch(function (error) {
+            ErrorService.logError(props,error)
+          });
+    }
+
     async function _signUp(event, props){
         return await axios({
           method: 'post',
-          url: USERS_PATH + 'signUp',
+          url: USERS_PATH + '/signUp',
           data: JsonService.getJSONParsed(event.target)
         })
         .then(function (response) {
@@ -32,7 +46,7 @@ const UserService = (function(){
     async function _checkEmailAvailability(event, props){
         return await axios({
           method: 'post',
-          url: USERS_PATH + 'checkEmail',
+          url: USERS_PATH + '/checkEmail',
           data: JsonService.getJSONParsed(event.target)
         })
         .catch(function (error) {
@@ -45,7 +59,7 @@ const UserService = (function(){
     async function _isAccount(event, props){
         return await axios({
           method: 'post',
-          url: USERS_PATH + 'isAccount',
+          url: USERS_PATH + '/isAccount',
           data: JsonService.getJSONParsed(event.target)
         }).then(function (response) {
             return response.status;
@@ -61,7 +75,7 @@ const UserService = (function(){
     async function _forgottenPasswordEmail(event, props){
         return await axios({
           method: 'post',
-          url: USERS_PATH + 'forgottenPasswordEmail',
+          url: USERS_PATH + '/forgottenPasswordEmail',
           data: JsonService.getJSONParsed(event.target)
         })
         .then(function (response) {
@@ -75,7 +89,7 @@ const UserService = (function(){
     async function _createNewPassword(event, props){
         return await axios({
           method: 'post',
-          url: USERS_PATH + 'createNewPassword',
+          url: USERS_PATH + '/createNewPassword',
           data: JsonService.getJSONParsed(event.target)
         })
         .then(function (response) {
@@ -89,7 +103,7 @@ const UserService = (function(){
     async function _login(array, props){
         return await axios({
           method: 'post',
-          url: USERS_PATH + 'login',
+          url: USERS_PATH + '/login',
           data: JsonService.getJSONParsed(array)
         })
         .then(function (response) {
@@ -103,7 +117,7 @@ const UserService = (function(){
     async function _postPublication(event, props){
         return await axios({
           method: 'post',
-          url: USERS_PATH + 'publish',
+          url: USERS_PATH + '/publish',
           data: JsonService.getJSONParsed(event.target),
           headers: {
             authorization: LocalStorageService.getAccessToken(),
@@ -125,7 +139,7 @@ const UserService = (function(){
         }
         axios({
             method: 'post',
-            url: USERS_PATH + 'images',
+            url: USERS_PATH + '/images',
             data: formData,
             headers: {
                 contentType:'multipart/form-data'},
@@ -140,7 +154,7 @@ const UserService = (function(){
     async function _sendMessage(event, props){
         return await axios({
           method: 'post',
-          url: USERS_PATH + 'sendMessage',
+          url: USERS_PATH + '/sendMessage',
           data: JsonService.getJSONParsed(event.target)
         })
         .then(function (response) { //creo q este then no va
@@ -154,7 +168,7 @@ const UserService = (function(){
     async function _getMyPublicationsQuantity(props){
         return await axios({
             method: 'get',
-            url: USERS_PATH + 'getMyPublicationsQuantity',
+            url: USERS_PATH + '/getMyPublicationsQuantity',
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
@@ -170,7 +184,7 @@ const UserService = (function(){
     async function _getMyFavoritesQuantity(props){
         return await axios({
             method: 'get',
-            url: USERS_PATH + 'getMyFavoritesQuantity',
+            url: USERS_PATH + '/getMyFavoritesQuantity',
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
@@ -186,7 +200,7 @@ const UserService = (function(){
     async function _getMyPublications(array, props){
         return await axios({
             method: 'post',
-            url: USERS_PATH + 'publications',
+            url: USERS_PATH + '/publications',
             data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
@@ -203,7 +217,7 @@ const UserService = (function(){
     async function _getMyFavoritesPublications(props){
         return await axios({
             method: 'get',
-            url: USERS_PATH + 'favorites',
+            url: USERS_PATH + '/favorites',
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
@@ -219,7 +233,7 @@ const UserService = (function(){
     async function _getMyPublicationsCount(props){
         return await axios({
             method: 'get',
-            url: USERS_PATH + 'getMyPublicationsCount',
+            url: USERS_PATH + '/getMyPublicationsCount',
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
@@ -235,7 +249,7 @@ const UserService = (function(){
     async function _getMyFavoritesPublicationsCount(props){
         return await axios({
             method: 'get',
-            url: USERS_PATH + 'getMyFavoritesPublicationsCount',
+            url: USERS_PATH + '/getMyFavoritesPublicationsCount',
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
@@ -251,7 +265,7 @@ const UserService = (function(){
     async function _favouritePublication(array,props){
         return await axios({
             method: 'post',
-            url: USERS_PATH + 'favouritePublication',
+            url: USERS_PATH + '/favouritePublication',
             data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
@@ -265,7 +279,7 @@ const UserService = (function(){
     async function _unfavouritePublication(array,props){
         return await axios({
             method: 'post',
-            url: USERS_PATH + 'unfavouritePublication',
+            url: USERS_PATH + '/unfavouritePublication',
             data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
@@ -279,7 +293,7 @@ const UserService = (function(){
     async function _updateInformation(array, props) {
         return await axios({
             method: 'put',
-            url: USERS_PATH + 'information',
+            url: USERS_PATH + '/information',
             data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
@@ -296,7 +310,7 @@ const UserService = (function(){
     async function _retrievePersonalInformation(props){
         return await axios({
             method: 'get',
-            url: USERS_PATH + 'profile',
+            url: USERS_PATH + '/profile',
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
@@ -312,7 +326,7 @@ const UserService = (function(){
     async function _updatePassword(array, props) {
         return await axios({
             method: 'put',
-            url: USERS_PATH + 'password',
+            url: USERS_PATH + '/password',
             data: JsonService.getJSONParsed(array),
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
@@ -322,8 +336,23 @@ const UserService = (function(){
         });
     }
 
+    function _lockUser(queryParameters,userid, props){
+        return axios({
+            method: 'put',
+            url: `${USERS_PATH}/users/${userid}/lock`,
+            params: queryParameters
+          })
+          .then(function (response) {
+              return response.data
+          })
+          .catch(function (error) {
+            ErrorService.logError(props,error)
+          });
+    }
+
    return {
         isLogged : _isLogged,
+        getUsers : _getUsers,
         signUp : _signUp,
         checkEmailAvailability : _checkEmailAvailability,
         isAccount : _isAccount,
@@ -343,7 +372,8 @@ const UserService = (function(){
         unfavouritePublication : _unfavouritePublication,
         updateInformation: _updateInformation,
         retrievePersonalInformation: _retrievePersonalInformation,
-        updatePassword: _updatePassword
+        updatePassword: _updatePassword,
+        lockUser : _lockUser
    }
    })();
 

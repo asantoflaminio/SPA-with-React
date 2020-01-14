@@ -97,12 +97,9 @@ public class UserHibernateDao implements UserDao {
 	
 	@Override
 	@Transactional
-	public void lockUnlockUser(boolean status, long userid) {
+	public void lock(boolean lock, long userid) {
 		final Query query =  em.createQuery("update User as u set u.locked = :locked where u.userid = :userid");
-		if(status == true)
-			query.setParameter("locked", false);
-		else
-			query.setParameter("locked", true);
+		query.setParameter("locked", lock);
 		query.setParameter("userid", userid);
 		query.executeUpdate();
 		

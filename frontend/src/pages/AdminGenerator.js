@@ -7,7 +7,7 @@ import { Formik } from 'formik';
 import '../css/AdminGenerator.css';
 import AdminManagment from '../components/AdminManagment';
 import {appendSelectElement} from '../util/function'
-import AdminService from '../services/AdminService'
+import LocationService from '../services/LocationService'
 import { withRouter } from "react-router";
 import ToastNotification from '../components/ToastNotification'
 import * as statusCode from '../util/StatusCode'
@@ -30,7 +30,7 @@ class AdminGenerator extends React.Component {
 
     componentDidMount(){
         let currentComponent = this
-        AdminService.getProvinces(this.props).then(function (provincesList){
+        LocationService.getProvinces(this.props).then(function (provincesList){
             currentComponent.setState({
                 provinces: provincesList,
             })
@@ -42,12 +42,12 @@ class AdminGenerator extends React.Component {
         let currentComponent = this
         let province = event.target[0].value
         if(Object.keys(errors).length === 0){
-            AdminService.postProvince(event, this.props).then(function (status){
+            LocationService.postProvince(event, this.props).then(function (status){
                 if(status === statusCode.CONFLICT)
                     currentComponent.setModalError(province)
                 else
                     currentComponent.setModalInformation(province)
-                AdminService.getProvinces(currentComponent.props).then(function (provinceList){
+                    LocationService.getProvinces(currentComponent.props).then(function (provinceList){
                     currentComponent.setState({
                         provinces: provinceList
                     })
@@ -62,7 +62,7 @@ class AdminGenerator extends React.Component {
         let currentComponent = this
         let city = event.target[1].value
         if(Object.keys(errors).length === 0){
-            AdminService.postCity(event, this.props).then(function (status){
+            LocationService.postCity(event, this.props).then(function (status){
                 if(status === statusCode.CONFLICT)
                     currentComponent.setModalError(city)
                 else
@@ -77,7 +77,7 @@ class AdminGenerator extends React.Component {
         let currentComponent = this
         let neighborhood = event.target[2].value
         if(Object.keys(errors).length === 0){
-            AdminService.postNeighborhood(event, this.props).then(function (status){
+            LocationService.postNeighborhood(event, this.props).then(function (status){
                 if(status === statusCode.CONFLICT)
                     currentComponent.setModalError(neighborhood)
                 else
@@ -91,7 +91,7 @@ class AdminGenerator extends React.Component {
         values.provinceID = event.target.value
         event.target.blur();
         let provinceID = event.target[0].parentElement.value
-        AdminService.getCities(provinceID, this.props).then(function (cities){
+        LocationService.getCities(provinceID, this.props).then(function (cities){
             let select = document.getElementById("city_neighborhood")
             select.selectedIndex = 0;
             while (select.childNodes[1]) {

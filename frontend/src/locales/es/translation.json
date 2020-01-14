@@ -251,6 +251,8 @@
       "postLocation" : "Ubicación agregada",
       "postLocationError" : "Error al agregar ubicación",
       "postLocationDetail" : "Se ha agregado {{location}} a la base de datos",
-      "postLocationDetailError" : "Se ha producido un error al agregar {{location}} a la base de datos"
+      "postLocationDetailError" : "Se ha producido un error al agregar {{location}} a la base de datos",
+      "deletePublication": "Eliminar publicación",
+      "deletePublicationDetail": "¿Estás seguro que quiere eliminar la publicación?"
     }
   }

@@ -45,6 +45,7 @@ class ToastNotification extends React.Component{
 
   render(){
     setTimeout(() => {this.setState({show: false})}, 8000)
+    let buttons = this.showButtons()
     return (
       <Modal 
         show={this.state.show} 
@@ -56,7 +57,7 @@ class ToastNotification extends React.Component{
         </Modal.Header>
         <Modal.Body>{this.props.information}</Modal.Body>
         <Modal.Footer>
-          {this.showButtons}
+          {buttons}
         </Modal.Footer>
       </Modal>
     );

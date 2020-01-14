@@ -4,6 +4,7 @@ package ar.edu.itba.paw.webapp.controller;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Component;
 
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.models.Constants;
+import ar.edu.itba.paw.models.Publication;
 import ar.edu.itba.paw.models.UploadFile;
 import ar.edu.itba.paw.models.dto.BooleanResponseDTO;
 import ar.edu.itba.paw.models.dto.FiltersDTO;
@@ -40,7 +42,7 @@ import ar.edu.itba.paw.services.ValidateServiceImpl;
 import ar.edu.itba.paw.webapp.auth.TokenAuthenticationService;
 
 
-@Path("publications")
+@Path("publications-managment")
 @Component
 public class PublicationController {
 	
@@ -63,12 +65,16 @@ public class PublicationController {
 	private RequestServiceImpl rs;
 	
     @GET
+    @Path("/publications")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getAllPublications (@Context HttpServletResponse response, @NotNull @QueryParam("page") int page, @NotNull @QueryParam("limit") int limit) {
     	if(!vs.validatePagination(page,limit))
     		return rs.badRequest();
     	List<PublicationDTO> publications = ps.findAllPublications(page,limit);
     	response.setHeader(Constants.COUNT_HEADER, Integer.toString(ps.getCountAllPublications()));
+    	for(PublicationDTO pub: publications) {
+    		System.out.println("Showing: " + pub.getPublicationID());
+    	}
     	return Response.ok().entity(publications).build();
     }
     
@@ -168,11 +174,48 @@ public class PublicationController {
     @Path("/{publicationID}")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response deletePublication(@PathParam("publicationID") long publicationID){
+    	System.out.println("Delenting: " + publicationID);
     	if(! vs.validateID(publicationID))
     		return rs.badRequest();
     	if(! ps.deletePublication(publicationID))
     		return rs.notFound();
     	
     	return rs.noContent();
+    }
+    
+    //SOLO DEVELOP, ESTA FUNCION SE DEBE BORRAR EN PRODUCCION!!!!!!!
+    @POST
+    @Path("/publications/random")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response createRandom() {
+    	Random random = new Random();
+    	PublicationDTO publicationDTO = new PublicationDTO();
+    	publicationDTO.setTitle("adwada");
+    	publicationDTO.setProvinceID("14");
+    	publicationDTO.setCityID("22");
+    	publicationDTO.setNeighborhoodID("13");
+    	publicationDTO.setAddress("asdasd");
+    	publicationDTO.setDescription("asdasd");
+    	publicationDTO.setAmenities("SADASDA");
+    	publicationDTO.setDimention(Integer.toString(random.nextInt(100 + 1 - 0) + 0));
+    	publicationDTO.setOperation(Constants.Operation.FSALE.getOperation());
+    	publicationDTO.setPropertyType(Constants.PropertyType.HOUSE.getPropertyType());
+    	publicationDTO.setCoveredFloorSize(Integer.toString(random.nextInt(100 + 1 - 0) + 0));
+    	publicationDTO.setPrice(Integer.toString(random.nextInt(500000 + 1 - 0) + 0));
+    	publicationDTO.setExpenses(Integer.toString(random.nextInt(5000 + 1 - 0) + 0));
+    	publicationDTO.setBedrooms(Integer.toString(random.nextInt(5 + 1 - 0) + 0));
+    	publicationDTO.setBathrooms(Integer.toString(random.nextInt(5 + 1 - 0) + 0));
+    	publicationDTO.setParking(Integer.toString(random.nextInt(5 + 1 - 0) + 0));
+    	publicationDTO.setCoveredFloorSize(Integer.toString(random.nextInt(5 + 1 - 0) + 0));
+    	publicationDTO.setBalconies(Integer.toString(random.nextInt(5 + 1 - 0) + 0));
+    	publicationDTO.setStorage("notCorresponding");
+    	Publication pub = ps.create(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodID(), 
+    			publicationDTO.getCityID(), publicationDTO.getProvinceID(), publicationDTO.getOperation(), 
+    			publicationDTO.getPrice(), publicationDTO.getDescription(), publicationDTO.getPropertyType(), 
+    			publicationDTO.getBedrooms(), publicationDTO.getBathrooms(), publicationDTO.getDimention(), 
+    			publicationDTO.getParking(),
+    			publicationDTO.getCoveredFloorSize(), publicationDTO.getBalconies(),
+    			publicationDTO.getAmenities(), publicationDTO.getStorage(), publicationDTO.getExpenses(), 62);
+    	return rs.okRequest(publicationDTO);
     }
 }

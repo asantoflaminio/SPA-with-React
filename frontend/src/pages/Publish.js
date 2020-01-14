@@ -8,8 +8,8 @@ import '../css/Publish.css';
 import { withRouter } from "react-router";
 import {appendSelectElement} from '../util/function'
 import ImageUploader from 'react-images-upload';
-import AdminService from '../services/AdminService'
 import UserService from '../services/UserService'
+import LocationService from '../services/LocationService'
 import * as Constants from '../util/Constants'
 
 class Publish extends React.Component {
@@ -31,7 +31,7 @@ class Publish extends React.Component {
         let currentComponent = this
         document.getElementById("FSale").checked = true
         document.getElementById("House").checked = true
-        AdminService.getProvinces(this.props).then(function (provincesList){
+        LocationService.getProvinces(this.props).then(function (provincesList){
             currentComponent.setState({
                 provinces: provincesList,
             })
@@ -105,7 +105,7 @@ class Publish extends React.Component {
         event.preventDefault();
         values.provinceID = event.target.value
         event.target.blur();
-        AdminService.getCities(values.provinceID, this.props).then(function (cities){
+        LocationService.getCities(values.provinceID, this.props).then(function (cities){
             let select = document.getElementById("city-Select")
             let selectNeighborhood = document.getElementById("neighborhood-Select")
             select.selectedIndex = 0;
@@ -123,7 +123,7 @@ class Publish extends React.Component {
         event.preventDefault();
         values.cityID = event.target.value
         event.target.blur();
-        AdminService.getNeighborhoods(values.provinceID,values.cityID, this.props).then(function (neighborhoods){
+        LocationService.getNeighborhoods(values.provinceID,values.cityID, this.props).then(function (neighborhoods){
             let select = document.getElementById("neighborhood-Select")
             select.selectedIndex = 0;
             while (select.childNodes[1]) {

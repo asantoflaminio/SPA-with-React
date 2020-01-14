@@ -5,8 +5,8 @@ import Publication from '../components/Publication';
 import ReactPaginate from 'react-paginate';
 import { withRouter } from "react-router";
 import PublicationService from '../services/PublicationService'
-import JsonService from '../services/JsonService'
 import * as Constants from '../util/Constants'
+import ToastNotification from '../components/ToastNotification'
 
 class AdminPublications extends React.Component {
 
@@ -17,10 +17,12 @@ class AdminPublications extends React.Component {
             pagesQuantity: 0,
             page: 0,
             publications: [],
-            resultsQuantity: 0
+            publicationIDToDelete: 0,
+            resultsQuantity: 0,
+            showModal: false
         };
 
-        this.erasePublication = this.erasePublication.bind(this);
+        this.showModalErasePublication = this.showModalErasePublication.bind(this);
     }
 
 
@@ -46,31 +48,40 @@ class AdminPublications extends React.Component {
 
     initializePublications(t){
         let pubComponents = [];
+        
         for(let i = 0; i < this.state.publications.length; i++){
             pubComponents.push(
                 <Publication t={t} 
                     publication={this.state.publications[i]}
                     page="AdminPublications"
                     favourites={false}
-                    eraseFunction={this.erasePublication}
+                    eraseFunction={this.showModalErasePublication}
                 />
             )
         }
         return pubComponents;
     }
 
-    
+    showModalErasePublication(publicationID){
+        this.setState({
+            showModal: true,
+            publicationIDToDelete: publicationID
+        })
+    }
 
     erasePublication(publicationID){
         let currentComponent = this
         let data = {}
         PublicationService.erasePublication(publicationID,this.props).then(function (){
-            /*
-            if(Math.ceil(currentComponent.state.resultsQuantity / Constants.USERS_PAGE_LIMIT) < currentComponent.state.pagesQuantity)
+            currentComponent.setState({
+                publications: [],
+
+            })
+            if(Math.ceil(currentComponent.state.resultsQuantity - 1 / Constants.USERS_PAGE_LIMIT) > currentComponent.state.pagesQuantity
+                && currentComponent.state.page == currentComponent.state.pagesQuantity - 1)
                 data.selected = currentComponent.state.page - 1;
             else
-                data.selected = currentComponent.state.page;*/
-                //El error esta x aca al refreshear las publicaciones
+                data.selected = currentComponent.state.page;
             currentComponent.handlePageClick(data)
 
         })
@@ -94,7 +105,14 @@ class AdminPublications extends React.Component {
         let publications = this.initializePublications(t)
         return(
             <div>
-                <AdminManagment t={t}/>
+                <AdminManagment t={t} active={"AdminPublications"}/>
+                <ToastNotification 
+                    show={this.state.showModal}
+                    title={t('modal.deletePublication')}
+                    information={t('modal.deletePublicationDetail')}
+                    checkModal={true}
+                    acceptFunction={this.erasePublication}
+                />
                 <div class="polaroid data">
                     <div class="title-container">
                         <h3>{t('admin.publications')}</h3>
@@ -109,6 +127,7 @@ class AdminPublications extends React.Component {
                                 nextLabel={'>'}
                                 breakLabel={'...'}
                                 pageCount={this.state.pagesQuantity}
+                                forcePage={this.state.page}
                                 marginPagesDisplayed={2}
                                 pageRangeDisplayed={3}
                                 onPageChange={this.handlePageClick}

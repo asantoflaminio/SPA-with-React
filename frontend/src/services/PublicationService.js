@@ -5,12 +5,12 @@ import LocalStorageService from './LocalStorageService'
 
 const PublicationService = (function(){
 
-    const PUBLICATIONS_PATH = process.env.PUBLIC_URL + '/meinHaus/publications'
+    const PUBLICATIONS_PATH = process.env.PUBLIC_URL + '/meinHaus/publications-managment'
 
     async function _getPublications(queryParameters,props){
       return await axios({
           method: 'get',
-          url: `${PUBLICATIONS_PATH}`,
+          url: `${PUBLICATIONS_PATH}/publications`,
           params: queryParameters
         })
         .then(function (response) {
