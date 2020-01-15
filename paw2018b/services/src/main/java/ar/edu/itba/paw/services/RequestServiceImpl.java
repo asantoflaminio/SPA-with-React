@@ -49,6 +49,11 @@ public class RequestServiceImpl implements RequestService{
 	}
 	
 	@Override
+	public Response forbidden() {
+		return Response.status(Response.Status.FORBIDDEN).build();
+	}
+	
+	@Override
 	public Response notFound() {
 		return Response.status(Response.Status.NOT_FOUND).build();
 	}

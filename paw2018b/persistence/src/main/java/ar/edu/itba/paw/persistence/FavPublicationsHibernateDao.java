@@ -15,12 +15,9 @@ import ar.edu.itba.paw.interfaces.FavPublicationsDao;
 import ar.edu.itba.paw.interfaces.PublicationDao;
 import ar.edu.itba.paw.interfaces.UserDao;
 import ar.edu.itba.paw.models.FavPublication;
-import ar.edu.itba.paw.models.Publication;
 
 @Repository
 public class FavPublicationsHibernateDao implements FavPublicationsDao{
-	
-	private static Integer MAX_RESULTS = 3;
 	
 	@Autowired
 	private UserDao userDao;
@@ -68,30 +65,17 @@ public class FavPublicationsHibernateDao implements FavPublicationsDao{
 	
 	@Override
 	@Transactional
-	public List<Long> getUserFavourites(long userid) {
+	public List<Long> getUserFavourites(long userid, Integer page, Integer limit) {
 		final String queryString = "select distinct favPub.publication.publicationid from FavPublication as favPub "
 								 + "WHERE favPub.user.userid = :userid AND favPub.publication.locked != true";
 		TypedQuery<Long> query = em.createQuery(queryString, Long.class);
 		query.setParameter("userid", userid);
+		query.setFirstResult(page * limit);
+		query.setMaxResults(limit);
 		return query.getResultList();
 	}
 
-	@Override
-	@Transactional
-	public List<Publication> getUserFavouritesPagination(long userid, String pageFav) {
-		final String queryString = "select distinct pub from Publication as pub "
-								 + "INNER JOIN pub.favPublications "
-								 + "LEFT JOIN FETCH pub.images "
-								 + "LEFT JOIN FETCH pub.province "
-								 + "LEFT JOIN FETCH pub.city "
-								 + "LEFT JOIN FETCH pub.neighborhood "
-								 + "WHERE pub.user.userid = :userid AND pub.locked != true";
-		TypedQuery<Publication> query = em.createQuery(queryString, Publication.class);
-		query.setParameter("userid", userid);
-		query.setFirstResult((Integer.parseInt(pageFav) - 1) * MAX_RESULTS);
-		query.setMaxResults(MAX_RESULTS);
-		return query.getResultList();
-	}
+
 	
 	@Override
 	@Transactional

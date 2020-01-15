@@ -7,6 +7,8 @@ import UserService from '../services/UserService'
 import PublicationService from '../services/PublicationService'
 import JsonService from '../services/JsonService'
 import ReactPaginate from 'react-paginate';
+import * as Constants from '../util/Constants'
+import LocalStorageService from '../services/LocalStorageService';
 
 
 class MyPublications extends React.Component {
@@ -16,13 +18,12 @@ class MyPublications extends React.Component {
             myPublicationsCounter: 0,
             myPublications: [],
             images: [],
-            page: 1,
+            page: 0,
             pageQuantity: 0,
         };
       }
 
       componentDidMount(){
-        this.updateQuantity();
         this.updatePublications();
     }
 
@@ -39,41 +40,23 @@ class MyPublications extends React.Component {
             images: imagesRequest
         })
     }
-    
-
-    updateQuantity(){
-        let currentComponent = this;
-        UserService.getMyPublicationsQuantity(this.props).then(function (quantity) {
-            currentComponent.setState({
-                myPublicationsCounter: quantity,
-            })
-        })
-    }
 
     updatePublications(){
         let currentComponent = this; 
-        let names = ["page"]
-        let values = [currentComponent.state.page]
-        UserService.getMyPublications(JsonService.createJSONArray(names,values),this.props).then(function(pubs) {
+        let queryParameters = {}
+        let userid;
+        queryParameters.page = this.state.page;
+        queryParameters.limit = Constants.PUBLICATIONS_PAGE_LIMIT
+        userid = LocalStorageService.getUserid();
+        UserService.getMyPublications(userid,queryParameters,this.props).then(function(response) {
             currentComponent.setState({
-                myPublications: pubs,
-                page: 1
-            })
-            currentComponent.getImages();
-            currentComponent.updatePublicationsQuantity();
-        })
-    }
+                myPublications: response.data,
+                page: 0,
+                pagesQuantity: Math.ceil(response.headers["x-total-count"] / Constants.USERS_PAGE_LIMIT),
+                myPublicationsCounter: response.headers["x-total-count"]
 
-    updatePublicationsQuantity(){
-        let currentComponent = this
-        
-        UserService.getMyPublicationsCount(this.props).then(function(data){
-            currentComponent.setState({
-                pagesQuantity: Math.ceil(data.count / data.limit),
             })
         })
-
-        
     }
 
     handlePageClick = data => {

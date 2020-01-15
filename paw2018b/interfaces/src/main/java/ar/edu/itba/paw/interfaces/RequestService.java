@@ -23,6 +23,8 @@ public interface RequestService {
 	public Response conflictRequest();
 
 	public Response noContent();
+
+	public Response forbidden();
 	
 
 

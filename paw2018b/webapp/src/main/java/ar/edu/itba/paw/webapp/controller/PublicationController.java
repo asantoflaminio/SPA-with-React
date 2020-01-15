@@ -78,7 +78,7 @@ public class PublicationController {
     	List<PublicationDTO> publications = ps.getPublications(address,filters,page,limit,order);
     	response.setHeader(Constants.COUNT_HEADER, Integer.toString(ps.getCountAllPublications()));
     	return Response.ok().entity(publications).build();
-    }
+    } 
     
     @POST
     @Path("/getPublicationsQuantity")

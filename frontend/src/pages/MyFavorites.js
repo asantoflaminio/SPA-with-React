@@ -4,9 +4,10 @@ import { withRouter } from "react-router";
 import ProfileAsideBar from '../components/ProfileAsideBar'
 import ProfilePublication from '../components/ProfilePublication';
 import UserService from '../services/UserService'
-import PublicationService from '../services/PublicationService'
 import JsonService from '../services/JsonService'
 import ReactPaginate from 'react-paginate';
+import * as Constants from '../util/Constants'
+import LocalStorageService from '../services/LocalStorageService';
 
 
 class MyFavorites extends React.Component {
@@ -17,69 +18,31 @@ class MyFavorites extends React.Component {
             myFavoritesCounter: 0,
             myFavouritesPublications: [],
             images: [],
-            page: 1,
+            page: 0,
             pageQuantity: 0,
         };
       }
 
       componentDidMount(){
-        this.updateFavoritesQuantity();
         this.updateFavoritesPublications();
-    }
-
-    async getImages(){
-        let imagesRequest = []
-        for(let i = 0; i < this.state.myFavouritesPublications.length ; i++){
-            let names = ["publicationID","index"]
-            let values = [this.state.myFavouritesPublications[i].publicationID,0]
-            await PublicationService.getImage(JsonService.createJSONArray(names,values), this.props).then(function (image){
-                imagesRequest.push(image);
-            })
-        }
-        this.setState({
-            images: imagesRequest
-        })
     }
     
 
-    updateFavoritesQuantity(){
-        let currentComponent = this;
-        let names = ["id"]
-        let values = [this.state.id]
-        UserService.getMyFavoritesQuantity(JsonService.createJSONArray(names,values),this.props).then(function (quantity) {
-            currentComponent.setState({
-                myFavoritesCounter: quantity,
-            })
-        })
-    }
-
     updateFavoritesPublications(){
-        let currentComponent = this; 
-        let names = ["id","page"]
-        let values = [this.state.id, this.state.page]
-        
-        UserService.getMyFavoritesPublications(JsonService.createJSONArray(names,values),this.props).then(function(pubs) {
-            currentComponent.setState({
-                myFavouritesPublications: pubs,
-                page: 1
-            })
-            currentComponent.getImages();
-            currentComponent.updateFavoritesPublicationsQuantity();
-        })
-    }
-
-    updateFavoritesPublicationsQuantity(){
         let currentComponent = this
-        let names = ["id"]
-        let values = [this.state.id]
-        
-        UserService.getMyFavoritesPublicationsCount(JsonService.createJSONArray(names,values),this.props).then(function(data){
+        let userid;
+        let queryParameters = {}
+        queryParameters.page = this.state.page;
+        queryParameters.limit = Constants.PUBLICATIONS_PAGE_LIMIT
+        userid = LocalStorageService.getUserid();
+        UserService.getMyFavoritesPublications(userid,queryParameters,this.props).then(function(response) {
             currentComponent.setState({
-                pagesQuantity: Math.ceil(data.count / data.limit),
+                myFavouritesPublications: response.data,
+                page: 0,
+                pagesQuantity: Math.ceil(response.headers["x-total-count"] / Constants.USERS_PAGE_LIMIT),
+                myFavoritesCounter: response.headers["x-total-count"]
             })
         })
-
-        
     }
 
     handlePageClick = data => {
@@ -91,7 +54,6 @@ class MyFavorites extends React.Component {
                 myFavouritesPublications: pubs,
                 page: data.selected+1,
             })
-            currentComponent.getImages()
         })
 
     }

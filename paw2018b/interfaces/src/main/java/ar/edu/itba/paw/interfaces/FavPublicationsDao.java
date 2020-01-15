@@ -3,7 +3,6 @@ package ar.edu.itba.paw.interfaces;
 import java.util.List;
 
 import ar.edu.itba.paw.models.FavPublication;
-import ar.edu.itba.paw.models.Publication;
 
 public interface FavPublicationsDao {
 	
@@ -13,9 +12,7 @@ public interface FavPublicationsDao {
 	
 	public void removeFavouriteByPublication(long publicationid);
 	
-	public List<Long> getUserFavourites(long userid);
-	
-	public List<Publication> getUserFavouritesPagination(long userid, String pageFav);
+	public List<Long> getUserFavourites(long userid, Integer page, Integer limit);
 	
 	public int getCountUserFavourites(long userid);
 	

@@ -96,12 +96,12 @@ public class PublicationHibernateDao implements PublicationDao{
 
 	@Override
 	@Transactional
-	public List<Publication> findByUserId(long userid, String pagePub) {
+	public List<Publication> findByUserId(long userid, Integer page, Integer limit) {
 		final String queryString = SELECT_STATEMENT_SEARCH + "where pub.user.userid = :userid";
 		final TypedQuery<Publication> query = em.createQuery(queryString, Publication.class);
 		query.setParameter("userid", userid);
-		query.setFirstResult((Integer.parseInt(pagePub) - 1) * MAX_RESULTS_PROFILE);
-		query.setMaxResults(MAX_RESULTS_PROFILE);
+		query.setFirstResult(page * limit);
+		query.setMaxResults(limit);
 		return query.getResultList();
 	}
 	

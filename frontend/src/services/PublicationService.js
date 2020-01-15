@@ -20,32 +20,6 @@ const PublicationService = (function(){
           ErrorService.logError(props,error)
         });
   }
-    
-    async function _getSalePublications(props){
-        return await axios({
-            method: 'get',
-            url: PUBLICATIONS_PATH + '/getSalePublications',
-          })
-          .then(function (response) {
-              return response.data
-          })
-          .catch(function (error) {
-            ErrorService.logError(props,error)
-          });
-    }
-
-    async function _getRentPublications(props){
-        return await axios({
-            method: 'get',
-            url: PUBLICATIONS_PATH + '/getRentPublications',
-          })
-          .then(function (response) {
-              return response.data
-          })
-          .catch(function (error) {
-            ErrorService.logError(props,error)
-          });
-    }
 
     async function _getPublicationsCount(query, props){
         return await axios({
@@ -154,8 +128,6 @@ const PublicationService = (function(){
 
     return {
         getPublications : _getPublications,
-        getSalePublications : _getSalePublications,
-        getRentPublications : _getRentPublications,
         getPublicationsCount : _getPublicationsCount,
         getPublication : _getPublication,
         getPublicationsFiltered : _getPublicationsFiltered,

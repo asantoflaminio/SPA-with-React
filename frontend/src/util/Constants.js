@@ -40,8 +40,8 @@ export const numbersDashRegex = new RegExp("^[-0-9]*$");
 
 //Pagination constants
 
-export const USERS_PAGE_LIMIT = 2;
-export const PUBLICATIONS_PAGE_LIMIT = 2;
+export const USERS_PAGE_LIMIT = 5;
+export const PUBLICATIONS_PAGE_LIMIT = 3;
 
 //Logic Constants
 

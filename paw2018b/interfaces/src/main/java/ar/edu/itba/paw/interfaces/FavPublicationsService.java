@@ -11,9 +11,7 @@ public interface FavPublicationsService {
 	
 	public void removeFavourite(long userid, long publicationid);
 	
-	public List<PublicationDTO> getUserFavourites(long userid);
-	
-	public List<PublicationDTO> getUserFavouritesPagination(long userid, String pageFav);
+	public List<PublicationDTO> getUserFavourites(long userid, Integer page, Integer limit);
 	
 	public int getCountUserFavourites(long userid);
 	

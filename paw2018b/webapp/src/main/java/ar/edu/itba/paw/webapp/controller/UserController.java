@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -241,20 +242,33 @@ public class UserController {
     	
     }
     
-    @POST
-    @Path("/publications")
+    @GET
+    @Path("/users/{userid}/publications")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getMyPublications (@Context HttpServletRequest request, final PageDTO page) {
-    	List<PublicationDTO> publications = ps.findByUserId(tas.getUserIdAuthentication(request), page.getPage().toString());
+    public Response getUserPublications (@Context HttpServletResponse response, @Context HttpServletRequest request, @PathParam("userid") long userid,
+    									@DefaultValue("0") @QueryParam("page") Integer page, @DefaultValue("10") @QueryParam("limit") Integer limit) {
+    	if(!vs.validatePagination(page,limit) || !vs.validateID(userid))
+    		return rs.badRequest();
+    	if(tas.getUserIdAuthentication(request) != userid)
+    		return rs.forbidden();
+    	
+    	List<PublicationDTO> publications = ps.findByUserId(userid, page, limit);
+    	response.setHeader(Constants.COUNT_HEADER, Integer.toString(ps.getCountPublicationsOfUser(userid)));
     	return Response.ok().entity(publications).build();
     }
     
     @GET
-    @Path("/favorites")
+    @Path("/users/{userid}/favourite-publications")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getMyFavoritesPublications (@Context HttpServletRequest request) {
-    	List<PublicationDTO> publications = fps.getUserFavourites(tas.getUserIdAuthentication(request));
+    public Response getUserFavoutirePublications (@Context HttpServletResponse response, @Context HttpServletRequest request, @PathParam("userid") long userid,
+    									@DefaultValue("0") @QueryParam("page") Integer page, @DefaultValue("10") @QueryParam("limit") Integer limit) {
+    	if(!vs.validatePagination(page,limit) || !vs.validateID(userid))
+    		return rs.badRequest();
+    	if(tas.getUserIdAuthentication(request) != userid)
+    		return rs.forbidden();
+    	
+    	List<PublicationDTO> publications = fps.getUserFavourites(userid, page, limit);
+    	response.setHeader(Constants.COUNT_HEADER, Integer.toString(fps.getCountUserFavourites(userid)));
     	return Response.ok().entity(publications).build();
     }
     

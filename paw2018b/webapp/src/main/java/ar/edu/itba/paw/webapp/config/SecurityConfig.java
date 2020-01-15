@@ -82,7 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         		.antMatchers(HttpMethod.POST, "/admin/lockUser").access("hasRole('ROLE_ADMIN')");
 
 
-        http.addFilterBefore(new StatelessLoginFilter("/meinHaus/users-managment/users/login", tokenAuthenticationService, userDetailsService, userService,
+        http.addFilterBefore(new StatelessLoginFilter("/meinHaus/users-managment/login", tokenAuthenticationService, userDetailsService, userService,
                 authenticationManager()), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new StatelessAuthenticationFilter(tokenAuthenticationService),
                         UsernamePasswordAuthenticationFilter.class)

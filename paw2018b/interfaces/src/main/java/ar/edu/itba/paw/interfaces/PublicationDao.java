@@ -21,7 +21,7 @@ public interface PublicationDao {
 			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses, long userid);
 	
 	
-	public List<Publication> findByUserId(long id, String pagePub);
+	public List<Publication> findByUserId(long userid, Integer page, Integer limit);
 	
 	public int getCountPublicationsOfUser(long id);
 	

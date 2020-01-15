@@ -44,20 +44,13 @@ public class FavPublicationsServiceImpl implements FavPublicationsService {
 	}
 	
 	@Override
-	public List<PublicationDTO> getUserFavourites(long userid) {
-		List<Long> ids = favPublicationDao.getUserFavourites(userid);
+	public List<PublicationDTO> getUserFavourites(long userid, Integer page, Integer limit) {
+		List<Long> ids = favPublicationDao.getUserFavourites(userid,page,limit);
 		List<Publication> publications = new LinkedList<Publication>();
 		for(Long publicationid: ids) {
 			publications.add(publicationDao.findById(publicationid));
 		}
 		return transform(publications);
-	}
-	
-	
-	@Override
-	public List<PublicationDTO> getUserFavouritesPagination(long userid, String pageFav) {
-		//return transform(favPublicationDao.getUserFavouritesPagination(userid, pageFav));
-		return null;
 	}
 	
 	@Override
