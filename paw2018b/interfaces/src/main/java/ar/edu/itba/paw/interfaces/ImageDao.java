@@ -16,5 +16,7 @@ public interface ImageDao {
 	public UploadFile findByUploadId(long id);
 	
 	public List<UploadFile> findAllById(long id);
+
+	public int getImagesCountByPublicationId(long publicationid);
 	
 }

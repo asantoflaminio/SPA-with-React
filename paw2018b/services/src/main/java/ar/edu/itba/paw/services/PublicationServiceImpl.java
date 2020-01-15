@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import ar.edu.itba.paw.interfaces.ImageDao;
 import ar.edu.itba.paw.interfaces.PublicationDao;
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserDao;
@@ -32,6 +33,9 @@ public class PublicationServiceImpl implements PublicationService {
 	
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private ImageDao imageDao;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 	
@@ -236,7 +240,7 @@ public class PublicationServiceImpl implements PublicationService {
 										Optional.ofNullable(publication.getAmenities()).orElse("-1").toString(),
 										Optional.ofNullable(publication.getStorage()).orElse("-1").toString(),
 										Optional.ofNullable(publication.getExpenses()).orElse(-1).toString());
-		publicationDTO.setImages(publication.getImages().size());
+		publicationDTO.setImages(imageDao.getImagesCountByPublicationId(publication.getPublicationid()));
 		
 		
 		return publicationDTO;

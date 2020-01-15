@@ -44,9 +44,7 @@ public class PublicationHibernateDao implements PublicationDao{
 	private static String SELECT_STATEMENT_SEARCH = "select distinct pub from Publication as pub "
 										   + "left join fetch pub.province "
 										   + "left join fetch pub.city "
-										   + "left join fetch pub.neighborhood "
-										   + "left join fetch pub.user "
-										   + "left join fetch pub.images ";
+										   + "left join fetch pub.neighborhood ";
 	
 	private static String SELECT_STATEMENT_COUNT = "select COUNT(pub) from Publication as pub ";
 	

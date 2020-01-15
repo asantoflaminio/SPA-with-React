@@ -34,8 +34,8 @@ class HomeReal extends React.Component {
                 publicationsSale: response.data
             })
         })
-        queryParameters_2.operation = Constants.FSALE
         queryParameters_2.operation = Constants.FRENT
+        queryParameters_2.order = Constants.NEWEST_PUBLICATION
         PublicationService.getPublications(queryParameters_2,this.props).then(function (response){
             currentComponent.setState({
                 publicationsRent: response.data
