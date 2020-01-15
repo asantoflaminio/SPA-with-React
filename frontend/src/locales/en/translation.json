@@ -243,5 +243,15 @@
       "profile": "My profile",
       "signOut": "Log out",
       "manage": "Administrate"
+    },
+    "modal":{
+      "close" : "Close",
+      "accept" : "Accept",
+      "postLocation" : "Location added",
+      "postLocationError" : "Error adding location",
+      "postLocationDetail" : "The {{location}} has been added to the database",
+      "postLocationDetailError" : "There was an error adding {{location}} to the database",
+      "deletePublication": "Delete publication",
+      "deletePublicationDetail": "Are you sure you want to delete the post?"
     }
   }
