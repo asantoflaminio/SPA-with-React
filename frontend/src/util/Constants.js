@@ -56,3 +56,17 @@ export const ASCENDANT_ORDER = "Ascending order"
 export const DESCENDANT_ORDER = "Descending order"
 export const OLDEST_PUBLICATION = "Oldest publications"
 export const NEWEST_PUBLICATION = "Newest publications"
+
+//Query parameters
+
+export const OPERATION = "operation"
+export const PROPERTYTYPE = "propertyType"
+export const ADDRESS = "address"
+export const MINPRICE = "minPrice"
+export const MAXPRICE = "maxPrice"
+export const MINFLOORSIZE = "minFloorSize"
+export const MAXFLOORSIZE = "maxFloorSize"
+export const BEDROOMS = "bedrooms"
+export const BATHROOMS = "bathrooms"
+export const PARKING = "parking"
+export const PAGE = "page"

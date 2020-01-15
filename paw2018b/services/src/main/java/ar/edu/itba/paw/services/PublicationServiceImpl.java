@@ -16,6 +16,7 @@ import ar.edu.itba.paw.interfaces.PublicationDao;
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserDao;
 import ar.edu.itba.paw.models.Constants;
+import ar.edu.itba.paw.models.Constants.DataBaseFilterName;
 import ar.edu.itba.paw.models.Constants.QueryFilterName;
 import ar.edu.itba.paw.models.Constants.QueryOperator;
 import ar.edu.itba.paw.models.Filter;
@@ -49,14 +50,14 @@ public class PublicationServiceImpl implements PublicationService {
 		if(userDao.findById(userid).isLocked())
 			return null;
 		
-		LOGGER.debug("expenses era {}", expenses);
-		LOGGER.debug("amenities era {}", amenities);
-		LOGGER.debug("bedrooms era {}", bedrooms);
-		LOGGER.debug("bathrooms era {}", bathrooms);
-		LOGGER.debug("floorsize era {}", floorSize);
-		LOGGER.debug("coveredFloorSize era {}", coveredFloorSize);
-		LOGGER.debug("parking era {}", parking);
-		LOGGER.debug("baulera era {}", storage);
+		LOGGER.debug("Publication expenses are {}", expenses);
+		LOGGER.debug("Publication amenities are {}", amenities);
+		LOGGER.debug("Publication bedrooms are {}", bedrooms);
+		LOGGER.debug("Publication bathrooms era {}", bathrooms);
+		LOGGER.debug("Publication floorsize is {}", floorSize);
+		LOGGER.debug("Publication coveredFloorSize is {}", coveredFloorSize);
+		LOGGER.debug("Publication parking is {}", parking);
+		LOGGER.debug("Publication baulera is {}", storage);
 		
 		if(! vs.validatePublication(title, address, neighborhood,
 				   city, province, operation, price,
@@ -223,8 +224,8 @@ public class PublicationServiceImpl implements PublicationService {
 	}
 	
 	@Override
-	public int getCountAllPublications(){
-		return publicationDao.getCountAllPublications();
+	public int getCountPublications(String address, List<Filter> filters){
+		return publicationDao.getCountPublications(address,filters);
 	}
 	
 	@Override
@@ -267,29 +268,30 @@ public class PublicationServiceImpl implements PublicationService {
 	public List<Filter> generateFilters(String operation, String propertyType, Integer minPrice, Integer maxPrice, Integer minFloorSize, Integer maxFloorSize,
 										Integer bedrooms, Integer bathrooms, Integer parking){
 		List<Filter> filters = new LinkedList<Filter>();
-		addStringFilter(filters,operation,Constants.QueryFilterName.OPERATION,Constants.QueryOperator.EQUAL);
-		addStringFilter(filters,propertyType,Constants.QueryFilterName.PROPERTYTYPE,Constants.QueryOperator.EQUAL);
-		addIntegerFilter(filters,minPrice,Constants.QueryFilterName.PRICE,Constants.QueryOperator.LESS_OR_EQUAL);
-		addIntegerFilter(filters,maxPrice,Constants.QueryFilterName.PRICE,Constants.QueryOperator.GREATER_OR_EQUAL);
-		addIntegerFilter(filters,minFloorSize,Constants.QueryFilterName.FLOORSIZE,Constants.QueryOperator.LESS_OR_EQUAL);
-		addIntegerFilter(filters,maxFloorSize,Constants.QueryFilterName.FLOORSIZE,Constants.QueryOperator.GREATER_OR_EQUAL);
-		addIntegerFilter(filters,bedrooms,Constants.QueryFilterName.BEDROOMS,Constants.QueryOperator.EQUAL);
-		addIntegerFilter(filters,bathrooms,Constants.QueryFilterName.BATHROOMS,Constants.QueryOperator.EQUAL);
-		addIntegerFilter(filters,parking,Constants.QueryFilterName.PARKING,Constants.QueryOperator.EQUAL);
-		
+		addStringFilter(filters,operation,Constants.DataBaseFilterName.OPERATION,Constants.QueryFilterName.OPERATION,Constants.QueryOperator.EQUAL);
+		addStringFilter(filters,propertyType,Constants.DataBaseFilterName.PROPERTYTYPE,Constants.QueryFilterName.PROPERTYTYPE,Constants.QueryOperator.EQUAL);
+		addIntegerFilter(filters,minPrice,Constants.DataBaseFilterName.PRICE,Constants.QueryFilterName.MINPRICE,Constants.QueryOperator.LESS_OR_EQUAL);
+		addIntegerFilter(filters,maxPrice,Constants.DataBaseFilterName.PRICE,Constants.QueryFilterName.MAXPRICE,Constants.QueryOperator.GREATER_OR_EQUAL);
+		addIntegerFilter(filters,minFloorSize,Constants.DataBaseFilterName.FLOORSIZE,Constants.QueryFilterName.MINFLOORSIZE,Constants.QueryOperator.LESS_OR_EQUAL);
+		addIntegerFilter(filters,maxFloorSize,Constants.DataBaseFilterName.FLOORSIZE,Constants.QueryFilterName.MAXFLOORSIZE,Constants.QueryOperator.GREATER_OR_EQUAL);
+		addIntegerFilter(filters,bedrooms,Constants.DataBaseFilterName.BEDROOMS,Constants.QueryFilterName.BEDROOMS,Constants.QueryOperator.EQUAL);
+		addIntegerFilter(filters,bathrooms,Constants.DataBaseFilterName.BATHROOMS,Constants.QueryFilterName.BATHROOMS,Constants.QueryOperator.EQUAL);
+		addIntegerFilter(filters,parking,Constants.DataBaseFilterName.PARKING,Constants.QueryFilterName.PARKING,Constants.QueryOperator.EQUAL);
 		return filters;
 	}
 	
-	public void addStringFilter(List<Filter> filters, String value, QueryFilterName name, QueryOperator operator) {
-		if(value != null) {
-			Filter filter = new Filter(value,name,operator);
+	public void addStringFilter(List<Filter> filters, String value, DataBaseFilterName dataBaseName, QueryFilterName name, QueryOperator operator) {
+		if(value != null && value != "") {
+			Filter filter = new Filter(value,dataBaseName,name,operator);
+			//System.out.println("Filter: " + name + " Value:" + value);
 			filters.add(filter);
 		}
 	}
 	
-	public void addIntegerFilter(List<Filter> filters, Integer value, QueryFilterName name, QueryOperator operator) {
+	public void addIntegerFilter(List<Filter> filters, Integer value, DataBaseFilterName dataBaseName, QueryFilterName name, QueryOperator operator) {
 		if(value != null) {
-			Filter filter = new Filter(value,name,operator);
+			//System.out.println("Filter: " + name + " Value:" + value);
+			Filter filter = new Filter(value,dataBaseName,name,operator);
 			filters.add(filter);
 		}
 	}

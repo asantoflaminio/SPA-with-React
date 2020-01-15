@@ -381,8 +381,11 @@ public class PublicationHibernateDao implements PublicationDao{
 	
 	@Override
 	@Transactional
-	public int getCountAllPublications() {
-		final TypedQuery<Long> query = em.createQuery(SELECT_STATEMENT_COUNT, Long.class);
+	public int getCountPublications(String address, List<Filter> filters) {
+		String queryString = SELECT_STATEMENT_COUNT;
+		queryString = addFiltersStatement(queryString,filters,address);
+		TypedQuery<Long> query = em.createQuery(queryString, Long.class);
+		addFiltersValues(query,filters,address);
 		return query.getResultList().get(0).intValue();
 	}
 	
@@ -415,6 +418,8 @@ public class PublicationHibernateDao implements PublicationDao{
 		queryString = setOrderFilter(queryString,order);
 		TypedQuery<Publication> query = em.createQuery(queryString, Publication.class);
 		addFiltersValues(query,filters,address);
+		//System.out.println(queryString);
+		System.out.println(page+ " " + limit);
 		setPagination(query,page,limit);
 		return query.getResultList();
 	}
@@ -422,11 +427,16 @@ public class PublicationHibernateDao implements PublicationDao{
 	@Override
 	public String addFiltersStatement(String query, List<Filter> filters, String address) {
 		Filter current;
-		if(address != null || filters.size() > 0)
+
+		if(address != null || filters.size() != 0)
 			query += "where";
 		
-		if(address != null)
+		if(address != null) {
 			query += SEARCH_STATEMENT;
+			if(filters.size() != 0)
+				query += " AND ";
+		}
+			
 		
 		for(int i = 0; i < filters.size(); i++) {
 			current = filters.get(i);

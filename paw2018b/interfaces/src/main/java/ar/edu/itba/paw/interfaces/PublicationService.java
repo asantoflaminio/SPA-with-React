@@ -57,7 +57,7 @@ public interface PublicationService {
 	
 	public List<PublicationDTO> findAllPublications(int page, int limit);
 	
-	public int getCountAllPublications();
+	public int getCountPublications(String address, List<Filter> filters);
 	
 	public PublicationDTO transform(Publication publication);
 
@@ -69,6 +69,8 @@ public interface PublicationService {
 			Integer minFloorSize, Integer maxFloorSize, Integer bedrooms, Integer bathrooms, Integer parking);
 
 	public List<PublicationDTO> getPublications(String address, List<Filter> filters, Integer page, Integer limit, String order);
+
+	
 
 	
 }

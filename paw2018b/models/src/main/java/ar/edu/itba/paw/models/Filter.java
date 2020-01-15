@@ -1,24 +1,28 @@
 package ar.edu.itba.paw.models;
 
+import ar.edu.itba.paw.models.Constants.DataBaseFilterName;
 import ar.edu.itba.paw.models.Constants.QueryFilterName;
 import ar.edu.itba.paw.models.Constants.QueryOperator;
 
 public class Filter {
 	private Integer intValue;
 	private String stringValue;
+	private DataBaseFilterName dataBaseNameValue;
 	private QueryFilterName nameValue;
 	private QueryOperator operator;
 	
-	public Filter(Integer intValue, QueryFilterName nameValue, QueryOperator operator) {
+	public Filter(Integer intValue, DataBaseFilterName dataBaseNameValue, QueryFilterName nameValue, QueryOperator operator) {
 		this.setIntValue(intValue);
 		this.setOperator(operator);
 		this.setNameValue(nameValue);
+		this.setDataBaseNameValue(dataBaseNameValue);
 	}
 	
-	public Filter(String stringValue, QueryFilterName nameValue, QueryOperator operator) {
+	public Filter(String stringValue, DataBaseFilterName dataBaseNameValue, QueryFilterName nameValue, QueryOperator operator) {
 		this.setStringValue(stringValue);
 		this.setOperator(operator);
 		this.setNameValue(nameValue);
+		this.setDataBaseNameValue(dataBaseNameValue);
 	}
 
 	public Integer getIntValue() {
@@ -51,5 +55,13 @@ public class Filter {
 
 	public void setNameValue(QueryFilterName nameValue) {
 		this.nameValue = nameValue;
+	}
+
+	public DataBaseFilterName getDataBaseNameValue() {
+		return dataBaseNameValue;
+	}
+
+	public void setDataBaseNameValue(DataBaseFilterName dataBaseNameValue) {
+		this.dataBaseNameValue = dataBaseNameValue;
 	}
 }

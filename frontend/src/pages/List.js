@@ -8,6 +8,7 @@ import Publication from '../components/Publication';
 import * as utilFunction from '../util/function';
 import ReactPaginate from 'react-paginate';
 import PublicationService from '../services/PublicationService'
+import * as Constants from '../util/Constants'
 
 
 class List extends React.Component {
@@ -18,7 +19,7 @@ class List extends React.Component {
             publications: [],
             operation:"",
             propertyType:"",
-            search: "",
+            address: "",
             minPrice: "",
             maxPrice:"",
             minFloorSize:"",
@@ -26,8 +27,8 @@ class List extends React.Component {
             bedrooms:"",
             bathrooms:"",
             parking:"",
-            order:"Newest publications",
-            page: 1,
+            order: Constants.NEWEST_PUBLICATION,
+            page: this.setInitialPage(),
             pagesQuantity: 0,
             filters : null
         };
@@ -36,46 +37,39 @@ class List extends React.Component {
       componentDidMount(){
         const queryString = require('query-string');
         const query = queryString.parse(this.props.location.search)
-        this.updatePublications("search", query.search, "operation", query.operation, "propertyType", query.propertyType)      
+        this.updatePublications("address", query.address, "operation", query.operation, "propertyType", query.propertyType)      
         this.selectOperation(query.operation)
         this.selectPropertyType(query.propertyType)
       }
 
       updatePublications(stateName,value,stateName2,value2,stateName3,value3){
-        let query = this.generateQueryPackage();
-        query.page = 1;
-        query[stateName] = value;
-        query[stateName2] = value2;
-        query[stateName3] = value3;
+        let queryParameters = this.generateQueryParametersPackage();
+        queryParameters[stateName] = value;
+        queryParameters[stateName2] = value2;
+        queryParameters[stateName3] = value3;
+        alert(this.state.page)
+        //alert(JSON.stringify(queryParameters))
         let currentComponent = this
-        PublicationService.getPublications(query,stateName,stateName2, this.props).then(function (pubs){
+        this.pushParam(Constants.PAGE, queryParameters.page + 1)
+        PublicationService.getPublications(queryParameters, this.props).then(function (response){
             currentComponent.setState({
-                publications: pubs,
-                page: query.page,
-                [stateName] : query[stateName],
-                [stateName2] : query[stateName2],
-                [stateName3] : query[stateName3]
+                publications: response.data,
+                resultsQuantity: response.headers["x-total-count"],
+                pagesQuantity: Math.ceil(response.headers["x-total-count"] / Constants.PUBLICATIONS_PAGE_LIMIT),
+                page: queryParameters.page,
+                [stateName] : queryParameters[stateName],
+                [stateName2] : queryParameters[stateName2],
+                [stateName3] : queryParameters[stateName3],
             })
-            currentComponent.updatePublicationsQuantity()
-            currentComponent.updateFilters()
-        })
-    }
-
-    updatePublicationsQuantity(){
-        let currentComponent = this
-        let query = this.generateQueryPackage()
-        PublicationService.getPublicationsCount(query, this.props).then(function (data){
-            currentComponent.setState({
-                pagesQuantity: Math.ceil(data.count / data.limit),
-                resultsQuantity: data.count
-            })
+            //currentComponent.updateFilters()
         })
     }
 
     updateFilters(){
         let currentComponent = this
-        let query = this.generateQueryPackage()
+        let query = this.generateQueryParametersPackage()
         PublicationService.getFilters(query, this.props).then(function (data){
+            alert(data)
             currentComponent.setState({
                 filters: data
             })
@@ -88,11 +82,11 @@ class List extends React.Component {
 
 
 
-    generateQueryPackage(){
+    generateQueryParametersPackage(){
         const query = {
             operation: this.state.operation,
             propertyType: this.state.propertyType,
-            search: this.state.search,
+            address: this.state.address,
             minPrice: this.state.minPrice,
             maxPrice: this.state.maxPrice,
             minFloorSize: this.state.minFloorSize,
@@ -101,7 +95,8 @@ class List extends React.Component {
             bathrooms: this.state.bathrooms,
             parking: this.state.parking,
             order: this.state.order,
-            page: this.state.page       
+            page: this.state.page,
+            limit: Constants.PUBLICATIONS_PAGE_LIMIT       
          }
          return query
     }
@@ -136,7 +131,7 @@ class List extends React.Component {
     }
 
     createDeleteAll(t){
-        if(this.state.search !== "" || this.state.minPrice !=="" || this.state.maxPrice !=="" ||
+        if(this.state.address !== "" || this.state.minPrice !=="" || this.state.maxPrice !=="" ||
         this.state.minFloorSize !=="" || this.state.maxFloorSize !=="" || this.state.bedrooms !=="" ||
         this.state.bathrooms !=="" || this.state.parking !==""){
             return(               
@@ -150,7 +145,7 @@ class List extends React.Component {
 
     createFiltersNotes(t){
         let filters = [];
-        filters.push(this.createFilter("search",this.state.search,""));
+        filters.push(this.createFilter("address",this.state.address,""));
         filters.push(this.createFilter("minPrice",this.state.minPrice,"U$S"));
         filters.push(this.createFilter("maxPrice",this.state.maxPrice,"U$S"));
         filters.push(this.createFilter("minFloorSize",this.state.minFloorSize,"m2"));
@@ -189,7 +184,7 @@ class List extends React.Component {
     }
 
     deleteAllFilters(){
-        this.deleteFilter("search");
+        this.deleteFilter("address");
         this.deleteFilter("minPrice");
         this.deleteFilter("maxPrice");
         this.deleteFilter("minFloorSize");
@@ -216,9 +211,9 @@ class List extends React.Component {
         this.updatePublications("operation",operation)
     }
 
-    handleSearch(){
-        let value = document.getElementById("search").value
-        this.updatePublications("search",value)
+    handleAddresss(){
+        let value = document.getElementById("address").value
+        this.updatePublications("address",value)
     }
 
     handlePrice(){
@@ -239,7 +234,7 @@ class List extends React.Component {
         let buy = document.getElementById("buy")
         let rent = document.getElementById("rent")
 
-        if(operation === "FSale"){
+        if(operation === Constants.FSALE){
             rent.classList.remove("search_list-item-active")
             buy.classList.add("search_list-item-active");
         }else{
@@ -252,22 +247,32 @@ class List extends React.Component {
         let house = document.getElementById("House")
         let apartment = document.getElementById("Apartment")
 
-        if(propertyType === "House")
+        if(propertyType === Constants.HOUSE)
             house.selected = true;
         else
             apartment.selected = true
     }
 
-    handlePageClick = data => {
-        let query = this.generateQueryPackage()
-        query.page = data.selected + 1
-        let currentComponent = this
-        PublicationService.getPublications(query).then(function (pubs){
-            currentComponent.setState({
-                publications: pubs,
-                page: query.page
-            })
+    setInitialPage(){
+        const params = new URLSearchParams(this.props.location.search); 
+        const queryPageParam = params.get(Constants.PAGE);
+        this.pushParam(Constants.PAGE,queryPageParam || 1)
+        return parseInt(queryPageParam) - 1 || 0;
+    }
+
+    pushParam(param,value){
+        const queryParser = require('query-string');
+        const queryParams = queryParser.parse(this.props.history.location.search);
+        queryParams[param] = value;
+        this.props.history.push({
+            path: '/List',
+            search: queryParser.stringify(queryParams)
         })
+    }
+
+    handlePageClick = data => {
+        this.updatePublications(Constants.PAGE,data.selected)
+        
     }
 
     expand(id){
@@ -283,7 +288,7 @@ class List extends React.Component {
         let publications = this.initializePublications(t);
         let filters = this.createFiltersNotes(t);
         let cleanAll = this.createDeleteAll(t);
-        let locationFilter = this.createFilterFields("locations","","",t,"search")
+        let locationFilter = this.createFilterFields("locations","","",t,"address")
         let bedroomFilter = this.createFilterFields("bedrooms","list.bedroomSingular","list.bedroomPlural",t,"bedrooms")
         let bathroomFilter = this.createFilterFields("bathrooms","list.bathroomSingular","list.bathroomPlural",t,"bathrooms")
         let parkingFilter = this.createFilterFields("parking","list.parkingSingular","list.parkingPlural",t,"parking")
@@ -415,6 +420,7 @@ class List extends React.Component {
                             </div>
                             <div class="pubsPagination">
                                 <ReactPaginate
+                                initialPage={this.state.page}
                                 previousLabel={'<'}
                                 nextLabel={'>'}
                                 breakLabel={'...'}
@@ -428,7 +434,6 @@ class List extends React.Component {
                                 pageClassName={''}
                                 previousClassName={''}
                                 nextClassName={''}
-                                forcePage={this.state.page - 1}
                             />
                             </div>
                         </section>

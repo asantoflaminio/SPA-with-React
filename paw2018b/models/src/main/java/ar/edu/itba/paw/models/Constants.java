@@ -68,11 +68,33 @@ public class Constants {
 		}
 	}
 	
-	public static enum QueryFilterName{
+	public static enum DataBaseFilterName{
 		OPERATION("operation"),
-		PROPERTYTYPE("operation"),
+		PROPERTYTYPE("propertyType"),
 		PRICE("price"),
 		FLOORSIZE("floorSize"),
+		BEDROOMS("bedrooms"),
+		BATHROOMS("bathrooms"),
+		PARKING("parking");
+		
+		private final String dataBaseFilterName;
+	
+		DataBaseFilterName(String dataBaseFilterName){
+			this.dataBaseFilterName = dataBaseFilterName;
+		}
+	
+		public String getDataBaseFilterName() {
+			return dataBaseFilterName;
+		}
+	}
+	
+	public static enum QueryFilterName{
+		OPERATION("operation"),
+		PROPERTYTYPE("propertyType"),
+		MINPRICE("minPrice"),
+		MAXPRICE("maxPrice"),
+		MINFLOORSIZE("minFloorSize"),
+		MAXFLOORSIZE("maxFloorSize"),
 		BEDROOMS("bedrooms"),
 		BATHROOMS("bathrooms"),
 		PARKING("parking");

@@ -32,7 +32,6 @@ import ar.edu.itba.paw.models.dto.BooleanResponseDTO;
 import ar.edu.itba.paw.models.dto.FiltersDTO;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.ImageDTO;
-import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.models.dto.QueryDTO;
 import ar.edu.itba.paw.services.FavPublicationsServiceImpl;
@@ -67,7 +66,7 @@ public class PublicationController {
     @GET
     @Path("/publications")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getAllPublications (@Context HttpServletResponse response, @DefaultValue("0") @QueryParam("page") Integer page, @DefaultValue("10") @QueryParam("limit") Integer limit,
+    public Response getPublications (@Context HttpServletResponse response, @DefaultValue("0") @QueryParam("page") Integer page, @DefaultValue("10") @QueryParam("limit") Integer limit,
     									@QueryParam("operation") String operation, @QueryParam("propertyType") String propertyType, @QueryParam("address") String address,
     									@QueryParam("minPrice") Integer minPrice, @QueryParam("maxPrice") Integer maxPrice, @QueryParam("minFloorSize") Integer minFloorSize,
     									@QueryParam("maxFloorSize") Integer maxFloorSize, @QueryParam("bedrooms") Integer bedrooms, @QueryParam("bathrooms") Integer bathrooms,
@@ -76,33 +75,9 @@ public class PublicationController {
     		return rs.badRequest();
     	List<Filter> filters = ps.generateFilters(operation, propertyType, minPrice, maxPrice, minFloorSize, maxFloorSize, bedrooms, bathrooms, parking);
     	List<PublicationDTO> publications = ps.getPublications(address,filters,page,limit,order);
-    	response.setHeader(Constants.COUNT_HEADER, Integer.toString(ps.getCountAllPublications()));
+    	response.setHeader(Constants.COUNT_HEADER, Integer.toString(ps.getCountPublications(address,filters)));
     	return Response.ok().entity(publications).build();
     } 
-    
-    @POST
-    @Path("/getPublicationsQuantity")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getPublicationsQuantity (QueryDTO queryDTO) {
-    	int pubs = ps.getSearchFilteringCount(queryDTO.getOperation(), queryDTO.getPropertyType(), queryDTO.getSearch(), queryDTO.getMinPrice(),
-    											queryDTO.getMaxPrice(), queryDTO.getMinFloorSize(), queryDTO.getMaxFloorSize(), queryDTO.getBedrooms(),
-    											queryDTO.getBathrooms(), queryDTO.getParking());
-    	PaginationDTO quantity = new PaginationDTO(pubs, ps.getMaxResultList()); 
-    	return Response.ok().entity(quantity).build();
-    }
-    
-    
-    @POST
-    @Path("/getPublications")
-    @Produces(value = { MediaType.APPLICATION_JSON})
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getPublicationsFilter (QueryDTO queryDTO) {
-    	List<PublicationDTO> publications = ps.findSearchFiltering(queryDTO.getOperation(), queryDTO.getPropertyType(), queryDTO.getSearch(), 
-    														queryDTO.getMinPrice(), queryDTO.getMaxPrice(), queryDTO.getMinFloorSize(), queryDTO.getMaxFloorSize(), 
-    														queryDTO.getBedrooms(), queryDTO.getBathrooms(), queryDTO.getParking(), queryDTO.getOrder(), queryDTO.getPage());
-    	return Response.ok().entity(publications).build();
-    }
     
     @POST
     @Path("/getPublicationByID")

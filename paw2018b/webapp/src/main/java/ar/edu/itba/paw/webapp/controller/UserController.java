@@ -41,8 +41,6 @@ import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.dto.EmailDTO;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.MessageDTO;
-import ar.edu.itba.paw.models.dto.PageDTO;
-import ar.edu.itba.paw.models.dto.PaginationDTO;
 import ar.edu.itba.paw.models.dto.PasswordDTO;
 import ar.edu.itba.paw.models.dto.PasswordsCheckDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
@@ -270,24 +268,6 @@ public class UserController {
     	List<PublicationDTO> publications = fps.getUserFavourites(userid, page, limit);
     	response.setHeader(Constants.COUNT_HEADER, Integer.toString(fps.getCountUserFavourites(userid)));
     	return Response.ok().entity(publications).build();
-    }
-    
-    @GET
-    @Path("/getMyPublicationsCount")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getMyPublicationsCount (@Context HttpServletRequest request) {
-    	int pubs = ps.getCountPublicationsOfUser(tas.getUserIdAuthentication(request));
-    	PaginationDTO quantity = new PaginationDTO(pubs, ps.getMaxResultProfile());
-    	return Response.ok().entity(quantity).build();
-    }
-    
-    @GET
-    @Path("/getMyFavoritesPublicationsCount")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getMyFavoritesPublicationsCount (@Context HttpServletRequest request) {
-    	int pubs = fps.getCountUserFavourites(tas.getUserIdAuthentication(request));
-    	PaginationDTO quantity = new PaginationDTO(pubs, ps.getMaxResultProfile());
-    	return Response.ok().entity(quantity).build();
     }
     
     @POST

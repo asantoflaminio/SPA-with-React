@@ -72,7 +72,7 @@ public interface PublicationDao {
 	
 	public List<Publication> findAllPublications(int page, int limit);
 	
-	public int getCountAllPublications();
+	public int getCountPublications(String address, List<Filter> filters);
 
 	public Integer getMaxResultProfile();
 	

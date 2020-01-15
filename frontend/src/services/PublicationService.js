@@ -21,39 +21,11 @@ const PublicationService = (function(){
         });
   }
 
-    async function _getPublicationsCount(query, props){
-        return await axios({
-            method: 'post',
-            url: PUBLICATIONS_PATH + '/getPublicationsQuantity',
-            data: query
-          })
-          .then(function (response) {
-              return response.data
-          })
-          .catch(function (error) {
-            ErrorService.logError(props,error)
-          });
-    }
-
     async function _getPublication(array, props){
         return await axios({
             method: 'post',
             url: PUBLICATIONS_PATH + '/getPublicationByID',
             data: JsonService.getJSONParsed(array)
-          })
-          .then(function (response) {
-              return response.data
-          })
-          .catch(function (error) {
-            ErrorService.logError(props,error)
-          });
-    }
-
-    async function _getPublicationsFiltered(query, props){
-        return await axios({
-            method: 'post',
-            url: PUBLICATIONS_PATH + '/getPublications',
-            data: query
           })
           .then(function (response) {
               return response.data
@@ -128,9 +100,7 @@ const PublicationService = (function(){
 
     return {
         getPublications : _getPublications,
-        getPublicationsCount : _getPublicationsCount,
         getPublication : _getPublication,
-        getPublicationsFiltered : _getPublicationsFiltered,
         getFilters : _getFilters,
         getImage : _getImage,
         isFavourite : _isFavourite,

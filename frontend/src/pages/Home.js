@@ -135,7 +135,7 @@ class HomeReal extends React.Component {
                                                 <input  onChange={() => this.setSearch()}className="form-control form-control-lg" type="search" id="input_search" placeholder={t('home.search')}/>
                                             </div>
                                             <div className="col-auto">
-                                                <Link to={{pathname: "/List", search: "?search=" + this.state.search + "&operation=" + this.state.operation + "&propertyType=" + this.state.propertyType}} >
+                                                <Link to={{pathname: "/List", search: "?address=" + this.state.search + "&operation=" + this.state.operation + "&propertyType=" + this.state.propertyType}} >
                                                     <input id="searchbutton" className="btn btn-lg rounded" type="submit" value={t('home.searhBtn')}/>
                                                 </Link>
                                             </div>
