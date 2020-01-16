@@ -20,19 +20,19 @@ public class PublicationDTO {
 	private String amenities;
 	private String storage;
 	private String expenses;
-	private long publicationID;
+	private long publicationid;
 	private String date;
 	private int images;
 	private String userEmail;
 	private String phoneNumber;
 	
 	
-	public PublicationDTO(long publicationID, String title, String provinceID, String cityID, String neighborhoodID,
+	public PublicationDTO(long publicationid, String title, String provinceID, String cityID, String neighborhoodID,
 							String address, String operation, String price, String description,
 							String propertyType, String bedrooms, String bathrooms, String dimention,
 							String parking, String date,
 							String coveredFloorSize, String balconies, String amenities, String storage, String expenses) {
-		this.publicationID = publicationID;
+		this.publicationid = publicationid;
 		this.title = title;
 		this.setProvinceID(provinceID);
 		this.setCityID(cityID);
@@ -161,8 +161,8 @@ public class PublicationDTO {
 		this.neighborhoodID = neighborhoodID;
 	}
 
-	public long getPublicationID() {
-		return publicationID;
+	public long getPublicationid() {
+		return publicationid;
 	}
 
 	public String getCoveredFloorSize() {
@@ -205,8 +205,8 @@ public class PublicationDTO {
 		this.expenses = expenses;
 	}
 
-	public void setPublicationID(long publicationID) {
-		this.publicationID = publicationID;
+	public void setPublicationid(long publicationid) {
+		this.publicationid = publicationid;
 	}
 
 	public String getDate() {

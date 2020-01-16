@@ -82,6 +82,8 @@ public class PublicationHibernateDao implements PublicationDao{
 		String queryString = SELECT_STATEMENT_SEARCH + "where pub.publicationid = :publicationid";
 		final TypedQuery<Publication> query = em.createQuery(queryString, Publication.class);
 		query.setParameter("publicationid", id);
+		if(query.getResultList().size() == 0)
+			return null;
 		return query.getResultList().get(0);
 	}
 

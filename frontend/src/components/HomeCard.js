@@ -11,7 +11,7 @@ class HomeCard extends React.Component {
             <div>
                 <li class="polaroid">
                     <ImgVisualizer
-                        publicationID={this.props.publication.publicationID}
+                        publicationid={this.props.publication.publicationid}
                         price={this.props.publication.price}
                         maxImages={this.props.publication.images}
                         page="Home"
@@ -26,7 +26,7 @@ class HomeCard extends React.Component {
                             <label class="price">U$S {this.props.publication.price}</label>
                             <label  class="expenses">{this.props.publication.title}</label>
                             <label>{this.props.publication.address}</label>
-                            <Link to={{pathname: "/publication", search: "?publicationID=" + this.props.publication.publicationID}}>
+                            <Link to={{pathname: "/publication", search: "?publicationid=" + this.props.publication.publicationid}}>
                                 <a class="more-info-home" href="">{t('home.moreInfo')} ></a>
                             </Link>
                         </div>

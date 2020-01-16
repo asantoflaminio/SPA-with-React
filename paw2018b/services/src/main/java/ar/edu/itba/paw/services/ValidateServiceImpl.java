@@ -241,5 +241,14 @@ public class ValidateServiceImpl implements ValidateService{
 		}
 		return true;
 	}
+	
+	@Override
+	public boolean validateIndex(Integer index) {
+		if(index < 0) {
+			LOGGER.debug("The index is negative");
+			return false;
+		}
+		return true;
+	}
 
 }

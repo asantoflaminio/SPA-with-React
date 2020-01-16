@@ -51,7 +51,7 @@ public class ImageHibernateDao implements ImageDao{
 	@Override
 	@Transactional
 	public int getImagesCountByPublicationId(long publicationid) {
-		String queryString = "select COUNT(pub) from Publication as pub left join pub.images where pub.publicationid = :publicationid";
+		String queryString = "select COUNT(image) from UploadFile as image where image.publication.publicationid = :publicationid";
 		final TypedQuery<Long> query = em.createQuery(queryString, Long.class);
 		query.setParameter("publicationid", publicationid);
 		return query.getResultList().get(0).intValue();

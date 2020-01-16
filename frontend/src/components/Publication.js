@@ -4,22 +4,22 @@ import * as utilFunction from '../util/function';
 import ImgVisualizer from './ImageVisualizer';
 import {Link} from 'react-router-dom';
 
-function isErasable(t, eraseFunction, publicationID){
+function isErasable(t, eraseFunction, publicationid){
     if(eraseFunction){
         return(
             <div class="more-info">
-                <p class="more-info-title" onClick={() => eraseFunction(publicationID)}>{t('admin.delete')}</p>
+                <p class="more-info-title" onClick={() => eraseFunction(publicationid)}>{t('admin.delete')}</p>
             </div>	
         )
     }
 }
 
 const Publication = ({ t , publication, page, favourites, eraseFunction }) => {
-    let erasableComponent = isErasable(t,eraseFunction, publication.publicationID)
+    let erasableComponent = isErasable(t,eraseFunction, publication.publicationid)
         return(
             <div class="polaroid-property">
                 <ImgVisualizer
-                    publicationID={publication.publicationID}
+                    publicationid={publication.publicationid}
                     price={publication.price}
                     maxImages={publication.images}
                     page={page}
@@ -53,7 +53,7 @@ const Publication = ({ t , publication, page, favourites, eraseFunction }) => {
                             {publication.date}
                         </div>
                         <div class="more-info">
-                            <Link to={{pathname: "/publication", search: "?publicationID=" + publication.publicationID}}>
+                            <Link to={{pathname: "/publication", search: "?publicationid=" + publication.publicationid}}>
                                 <a class="more-info-title" href="">{t('list.moreInfo')} ></a>
                             </Link>
                         </div>

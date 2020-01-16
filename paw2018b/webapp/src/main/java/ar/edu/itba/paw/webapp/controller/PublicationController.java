@@ -30,7 +30,6 @@ import ar.edu.itba.paw.models.UploadFile;
 import ar.edu.itba.paw.models.dto.BooleanResponseDTO;
 import ar.edu.itba.paw.models.dto.FiltersDTO;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
-import ar.edu.itba.paw.models.dto.ImageDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.services.FavPublicationsServiceImpl;
 import ar.edu.itba.paw.services.ImageServiceImpl;
@@ -78,13 +77,33 @@ public class PublicationController {
     	return Response.ok().entity(publications).build();
     } 
     
-    @POST
-    @Path("/getPublicationByID")
+    @GET
+    @Path("/publications/{publicationid}")
     @Produces(value = { MediaType.APPLICATION_JSON})
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getPublicationById (IDResponseDTO id) {
-    	PublicationDTO publicationDTO = ps.findById(id.getId());
+    public Response getPublicationById (@PathParam("publicationid") long publicationid) {
+    	if(! vs.validateID(publicationid))
+    		rs.badRequest();
+    	
+    	PublicationDTO publicationDTO = ps.findById(publicationid);
+    	if(publicationDTO == null)
+    		rs.notFound();
+    	
     	return Response.ok().entity(publicationDTO).build();
+    }
+    
+    @GET
+    @Path("/publications/{publicationid}/images")
+    @Produces(value = { MediaType.APPLICATION_OCTET_STREAM })
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response getImg (@PathParam("publicationid") long publicationid, @DefaultValue("0") @QueryParam("index") Integer index) {
+    	if(! vs.validateID(publicationid) || ! vs.validateIndex(index))
+    		rs.badRequest();
+    	UploadFile uploadFile = is.findByIndexAndId(publicationid,index);
+    	if(uploadFile == null)
+    		return rs.notFound();
+    	byte[] data = uploadFile.getData();
+    	byte[] dataBase64 = Base64.getEncoder().encode(data);
+        return Response.ok(dataBase64).build();
     }
     
     @GET
@@ -106,19 +125,6 @@ public class PublicationController {
     	return Response.ok().entity(filtersDTO).build();
     }
     
-    @POST
-    @Path("/getPublicationImage")
-    @Produces(value = { MediaType.APPLICATION_OCTET_STREAM })
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getImg (ImageDTO imageDTO) {
-    	UploadFile uploadFile = is.findByIndexAndId(imageDTO.getPublicationID(),imageDTO.getIndex());
-    	if(uploadFile == null)
-    		return Response.ok(null).build();
-    	byte[] data = uploadFile.getData();
-    	byte[] dataBase64 = Base64.getEncoder().encode(data);
-    	imageDTO.setData(dataBase64);
-        return Response.ok(dataBase64).build();
-    }
     
     @POST
     @Path("/isFavourite")
@@ -128,7 +134,7 @@ public class PublicationController {
     }
     
     @DELETE
-    @Path("publications/{publicationID}")
+    @Path("/publications/{publicationID}")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response deletePublication(@PathParam("publicationID") long publicationID){
     	if(! vs.validateID(publicationID))

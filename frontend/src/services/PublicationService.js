@@ -21,14 +21,13 @@ const PublicationService = (function(){
         });
   }
 
-    async function _getPublication(array, props){
+    async function _getPublication(publicationid, props){
         return await axios({
-            method: 'post',
-            url: PUBLICATIONS_PATH + '/getPublicationByID',
-            data: JsonService.getJSONParsed(array)
+            method: 'get',
+            url: `${PUBLICATIONS_PATH}/publications/${publicationid}`,
           })
           .then(function (response) {
-              return response.data
+              return response
           })
           .catch(function (error) {
             ErrorService.logError(props,error)
@@ -49,16 +48,17 @@ const PublicationService = (function(){
           });
     }
 
-    async function _getImage(array,props){
+    async function _getImage(publicationid,queryParameters,props){
         return await axios({
-            method: 'post',
-            url: PUBLICATIONS_PATH + '/getPublicationImage',
-            data: JsonService.getJSONParsed(array)
+            method: 'get',
+            url: `${PUBLICATIONS_PATH}/publications/${publicationid}/images`,
+            params: queryParameters
           })
           .then(function (response) {
-            return response.data
+            return response
           })
           .catch(function (error) {
+            alert(error)
             ErrorService.logError(props,error)
           });       
     }
@@ -89,7 +89,7 @@ const PublicationService = (function(){
       }
       })
       .then(function (response) {
-        return response.data
+        return response
       })
       .catch(function (error) {
         ErrorService.logError(props,error)

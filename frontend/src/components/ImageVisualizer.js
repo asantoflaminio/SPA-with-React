@@ -10,6 +10,7 @@ import PublicationService from '../services/PublicationService';
 import JsonService from '../services/JsonService'
 import UserService from '../services/UserService'
 import * as statusCode from '../util/StatusCode'
+import defaultImage from '../resources/default.jpg'
 
 class ImageVisualizer extends React.Component {
     constructor(props) {
@@ -26,7 +27,7 @@ class ImageVisualizer extends React.Component {
         let values;
         if(UserService.isLogged()){
             names = ["id"]
-            values = [this.props.publicationID]
+            values = [this.props.publicationid]
             
             PublicationService.isFavourite(JsonService.createJSONArray(names,values),this.props).then(function (request){
                 currentComponent.setState({
@@ -34,8 +35,10 @@ class ImageVisualizer extends React.Component {
                 })
             })
         }
-
-        this.updateImage(this.state.index)
+        if(this.props.maxImages != null && this.props.maxImages != 0)
+            this.updateImage(this.state.index)
+        else
+            this.setDefaultImage()
     }
 
     componentDidUpdate(prevProps,prevState){
@@ -43,18 +46,28 @@ class ImageVisualizer extends React.Component {
             this.setState({
                 index: 0
             })
-            this.updateImage(0)
+            //alert(this.props.maxImages)
+            if(this.props.maxImages != null && this.props.maxImages != 0)
+                this.updateImage(0);
+            else
+                this.setDefaultImage()
         }
+    }
+
+    setDefaultImage(){
+        let id = this.props.page + this.props.publicationid;
+        let img = document.getElementById(id);
+        img.src = defaultImage
     }
     
     updateImage(newIndex){
         let component = this;
-        let id = this.props.page + this.props.publicationID;
+        let id = this.props.page + this.props.publicationid;
         let img = document.getElementById(id);
-        let names = ["publicationID","index"]
-        let values = [this.props.publicationID,newIndex]
-        PublicationService.getImage(JsonService.createJSONArray(names,values), this.props).then(function (src){
-            img.src = utilFunction.setSRC(src)
+        let queryParameters = {};
+        queryParameters.index = newIndex
+        PublicationService.getImage(this.props.publicationid,newIndex, this.props).then(function (response){
+            img.src = utilFunction.setSRC(response.data)
             component.setState({
                 index: newIndex
             })
@@ -88,7 +101,7 @@ class ImageVisualizer extends React.Component {
 
     favouritePublication(boolean){
         let names = ["id"]
-        let values = [this.props.publicationID]
+        let values = [this.props.publicationid]
         let currentComponent = this;
         if(boolean){
             UserService.favouritePublication(JsonService.createJSONArray(names,values),this.props).then(function (data){
@@ -126,10 +139,16 @@ class ImageVisualizer extends React.Component {
 
         return(
             <div class={this.props.containerClass}>
-                <img class={this.props.imageClass} alt="img" id={this.props.page + this.props.publicationID} />
+                <img class={this.props.imageClass} alt="img" id={this.props.page + this.props.publicationid} />
                 {favIcon}
-                <img class={this.props.previousClass} src={previousArrow} alt="Previous" onClick={() => this.getPreviousImage()}/>
-                <img class={this.props.nextClass} src={nextArrow} alt="Next" onClick={() => this.getNextImage()}/>
+                {this.props.maxImages != 0 ?
+                (
+                    <>
+                        <img class={this.props.previousClass} src={previousArrow} alt="Previous" onClick={() => this.getPreviousImage()}/>
+                        <img class={this.props.nextClass} src={nextArrow} alt="Next" onClick={() => this.getNextImage()}/>
+                    </>
+                ):null}
+
                 {price}
             </div>
            

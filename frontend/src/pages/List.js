@@ -173,7 +173,7 @@ class List extends React.Component {
 
     createFilter(stateName,value,singularInformation,pluralInformation,additionalInformation){
         const {t} = this.props
-        if(value === ""){
+        if(value === "" || value === null || value === "undefined"){
             return;
         }
         return(

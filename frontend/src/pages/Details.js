@@ -26,7 +26,7 @@ class Details extends React.Component {
         this.state = {
             error: null,
             code: null,
-            publicationID: null,
+            publicationid: null,
             province: null,
             city: null,
             neighborhood: null,
@@ -60,33 +60,31 @@ class Details extends React.Component {
         const queryString = require('query-string');
         const query = queryString.parse(this.props.location.search)
         const component = this
-        let names = ["id"]
-        let values = [query.publicationID]
         this.setState({
             circleloading: true
         });
-        PublicationService.getPublication(JsonService.createJSONArray(names,values), this.props).then(function (pub){
+        PublicationService.getPublication(query.publicationid, this.props).then(function (response){
                 component.setState({
-                    publicationID: pub.publicationID, 
-                    province: pub.provinceID,
-                    city: pub.cityID,
-                    neighborhood: pub.neighborhoodID,
-                    address: pub.address,
-                    bedrooms: pub.bedrooms,
-                    bathrooms: pub.bathrooms,
-                    floorSize: pub.dimention,
-                    coveredFloorSize: pub.coveredFloorSize,
-                    parking: pub.parking,
-                    price: pub.price,
-                    title: pub.title,
-                    description: pub.description,
-                    maxImages: pub.images,
-                    phoneNumber: pub.phoneNumber,
-                    ownerEmail: pub.userEmail,
-                    amenities: pub.amenities,
-                    storage: pub.storage,
-                    expenses: pub.expenses,
-                    balconies: pub.balconies,
+                    publicationid: response.data.publicationid, 
+                    province: response.data.provinceID,
+                    city: response.data.cityID,
+                    neighborhood: response.data.neighborhoodID,
+                    address: response.data.address,
+                    bedrooms: response.data.bedrooms,
+                    bathrooms: response.data.bathrooms,
+                    floorSize: response.data.dimention,
+                    coveredFloorSize: response.data.coveredFloorSize,
+                    parking: response.data.parking,
+                    price: response.data.price,
+                    title: response.data.title,
+                    description: response.data.description,
+                    maxImages: response.data.images,
+                    phoneNumber: response.data.phoneNumber,
+                    ownerEmail: response.data.userEmail,
+                    amenities: response.data.amenities,
+                    storage: response.data.storage,
+                    expenses: response.data.expenses,
+                    balconies: response.data.balconies,
                     loading: false,
                     circleloading: false
                 })
@@ -166,7 +164,7 @@ class Details extends React.Component {
                         <div id="left-col">   
                             <div class="polaroid">
                                 <ImageVisualizer 
-                                    publicationID={query.publicationID}
+                                    publicationid={query.publicationid}
                                     maxImages={this.state.maxImages}
                                     page="Details"
                                     imageClass="imageSize"

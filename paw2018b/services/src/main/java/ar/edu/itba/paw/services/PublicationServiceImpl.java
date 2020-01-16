@@ -86,24 +86,14 @@ public class PublicationServiceImpl implements PublicationService {
 	public PublicationDTO findById(final long publicationid) {
 		PublicationDTO publication;
 		Publication pub;
-		if(publicationid < 0){
-            LOGGER.error("Attempted to find a publication with a negative id");
-            throw new IllegalArgumentException("id must be positive");
-        }
 		
         LOGGER.trace("Looking up publication with id {}", publicationid);
         pub = publicationDao.findById(publicationid);
-        publication = new PublicationDTO(pub.getPublicationid(),pub.getTitle(), pub.getProvince().getProvince(), pub.getCity().getCity(), pub.getNeighborhood().getNeighborhood(), pub.getAddress(),
-				pub.getOperation(), pub.getPrice().toString(), pub.getDescription(), pub.getPropertyType(), pub.getBedrooms().toString(), pub.getBathrooms().toString() , 
-				pub.getFloorSize().toString() , pub.getParking().toString(), pub.getPublicationDate().toString(),
-				Optional.ofNullable(pub.getCoveredFloorSize()).orElse(-1).toString(),
-				Optional.ofNullable(pub.getBalconies()).orElse(-1).toString(), 
-				Optional.ofNullable(pub.getAmenities()).orElse("-1").toString(),
-				Optional.ofNullable(pub.getStorage()).orElse("-1").toString(),
-				Optional.ofNullable(pub.getExpenses()).orElse(-1).toString());
-        publication.setImages(pub.getImages().size());
-        publication.setUserEmail(pub.getUser().getEmail());
-        publication.setPhoneNumber(pub.getUser().getPhoneNumber());
+        
+        if(pub == null)
+        	return null;
+        
+        publication = transform(pub);
         return publication;
 	}
 	
