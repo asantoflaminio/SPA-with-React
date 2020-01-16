@@ -37,8 +37,9 @@ class List extends React.Component {
       componentDidMount(){
         const queryString = require('query-string');
         const query = queryString.parse(this.props.location.search)
-        let names = ["address","operation","propertyType"]
-        let values = [query.address,query.operation,query.propertyType]
+        let names = ["address","operation","propertyType","minPrice","maxPrice","minFloorSize","maxFloorSize","bedrooms","bathrooms","parking"]
+        let values = [query.address,query.operation,query.propertyType,query.minPrice,query.maxPrice,query.minFloorSize,query.maxFloorSize,
+                        query.bedrooms,query.bathrooms,query.parking]
         this.updatePublications(names,values)      
         this.selectOperation(query.operation)
         this.selectPropertyType(query.propertyType)
@@ -47,8 +48,8 @@ class List extends React.Component {
       updatePublications(names,values){
         let queryParameters = this.generateQueryParametersPackage();
         this.updateQueryParameters(queryParameters,names,values)
+        this.pushParameters(names,values);
         let currentComponent = this
-        alert(JSON.stringify(queryParameters))
         PublicationService.getPublications(queryParameters, this.props).then(function (response){
             currentComponent.setState({
                 publications: response.data,
@@ -66,14 +67,13 @@ class List extends React.Component {
                 bathrooms: queryParameters["bathrooms"],
                 parking: queryParameters["parking"]
             })
-            currentComponent.updateFilters()
+            currentComponent.updateFilters(queryParameters)
         })
     }
 
-    updateFilters(){
+    updateFilters(queryParameters){
         let currentComponent = this
-        let query = this.generateQueryParametersPackage()
-        PublicationService.getFilters(query, this.props).then(function (response){
+        PublicationService.getFilters(queryParameters, this.props).then(function (response){
             currentComponent.setState({
                 filters: response.data
             })
@@ -111,7 +111,7 @@ class List extends React.Component {
 
 
     hideEmptyFilters(filters,field,id){
-        if(Object.keys(filters[field]).length === 0)
+        if(Object.keys(filters[field]).length <= 1)
             document.getElementById(id).style.display = "none";
         else
             document.getElementById(id).style.display = "block";
@@ -124,8 +124,9 @@ class List extends React.Component {
             return <h3 id="order-title">{this.state.resultsQuantity} {t('list.resultTitle')}</h3>
     }
 
-    initializePublications(t){
+    initializePublications(){
         let pubComponents = [];
+        const { t } = this.props 
         for(let i = 0; i < this.state.publications.length; i++){
             pubComponents.push(
                 <Publication t={t} 
@@ -135,6 +136,12 @@ class List extends React.Component {
 
             )
         }
+        if(this.state.publications.length === 0){
+            pubComponents.push(
+                <p>{t('list.noPublications')}</p>
+            )
+        }
+
         return pubComponents;
     }
 
@@ -192,19 +199,14 @@ class List extends React.Component {
     }
 
     deleteAllFilters(){
-        this.deleteFilter("address");
-        this.deleteFilter("minPrice");
-        this.deleteFilter("maxPrice");
-        this.deleteFilter("minFloorSize");
-        this.deleteFilter("maxFloorSize");
-        this.deleteFilter("bedrooms");
-        this.deleteFilter("bathrooms");
-        this.deleteFilter("parking");
+        let names = ["address","minPrice","maxPrice","minFloorSize","maxFloorSize","bedrooms","bathrooms","parking","page"]
+        let values = ["","","","","","","","",0]
+        this.updatePublications(names,values)
     }
 
     deleteFilter(stateName){
-        let names = [stateName]
-        let values = [""]
+        let names = [stateName,"page"]
+        let values = ["",0]
         this.updatePublications(names,values);
     }
 
@@ -215,22 +217,22 @@ class List extends React.Component {
     }
 
     handleFilter(stateName,value){
-        let names = [stateName]
-        let values = [value]
+        let names = [stateName,"page"]
+        let values = [value,0]
         this.updatePublications(names,values)
     }
 
     handleOperation(operation){
-        let names = ["operation"]
-        let values = [operation]
+        let names = ["operation","page"]
+        let values = [operation,0]
         this.selectOperation(operation);
         this.updatePublications(names,values)
     }
 
-    handleAddresss(){
-        let value = document.getElementById("address").value
-        let names = ["address"]
-        let values = [value]
+    handleSearch(){
+        let value = document.getElementById("search-holder").value
+        let names = ["address","page"]
+        let values = [value,0]
         this.updatePublications(names,values)
     }
 
@@ -238,8 +240,8 @@ class List extends React.Component {
         let minPrice = document.getElementById("minPrice");
         let maxPrice = document.getElementById("maxPrice");
 
-        let names = ["minPrice","maxPrice"]
-        let values = [minPrice.value,maxPrice.value]
+        let names = ["minPrice","maxPrice","page"]
+        let values = [minPrice.value,maxPrice.value,0]
         this.updatePublications(names,values);
     }
 
@@ -247,8 +249,8 @@ class List extends React.Component {
         let minFloorSize = document.getElementById("minFloorSize");
         let maxFloorSize = document.getElementById("maxFloorSize");
 
-        let names = ["minFloorSize","maxFloorSize"]
-        let values = [minFloorSize.value,maxFloorSize.value]
+        let names = ["minFloorSize","maxFloorSize","page"]
+        let values = [minFloorSize.value,maxFloorSize.value,0]
         this.updatePublications(names,values);
     }
 
@@ -278,18 +280,24 @@ class List extends React.Component {
     setInitialPage(){
         const params = new URLSearchParams(this.props.location.search); 
         const queryPageParam = params.get(Constants.PAGE);
-        this.pushParam(Constants.PAGE,queryPageParam || 1)
+        let names = ["page"]
+        let values = [queryPageParam || 1];
+        this.pushParameters(names,values)
         return parseInt(queryPageParam) - 1 || 0;
     }
 
-    pushParam(param,value){
-        if(param === null)
+    pushParameters(names,values){
+        if(names === [])
             return
         const queryParser = require('query-string');
         const queryParams = queryParser.parse(this.props.history.location.search);
-        queryParams[param] = value;
-        if(param === Constants.PAGE)
-            queryParams[param] = value + 1;
+        for(let i = 0; i < names.length; i++){
+            if(names[i] === Constants.PAGE)
+                queryParams[names[i]] = values[i] + 1;
+            else
+            queryParams[names[i]] = values[i];
+        }
+
         this.props.history.push({
             path: '/List',
             search: queryParser.stringify(queryParams)
@@ -313,7 +321,7 @@ class List extends React.Component {
 
     render(){
         const { t } = this.props;
-        let publications = this.initializePublications(t);
+        let publications = this.initializePublications();
         let filters = this.createFiltersNotes(t);
         let cleanAll = this.createDeleteAll(t);
         let locationFilter = this.createFilterFields("locations","","",t,"address")
@@ -353,10 +361,11 @@ class List extends React.Component {
                     <div class="results" id="order" onChange={(event) => this.handleSelect(event,"order")}>
                         <h3 id="order-title-select">{t('list.order')}</h3>
                         <select id="order-select">
-                            <option value="Newest publications">{t('list.newest')}</option>
-                            <option value="Oldest publications">{t('list.oldest')}</option>
-                            <option value="Ascending order">{t('list.lowest')}</option>
-                            <option value="Descending order">{t('list.highest')}</option>                 
+                            <option disabled selected value={Constants.NO_ORDER}>{t('list.noOrder')}</option>
+                            <option value={Constants.NEWEST_PUBLICATION}>{t('list.newest')}</option>
+                            <option value={Constants.OLDEST_PUBLICATION}>{t('list.oldest')}</option>
+                            <option value={Constants.ASCENDANT_ORDER}>{t('list.lowest')}</option>
+                            <option value={Constants.DESCENDANT_ORDER}>{t('list.highest')}</option>                 
                         </select>
                     </div>
                 </div>
@@ -379,12 +388,13 @@ class List extends React.Component {
                                     </div>
                                     <div id="filters-list">
                                         <div class="filters-list-item" id="filterLocationHeader">{t('list.location')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterLocation")} class="arrow-up-filters"></img>
-                                        </div>
+                                        
                                             <div class="expandible filters-list-item-last" id="filterLocation">
                                                             <ul class="list-group">
                                                                 {locationFilter}
                                                             </ul>
                                             </div>
+                                        </div>
                                         <div class="filters-list-item">{t('list.price')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterPrice")} class="arrow-up-filters"></img>
                                         </div>
                                             <div class="expandible" id="filterPrice">
@@ -415,29 +425,29 @@ class List extends React.Component {
                                                     </div>
                                             </div>
                                         <div class="filters-list-item" id="filterBedroomsHeader">{t('list.bedrooms')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterBedrooms")} class="arrow-up-filters"></img>
-                                        </div>
+                                        
                                             <div class="expandible filters-list-item-last" id="filterBedrooms">
                                                     <div class="radioFlexOption">
                                                         {bedroomFilter}
                                                     </div>	
                                             </div>
-
+                                        </div>
                                     <div class="filters-list-item" id="filterBathroomsHeader">{t('list.bathrooms')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterBathrooms")} class="arrow-up-filters"></img>
-                                    </div>
+                                    
                                             <div class="expandible filters-list-item-last" id="filterBathrooms">
                                                         <div class="radioFlexOption">
                                                             {bathroomFilter}
                                                         </div>
                                             </div>
-
-                                    <div class="filters-list-item" id="filterParkingHeader">{t('list.parking')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterParking")} class="arrow-up-filters"></img>
                                     </div>
+                                    <div class="filters-list-item" id="filterParkingHeader">{t('list.parking')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterParking")} class="arrow-up-filters"></img>
+                                    
                                             <div class="expandible filters-list-item-last" id="filterParking">
                                                         <div class="radioFlexOption">
                                                             {parkingFilter}
                                                         </div>	
                                             </div>
-                                    
+                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -446,24 +456,26 @@ class List extends React.Component {
                             <div>
                                 {publications}
                             </div>
-                            <div class="pubsPagination">
-                                <ReactPaginate
-                                initialPage={this.state.page}
-                                previousLabel={'<'}
-                                nextLabel={'>'}
-                                breakLabel={'...'}
-                                pageCount={this.state.pagesQuantity}
-                                marginPagesDisplayed={2}
-                                pageRangeDisplayed={3}
-                                onPageChange={this.handlePageClick}
-                                activeClassName={'active'}
-                                breakClassName={''}
-                                containerClassName={'container-pagination separation'}
-                                pageClassName={''}
-                                previousClassName={''}
-                                nextClassName={''}
-                            />
-                            </div>
+                            {this.state.publications.length != 0 ?
+                                (<div class="pubsPagination">
+                                    <ReactPaginate
+                                    initialPage={this.state.page}
+                                    forcePage={this.state.page}
+                                    previousLabel={'<'}
+                                    nextLabel={'>'}
+                                    breakLabel={'...'}
+                                    pageCount={this.state.pagesQuantity}
+                                    marginPagesDisplayed={2}
+                                    pageRangeDisplayed={3}
+                                    onPageChange={this.handlePageClick}
+                                    activeClassName={'active'}
+                                    breakClassName={''}
+                                    containerClassName={'container-pagination separation'}
+                                    pageClassName={''}
+                                    previousClassName={''}
+                                    nextClassName={''}
+                                /> 
+                                </div>) : null}
                         </section>
                     </div>
                 </div>

@@ -150,6 +150,7 @@
       "house": "Casa",
       "apartment": "Departamento",
       "order": "Ordenar por",
+      "noOrder": "Orden por...",
       "lowest": "Precio más bajo",
       "highest": "Precio más alto",
       "newest": "Lo más nuevo",
@@ -176,7 +177,8 @@
       "parkingPlural": "estacionamientos",
       "sqmeters": "metros cuadrados",
       "moreInfo": "Más información ",
-      "cleanAll": "Borrar todo"
+      "cleanAll": "Borrar todo",
+      "noPublications": "No se encontraron publicaciones con los filtros pedidos"
     },
     "details": {
        "overview": "Resumen",

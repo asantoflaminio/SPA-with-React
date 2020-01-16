@@ -35,11 +35,11 @@ const PublicationService = (function(){
           });
     }
 
-    async function _getFilters(query, props){
+    async function _getFilters(queryParameters, props){
         return await axios({
             method: 'get',
             url: `${PUBLICATIONS_PATH}/publications/filters`,
-            data: query
+            params:queryParameters
           })
           .then(function (response) {
               return response
