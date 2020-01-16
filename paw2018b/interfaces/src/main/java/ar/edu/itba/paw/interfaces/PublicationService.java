@@ -20,31 +20,6 @@ public interface PublicationService {
 	
 	public int getCountPublicationsOfUser(long id);
 	
-	public List<PublicationDTO> findSearchFiltering(String operation, String propertyType, String address, String minPrice, String maxPrice,
-												 String minFloorSize, String maxFloorSize,
-												 String bedrooms, String bathrooms, String parking, String order, String page);
-	
-	public int getSearchFilteringCount(String operation, String propertyType, String address, String minPrice, String maxPrice,
-			   						   String minFloorSize, String maxFloorSize,
-			   						   String bedrooms, String bathrooms, String parking);
-
-	public HashMap<Integer,Long> getBedroomsFilter(String operation, String propertyType, String address, String minPrice, String maxPrice, 
-												   String minFloorSize, String maxFloorSize,
-												   String bedrooms, String parking, String bathrooms);
-	
-	
-	public HashMap<Integer,Long> getBathroomsFilter(String operation, String propertyType, String address, String minPrice, String maxPrice, 
-												   String minFloorSize, String maxFloorSize,
-												   String bedrooms, String parking, String bathrooms);
-	
-	public HashMap<Integer,Long> getParkingFilter(String operation, String propertyType, String address, String minPrice, String maxPrice, 
-												   String minFloorSize, String maxFloorSize,
-												   String bedrooms, String parking, String bathrooms);
-	
-	public HashMap<String,Long> getLocationFilter(String operation, String propertyType, String address, String minPrice, String maxPrice, 
-			  String minFloorSize, String maxFloorSize,
-			  String bedrooms, String parking, String bathrooms);
-	
 	public boolean deletePublication(long publicationid);
 	
 	public boolean editData(String title, String address,String neighborhood, String city, String province, String operation, String price,
@@ -55,7 +30,11 @@ public interface PublicationService {
 	
 	public void lockUnlockPublication(boolean status, long publicationid);
 	
-	public List<PublicationDTO> findAllPublications(int page, int limit);
+	public List<PublicationDTO> getPublications(String address, List<Filter> filters, Integer page, Integer limit, String order);
+	
+	public HashMap<Integer, Long> getSimpleFilter(List<Filter> filters, String address, String filterName);
+	
+	public HashMap<String, Long> getLocationFilter(List<Filter> filters, String address);
 	
 	public int getCountPublications(String address, List<Filter> filters);
 	
@@ -66,9 +45,9 @@ public interface PublicationService {
 	public Integer getMaxResultList();
 
 	public List<Filter> generateFilters(String operation, String propertyType, Integer minPrice, Integer maxPrice,
-			Integer minFloorSize, Integer maxFloorSize, Integer bedrooms, Integer bathrooms, Integer parking);
+			Integer minFloorSize, Integer maxFloorSize, Integer bedrooms, Integer bathrooms, Integer parking, Boolean locked);
 
-	public List<PublicationDTO> getPublications(String address, List<Filter> filters, Integer page, Integer limit, String order);
+	
 
 	
 

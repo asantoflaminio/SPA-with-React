@@ -36,12 +36,13 @@ class AdminPublications extends React.Component {
         let queryParameters = {}
         queryParameters.page = parseInt(page)
         queryParameters.limit = Constants.PUBLICATIONS_PAGE_LIMIT
+        queryParameters.locked = true;
         PublicationService.getPublications(queryParameters,this.props).then(function (response){
             currentComponent.pushPageParam(queryParameters.page + 1);
             currentComponent.setState({
                 publications: response.data,
                 resultsQuantity: response.headers["x-total-count"],
-                pagesQuantity: Math.ceil(response.headers["x-total-count"] / Constants.USERS_PAGE_LIMIT),
+                pagesQuantity: Math.ceil(response.headers["x-total-count"] / Constants.PUBLICATIONS_PAGE_LIMIT),
                 page: queryParameters.page
             })
         })
@@ -79,7 +80,7 @@ class AdminPublications extends React.Component {
                 showModal: false
             })
             if(Math.ceil((currentComponent.state.resultsQuantity - 1) / Constants.USERS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
-                && currentComponent.state.page == currentComponent.state.pagesQuantity - 1)
+                && currentComponent.state.page === currentComponent.state.pagesQuantity - 1)
                 data.selected = currentComponent.state.page - 1;
             else
                 data.selected = currentComponent.state.page;

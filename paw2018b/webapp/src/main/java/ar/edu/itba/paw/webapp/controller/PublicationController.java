@@ -2,7 +2,6 @@ package ar.edu.itba.paw.webapp.controller;
 
 
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -33,7 +32,6 @@ import ar.edu.itba.paw.models.dto.FiltersDTO;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.ImageDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
-import ar.edu.itba.paw.models.dto.QueryDTO;
 import ar.edu.itba.paw.services.FavPublicationsServiceImpl;
 import ar.edu.itba.paw.services.ImageServiceImpl;
 import ar.edu.itba.paw.services.RequestServiceImpl;
@@ -70,10 +68,11 @@ public class PublicationController {
     									@QueryParam("operation") String operation, @QueryParam("propertyType") String propertyType, @QueryParam("address") String address,
     									@QueryParam("minPrice") Integer minPrice, @QueryParam("maxPrice") Integer maxPrice, @QueryParam("minFloorSize") Integer minFloorSize,
     									@QueryParam("maxFloorSize") Integer maxFloorSize, @QueryParam("bedrooms") Integer bedrooms, @QueryParam("bathrooms") Integer bathrooms,
-    									@QueryParam("parking") Integer parking, @QueryParam("order") String order) {
+    									@QueryParam("parking") Integer parking, @DefaultValue("false") @QueryParam("locked") Boolean locked, 
+    									@DefaultValue("No order") @QueryParam("order") String order) {
     	if(!vs.validatePagination(page,limit))
     		return rs.badRequest();
-    	List<Filter> filters = ps.generateFilters(operation, propertyType, minPrice, maxPrice, minFloorSize, maxFloorSize, bedrooms, bathrooms, parking);
+    	List<Filter> filters = ps.generateFilters(operation, propertyType, minPrice, maxPrice, minFloorSize, maxFloorSize, bedrooms, bathrooms, parking, locked);
     	List<PublicationDTO> publications = ps.getPublications(address,filters,page,limit,order);
     	response.setHeader(Constants.COUNT_HEADER, Integer.toString(ps.getCountPublications(address,filters)));
     	return Response.ok().entity(publications).build();
@@ -88,32 +87,21 @@ public class PublicationController {
     	return Response.ok().entity(publicationDTO).build();
     }
     
-    @POST
-    @Path("/getFilters")
+    @GET
+    @Path("/publications/filters")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response getFilters (QueryDTO queryDTO) {
+    public Response getFilters (@QueryParam("operation") String operation, @QueryParam("propertyType") String propertyType, @QueryParam("address") String address,
+								@QueryParam("minPrice") Integer minPrice, @QueryParam("maxPrice") Integer maxPrice, @QueryParam("minFloorSize") Integer minFloorSize,
+								@QueryParam("maxFloorSize") Integer maxFloorSize, @QueryParam("bedrooms") Integer bedrooms, @QueryParam("bathrooms") Integer bathrooms,
+								@QueryParam("parking") Integer parking, @DefaultValue("false") @QueryParam("locked") Boolean locked) {
     	FiltersDTO filtersDTO = new FiltersDTO();
-    	HashMap<String,Long> locations = ps.getLocationFilter(queryDTO.getOperation(), queryDTO.getPropertyType(), queryDTO.getSearch(), 
-    														queryDTO.getMinPrice(), queryDTO.getMaxPrice(), queryDTO.getMinFloorSize(), queryDTO.getMaxFloorSize(), 
-    														queryDTO.getBedrooms(), queryDTO.getParking(), queryDTO.getBathrooms());
+    	List<Filter> filters = ps.generateFilters(operation, propertyType, minPrice, maxPrice, minFloorSize, maxFloorSize, bedrooms, bathrooms, parking, locked);
     	
-    	HashMap<Integer, Long> bedrooms = ps.getBedroomsFilter(queryDTO.getOperation(), queryDTO.getPropertyType(), queryDTO.getSearch(), 
-															queryDTO.getMinPrice(), queryDTO.getMaxPrice(), queryDTO.getMinFloorSize(), queryDTO.getMaxFloorSize(), 
-															queryDTO.getBedrooms(), queryDTO.getParking(), queryDTO.getBathrooms());
     	
-    	HashMap<Integer, Long> bathrooms = ps.getBathroomsFilter(queryDTO.getOperation(), queryDTO.getPropertyType(), queryDTO.getSearch(), 
-															queryDTO.getMinPrice(), queryDTO.getMaxPrice(), queryDTO.getMinFloorSize(), queryDTO.getMaxFloorSize(), 
-															queryDTO.getBedrooms(), queryDTO.getParking(), queryDTO.getBathrooms());
-    	
-    	HashMap<Integer, Long> parking = ps.getParkingFilter(queryDTO.getOperation(), queryDTO.getPropertyType(), queryDTO.getSearch(), 
-															queryDTO.getMinPrice(), queryDTO.getMaxPrice(), queryDTO.getMinFloorSize(), queryDTO.getMaxFloorSize(), 
-															queryDTO.getBedrooms(), queryDTO.getParking(), queryDTO.getBathrooms());
-    	
-    	filtersDTO.setLocations(locations);
-    	filtersDTO.setBedrooms(bedrooms);
-    	filtersDTO.setBathrooms(bathrooms);
-    	filtersDTO.setParking(parking);
+    	filtersDTO.setLocations(ps.getLocationFilter(filters, address));
+    	filtersDTO.setBedrooms(ps.getSimpleFilter(filters, address, Constants.DataBaseFilterName.BEDROOMS.getDataBaseFilterName()));
+    	filtersDTO.setBathrooms(ps.getSimpleFilter(filters, address, Constants.DataBaseFilterName.BATHROOMS.getDataBaseFilterName()));
+    	filtersDTO.setParking(ps.getSimpleFilter(filters, address, Constants.DataBaseFilterName.PARKING.getDataBaseFilterName()));
     	
     	return Response.ok().entity(filtersDTO).build();
     }

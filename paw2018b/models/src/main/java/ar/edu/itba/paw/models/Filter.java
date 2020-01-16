@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.Constants.QueryOperator;
 public class Filter {
 	private Integer intValue;
 	private String stringValue;
+	private Boolean booleanValue;
 	private DataBaseFilterName dataBaseNameValue;
 	private QueryFilterName nameValue;
 	private QueryOperator operator;
@@ -20,6 +21,13 @@ public class Filter {
 	
 	public Filter(String stringValue, DataBaseFilterName dataBaseNameValue, QueryFilterName nameValue, QueryOperator operator) {
 		this.setStringValue(stringValue);
+		this.setOperator(operator);
+		this.setNameValue(nameValue);
+		this.setDataBaseNameValue(dataBaseNameValue);
+	}
+	
+	public Filter(Boolean booleanValue, DataBaseFilterName dataBaseNameValue, QueryFilterName nameValue, QueryOperator operator) {
+		this.setBooleanValue(booleanValue);
 		this.setOperator(operator);
 		this.setNameValue(nameValue);
 		this.setDataBaseNameValue(dataBaseNameValue);
@@ -63,5 +71,13 @@ public class Filter {
 
 	public void setDataBaseNameValue(DataBaseFilterName dataBaseNameValue) {
 		this.dataBaseNameValue = dataBaseNameValue;
+	}
+
+	public Boolean getBooleanValue() {
+		return booleanValue;
+	}
+
+	public void setBooleanValue(Boolean booleanValue) {
+		this.booleanValue = booleanValue;
 	}
 }

@@ -37,12 +37,12 @@ const PublicationService = (function(){
 
     async function _getFilters(query, props){
         return await axios({
-            method: 'post',
-            url: PUBLICATIONS_PATH + '/getFilters',
+            method: 'get',
+            url: `${PUBLICATIONS_PATH}/publications/filters`,
             data: query
           })
           .then(function (response) {
-              return response.data
+              return response
           })
           .catch(function (error) {
             ErrorService.logError(props,error)

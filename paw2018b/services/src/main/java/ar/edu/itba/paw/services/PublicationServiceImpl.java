@@ -152,75 +152,9 @@ public class PublicationServiceImpl implements PublicationService {
 	}
 	
 	@Override
-	public List<PublicationDTO> findSearchFiltering(String operation, String propertyType,  String address, String minPrice, String maxPrice,
-												 String minFloorSize, String maxFloorSize,
-												 String bedrooms, String bathrooms, String parking, String order, String page){
-		List<PublicationDTO> publicationsDTO = new LinkedList<PublicationDTO>();
-
-		if(! vs.validateSearch(address, minPrice , maxPrice, minFloorSize, maxFloorSize)) {
-			return null;
-		}
-		
-		List<Publication> publications = publicationDao.findSearchFiltering(operation,propertyType,address,minPrice,maxPrice,minFloorSize,
-				  maxFloorSize,bedrooms,bathrooms, parking, order, page);
-		
-		for(Publication publication: publications) {
-			publicationsDTO.add(transform(publication));
-		}
-		return publicationsDTO;
-	}
-
-	@Override
-	public int getSearchFilteringCount(String operation, String propertyType, String address, String minPrice, String maxPrice,
-			   String minFloorSize, String maxFloorSize,
-			   String bedrooms, String bathrooms, String parking) {
-		return publicationDao.getSearchFilteringCount(operation, propertyType, address, minPrice, maxPrice, minFloorSize, 
-													  maxFloorSize, bedrooms, bathrooms, parking);
-	}
-	
-	@Override
-	public HashMap<Integer,Long> getBedroomsFilter(String operation,String propertyType, String address, String minPrice, String maxPrice, 
-												   String minFloorSize, String maxFloorSize,
-												   String bedrooms, String parking, String bathrooms) {
-		return publicationDao.getBedroomsFilter(operation,propertyType,address,minPrice,maxPrice,minFloorSize,maxFloorSize,bedrooms,bathrooms, parking);
-	}
-	
-	@Override
-	public HashMap<Integer,Long> getBathroomsFilter(String operation,String propertyType, String address, String minPrice, String maxPrice, 
-												    String minFloorSize, String maxFloorSize,
-												    String bedrooms, String parking, String bathrooms) {
-		return publicationDao.getBathroomsFilter(operation,propertyType,address,minPrice,maxPrice,minFloorSize,maxFloorSize,bedrooms,bathrooms, parking);
-	}
-	
-	@Override
-	public HashMap<Integer,Long> getParkingFilter(String operation, String propertyType, String address, String minPrice, String maxPrice, 
-												  String minFloorSize, String maxFloorSize,
-												  String bedrooms, String parking, String bathrooms) {
-		return publicationDao.getParkingFilter(operation,propertyType,address,minPrice,maxPrice,minFloorSize,maxFloorSize,bedrooms,bathrooms, parking);
-	}
-	
-	@Override
-	public HashMap<String,Long> getLocationFilter(String operation, String propertyType, String address, String minPrice, String maxPrice, 
-												  String minFloorSize, String maxFloorSize,
-												  String bedrooms, String parking, String bathrooms) {
-		return publicationDao.getLocationFilter(operation,propertyType,address,minPrice,maxPrice,minFloorSize,maxFloorSize,bedrooms,bathrooms, parking);
-	}
-	
-	@Override
 	public void lockUnlockPublication(boolean status, long publicationid) {
 		LOGGER.debug("Changing status of publication with id {} to {}", publicationid, ! status);
 		publicationDao.lockUnlockPublication(status, publicationid);
-	}
-	
-	@Override
-	public List<PublicationDTO> findAllPublications(int page, int limit){
-		List<PublicationDTO> publicationsDTO = new LinkedList<PublicationDTO>();
-		
-		for(Publication publication: publicationDao.findAllPublications(page,limit)) {
-			publicationsDTO.add(transform(publication));
-		}
-		LOGGER.debug("Looking up for all publications in data base");
-		return publicationsDTO;
 	}
 	
 	@Override
@@ -265,18 +199,32 @@ public class PublicationServiceImpl implements PublicationService {
 	}
 	
 	@Override
+	public HashMap<Integer, Long> getSimpleFilter(List<Filter> filters, String address, String filterName) {
+		return publicationDao.getSimpleFilter(filters, address, filterName);
+	}
+	
+	@Override
+	public HashMap<String, Long> getLocationFilter(List<Filter> filters, String address){
+		return publicationDao.getLocationFilter(filters, address);
+	}
+	
+	@Override
 	public List<Filter> generateFilters(String operation, String propertyType, Integer minPrice, Integer maxPrice, Integer minFloorSize, Integer maxFloorSize,
-										Integer bedrooms, Integer bathrooms, Integer parking){
+										Integer bedrooms, Integer bathrooms, Integer parking, Boolean locked){
 		List<Filter> filters = new LinkedList<Filter>();
 		addStringFilter(filters,operation,Constants.DataBaseFilterName.OPERATION,Constants.QueryFilterName.OPERATION,Constants.QueryOperator.EQUAL);
 		addStringFilter(filters,propertyType,Constants.DataBaseFilterName.PROPERTYTYPE,Constants.QueryFilterName.PROPERTYTYPE,Constants.QueryOperator.EQUAL);
-		addIntegerFilter(filters,minPrice,Constants.DataBaseFilterName.PRICE,Constants.QueryFilterName.MINPRICE,Constants.QueryOperator.LESS_OR_EQUAL);
-		addIntegerFilter(filters,maxPrice,Constants.DataBaseFilterName.PRICE,Constants.QueryFilterName.MAXPRICE,Constants.QueryOperator.GREATER_OR_EQUAL);
-		addIntegerFilter(filters,minFloorSize,Constants.DataBaseFilterName.FLOORSIZE,Constants.QueryFilterName.MINFLOORSIZE,Constants.QueryOperator.LESS_OR_EQUAL);
-		addIntegerFilter(filters,maxFloorSize,Constants.DataBaseFilterName.FLOORSIZE,Constants.QueryFilterName.MAXFLOORSIZE,Constants.QueryOperator.GREATER_OR_EQUAL);
+		addIntegerFilter(filters,minPrice,Constants.DataBaseFilterName.PRICE,Constants.QueryFilterName.MINPRICE,Constants.QueryOperator.GREATER_OR_EQUAL);
+		addIntegerFilter(filters,maxPrice,Constants.DataBaseFilterName.PRICE,Constants.QueryFilterName.MAXPRICE,Constants.QueryOperator.LESS_OR_EQUAL);
+		addIntegerFilter(filters,minFloorSize,Constants.DataBaseFilterName.FLOORSIZE,Constants.QueryFilterName.MINFLOORSIZE,Constants.QueryOperator.GREATER_OR_EQUAL);
+		addIntegerFilter(filters,maxFloorSize,Constants.DataBaseFilterName.FLOORSIZE,Constants.QueryFilterName.MAXFLOORSIZE,Constants.QueryOperator.LESS_OR_EQUAL);
 		addIntegerFilter(filters,bedrooms,Constants.DataBaseFilterName.BEDROOMS,Constants.QueryFilterName.BEDROOMS,Constants.QueryOperator.EQUAL);
 		addIntegerFilter(filters,bathrooms,Constants.DataBaseFilterName.BATHROOMS,Constants.QueryFilterName.BATHROOMS,Constants.QueryOperator.EQUAL);
 		addIntegerFilter(filters,parking,Constants.DataBaseFilterName.PARKING,Constants.QueryFilterName.PARKING,Constants.QueryOperator.EQUAL);
+		
+		if(!locked)
+			addBooleanFilter(filters,locked,Constants.DataBaseFilterName.LOCKED,Constants.QueryFilterName.LOCKED,Constants.QueryOperator.EQUAL);
+		
 		return filters;
 	}
 	
@@ -296,7 +244,12 @@ public class PublicationServiceImpl implements PublicationService {
 		}
 	}
 	
-	
-
+	public void addBooleanFilter(List<Filter> filters, Boolean value, DataBaseFilterName dataBaseName, QueryFilterName name, QueryOperator operator) {
+		if(value != null) {
+			//System.out.println("Filter: " + name + " Value:" + value);
+			Filter filter = new Filter(value,dataBaseName,name,operator);
+			filters.add(filter);
+		}
+	}
 
 }

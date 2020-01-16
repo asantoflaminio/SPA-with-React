@@ -75,7 +75,8 @@ public class Constants {
 		FLOORSIZE("floorSize"),
 		BEDROOMS("bedrooms"),
 		BATHROOMS("bathrooms"),
-		PARKING("parking");
+		PARKING("parking"),
+		LOCKED("locked");
 		
 		private final String dataBaseFilterName;
 	
@@ -97,7 +98,8 @@ public class Constants {
 		MAXFLOORSIZE("maxFloorSize"),
 		BEDROOMS("bedrooms"),
 		BATHROOMS("bathrooms"),
-		PARKING("parking");
+		PARKING("parking"),
+		LOCKED("locked");
 		
 		private final String queryFilterName;
 	

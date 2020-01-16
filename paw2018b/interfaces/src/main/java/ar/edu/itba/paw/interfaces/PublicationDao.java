@@ -25,42 +25,6 @@ public interface PublicationDao {
 	
 	public int getCountPublicationsOfUser(long id);
 	
-	public List<Publication> findSearchFiltering(String operation, String propertyType, String address, String minPrice, String maxPrice,
-												 String minFloorSize, String maxFloorSize,
-												 String bedrooms, String bathrooms, String parking, String order, String page);
-
-	public int getSearchFilteringCount(String operation, String propertyType, String address, String minPrice, String maxPrice,
-			   String minFloorSize, String maxFloorSize,
-			   String bedrooms, String bathrooms, String parking);
-	
-	public HashMap<Integer,Long> getBedroomsFilter(String operation, String propertyType, String address, String minPrice, String maxPrice, 
-												   String minFloorSize, String maxFloorSize,
-												   String bedrooms, String parking, String bathrooms);
-	
-	public HashMap<Integer,Long> getBathroomsFilter(String operation, String propertyType, String address, String minPrice, String maxPrice, 
-												   String minFloorSize, String maxFloorSize,
-												   String bedrooms, String parking, String bathrooms);
-	
-	public HashMap<Integer,Long> getParkingFilter(String operation, String propertyType, String address, String minPrice, String maxPrice, 
-												   String minFloorSize, String maxFloorSize,
-												   String bedrooms, String parking, String bathrooms);
-	
-	public HashMap<String,Long> getLocationFilter(String operation, String propertyType, String address, String minPrice, String maxPrice, 
-			  String minFloorSize, String maxFloorSize,
-			  String bedrooms, String parking, String bathrooms);
-	
-	public void addLocationFilter(String operation, String propertyType, String address,
-			String minPrice, String maxPrice, String minFloorSize, String maxFloorSize, String bedrooms, String parking,
-			String bathrooms, HashMap<String, Long> locationMap, String location);
-	
-	public String generateStringQuery(String operation, String propertyType, String address, String minPrice, String maxPrice, 
-			   String minFloorSize, String maxFloorSize,
-			   String bedrooms, String bathrooms, String parking);
-	
-	public void setQueryParameters(TypedQuery<?> query, String operation, String propertyType, String address, String minPrice, String maxPrice, 
-			   String minFloorSize, String maxFloorSize,
-			   String bedrooms, String bathrooms, String parking);
-	
 	public boolean deletePublication(long publicationid);
 	
 	public boolean editData(String title, String address,String neighborhood, String city, String province, String operation, String price,
@@ -70,8 +34,6 @@ public interface PublicationDao {
 	
 	public void lockUnlockPublication(boolean status, long publicationid);
 	
-	public List<Publication> findAllPublications(int page, int limit);
-	
 	public int getCountPublications(String address, List<Filter> filters);
 
 	public Integer getMaxResultProfile();
@@ -79,6 +41,12 @@ public interface PublicationDao {
 	public Integer getMaxResultList();
 
 	public List<Publication> getPublications(String address, List<Filter> filters, Integer page, Integer limit, String order);
+	
+	public HashMap<Integer, Long> getSimpleFilter(List<Filter> filters, String address, String filterName);
+	
+	public HashMap<String, Long> getLocationFilter(List<Filter> filters, String address);
+	
+	public void addLocationFilter(List<Filter> filters, String address, HashMap<String, Long> locationMap, String location);
 
 	public String addFiltersStatement(String query, List<Filter> filters, String address);
 
@@ -87,9 +55,5 @@ public interface PublicationDao {
 	public void addFiltersValues(TypedQuery<?> query, List<Filter> filters, String address);
 
 	public void setPagination(TypedQuery<?> query, Integer page, Integer limit);
-
-	
-
-
 
 }
