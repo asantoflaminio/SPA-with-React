@@ -4,68 +4,103 @@ import { withRouter } from "react-router";
 import ProfileAsideBar from '../components/ProfileAsideBar'
 import ProfilePublication from '../components/ProfilePublication';
 import UserService from '../services/UserService'
-import JsonService from '../services/JsonService'
+import PublicationService from '../services/PublicationService'
 import ReactPaginate from 'react-paginate';
 import * as Constants from '../util/Constants'
 import LocalStorageService from '../services/LocalStorageService';
-
+import ToastNotification from '../components/ToastNotification'
 
 class MyFavorites extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: 1,
+            initialPage: this.getInitialPage(),
             myFavoritesCounter: 0,
-            myFavouritesPublications: [],
-            images: [],
+            myFavorites: [],
+            publicationIDToDelete: 0,
             page: 0,
-            pageQuantity: 0,
+            pagesQuantity: 0,
+            showModal: false
         };
-      }
 
-      componentDidMount(){
-        this.updateFavoritesPublications();
+        this.showModalErasePublication = this.showModalErasePublication.bind(this);
+        this.erasePublication = this.erasePublication.bind(this);
     }
-    
 
-    updateFavoritesPublications(){
-        let currentComponent = this
-        let userid;
+    componentDidMount() {
+        this.updatePublications(this.state.page);
+    }
+
+    getInitialPage(){
+        const params = new URLSearchParams(this.props.location.search); 
+        const queryPageParam = params.get('page');
+        return parseInt(queryPageParam) - 1 || 0;
+    }
+
+    pushPageParam(page){
+        this.props.history.push({
+            path: '/MyFavorites',
+            search: '?page=' + page
+        })
+    }
+
+    handlePageClick = data => {
+        this.updatePublications(data.selected)
+    }
+
+    updatePublications(page){
+        let currentComponent = this; 
         let queryParameters = {}
-        queryParameters.page = this.state.page;
+        let userid;
+        queryParameters.page = parseInt(page);
         queryParameters.limit = Constants.PUBLICATIONS_PAGE_LIMIT
         userid = LocalStorageService.getUserid();
         UserService.getMyFavoritesPublications(userid,queryParameters,this.props).then(function(response) {
+            currentComponent.pushPageParam(queryParameters.page + 1);
             currentComponent.setState({
-                myFavouritesPublications: response.data,
-                page: 0,
+                myFavorites: response.data,
+                page: queryParameters.page,
                 pagesQuantity: Math.ceil(response.headers["x-total-count"] / Constants.USERS_PAGE_LIMIT),
                 myFavoritesCounter: response.headers["x-total-count"]
             })
         })
     }
 
-    handlePageClick = data => {
-        let currentComponent = this
-        let names = ["id","page"]
-        let values = [this.state.id, data.selected + 1]
-        UserService.getMyFavoritesPublications(JsonService.createJSONArray(names,values),this.props).then(function (pubs){
-            currentComponent.setState({
-                myFavouritesPublications: pubs,
-                page: data.selected+1,
-            })
+    showModalErasePublication(publicationID){
+        this.setState({
+            showModal: true,
+            publicationIDToDelete: publicationID
         })
+    }
 
+    erasePublication(publicationID){
+        let currentComponent = this
+        let data = {}
+        PublicationService.erasePublication(publicationID,this.props).then(function (){
+            currentComponent.setState({
+                myFavorites: [],
+                showModal: false
+            })
+            if(Math.ceil((currentComponent.state.myFavoritesCounter - 1) / Constants.USERS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
+                && currentComponent.state.page == currentComponent.state.pagesQuantity - 1)
+                data.selected = currentComponent.state.page - 1;
+            else
+                data.selected = currentComponent.state.page;
+            currentComponent.handlePageClick(data)
+
+        })
     }
 
 
     initializePublications(t){
         let pubComponents = [];
         
-        for(let i = 0; i < this.state.myFavouritesPublications.length; i++){
+        for(let i = 0; i < this.state.myFavorites.length; i++){
             pubComponents.push(
-                <ProfilePublication t={t} publication={this.state.myFavouritesPublications[i]} 
-                    image={this.state.images[i]}></ProfilePublication>
+                <ProfilePublication t={t} 
+                    publication={this.state.myFavorites[i]}  
+                    page="MyFavorites"
+                    eraseFunction={this.showModalErasePublication}/>
             )
         }
         
@@ -76,19 +111,25 @@ class MyFavorites extends React.Component {
 
     render(){
         const { t } = this.props;
-        let publications = this.initializePublications(t);  
+        let favorites = this.initializePublications(t);  
       
         return(
             <div>
                 <ProfileAsideBar t={t} />
-                <header>
-                    <div className="Favorites">
-                        <h2 className="title_section">{t('myfavorites.title_section')}: {this.state.myFavoritesCounter}</h2> 
-                    </div>
-                </header>
+                <ToastNotification 
+                    show={this.state.showModal}
+                    title={t('modal.deletePublication')}
+                    information={t('modal.deletePublicationDetail')}
+                    checkModal={true}
+                    acceptFunction={this.erasePublication}
+                    functionParameter={this.state.publicationIDToDelete}
+                />
+                <div className="Favorites">
+                    <h2 className="title_section">{t('myfavorites.title_section')}: {this.state.myFavoritesCounter}</h2> 
+                </div>
                 <section className="section_publications">
                             <div>
-                                {publications}
+                                {favorites}
                             </div>
                             <div class="pubsPagination">
                                 <ReactPaginate
@@ -96,6 +137,7 @@ class MyFavorites extends React.Component {
                                 nextLabel={'>'}
                                 breakLabel={'...'}
                                 pageCount={this.state.pagesQuantity}
+                                forcePage={this.state.page}
                                 marginPagesDisplayed={2}
                                 pageRangeDisplayed={3}
                                 onPageChange={this.handlePageClick}
@@ -105,7 +147,6 @@ class MyFavorites extends React.Component {
                                 pageClassName={''}
                                 previousClassName={''}
                                 nextClassName={''}
-                                forcePage={this.state.page - 1}
                             />
                             </div>
                     </section>

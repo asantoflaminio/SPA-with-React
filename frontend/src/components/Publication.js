@@ -3,8 +3,6 @@ import '../css/Publication.css';
 import * as utilFunction from '../util/function';
 import ImgVisualizer from './ImageVisualizer';
 import {Link} from 'react-router-dom';
-import PublicationService from '../services/PublicationService'
-import JsonService from '../services/JsonService'
 
 function isErasable(t, eraseFunction, publicationID){
     if(eraseFunction){
@@ -14,10 +12,7 @@ function isErasable(t, eraseFunction, publicationID){
             </div>	
         )
     }
-
 }
-
-
 
 const Publication = ({ t , publication, page, favourites, eraseFunction }) => {
     let erasableComponent = isErasable(t,eraseFunction, publication.publicationID)

@@ -223,24 +223,6 @@ public class UserController {
     }
     
     @GET
-    @Path("/getMyPublicationsQuantity")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getMyPublicationsQuantity (@Context HttpServletRequest request) {   
-    	int quantity = ps.getCountPublicationsOfUser(tas.getUserIdAuthentication(request));
-    	return Response.ok().entity(quantity).build();
-    	
-    }
-    
-    @GET
-    @Path("/getMyFavoritesQuantity")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getMyFavoritesQuantity (@Context HttpServletRequest request) {   	
-    	int quantity = fps.getCountUserFavourites(tas.getUserIdAuthentication(request));
-    	return Response.ok().entity(quantity).build();
-    	
-    }
-    
-    @GET
     @Path("/users/{userid}/publications")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getUserPublications (@Context HttpServletResponse response, @Context HttpServletRequest request, @PathParam("userid") long userid,

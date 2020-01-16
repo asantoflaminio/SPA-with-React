@@ -5,72 +5,89 @@ import ProfileAsideBar from '../components/ProfileAsideBar'
 import ProfilePublication from '../components/ProfilePublication';
 import UserService from '../services/UserService'
 import PublicationService from '../services/PublicationService'
-import JsonService from '../services/JsonService'
 import ReactPaginate from 'react-paginate';
+import ToastNotification from '../components/ToastNotification'
 import * as Constants from '../util/Constants'
 import LocalStorageService from '../services/LocalStorageService';
-
 
 class MyPublications extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            initialPage: this.getInitialPage(),
             myPublicationsCounter: 0,
             myPublications: [],
-            images: [],
+            publicationIDToDelete: 0,
             page: 0,
-            pageQuantity: 0,
+            pagesQuantity: 0,
+            showModal: false
         };
-      }
 
-      componentDidMount(){
-        this.updatePublications();
+        this.showModalErasePublication = this.showModalErasePublication.bind(this);
+        this.erasePublication = this.erasePublication.bind(this);
     }
 
-    async getImages(){
-        let imagesRequest = []
-        for(let i = 0; i < this.state.myPublications.length ; i++){
-            let names = ["publicationID","index"]
-            let values = [this.state.myPublications[i].publicationID,0]
-            await PublicationService.getImage(JsonService.createJSONArray(names,values), this.props).then(function (image){
-                imagesRequest.push(image);
-            })
-        }
-        this.setState({
-            images: imagesRequest
-        })
+    componentDidMount() {
+        this.updatePublications(this.state.page);
     }
 
-    updatePublications(){
-        let currentComponent = this; 
-        let queryParameters = {}
-        let userid;
-        queryParameters.page = this.state.page;
-        queryParameters.limit = Constants.PUBLICATIONS_PAGE_LIMIT
-        userid = LocalStorageService.getUserid();
-        UserService.getMyPublications(userid,queryParameters,this.props).then(function(response) {
-            currentComponent.setState({
-                myPublications: response.data,
-                page: 0,
-                pagesQuantity: Math.ceil(response.headers["x-total-count"] / Constants.USERS_PAGE_LIMIT),
-                myPublicationsCounter: response.headers["x-total-count"]
+    getInitialPage(){
+        const params = new URLSearchParams(this.props.location.search); 
+        const queryPageParam = params.get('page');
+        return parseInt(queryPageParam) - 1 || 0;
+    }
 
-            })
+    pushPageParam(page){
+        this.props.history.push({
+            path: '/MyPublications',
+            search: '?page=' + page
         })
     }
 
     handlePageClick = data => {
-        let currentComponent = this
-        let names = ["page"]
-        let values = [data.selected + 1]
-        UserService.getMyPublications(JsonService.createJSONArray(names,values),this.props).then(function (pubs){
-            currentComponent.setState({
-                myPublications: pubs,
-                page: data.selected+1,
-            })
-            currentComponent.getImages()
-        })
+        this.updatePublications2(data.selected)
+    }
 
+    updatePublications(page){
+        let currentComponent = this; 
+        let queryParameters = {}
+        let userid;
+        queryParameters.page = parseInt(page);
+        queryParameters.limit = Constants.PUBLICATIONS_PAGE_LIMIT
+        userid = LocalStorageService.getUserid();
+        UserService.getMyPublications(userid,queryParameters,this.props).then(function(response) {
+            currentComponent.pushPageParam(queryParameters.page + 1);
+            currentComponent.setState({
+                myPublications: response.data,
+                page: queryParameters.page,
+                pagesQuantity: Math.ceil(response.headers["x-total-count"] / Constants.USERS_PAGE_LIMIT),
+                myPublicationsCounter: response.headers["x-total-count"]
+            })
+        })
+    }
+
+    showModalErasePublication(publicationID){
+        this.setState({
+            showModal: true,
+            publicationIDToDelete: publicationID
+        })
+    }
+
+    erasePublication(publicationID){
+        let currentComponent = this
+        let data = {}
+        PublicationService.erasePublication(publicationID,this.props).then(function (){
+            currentComponent.setState({
+                myPublications: [],
+                showModal: false
+            })
+            if(Math.ceil((currentComponent.state.myPublicationsCounter - 1) / Constants.USERS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
+                && currentComponent.state.page == currentComponent.state.pagesQuantity - 1)
+                data.selected = currentComponent.state.page - 1;
+            else
+                data.selected = currentComponent.state.page;
+            currentComponent.handlePageClick(data)
+        })
     }
 
 
@@ -79,8 +96,10 @@ class MyPublications extends React.Component {
         
         for(let i = 0; i < this.state.myPublications.length; i++){
             pubComponents.push(
-                <ProfilePublication t={t} publication={this.state.myPublications[i]} 
-                    image={this.state.images[i]} pubprops={this.props}></ProfilePublication>
+                <ProfilePublication t={t} 
+                    publication={this.state.myPublications[i]}  
+                    page="MyPublications"
+                    eraseFunction={this.showModalErasePublication}/>
             )
         }
         
@@ -96,11 +115,17 @@ class MyPublications extends React.Component {
         return(
             <div>
                 <ProfileAsideBar t={t} />
-                <header>
-                    <div className="Publications">
-                        <h2 className="title_section">{t('mypublications.title_section')}: {this.state.myPublicationsCounter}</h2> 
-                    </div>
-                </header>
+                <ToastNotification 
+                    show={this.state.showModal}
+                    title={t('modal.deletePublication')}
+                    information={t('modal.deletePublicationDetail')}
+                    checkModal={true}
+                    acceptFunction={this.erasePublication}
+                    functionParameter={this.state.publicationIDToDelete}
+                />
+                <div className="Publications">
+                    <h2 className="title_section">{t('mypublications.title_section')}: {this.state.myPublicationsCounter}</h2> 
+                </div>
                 <section className="section_publications">
                             <div>
                                 {publications}
@@ -111,6 +136,7 @@ class MyPublications extends React.Component {
                                 nextLabel={'>'}
                                 breakLabel={'...'}
                                 pageCount={this.state.pagesQuantity}
+                                forcePage={this.state.page}
                                 marginPagesDisplayed={2}
                                 pageRangeDisplayed={3}
                                 onPageChange={this.handlePageClick}
@@ -120,7 +146,6 @@ class MyPublications extends React.Component {
                                 pageClassName={''}
                                 previousClassName={''}
                                 nextClassName={''}
-                                forcePage={this.state.page - 1}
                             />
                             </div>
                     </section>

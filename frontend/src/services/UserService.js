@@ -183,7 +183,7 @@ const UserService = (function(){
           });
     }
 
-    async function _getMyFavoritesPublications(userid,queryParameters,props){
+    async function _getMyFavoritesPublications(userid, queryParameters, props){
         return await axios({
             method: 'get',
             url: `${USERS_PATH}/users/${userid}/favourite-publications`,

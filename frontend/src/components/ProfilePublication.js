@@ -3,27 +3,19 @@ import '../css/Profile.css';
 import * as utilFunction from '../util/function';
 import trash from '../resources/trash.png';
 import pencil from '../resources/pencil.png';
-import ProfileImageVisualizer from './ProfileImageVisualizer';
+import ImageVisualizer from './ImageVisualizer';
 import {Link} from 'react-router-dom';
-import PublicationService from '../services/PublicationService';
-import JsonService from '../services/JsonService'
 
-const ProfilePublication = ({ t , publication, image, pubprops}) => {
-    
-    const handleClick = (publication) => {
-    
-       PublicationService.erasePublication(publication.publicationID, pubprops).then(function(){
-;}) 
-    }
+
+const ProfilePublication = ({ t, publication, image, page, eraseFunction}) => {
     
     return(
         <div class="polaroid-property">
-            <ProfileImageVisualizer
+            <ImageVisualizer //hay que cambiar esto
                 publicationID={publication.publicationID}
                 price={publication.price}
                 maxImages={publication.images}
-                page="ProfilePublication"
-                image={image}
+                page={page}
                 imageClass="polaroid-property-img"
                 containerClass="img-with-tag"
                 nextClass="next-image pointer"
@@ -59,7 +51,7 @@ const ProfilePublication = ({ t , publication, image, pubprops}) => {
                     </div>
                     <div class="more-info">
                         <img class="delete" src={trash} alt="Delete" />
-                        <a class="more-info-title" onClick={handleClick.bind(this, publication)}>{t('profilepublication.delete')}</a>
+                        <a class="more-info-title" onClick={() => eraseFunction(publication.publicationID)}>{t('profilepublication.delete')}</a>
                     </div>	
                 </div>
             </div>
