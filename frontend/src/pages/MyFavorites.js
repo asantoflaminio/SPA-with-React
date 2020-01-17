@@ -2,7 +2,7 @@ import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { withRouter } from "react-router";
 import ProfileAsideBar from '../components/ProfileAsideBar'
-import ProfilePublication from '../components/ProfilePublication';
+import Publication from '../components/Publication'
 import UserService from '../services/UserService'
 import PublicationService from '../services/PublicationService'
 import ReactPaginate from 'react-paginate';
@@ -54,13 +54,14 @@ class MyFavorites extends React.Component {
         let userid;
         queryParameters.page = parseInt(page);
         queryParameters.limit = Constants.PUBLICATIONS_PAGE_LIMIT
+        queryParameters.locked = true;
         userid = LocalStorageService.getUserid();
         UserService.getMyFavoritesPublications(userid,queryParameters,this.props).then(function(response) {
             currentComponent.pushPageParam(queryParameters.page + 1);
             currentComponent.setState({
                 myFavorites: response.data,
                 page: queryParameters.page,
-                pagesQuantity: Math.ceil(response.headers["x-total-count"] / Constants.USERS_PAGE_LIMIT),
+                pagesQuantity: Math.ceil(response.headers["x-total-count"] / Constants.PUBLICATIONS_PAGE_LIMIT),
                 myFavoritesCounter: response.headers["x-total-count"]
             })
         })
@@ -82,7 +83,7 @@ class MyFavorites extends React.Component {
                 showModal: false
             })
             if(Math.ceil((currentComponent.state.myFavoritesCounter - 1) / Constants.USERS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
-                && currentComponent.state.page == currentComponent.state.pagesQuantity - 1)
+                && currentComponent.state.page === currentComponent.state.pagesQuantity - 1)
                 data.selected = currentComponent.state.page - 1;
             else
                 data.selected = currentComponent.state.page;
@@ -97,9 +98,11 @@ class MyFavorites extends React.Component {
         
         for(let i = 0; i < this.state.myFavorites.length; i++){
             pubComponents.push(
-                <ProfilePublication t={t} 
+                <Publication t={t} 
                     publication={this.state.myFavorites[i]}  
                     page="MyFavorites"
+                    favorites={false}
+                    editable={true}
                     eraseFunction={this.showModalErasePublication}/>
             )
         }

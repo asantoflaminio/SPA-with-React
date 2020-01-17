@@ -51,12 +51,12 @@ class AdminPublications extends React.Component {
     initializePublications(t){
         let pubComponents = [];
         for(let i = 0; i < this.state.publications.length; i++){
-            alert(this.state.publications[i].publicationid)
             pubComponents.push(
                 <Publication t={t} 
                     publication={this.state.publications[i]}
                     page="AdminPublications"
                     favourites={false}
+                    editable={false}
                     eraseFunction={this.showModalErasePublication}
                 />
             )

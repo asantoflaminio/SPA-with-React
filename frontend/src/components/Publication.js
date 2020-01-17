@@ -1,6 +1,8 @@
 import React from 'react';
 import '../css/Publication.css';
 import * as utilFunction from '../util/function';
+import trash from '../resources/trash.png';
+import pencil from '../resources/pencil.png';
 import ImgVisualizer from './ImageVisualizer';
 import {Link} from 'react-router-dom';
 
@@ -14,8 +16,39 @@ function isErasable(t, eraseFunction, publicationid){
     }
 }
 
-const Publication = ({ t , publication, page, favourites, eraseFunction }) => {
-    let erasableComponent = isErasable(t,eraseFunction, publication.publicationid)
+function isEditable(t, erasableComponent, eraseFunction, publicationid, editable) {
+    if(editable) {
+        return(	
+            <div>
+            <div class="more-info">
+                <Link to={{pathname: "/EditPublication", search: "?publicationID=" + publicationid}}>
+                    <img class="delete" src={pencil} alt="Edit" />
+                    <a class="more-info-title">{t('profilepublication.edit')} </a> 
+                </Link>
+            </div>
+            <div class="more-info">
+                <img class="delete" src={trash} alt="Delete" />
+                <a class="more-info-title" onClick={() => eraseFunction(publicationid)}>{t('profilepublication.delete')}</a>
+            </div>
+            </div>
+        )
+    } else {
+        return (
+            <div>
+            <div class="more-info">
+                <Link to={{pathname: "/publication", search: "?publicationid=" + publicationid}}>
+                    <a class="more-info-title" href="">{t('list.moreInfo')} ></a>
+                </Link>
+            {erasableComponent}
+            </div>
+            </div>
+        )
+    }
+}
+
+const Publication = ({ t , publication, page, favourites, editable, eraseFunction }) => {
+    let erasableComponent = isErasable(t, eraseFunction, publication.publicationid);
+    let editableComponent = isEditable(t, erasableComponent, eraseFunction, publication.publicationid, editable);
         return(
             <div class="polaroid-property">
                 <ImgVisualizer
@@ -52,12 +85,7 @@ const Publication = ({ t , publication, page, favourites, eraseFunction }) => {
                         <div class="pub-date">
                             {publication.date}
                         </div>
-                        <div class="more-info">
-                            <Link to={{pathname: "/publication", search: "?publicationid=" + publication.publicationid}}>
-                                <a class="more-info-title" href="">{t('list.moreInfo')} ></a>
-                            </Link>
-                        </div>
-                        {erasableComponent}	
+                        {editableComponent}
                     </div>
                 </div>
             </div>

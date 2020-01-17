@@ -25,7 +25,7 @@ class ImageVisualizer extends React.Component {
         let currentComponent = this;
         let names;
         let values;
-        if(UserService.isLogged()){
+        if(UserService.isLogged()){ 
             names = ["id"]
             values = [this.props.publicationid]
             
@@ -46,7 +46,7 @@ class ImageVisualizer extends React.Component {
             this.setState({
                 index: 0
             })
-            //alert(this.props.maxImages)
+           
             if(this.props.maxImages != null && this.props.maxImages != 0)
                 this.updateImage(0);
             else
@@ -127,15 +127,13 @@ class ImageVisualizer extends React.Component {
         if(this.props.price != null){
             price = <h2 class="price-tag">U$S {this.props.price}</h2>
         }
+
         if(UserService.isLogged() && this.props.favourites !== false){
             if(this.state.isFavourite)
                 favIcon = <img class="favorite-icon" src={heartFilled} onClick={() => this.favouritePublication(! this.state.isFavourite)} alt="Fave" />
             else
                 favIcon = <img class="favorite-icon" src={heartEmpty} onClick={() => this.favouritePublication(! this.state.isFavourite)} alt="Fave" />
         }
-
-                
-        
 
         return(
             <div class={this.props.containerClass}>

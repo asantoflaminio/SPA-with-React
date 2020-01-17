@@ -132,6 +132,7 @@ class List extends React.Component {
                 <Publication t={t} 
                     publication={this.state.publications[i]}
                     page="List"
+                    editable={false}
                 />
 
             )

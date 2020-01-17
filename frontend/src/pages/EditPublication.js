@@ -1,31 +1,31 @@
-import React from 'react';
-import { withTranslation } from 'react-i18next';
-import Navbar from '../components/Navbar'
-import { withRouter } from "react-router";
+// import React from 'react';
+// import { withTranslation } from 'react-i18next';
+// import Navbar from '../components/Navbar'
+// import { withRouter } from "react-router";
 
-class EditPublication extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+// class EditPublication extends React.Component {
+//     constructor(props) {
+//         super(props);
+//         this.state = {
            
-        };
-      }
+//         };
+//       }
      
 
-    componentDidMount(){
-    }
+//     componentDidMount(){
+//     }
     
 
-    render(){
-        const { t } = this.props;
+//     render(){
+//         const { t } = this.props;
        
-        return(
-            <div>
+//         return(
+//             <div>
                
-            </div>
-        );
-    }
+//             </div>
+//         );
+//     }
 
-}
+// }
 
-export default withRouter(withTranslation()(EditPublication));
+// export default withRouter(withTranslation()(EditPublication));

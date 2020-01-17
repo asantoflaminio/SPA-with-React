@@ -139,7 +139,8 @@
       "neighborhoodHolder": "Neighborhood...",
       "neighborhood": "Neighborhood:",
       "unlocked": "NOT BLOCKED",
-      "locked": "BLOCKED"
+      "locked": "BLOCKED",
+      "delete": "Delete"
     },
     "list": {
       "buy": "Buy",
@@ -214,8 +215,8 @@
       "lastNameHolder": "Last name",
       "email": "EMAIL",
       "emailHolder": "Email",
-      "phonenumber": "PHONE NUMBER",
-      "phonenumberHolder": "Phone number",
+      "phoneNumber": "PHONE NUMBER",
+      "phoneNumberHolder": "Phone number",
       "password": "CURRENT PASSWORD",
       "passwordHolder": "Current password",
       "newpassword": "NEW PASSWORD",

@@ -10,7 +10,6 @@ import credentials from '../components/credentials'
 import { withRouter } from "react-router";
 import PublicationService from '../services/PublicationService'
 import UserService from '../services/UserService'
-import JsonService from '../services/JsonService'
 import toast from 'toasted-notes' 
 import 'toasted-notes/src/styles.css';
 import ColoredLinearProgress from '../components/ColoredLinearProgress';

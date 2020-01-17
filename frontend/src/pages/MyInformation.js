@@ -11,7 +11,6 @@ import * as yup from 'yup';
 import UserService from '../services/UserService'
 import * as Constants from '../util/Constants'
 import JsonService from '../services/JsonService'
-import LocalStorageService from '../services/LocalStorageService'
 
 class MyInformation extends React.Component {
     constructor(props) {
@@ -81,7 +80,6 @@ class MyInformation extends React.Component {
         let currentComponent = this
         let val = values;
         event.preventDefault();
-        alert("aca");
         
         if(Object.keys(errors).length === 0) {
             let names = ["password","newpassword"];
@@ -208,7 +206,7 @@ class MyInformation extends React.Component {
                                             <Form.Label>{t('profile.phoneNumber')}</Form.Label>
                                             <Form.Control
                                                 type="text"
-                                                placeholder={t('profile.phonenumberHolder')}
+                                                placeholder={t('profile.phoneNumberHolder')}
                                                 name="phoneNumber"
                                                 value={values.phoneNumber}
                                                 onChange={handleChange}
