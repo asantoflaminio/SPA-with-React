@@ -104,7 +104,6 @@ class Details extends React.Component {
         let emailDTO = JsonService.getJSONParsed(event.target)
         emailDTO.ownerEmail = ownerEmail
         emailDTO.title = title
-        alert(JSON.stringify(emailDTO))
         if(Object.keys(errors).length === 0){
             this.setState({
                 loading: true

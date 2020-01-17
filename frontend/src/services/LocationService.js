@@ -8,100 +8,58 @@ const LocationService = (function(){
 
     const LOCATIONS_PATH = 'meinHaus/locations-management'
 
-    async function _postProvince(event,props){
+    async function _postProvince(dataDTO){
         return await axios({
             method: 'post',
             url: `${LOCATIONS_PATH}/provinces`,
-            data: JsonService.getJSONParsed(event.target),
+            data: dataDTO,
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
-        })
-        .then(function (response){
-            return response.status
-        })
-        .catch(function (error) {
-            if(String(error).includes(statusCode.CONFLICT))
-                return statusCode.CONFLICT;
-            ErrorService.logError(props,error)
-        });
+        }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
     
-    async function _postCity(event,props){
+    async function _postCity(dataDTO){
         return await axios({
           method: 'post',
           url: `${LOCATIONS_PATH}/cities`,
-          data: JsonService.getJSONParsed(event.target),
+          data: dataDTO,
           headers: {
             authorization: LocalStorageService.getAccessToken(),
         }
-        })
-        .then(function (response){
-            return response.status
-        })
-        .catch(function (error) {
-            if(String(error).includes(statusCode.CONFLICT))
-                return statusCode.CONFLICT;
-            ErrorService.logError(props,error)
-        });
+        }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
-    async function _postNeighborhood(event,props){
+    async function _postNeighborhood(dataDTO){
         return await axios({
           method: 'post',
           url: `${LOCATIONS_PATH}/neighborhoods`,
-          data: JsonService.getJSONParsed(event.target),
+          data: dataDTO,
           headers: {
             authorization: LocalStorageService.getAccessToken(),
         }
-        })
-        .then(function (response){
-            return response.status
-        })
-        .catch(function (error) {
-            if(String(error).includes(statusCode.CONFLICT))
-                return statusCode.CONFLICT;
-            ErrorService.logError(props,error)
-        });
+        }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
-    async function _getProvinces(props){
+    async function _getProvinces(){
         return await axios({
             method: 'get',
             url: `${LOCATIONS_PATH}/provinces`,
-          })
-          .then(function (response) {
-              return response.data
-          })
-          .catch(function (error) {
-            ErrorService.logError(props,error)
-          });
+          }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
-    async function _getCities(provinceid,props){
+    async function _getCities(provinceid){
         return await axios({
             method: 'get',
             url: `${LOCATIONS_PATH}/provinces/${provinceid}/cities`,
-          })
-          .then(function (response) {
-              return response.data
-          })
-          .catch(function (error) {
-            ErrorService.logError(props,error)
-          });
+          }).then(function (response){ return response }).catch(function (error){ return error.response })
       }
 
-    async function _getNeighborhoods(provinceid,cityid, props){
+    async function _getNeighborhoods(provinceid,cityid){
         return await axios({
             method: 'get',
             url: `${LOCATIONS_PATH}/provinces/${provinceid}/cities/${cityid}/neighborhoods`,
-          })
-          .then(function (response) {
-              return response.data
-          })
-          .catch(function (error) {
-            ErrorService.logError(props,error)
-          });
+          }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
     
 

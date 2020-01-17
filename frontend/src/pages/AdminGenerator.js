@@ -8,9 +8,11 @@ import '../css/AdminGenerator.css';
 import AdminManagment from '../components/AdminManagment';
 import {appendSelectElement} from '../util/function'
 import LocationService from '../services/LocationService'
+import ErrorService from '../services/ErrorService'
+import JsonService from '../services/JsonService'
 import { withRouter } from "react-router";
 import ToastNotification from '../components/ToastNotification'
-import * as statusCode from '../util/StatusCode'
+import * as StatusCode from '../util/StatusCode'
 
 class AdminGenerator extends React.Component {
 
@@ -30,9 +32,11 @@ class AdminGenerator extends React.Component {
 
     componentDidMount(){
         let currentComponent = this
-        LocationService.getProvinces(this.props).then(function (provincesList){
+        LocationService.getProvinces().then(function (response){
+            if(response.status !== StatusCode.OK)
+                ErrorService.logError(currentComponent.props,response)
             currentComponent.setState({
-                provinces: provincesList,
+                provinces: response.data,
             })
         })
       }
@@ -41,17 +45,22 @@ class AdminGenerator extends React.Component {
         event.preventDefault();
         let currentComponent = this
         let province = event.target[0].value
+        let provinceDTO = JsonService.getJSONParsed(event.target)
         if(Object.keys(errors).length === 0){
-            LocationService.postProvince(event, this.props).then(function (status){
-                if(status === statusCode.CONFLICT)
+            LocationService.postProvince(provinceDTO).then(function (response){
+                if(response.status === StatusCode.CONFLICT)
                     currentComponent.setModalError(province)
-                else
+                else if(response.status === StatusCode.CREATED){
                     currentComponent.setModalInformation(province)
-                    LocationService.getProvinces(currentComponent.props).then(function (provinceList){
+                    LocationService.getProvinces(currentComponent.props).then(function (response){
                     currentComponent.setState({
-                        provinces: provinceList
+                        provinces: response.data
+                        })
                     })
-                })
+                }
+                else{
+                    ErrorService.logError(currentComponent.props,response)
+                }
             })
         }
 
@@ -61,12 +70,15 @@ class AdminGenerator extends React.Component {
         event.preventDefault();
         let currentComponent = this
         let city = event.target[1].value
+        let cityDTO = JsonService.getJSONParsed(event.target)
         if(Object.keys(errors).length === 0){
-            LocationService.postCity(event, this.props).then(function (status){
-                if(status === statusCode.CONFLICT)
+            LocationService.postCity(cityDTO).then(function (response){
+                if(response.status === StatusCode.CONFLICT)
                     currentComponent.setModalError(city)
-                else
+                else if(response.status === StatusCode.CREATED)
                     currentComponent.setModalInformation(city)
+                else
+                    ErrorService.logError(currentComponent.props,response)
             })
         }
        
@@ -76,23 +88,30 @@ class AdminGenerator extends React.Component {
         event.preventDefault();
         let currentComponent = this
         let neighborhood = event.target[2].value
+        let neighborhoodDTO = JsonService.getJSONParsed(event.target)
         if(Object.keys(errors).length === 0){
-            LocationService.postNeighborhood(event, this.props).then(function (status){
-                if(status === statusCode.CONFLICT)
+            LocationService.postNeighborhood(neighborhoodDTO).then(function (response){
+                if(response.status === StatusCode.CONFLICT)
                     currentComponent.setModalError(neighborhood)
-                else
+                else if(response.status === StatusCode.CREATED)
                     currentComponent.setModalInformation(neighborhood)
+                else
+                    ErrorService.logError(currentComponent.props,response)
             })
         }
     }
 
     updateCity(event,values){
         event.preventDefault();
+        let currentComponent = this
         values.provinceID = event.target.value
         event.target.blur();
         let provinceID = event.target[0].parentElement.value
-        LocationService.getCities(provinceID, this.props).then(function (cities){
+        LocationService.getCities(provinceID).then(function (response){
+            if(response.status !== StatusCode.OK)
+                ErrorService.logError(currentComponent.props,response)
             let select = document.getElementById("city_neighborhood")
+            let cities = response.data
             select.selectedIndex = 0;
             while (select.childNodes[1]) {
                 select.removeChild(select.childNodes[1]); 

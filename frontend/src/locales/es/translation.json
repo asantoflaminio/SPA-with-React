@@ -12,7 +12,8 @@
       "repeatPassword": "REPETIR CONTRASEÑA*",
       "phoneNumber": "CELULAR",
       "phoneNumberHolder": "Celular...",
-      "submit": "Enviar"
+      "submit": "Enviar",
+      "login": "Iniciar Sesión"
     },
     "home": {
       "title": "Encuentre su nuevo hogar",
@@ -43,6 +44,7 @@
       "passwordMatch": "Las contraseñas deben ser las mismas",
       "positiveNumber" : "El campo debe tener un número positivo",
       "emailTaken" : "El email ya está en uso",
+      "errorLogin" : "El email o la contraseña son inválidos",
       "errorTitle": "¡Ups! Parece que hubo un problema.",
       "errorCode": "Código de error: ",
       "errorMessage": "Volver a la página de inicio.",

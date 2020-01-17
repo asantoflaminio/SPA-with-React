@@ -29,31 +29,28 @@ const UserService = (function(){
           });
     }
 
-    async function _signUp(event, props){
+    async function _signUp(dataDTO){
         return await axios({
           method: 'post',
-          url: USERS_PATH + '/signUp',
-          data: JsonService.getJSONParsed(event.target)
-        })
-        .then(function (response) {
-            return response.data
-        })
-        .catch(function (error) {
-            ErrorService.logError(props,error)
-        });
+          url: `${USERS_PATH}/users`,
+          data: dataDTO
+        }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
-    async function _checkEmailAvailability(event, props){
+    async function _checkEmailAvailability(email){
+        return await axios({
+          method: 'head',
+          url: `${USERS_PATH}/users/${email}`,
+        }).then(function (response){ return response }).catch(function (error){ return error.response })
+    }
+
+    async function _login(dataDTO){
         return await axios({
           method: 'post',
-          url: USERS_PATH + '/checkEmail',
-          data: JsonService.getJSONParsed(event.target)
-        })
-        .catch(function (error) {
-            if(String(error).includes(statusCode.CONFLICT))
-                return false;
-            ErrorService.logError(props,error)
-        });
+          url: `${USERS_PATH}/login`,
+          data: dataDTO
+        }).then(function (response){ return response }).catch(function (error){ return error.response })
+        //OJO Q aca cambiaron cosas y seguro en lo de ro ROMPE!!!!!
     }
 
     async function _isAccount(event, props){
@@ -94,21 +91,6 @@ const UserService = (function(){
         })
         .then(function (response) {
             return response.status;
-        })
-        .catch(function (error) {
-            ErrorService.logError(props,error)
-        });
-    }
-
-    async function _login(array, props){
-        return await axios({
-          method: 'post',
-          url: USERS_PATH + '/login',
-          data: JsonService.getJSONParsed(array)
-        })
-        .then(function (response) {
-            LocalStorageService.setToken(response.headers.authorization, response.headers.authorities, 
-                                        response.headers.username, response.headers["user-id"])
         })
         .catch(function (error) {
             ErrorService.logError(props,error)

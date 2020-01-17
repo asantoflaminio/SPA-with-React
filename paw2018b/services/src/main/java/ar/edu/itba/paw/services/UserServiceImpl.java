@@ -31,12 +31,6 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User create(String firstName, String lastName,String email,
 			String password, String repeatPassword, String phoneNumber, String role) {
-		if(! vs.validateUser(firstName, lastName, email, password, repeatPassword, phoneNumber))
-			return null;
-		
-		if(userDao.findByUsername(email) != null)
-			return null;
-		
 		LOGGER.trace("Creating user with email {}", email);
 		return userDao.create(firstName, lastName, email, passwordEncoder.encode(password), phoneNumber, role);
 	}

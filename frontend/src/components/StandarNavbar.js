@@ -8,7 +8,9 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Form, Button, Col } from 'react-bootstrap';
 import UserService from '../services/UserService';
-import JsonService from '../services/JsonService';
+import LocalStorageService from '../services/LocalStorageService'
+import ErrorService from '../services/ErrorService'
+import * as StatusCode from '../util/StatusCode'
 
 
 class StandarNavbar extends React.Component {
@@ -16,31 +18,42 @@ class StandarNavbar extends React.Component {
         super(props)
     }
 
-    showlogin(){
+    showlogin(close){
         let login = document.getElementById("sign-in");
-        if(getComputedStyle(login, null).display === 'none')
+        if(getComputedStyle(login, null).display === 'none' && close !== true)
             login.style.display = 'block'
         else
             login.style.display = 'none'
     }
 
-    handleFormSubmit(event){
+    handleLoginForm(event){
+        event.preventDefault();
         let currentComponent = this;
         let currentPath = this.props.location;
-        let names = ["email","password"]
-        let values = [event.target[0].value,event.target[1].value]
-        event.preventDefault();
-        UserService.login(JsonService.createJSONArray(names,values),this.props).then(function(){
-            currentComponent.props.history.push(currentPath)
+        let loginDTO = {}
+        loginDTO.email = event.target[0].value;
+        loginDTO.password = event.target[1].value
+        UserService.login(loginDTO).then(function(response){
+            if(response.status === StatusCode.OK){
+                LocalStorageService.setToken(response.headers.authorization, response.headers.authorities, 
+                                                response.headers.username, response.headers["user-id"])
+                document.getElementById("errorLogin").style.display = "none"
+                currentComponent.props.history.push(currentPath)
+            }else if(response.status === StatusCode.UNAUTHORIZED){
+                document.getElementById("errorLogin").style.display = "block"
+            }else{
+                ErrorService.logError(this.props,response)
+            }
         })
+        
     }
 
 
     render(){
         const { t } = this.props;
         const schema = yup.object({
-            email: yup.string().required( t('errors.requiredField') ).min( t('errors.shortMin') ),
-            password: yup.string().required( t('errors.requiredField') ),
+            email: yup.string().required( t('errors.requiredField')),
+            password: yup.string().required( t('errors.requiredField')),
             });
         return(
                 <nav>
@@ -57,11 +70,10 @@ class StandarNavbar extends React.Component {
                                     >
                                     {({
                                         values,
-                                        touched,
                                         errors,
                                     }) => (
                                     <Form noValidate onSubmit={event => {
-                                            this.handleFormSubmit(event)
+                                            this.handleLoginForm(event)
                                     }}>
                                         <Form.Group as={Col} md="12" controlId="validationFormik01">
                                             <Form.Label>{t('navbar.mail')}</Form.Label>
@@ -89,6 +101,7 @@ class StandarNavbar extends React.Component {
                                                 {errors.password}
                                             </Form.Control.Feedback>
                                         </Form.Group>
+                                        <p id="errorLogin" className="errorText">{t('errors.errorLogin')}</p>
                                     <Button type="submit">{t('signUp.submit')}</Button>
                                     </Form>
                                 )}
@@ -100,7 +113,7 @@ class StandarNavbar extends React.Component {
                     </div>
                 <div>
                     <Link to={{pathname: "/SignUp"}}>
-                        <a className="navbar_item" id="sign_up" href="./SignUp">{t('navbar.signUp')}</a>
+                        <a className="navbar_item" id="sign_up" href="./SignUp" onClick={() => this.showlogin(true)}>{t('navbar.signUp')}</a>
                     </Link>
                 </div>
             </nav>

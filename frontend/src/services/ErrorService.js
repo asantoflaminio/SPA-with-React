@@ -2,10 +2,10 @@ const ErrorService = (function(){
 
     const ERROR_PATH = '/error'
     
-    function _logError(props,error){
+    function _logError(props,response){
         props.history.push({
             pathname: ERROR_PATH,
-            state: { coding: error.response.status }
+            state: { coding: response.status }
           })
     }
 

@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.HEAD;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -103,24 +104,27 @@ public class UserController {
     }
 	
     @POST
-    @Path("/signUp")
+    @Path("/users")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
-    @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response createUser (final UserDTO userDTO) {
+    	if(! vs.validateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), 
+    			userDTO.getPassword(), userDTO.getRepeatPassword(), userDTO.getPhoneNumber()))
+    		rs.badRequest();
+    	if(us.findByUsername(userDTO.getEmail()) != null) 
+    		return rs.conflictRequest();
+    	
     	us.create(userDTO.getFirstName(), userDTO.getLastName(), 
-    			userDTO.getEmail(), userDTO.getPassword(), userDTO.getRepeatPassword(), userDTO.getPhoneNumber(), "USER");
-    	UserLoginDTO loginInfo = new UserLoginDTO(userDTO.getEmail(),userDTO.getPassword());
-        return Response.ok().entity(loginInfo).build();
+    			userDTO.getEmail(), userDTO.getPassword(), userDTO.getRepeatPassword(), userDTO.getPhoneNumber(), Constants.Role.USER.getRole());
+        return rs.createRequest();
     }
     
-    @POST
-    @Path("/checkEmail")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response checkEmail (final EmailDTO emailDTO) {
-    	if(us.findByUsername(emailDTO.getEmail()) == null)
-    		return Response.ok().build();
+    @HEAD
+    @Path("/users/{email}")
+    public Response checkEmail (@PathParam("email") String email) {
+    	if(us.findByUsername(email) == null)
+    		return rs.notFound();
     	else
-    		return rs.conflictRequest();
+    		return rs.okRequest();
     	
     }
     
@@ -222,7 +226,7 @@ public class UserController {
 
     
     @POST
-    @Path("/message")
+    @Path("/messages")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response sendMessage (MessageDTO messageDTO) {
     	if(! vs.validateEmailMessage(messageDTO.getName(), messageDTO.getEmail(), 
