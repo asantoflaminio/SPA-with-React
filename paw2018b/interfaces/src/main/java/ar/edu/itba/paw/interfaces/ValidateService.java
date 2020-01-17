@@ -16,6 +16,8 @@ public interface ValidateService {
 	
 	public boolean validateUserPassword(String password);
 	
+	public boolean validateEmailMessage(String name, String email, String message, String ownerEmail, String title);
+	
 	public boolean validateInputText(String text, Integer minLength, Integer maxLength, String regex, String input);
 	
 	public boolean validateInputEmail(String email, Integer minLength, Integer maxLength, Pattern regex, String input);
@@ -36,6 +38,7 @@ public interface ValidateService {
 	public boolean validateID(long id);
 
 	public boolean validateIndex(Integer index);
+
 
 
 }

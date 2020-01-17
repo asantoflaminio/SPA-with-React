@@ -206,7 +206,8 @@
        "expenses": "Expensas:",
        "Yes": "Sí",
        "No": "No",
-       "messageSent": "Mensaje enviado."
+       "messageTitle": "Contacto",
+       "messageDetail": "Se ha enviado el mensaje correctamente"
     }, 
     "profile": {
      "titlePersonalData": "DATOS PERSONALES",

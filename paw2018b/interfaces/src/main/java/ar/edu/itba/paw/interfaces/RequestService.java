@@ -25,6 +25,8 @@ public interface RequestService {
 	public Response noContent();
 
 	public Response forbidden();
+
+	public Response badGateway();
 	
 
 

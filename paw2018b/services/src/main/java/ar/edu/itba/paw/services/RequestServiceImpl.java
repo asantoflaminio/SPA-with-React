@@ -67,6 +67,11 @@ public class RequestServiceImpl implements RequestService{
 	public Response noContent() {
 		return Response.status(Response.Status.NO_CONTENT).build();
 	}
+	
+	@Override
+	public Response badGateway() {
+		return Response.status(Response.Status.BAD_GATEWAY).build();
+	}
 
 
 

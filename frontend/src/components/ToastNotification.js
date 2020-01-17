@@ -29,7 +29,7 @@ class ToastNotification extends React.Component{
 
   handleShow(){
     if(this.props.checkModal === false)
-      setTimeout(() => {this.setState({show: false})}, 8000)
+      setTimeout(() => {this.setState({show: false})}, 7000)
   }
 
   showButtons(){

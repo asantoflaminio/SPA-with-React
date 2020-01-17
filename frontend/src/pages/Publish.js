@@ -10,6 +10,7 @@ import {appendSelectElement} from '../util/function'
 import ImageUploader from 'react-images-upload';
 import UserService from '../services/UserService'
 import LocationService from '../services/LocationService'
+import LocalStorageService from '../services/LocalStorageService'
 import * as Constants from '../util/Constants'
 
 class Publish extends React.Component {
@@ -143,13 +144,14 @@ class Publish extends React.Component {
 
     handleFormSubmit(event,errors) {
         let currentComponent = this
+        let userid = LocalStorageService.getUserid();
         event.preventDefault()
         if(Object.keys(errors).length === 0){
-            UserService.postPublication(event, this.props).then(function (publicationID){
-                UserService.postImages(publicationID,currentComponent.state.pictures,currentComponent.props).then(function (){
+            UserService.postPublication(userid,event, this.props).then(function (response){
+                UserService.postImages(response.data.id,currentComponent.state.pictures,currentComponent.props).then(function (){
                     currentComponent.props.history.push({
                         pathname: '/publication',
-                        search: '?publicationID=' + publicationID,
+                        search: '?publicationID=' + response.data.id,
                     });
                 })
             })

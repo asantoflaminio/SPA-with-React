@@ -1,22 +1,14 @@
 package ar.edu.itba.paw.services;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.util.Locale;
 
 import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -56,7 +48,7 @@ public class MailServiceImpl implements MailService {
     }
 	
     @Override
-	public void sendEmail (String name, String to,String from, String body, String info){
+	public MimeMessage sendEmail (String name, String to,String from, String body, String info){
     	
 
 		MimeMessage email = mailSender.createMimeMessage();
@@ -76,12 +68,13 @@ public class MailServiceImpl implements MailService {
 			email.setContent(message, "text/html; charset=utf-8");
 		} catch (Exception e) {
 			LOGGER.trace("Error sending email");
-			return;
+			return null;
 		}
 
 		
 		mailSender.send(email);
 		LOGGER.trace("Sending email to {} from {} ", to, from);
+		return email;
 	}
 
 	@Override

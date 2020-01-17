@@ -25,7 +25,7 @@ class ImageVisualizer extends React.Component {
         let currentComponent = this;
         let names;
         let values;
-        if(UserService.isLogged()){ 
+        /*if(UserService.isLogged()){ 
             names = ["id"]
             values = [this.props.publicationid]
             
@@ -34,7 +34,7 @@ class ImageVisualizer extends React.Component {
                     isFavourite : request.response
                 })
             })
-        }
+        }*/
         if(this.props.maxImages != null && this.props.maxImages != 0)
             this.updateImage(this.state.index)
         else
@@ -46,7 +46,7 @@ class ImageVisualizer extends React.Component {
             this.setState({
                 index: 0
             })
-           
+            
             if(this.props.maxImages != null && this.props.maxImages != 0)
                 this.updateImage(0);
             else
@@ -58,6 +58,9 @@ class ImageVisualizer extends React.Component {
         let id = this.props.page + this.props.publicationid;
         let img = document.getElementById(id);
         img.src = defaultImage
+        this.setState({
+            index: 0
+        })
     }
     
     updateImage(newIndex){
@@ -66,7 +69,7 @@ class ImageVisualizer extends React.Component {
         let img = document.getElementById(id);
         let queryParameters = {};
         queryParameters.index = newIndex
-        PublicationService.getImage(this.props.publicationid,newIndex, this.props).then(function (response){
+        PublicationService.getImage(this.props.publicationid,queryParameters, this.props).then(function (response){
             img.src = utilFunction.setSRC(response.data)
             component.setState({
                 index: newIndex

@@ -115,17 +115,17 @@ const UserService = (function(){
         });
     }
 
-    async function _postPublication(event, props){
+    async function _postPublication(userid,event, props){
         return await axios({
           method: 'post',
-          url: USERS_PATH + '/publish',
+          url: `${USERS_PATH}/users/${userid}/publications`,
           data: JsonService.getJSONParsed(event.target),
           headers: {
             authorization: LocalStorageService.getAccessToken(),
           }
         })
         .then(function (response) {
-            return response.data.id;
+            return response;
         })
         .catch(function (error) {
             ErrorService.logError(props,error)
@@ -152,11 +152,11 @@ const UserService = (function(){
           });
     }
 
-    async function _sendMessage(event, props){
+    async function _sendMessage(dataDTO, props){
         return await axios({
           method: 'post',
-          url: USERS_PATH + '/sendMessage',
-          data: JsonService.getJSONParsed(event.target)
+          url: `${USERS_PATH}/message`,
+          data: dataDTO
         })
         .then(function (response) { //creo q este then no va
             return response;

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
@@ -181,10 +182,16 @@ public class UserController {
     }
     
     @POST
-    @Path("/publish")
+    @Path("/users/{userid}/publications")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response createPublication (@Context HttpServletRequest request, final PublicationDTO publicationDTO) {
+    public Response createPublication (@Context HttpServletRequest request, @PathParam("userid") long userid, final PublicationDTO publicationDTO) {
+    	System.out.print(tas + " " + userid + " " + request);
+    	if(!vs.validateID(userid))
+    		return rs.badRequest();
+    	if(tas.getUserIdAuthentication(request) != userid)
+    		return rs.forbidden();
+    	
     	Publication pub = ps.create(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodID(), 
     			publicationDTO.getCityID(), publicationDTO.getProvinceID(), publicationDTO.getOperation(), 
     			publicationDTO.getPrice(), publicationDTO.getDescription(), publicationDTO.getPropertyType(), 
@@ -215,10 +222,17 @@ public class UserController {
 
     
     @POST
-    @Path("/sendMessage")
+    @Path("/message")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response sendMessage (MessageDTO messageDTO) {
-    	ms.sendEmail(messageDTO.getName() ,messageDTO.getOwnerEmail(), messageDTO.getEmail(), messageDTO.getMessage(), messageDTO.getTitle());
+    	if(! vs.validateEmailMessage(messageDTO.getName(), messageDTO.getEmail(), 
+    			messageDTO.getMessage(), messageDTO.getOwnerEmail(), messageDTO.getTitle()))
+    		return rs.badRequest();
+    	
+    	MimeMessage email = ms.sendEmail(messageDTO.getName() ,messageDTO.getOwnerEmail(), messageDTO.getEmail(), messageDTO.getMessage(), messageDTO.getTitle());
+    	if(email == null)
+    		return rs.badGateway();
+    	
         return Response.ok().build();
     }
     

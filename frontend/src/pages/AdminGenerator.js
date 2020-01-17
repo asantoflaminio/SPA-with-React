@@ -162,6 +162,7 @@ class AdminGenerator extends React.Component {
                     title={this.state.titleModal}
                     information={this.state.informationModal}
                     type={this.state.typeModal}
+                    checkModal={false}
                 />
                 <div className="polaroid data">
                     <div className="title-container">       

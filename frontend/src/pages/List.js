@@ -146,20 +146,26 @@ class List extends React.Component {
         return pubComponents;
     }
 
-    createDeleteAll(t){
-        if(this.state.address !== "" || this.state.minPrice !=="" || this.state.maxPrice !=="" ||
-        this.state.minFloorSize !=="" || this.state.maxFloorSize !=="" || this.state.bedrooms !=="" ||
-        this.state.bathrooms !=="" || this.state.parking !==""){
-            return(               
-                <div class="clean-all" onClick={() => this.deleteAllFilters(t)}> {t('list.cleanAll')} </div>
-            )
-        }
-
-        return;
-        
+    checkFilterExistance(value){
+        if(value !== "" && value !== null && value !== "undefined" && value !== undefined)
+            return true;
+        return false;
     }
 
-    createFiltersNotes(t){
+    createDeleteAll(t){
+        if(this.checkFilterExistance(this.state.address) || this.checkFilterExistance(this.state.minPrice) ||
+            this.checkFilterExistance(this.state.maxPrice) || this.checkFilterExistance(this.state.minFloorSize) ||
+            this.checkFilterExistance(this.state.maxFloorSize) || this.checkFilterExistance(this.state.bedrooms) ||
+            this.checkFilterExistance(this.state.bathrooms) || this.checkFilterExistance(this.state.parking)){
+            return(               
+                    <div class="clean-all" onClick={() => this.deleteAllFilters(t)}> {t('list.cleanAll')} </div>
+                )
+            }
+
+        return;       
+    }
+
+    createFiltersNotes(){
         let filters = [];
         filters.push(this.createFilter("address",this.state.address,null,null,""));
         filters.push(this.createFilter("minPrice",this.state.minPrice,null,null,"U$S"));
@@ -174,7 +180,7 @@ class List extends React.Component {
 
     createFilter(stateName,value,singularInformation,pluralInformation,additionalInformation){
         const {t} = this.props
-        if(value === "" || value === null || value === "undefined"){
+        if(! this.checkFilterExistance(value)){
             return;
         }
         return(

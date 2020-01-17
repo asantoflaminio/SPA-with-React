@@ -130,6 +130,27 @@ public class ValidateServiceImpl implements ValidateService{
 	}
 	
 	@Override
+	public boolean validateEmailMessage(String name, String email, String message, String ownerEmail, String title) {
+		final String messageRegex = "^[-a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ¿?:%!¡,.()$/\n/ ]*$";
+		final Pattern emailRegex = Pattern.compile("(.+)@(.+){2,}\\.(.+){2,}");
+		final String lettesNumersAndSpacesRegex = "^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ ]*$";
+		final String lettersAndSpacesRegex = "^[a-zA-ZñÑáÁéÉíÍóÓúÚüÜ ]*$";
+		
+		if( 
+			! validateInputText(name, SHORT_STRING_MIN_LENGTH, SHORT_STRING_MAX_LENGTH, lettersAndSpacesRegex, "Name") ||
+			! validateInputEmail(email, SHORT_STRING_MIN_LENGTH, EMAIL_MAX_LENGTH, emailRegex, "Email") ||
+			! validateInputText(message, SECOND_FORM_MIN_LENGTH, SECOND_FORM_MAX_LENGTH, messageRegex, "Message") ||
+			! validateInputEmail(ownerEmail, SHORT_STRING_MIN_LENGTH, EMAIL_MAX_LENGTH, emailRegex, "Email") ||
+			! validateInputText(title, FIRST_FORM_MIN_LENGTH, FIRST_FORM_MAX_LENGTH, lettesNumersAndSpacesRegex, "Title")
+		) {
+			return false;
+		}
+		
+		LOGGER.debug("The email message is valid");
+		return true;
+	}
+	
+	@Override
 	public boolean validateInputText(String text, Integer minLength, Integer maxLength, String regex, String input) {
 		if(text.length() > maxLength || text.length() < minLength) {
 			LOGGER.debug("The field {} has an invalid length", input);

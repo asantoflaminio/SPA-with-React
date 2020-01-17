@@ -10,10 +10,12 @@ import credentials from '../components/credentials'
 import { withRouter } from "react-router";
 import PublicationService from '../services/PublicationService'
 import UserService from '../services/UserService'
-import toast from 'toasted-notes' 
+import JsonService from '../services/JsonService'
 import 'toasted-notes/src/styles.css';
 import ColoredLinearProgress from '../components/ColoredLinearProgress';
 import ColoredCircularProgress from '../components/ColoredCircularProgress';
+import * as Constants from '../util/Constants'
+import ToastNotification from '../components/ToastNotification'
 
 const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credentials.mapsKey}` ;
 
@@ -46,7 +48,8 @@ class Details extends React.Component {
             storage: null,
             expenses: null,
             loading: false,
-            circleloading: false
+            circleloading: false,
+            showModal: false,
         }
       }
 
@@ -91,25 +94,29 @@ class Details extends React.Component {
         
     }
 
-    handleSendMessage(event, values){
-        event.preventDefault();
-        let currentComponent = this;
-        const { t } = this.props;
+    handleSendMessage(event, errors){
+        event.preventDefault()
+        let currentComponent = this
+        const { t } = this.props
 
-        values.name = '';
-        values.email = '';
-        values.message = '';
-        
-        this.setState({
-            loading: true
-        });
-
-        UserService.sendMessage(event, this.props).then(function (status){
-            toast.notify(t('details.messageSent'));
-            currentComponent.setState({
-                loading: false
+        let ownerEmail = this.state.ownerEmail
+        let title = this.state.title
+        let emailDTO = JsonService.getJSONParsed(event.target)
+        emailDTO.ownerEmail = ownerEmail
+        emailDTO.title = title
+        alert(JSON.stringify(emailDTO))
+        if(Object.keys(errors).length === 0){
+            this.setState({
+                loading: true
             });
-        })
+
+            UserService.sendMessage(emailDTO, this.props).then(function (status){
+                currentComponent.setState({
+                    loading: false,
+                    showModal: true
+                });
+            })
+        }
     }
 
     render(){
@@ -117,11 +124,18 @@ class Details extends React.Component {
         const queryString = require('query-string');
         const query = queryString.parse(this.props.location.search)
             const schema = yup.object({
-                name: yup.string().required( t('errors.requiredField') ),
-                email: yup.string().required(t('errors.requiredField')),
-                message: yup.string().required(t('errors.requiredField')),
-                ownerEmail: yup.string(),
-                title: yup.string()
+                name: yup.string().required( t('errors.requiredField') )
+                                .matches(Constants.lettersAndSpacesRegex, t('errors.lettersAndSpacesRegex'))
+                                .min(Constants.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                                .max(Constants.SHORT_STRING_MAX_LENGTH, t('errors.lengthMax')),
+                email: yup.string().required(t('errors.requiredField'))
+                                .matches(Constants.emailRegex, t('errors.emailRegex'))
+                                .min(Constants.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                                .max(Constants.EMAIL_MAX_LENGTH, t('errors.lengthMax')),
+                message: yup.string().required(t('errors.requiredField'))
+                                    .matches(Constants.descriptionRegex, t('errors.descriptionRegex'))
+                                    .min(Constants.SECOND_FORM_MIN_LENGTH, t('errors.lengthMin'))
+                                    .max(Constants.SECOND_FORM_MAX_LENGTH, t('errors.lengthMax'))
                 });
                 
                 let coveredFloorSize; 
@@ -154,6 +168,13 @@ class Details extends React.Component {
                 }
             return(   
                     <div>
+                    <ToastNotification 
+                    show={this.state.showModal}
+                    title={t('details.messageTitle')}
+                    information={t('details.messageDetail')}
+                    type="Information"
+                    checkModal={false}
+                     />
                     {this.state.loading ? <ColoredLinearProgress /> : null}  
                     {this.state.circleloading ? 
                      ( <ColoredCircularProgress /> )
@@ -212,13 +233,23 @@ class Details extends React.Component {
                                     <div class="fillers">
                                         <Formik
                                             validationSchema={schema}
+                                            initialValues={{ name:"", email:"", message:""}}
+                                            onSubmit={(values, {setSubmitting, resetForm}) => {
+                                                setSubmitting(true);
+                                                resetForm();
+                                                setSubmitting(false);
+                                               }}
                                             >
                                             {({
                                                 values,
+                                                errors,
+                                                touched,
                                                 handleChange,
-                                                errors
+                                                handleBlur,
+                                                handleSubmit,
+                                                isSubmitting
                                             }) => (
-                                                <Form noValidate id="messageForm" onSubmit={(event) => this.handleSendMessage(event, values)}>
+                                                <Form noValidate id="messageForm" onSubmit={(event) => handleSubmit(event) || this.handleSendMessage(event,errors)}>
                                                         <Form.Group as={Col} md="12" controlId="validationFormik01">
                                                             <Form.Label bsPrefix="contact-title">{t('details.name')}</Form.Label>
                                                             <Form.Control
@@ -226,8 +257,9 @@ class Details extends React.Component {
                                                                 placeholder={t('details.namePlaceholder')}
                                                                 value={values.name}
                                                                 onChange={handleChange}
+                                                                onBlur={handleBlur}
                                                                 name="name"
-                                                                isInvalid={!!errors.name}
+                                                                isInvalid={!!errors.name && touched.name}
                                                             />
                                                             <Form.Control.Feedback type="invalid">
                                                                 {errors.name}
@@ -239,9 +271,10 @@ class Details extends React.Component {
                                                                 type="input"
                                                                 placeholder={t('details.emailPlaceholder')}
                                                                 onChange={handleChange}
+                                                                onBlur={handleBlur}
                                                                 name="email"
                                                                 value={values.email}
-                                                                isInvalid={!!errors.email}
+                                                                isInvalid={!!errors.email && touched.email}
                                                             >
                                                             </Form.Control>
                                                             <Form.Control.Feedback type="invalid">
@@ -255,37 +288,16 @@ class Details extends React.Component {
                                                                 placeholder={t('details.messagePlaceholder')}
                                                                 name="message"
                                                                 onChange={handleChange}
+                                                                onBlur={handleBlur}
                                                                 value={values.message}
-                                                                isInvalid={!!errors.message}
+                                                                isInvalid={!!errors.message && touched.message}
                                                             >
                                                             </Form.Control>
                                                             <Form.Control.Feedback type="invalid">
                                                                 {errors.message}
                                                             </Form.Control.Feedback>
                                                         </Form.Group>
-                                                        <Form.Group as={Col} md="12" bsPrefix="hidden" controlId="validationFormik04">
-                                                            <Form.Label bsPrefix="contact-title">{t('details.message')}</Form.Label>
-                                                            <Form.Control
-                                                                as="input"
-                                                                placeholder={t('details.messagePlaceholder')}
-                                                                name="ownerEmail"
-                                                                onChange={handleChange}
-                                                                value={this.state.ownerEmail}
-                                                            >
-                                                            </Form.Control>
-                                                        </Form.Group>
-                                                        <Form.Group as={Col} md="12" bsPrefix="hidden" controlId="validationFormik05">
-                                                            <Form.Label bsPrefix="contact-title">{t('details.message')}</Form.Label>
-                                                            <Form.Control
-                                                                as="input"
-                                                                placeholder={t('details.messagePlaceholder')}
-                                                                name="title"
-                                                                onChange={handleChange}
-                                                                value={this.state.title}
-                                                            >
-                                                            </Form.Control>
-                                                        </Form.Group>
-                                                        <Button bsPrefix="button-contact" type="submit">{t('details.submit')}</Button>
+                                                        <Button bsPrefix="button-contact" type="submit" id="submitButton" disabled={isSubmitting} onClick={handleChange}>{t('details.submit')}</Button>
                                                 </Form>
                                                 
                                             )}

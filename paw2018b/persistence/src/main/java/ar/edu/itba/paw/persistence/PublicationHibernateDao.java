@@ -79,7 +79,7 @@ public class PublicationHibernateDao implements PublicationDao{
 	@Override
 	@Transactional
 	public Publication findById(long id) {
-		String queryString = SELECT_STATEMENT_SEARCH + "where pub.publicationid = :publicationid";
+		String queryString = SELECT_STATEMENT_SEARCH + "left join fetch pub.user " + "where pub.publicationid = :publicationid";
 		final TypedQuery<Publication> query = em.createQuery(queryString, Publication.class);
 		query.setParameter("publicationid", id);
 		if(query.getResultList().size() == 0)

@@ -38,13 +38,13 @@ class AdminPublications extends React.Component {
         queryParameters.limit = Constants.PUBLICATIONS_PAGE_LIMIT
         queryParameters.locked = true;
         PublicationService.getPublications(queryParameters,this.props).then(function (response){
-            currentComponent.pushPageParam(queryParameters.page + 1);
             currentComponent.setState({
                 publications: response.data,
                 resultsQuantity: response.headers["x-total-count"],
                 pagesQuantity: Math.ceil(response.headers["x-total-count"] / Constants.PUBLICATIONS_PAGE_LIMIT),
                 page: queryParameters.page
             })
+            currentComponent.pushPageParam(queryParameters.page + 1);
         })
     }
 
@@ -79,7 +79,7 @@ class AdminPublications extends React.Component {
                 publications: [],
                 showModal: false
             })
-            if(Math.ceil((currentComponent.state.resultsQuantity - 1) / Constants.USERS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
+            if(Math.ceil((currentComponent.state.resultsQuantity - 1) / Constants.PUBLICATIONS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
                 && currentComponent.state.page === currentComponent.state.pagesQuantity - 1)
                 data.selected = currentComponent.state.page - 1;
             else
@@ -103,8 +103,7 @@ class AdminPublications extends React.Component {
     }
 
     render(){
-        const { t } = this.props;
-        let publications = this.initializePublications(t)
+        const { t } = this.props; 
         return(
             <div>
                 <AdminManagment t={t} active={"AdminPublications"}/>
@@ -121,7 +120,7 @@ class AdminPublications extends React.Component {
                         <h3>{t('admin.publications')}</h3>
                     </div>
                     <div>
-                        {publications}
+                        {this.initializePublications(t)}
                     </div>
                     <div class="pubsPagination">
                                 <ReactPaginate
