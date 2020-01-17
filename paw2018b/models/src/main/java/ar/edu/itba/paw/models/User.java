@@ -31,7 +31,7 @@ public class User {
 	
 	@Column(length = 250, nullable = false, unique = true)
 	private String email;
-	
+
 	@Column(length = 70, nullable = false, unique = false)
 	private String password;
 	
@@ -54,7 +54,7 @@ public class User {
 	private List<FavPublication> favPublications;
 	
 	
-	User(){ }
+	public User(){ }
 	
 	
 	public User(long userid,String firstName, String lastName,
@@ -90,6 +90,14 @@ public class User {
 		this.firstName = firstName;
 	}
 	
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public String getLastName() {
 		return this.lastName;
 	}
@@ -105,6 +113,11 @@ public class User {
 	public String getPhoneNumber() {
 		return this.phoneNumber;
 	}
+	
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
 
 	public long getUserid() {
 		return userid;
