@@ -137,7 +137,7 @@ const UserService = (function(){
     async function _sendMessage(dataDTO, props){
         return await axios({
           method: 'post',
-          url: `${USERS_PATH}/message`,
+          url: `${USERS_PATH}/messages`,
           data: dataDTO
         })
         .then(function (response) { //creo q este then no va
