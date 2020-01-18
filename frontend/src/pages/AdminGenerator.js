@@ -33,8 +33,10 @@ class AdminGenerator extends React.Component {
     componentDidMount(){
         let currentComponent = this
         LocationService.getProvinces().then(function (response){
-            if(response.status !== StatusCode.OK)
+            if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
+                return;
+            }
             currentComponent.setState({
                 provinces: response.data,
             })
@@ -110,8 +112,10 @@ class AdminGenerator extends React.Component {
         event.target.blur();
         let provinceid = event.target[0].parentElement.value
         LocationService.getCities(provinceid).then(function (response){
-            if(response.status !== StatusCode.OK)
+            if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
+                return;
+            }
             let select = document.getElementById("city_neighborhood")
             let cities = response.data
             select.selectedIndex = 0;

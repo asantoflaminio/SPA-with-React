@@ -237,7 +237,7 @@ public class UserController {
     	if(email == null)
     		return rs.badGateway();
     	
-        return Response.ok().build();
+        return rs.createRequest();
     }
     
     @GET

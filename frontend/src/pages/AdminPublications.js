@@ -6,7 +6,9 @@ import ReactPaginate from 'react-paginate';
 import { withRouter } from "react-router";
 import PublicationService from '../services/PublicationService'
 import * as Constants from '../util/Constants'
+import * as StatusCode from '../util/StatusCode'
 import ToastNotification from '../components/ToastNotification'
+import ErrorService from '../services/ErrorService';
 
 class AdminPublications extends React.Component {
 
@@ -37,7 +39,11 @@ class AdminPublications extends React.Component {
         queryParameters.page = parseInt(page)
         queryParameters.limit = Constants.PUBLICATIONS_PAGE_LIMIT
         queryParameters.locked = true;
-        PublicationService.getPublications(queryParameters,this.props).then(function (response){
+        PublicationService.getPublications(queryParameters).then(function (response){
+            if(response.status !== StatusCode.OK){
+                ErrorService.logError(currentComponent.props,response)
+                return
+            }   
             currentComponent.setState({
                 publications: response.data,
                 resultsQuantity: response.headers["x-total-count"],
@@ -74,7 +80,12 @@ class AdminPublications extends React.Component {
     erasePublication(publicationID){
         let currentComponent = this
         let data = {}
-        PublicationService.erasePublication(publicationID,this.props).then(function (){
+        PublicationService.erasePublication(publicationID).then(function (response){
+            if(response.status !== StatusCode.NO_CONTENT){
+                ErrorService.logError(currentComponent.props,response)
+                return;
+            }
+                
             currentComponent.setState({
                 publications: [],
                 showModal: false

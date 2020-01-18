@@ -9,6 +9,8 @@ import HomeCard from '../components/HomeCard'
 import {Link} from 'react-router-dom';
 import PublicationService from '../services/PublicationService'
 import * as Constants from '../util/Constants'
+import * as StatusCode from '../util/StatusCode'
+import ErrorService from '../services/ErrorService';
 
 class HomeReal extends React.Component {
    constructor(props) {
@@ -29,14 +31,22 @@ class HomeReal extends React.Component {
 
         queryParameters_1.operation = Constants.FSALE
         queryParameters_1.order = Constants.NEWEST_PUBLICATION
-        PublicationService.getPublications(queryParameters_1,this.props).then(function (response){
+        PublicationService.getPublications(queryParameters_1).then(function (response){
+            if(response.status !== StatusCode.OK){
+                ErrorService.logError(currentComponent.props,response)
+                return;
+            }
             currentComponent.setState({
                 publicationsSale: response.data
             })
         })
         queryParameters_2.operation = Constants.FRENT
         queryParameters_2.order = Constants.NEWEST_PUBLICATION
-        PublicationService.getPublications(queryParameters_2,this.props).then(function (response){
+        PublicationService.getPublications(queryParameters_2).then(function (response){
+            if(response.status !== StatusCode.OK){
+                ErrorService.logError(currentComponent.props,response)
+                return;
+            }
             currentComponent.setState({
                 publicationsRent: response.data
             })

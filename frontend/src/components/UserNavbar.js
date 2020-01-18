@@ -9,10 +9,10 @@ import LocalStorageService from '../services/LocalStorageService'
 class UserNavbar extends React.Component {
     constructor(props) {
          super(props);
-         this.signOut = this.signOut.bind(this);
+         this.logout = this.logout.bind(this);
        }
 
-    signOut(){
+    logout(){
         let currentPath = this.props.location;
         LocalStorageService.clearToken()
         this.props.history.push(currentPath)
@@ -49,7 +49,7 @@ class UserNavbar extends React.Component {
                     </Link>
                     {adminOption}
                     <NavDropdown.Divider/>
-                    <a href="#" onClick={this.signOut} className="dropdown-item">{t('userNavbar.signOut')}</a>
+                    <a href="#" onClick={this.logout} className="dropdown-item">{t('userNavbar.logout')}</a>
                 </NavDropdown>
             </nav>
         )

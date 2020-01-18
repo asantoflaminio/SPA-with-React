@@ -9,6 +9,8 @@ import * as utilFunction from '../util/function';
 import ReactPaginate from 'react-paginate';
 import PublicationService from '../services/PublicationService'
 import * as Constants from '../util/Constants'
+import * as StatusCode from '../util/StatusCode'
+import ErrorService from '../services/ErrorService';
 
 
 class List extends React.Component {
@@ -50,7 +52,11 @@ class List extends React.Component {
         this.updateQueryParameters(queryParameters,names,values)
         this.pushParameters(names,values);
         let currentComponent = this
-        PublicationService.getPublications(queryParameters, this.props).then(function (response){
+        PublicationService.getPublications(queryParameters).then(function (response){
+            if(response.status !== StatusCode.OK){
+                ErrorService.logError(currentComponent.props,response)
+                return;
+            }
             currentComponent.setState({
                 publications: response.data,
                 resultsQuantity: response.headers["x-total-count"],
@@ -65,7 +71,8 @@ class List extends React.Component {
                 maxFloorSize: queryParameters["maxFloorSize"],
                 bedrooms: queryParameters["bedrooms"],
                 bathrooms: queryParameters["bathrooms"],
-                parking: queryParameters["parking"]
+                parking: queryParameters["parking"],
+                order: queryParameters["order"]
             })
             currentComponent.updateFilters(queryParameters)
         })
@@ -73,7 +80,11 @@ class List extends React.Component {
 
     updateFilters(queryParameters){
         let currentComponent = this
-        PublicationService.getFilters(queryParameters, this.props).then(function (response){
+        PublicationService.getFilters(queryParameters).then(function (response){
+            if(response.status !== StatusCode.OK){
+                ErrorService.logError(currentComponent.props,response)
+                return;
+            }
             currentComponent.setState({
                 filters: response.data
             })

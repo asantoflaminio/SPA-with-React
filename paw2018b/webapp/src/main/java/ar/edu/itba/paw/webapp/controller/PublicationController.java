@@ -135,7 +135,6 @@ public class PublicationController {
     
     @DELETE
     @Path("/publications/{publicationID}")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response deletePublication(@PathParam("publicationID") long publicationID){
     	if(! vs.validateID(publicationID))
     		return rs.badRequest();

@@ -15,6 +15,8 @@ import 'toasted-notes/src/styles.css';
 import ColoredLinearProgress from '../components/ColoredLinearProgress';
 import ColoredCircularProgress from '../components/ColoredCircularProgress';
 import * as Constants from '../util/Constants'
+import * as StatusCode from '../util/StatusCode'
+import ErrorService from '../services/ErrorService';
 import ToastNotification from '../components/ToastNotification'
 
 const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credentials.mapsKey}` ;
@@ -61,12 +63,16 @@ class Details extends React.Component {
     componentDidMount(){
         const queryString = require('query-string');
         const query = queryString.parse(this.props.location.search)
-        const component = this
+        const currentComponent = this
         this.setState({
             circleloading: true
         });
-        PublicationService.getPublication(query.publicationid, this.props).then(function (response){
-                component.setState({
+        PublicationService.getPublication(query.publicationid).then(function (response){
+                if(response.status !== StatusCode.OK){
+                    ErrorService.logError(currentComponent.props,response)
+                    return;
+                }
+                currentComponent.setState({
                     publicationid: response.data.publicationid, 
                     province: response.data.provinceID,
                     city: response.data.cityID,
@@ -108,7 +114,11 @@ class Details extends React.Component {
                 loading: true
             });
 
-            UserService.sendMessage(emailDTO, this.props).then(function (status){
+            UserService.sendMessage(emailDTO).then(function (response){
+                if(response.status !== StatusCode.CREATED){
+                    ErrorService.logError(currentComponent.props,response)
+                    return;
+                }
                 currentComponent.setState({
                     loading: false,
                     showModal: true

@@ -7,45 +7,27 @@ const PublicationService = (function(){
 
     const PUBLICATIONS_PATH = process.env.PUBLIC_URL + '/meinHaus/publications-managment'
 
-    async function _getPublications(queryParameters,props){
+    async function _getPublications(queryParameters){
       return await axios({
           method: 'get',
           url: `${PUBLICATIONS_PATH}/publications`,
           params: queryParameters
-        })
-        .then(function (response) {
-            return response
-        })
-        .catch(function (error) {
-          ErrorService.logError(props,error)
-        });
+        }).then(function (response){ return response }).catch(function (error){ return error.response })
   }
 
-    async function _getPublication(publicationid, props){
+    async function _getPublication(publicationid){
         return await axios({
             method: 'get',
             url: `${PUBLICATIONS_PATH}/publications/${publicationid}`,
-          })
-          .then(function (response) {
-              return response
-          })
-          .catch(function (error) {
-            ErrorService.logError(props,error)
-          });
+          }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
-    async function _getFilters(queryParameters, props){
+    async function _getFilters(queryParameters){
         return await axios({
             method: 'get',
             url: `${PUBLICATIONS_PATH}/publications/filters`,
             params:queryParameters
-          })
-          .then(function (response) {
-              return response
-          })
-          .catch(function (error) {
-            ErrorService.logError(props,error)
-          });
+          }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
     async function _getImage(publicationid,queryParameters,props){
@@ -80,20 +62,14 @@ const PublicationService = (function(){
       });   
     }
 
-    async function _erasePublication(publicationID,props){
+    async function _erasePublication(publicationID){
       return await axios({
         method: 'delete',
         url: `${PUBLICATIONS_PATH}/publications/${publicationID}`,
         headers: {
           authorization: LocalStorageService.getAccessToken(),
       }
-      })
-      .then(function (response) {
-        return response
-      })
-      .catch(function (error) {
-        ErrorService.logError(props,error)
-      });   
+      }).then(function (response){ return response }).catch(function (error){ return error.response }) 
     }
 
     

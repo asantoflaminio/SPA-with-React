@@ -1,7 +1,4 @@
 import LocalStorageService from './LocalStorageService'
-import ErrorService from './ErrorService'
-import JsonService from './JsonService'
-import * as statusCode from '../util/StatusCode'
 import axios from 'axios';
 
 const LocationService = (function(){

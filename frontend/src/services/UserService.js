@@ -19,14 +19,11 @@ const UserService = (function(){
         return await axios({
             method: 'get',
             url: `${USERS_PATH}/users`,
-            params: queryParameters
-          })
-          .then(function (response) {
-              return response
-          })
-          .catch(function (error) {
-            ErrorService.logError(props,error)
-          });
+            params: queryParameters,
+            headers: {
+                authorization: LocalStorageService.getAccessToken(),
+            }
+          }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
     async function _signUp(dataDTO){
@@ -134,18 +131,12 @@ const UserService = (function(){
           });
     }
 
-    async function _sendMessage(dataDTO, props){
+    async function _sendMessage(dataDTO){
         return await axios({
           method: 'post',
           url: `${USERS_PATH}/messages`,
           data: dataDTO
-        })
-        .then(function (response) { //creo q este then no va
-            return response;
-        })
-        .catch(function (error) {
-            ErrorService.logError(props,error)
-        });
+        }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
     async function _getMyPublications(userid, queryParameters, props){
@@ -257,18 +248,15 @@ const UserService = (function(){
         });
     }
 
-    function _lockUser(queryParameters,userid, props){
-        return axios({
+    async function _lockUser(userid,queryParameters){
+        return await axios({
             method: 'put',
             url: `${USERS_PATH}/users/${userid}/lock`,
-            params: queryParameters
-          })
-          .then(function (response) {
-              return response.data
-          })
-          .catch(function (error) {
-            ErrorService.logError(props,error)
-          });
+            params: queryParameters,
+            headers: {
+                authorization: LocalStorageService.getAccessToken(),
+            }
+          }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
    return {

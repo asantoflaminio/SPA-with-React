@@ -34,12 +34,17 @@ class SignUp extends React.Component {
         loginDTO.email = signUpDTO.email;
         loginDTO.password = signUpDTO.password;
         if(Object.keys(errors).length === 0){
-        UserService.signUp(signUpDTO,this.props).then(function (response){
-            if(response.status !== StatusCode.CREATED)
+        UserService.signUp(signUpDTO).then(function (response){
+            if(response.status !== StatusCode.CREATED){
                 ErrorService.logError(this.props,response)
-            UserService.login(loginDTO,currentComponent.props).then(function (response){
-                if(response.status !== StatusCode.OK)
+                return;
+            }
+                
+            UserService.login(loginDTO).then(function (response){
+                if(response.status !== StatusCode.OK){
                     ErrorService.logError(this.props,response)
+                    return;
+                }
                 LocalStorageService.setToken(response.headers.authorization, response.headers.authorities, 
                                                 response.headers.username, response.headers["user-id"])
                 currentComponent.props.history.push(currentPath)
@@ -63,10 +68,10 @@ class SignUp extends React.Component {
                 if(response.status === StatusCode.OK){
                     LocalStorageService.setToken(response.headers.authorization, response.headers.authorities, 
                                                     response.headers.username, response.headers["user-id"])
-                    document.getElementById("errorLogin").style.display = "none"
+                    document.getElementById("errorLoginSignUp").style.display = "none"
                     currentComponent.props.history.push(currentPath)
                 }else if(response.status === StatusCode.UNAUTHORIZED){
-                    document.getElementById("errorLogin").style.display = "block"
+                    document.getElementById("errorLoginSignUp").style.display = "block"
                 }else{
                     ErrorService.logError(this.props,response)
                 }
@@ -76,7 +81,7 @@ class SignUp extends React.Component {
 
     checkEmailAvailability(event){
         let email = event.target.value
-        UserService.checkEmailAvailability(email,this.props).then(function (response){
+        UserService.checkEmailAvailability(email).then(function (response){
             if(response.status === StatusCode.OK){
                 document.getElementById("emailTakenError").style.display = "block"
             }else if(response.status === StatusCode.NOT_FOUND || response.status === StatusCode.BAD_REQUEST)
@@ -302,7 +307,7 @@ class SignUp extends React.Component {
                                 {errors.password}
                             </Form.Control.Feedback>
                         </Form.Group>
-                        <p id="errorLogin" className="errorText">{t('errors.errorLogin')}</p>
+                        <p id="errorLoginSignUp" className="errorText">{t('errors.errorLogin')}</p>
                     <Button type="submit" id="submitButtonLogIn" disabled={isSubmitting} onClick={handleChange}>{t('signUp.submit')}</Button>
                     </Form>
                 )}

@@ -247,7 +247,7 @@
       "options": "Opciones",
       "publish": "Publicar",
       "profile": "Mi perfil",
-      "signOut": "Cerrar sesión",
+      "logout": "Cerrar sesión",
       "manage": "Administrar"
     },
     "modal":{

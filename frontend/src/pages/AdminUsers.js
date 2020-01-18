@@ -10,6 +10,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withRouter } from "react-router";
 import * as Constants from '../util/Constants'
 import UserService from '../services/UserService';
+import * as StatusCode from '../util/StatusCode'
+import ErrorService from '../services/ErrorService';
 
 class AdminUsers extends React.Component {
 
@@ -25,15 +27,22 @@ class AdminUsers extends React.Component {
 
 
     lockUser(event,index){
+        let currentComponent = this
         let queryParameters = {}
         queryParameters.lock = event.target.checked;
-        let useid = event.target.id;
+        let userid = event.target.id;
         let newList = this.state.usersList
         newList[index].locked = event.target.checked;
-        UserService.lockUser(queryParameters,useid)
-        this.setState({
-            userList: newList,
+        UserService.lockUser(userid,queryParameters).then(function (response){
+            if(response.status !== StatusCode.OK){
+                ErrorService.logError(this.props,response)
+                return;
+            }
+            currentComponent.setState({
+                userList: newList,
+            })
         })
+
     }
 
     generateUsers(tableUsers,users,t){
@@ -92,7 +101,11 @@ class AdminUsers extends React.Component {
 
         queryParameters.page = parseInt(data.selected);
         queryParameters.limit = Constants.USERS_PAGE_LIMIT
-        UserService.getUsers(queryParameters, this.props).then(function (response){
+        UserService.getUsers(queryParameters).then(function (response){
+            if(response.status !== StatusCode.OK){
+                ErrorService.logError(currentComponent.props,response)
+                return;
+            }
             currentComponent.pushPageParam(queryParameters.page + 1);
             currentComponent.setState({
                 usersList: response.data,
