@@ -9,6 +9,10 @@ import ReactPaginate from 'react-paginate';
 import * as Constants from '../util/Constants'
 import LocalStorageService from '../services/LocalStorageService';
 import ToastNotification from '../components/ToastNotification'
+import * as StatusCode from '../util/StatusCode'
+import ErrorService from '../services/ErrorService';
+
+
 
 class MyFavorites extends React.Component {
     constructor(props) {
@@ -57,13 +61,17 @@ class MyFavorites extends React.Component {
         queryParameters.locked = true;
         userid = LocalStorageService.getUserid();
         UserService.getMyFavoritesPublications(userid,queryParameters,this.props).then(function(response) {
-            currentComponent.pushPageParam(queryParameters.page + 1);
+            if(response.status !== StatusCode.OK){
+                ErrorService.logError(currentComponent.props,response)
+                return;
+            }
             currentComponent.setState({
                 myFavorites: response.data,
                 page: queryParameters.page,
                 pagesQuantity: Math.ceil(response.headers["x-total-count"] / Constants.PUBLICATIONS_PAGE_LIMIT),
                 myFavoritesCounter: response.headers["x-total-count"]
             })
+            currentComponent.pushPageParam(queryParameters.page + 1);
         })
     }
 
@@ -77,18 +85,21 @@ class MyFavorites extends React.Component {
     erasePublication(publicationID){
         let currentComponent = this
         let data = {}
-        PublicationService.erasePublication(publicationID,this.props).then(function (){
+        PublicationService.erasePublication(publicationID,this.props).then(function (response){
+            if(response.status !== StatusCode.NO_CONTENT){
+                ErrorService.logError(currentComponent.props,response)
+                return;
+            }
             currentComponent.setState({
                 myFavorites: [],
                 showModal: false
             })
-            if(Math.ceil((currentComponent.state.myFavoritesCounter - 1) / Constants.USERS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
+            if(Math.ceil((currentComponent.state.resultsQuantity - 1) / Constants.PUBLICATIONS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
                 && currentComponent.state.page === currentComponent.state.pagesQuantity - 1)
                 data.selected = currentComponent.state.page - 1;
             else
                 data.selected = currentComponent.state.page;
             currentComponent.handlePageClick(data)
-
         })
     }
 
@@ -101,16 +112,14 @@ class MyFavorites extends React.Component {
                 <Publication t={t} 
                     publication={this.state.myFavorites[i]}  
                     page="MyFavorites"
-                    favorites={false}
-                    editable={true}
+                    favourites={false}
+                    editable={false}
                     eraseFunction={this.showModalErasePublication}/>
             )
         }
         
         return pubComponents;
     }
-
-    
 
     render(){
         const { t } = this.props;

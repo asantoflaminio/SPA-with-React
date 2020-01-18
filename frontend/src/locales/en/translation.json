@@ -242,7 +242,7 @@
       "options": "Options",
       "publish": "Publish",
       "profile": "My profile",
-      "signOut": "Log out",
+      "logout": "Log out",
       "manage": "Administrate"
     },
     "modal":{

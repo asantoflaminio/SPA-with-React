@@ -9,6 +9,8 @@ import ReactPaginate from 'react-paginate';
 import ToastNotification from '../components/ToastNotification'
 import * as Constants from '../util/Constants'
 import LocalStorageService from '../services/LocalStorageService';
+import * as StatusCode from '../util/StatusCode'
+import ErrorService from '../services/ErrorService';
 
 class MyPublications extends React.Component {
     constructor(props) {
@@ -57,13 +59,17 @@ class MyPublications extends React.Component {
         queryParameters.locked = true;
         userid = LocalStorageService.getUserid();
         UserService.getMyPublications(userid,queryParameters,this.props).then(function(response) {
-            currentComponent.pushPageParam(queryParameters.page + 1);
+            if(response.status !== StatusCode.OK){
+                ErrorService.logError(currentComponent.props,response)
+                return
+            }   
             currentComponent.setState({
                 myPublications: response.data,
                 page: queryParameters.page,
                 pagesQuantity: Math.ceil(response.headers["x-total-count"] / Constants.PUBLICATIONS_PAGE_LIMIT),
                 myPublicationsCounter: response.headers["x-total-count"]
             })
+            currentComponent.pushPageParam(queryParameters.page + 1);
         })
     }
 
@@ -77,12 +83,16 @@ class MyPublications extends React.Component {
     erasePublication(publicationID){
         let currentComponent = this
         let data = {}
-        PublicationService.erasePublication(publicationID,this.props).then(function (){
+        PublicationService.erasePublication(publicationID,this.props).then(function (response){
+            if(response.status !== StatusCode.NO_CONTENT){
+                ErrorService.logError(currentComponent.props,response)
+                return;
+            }
             currentComponent.setState({
                 myPublications: [],
                 showModal: false
             })
-            if(Math.ceil((currentComponent.state.myPublicationsCounter - 1) / Constants.USERS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
+            if(Math.ceil((currentComponent.state.resultsQuantity - 1) / Constants.PUBLICATIONS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
                 && currentComponent.state.page === currentComponent.state.pagesQuantity - 1)
                 data.selected = currentComponent.state.page - 1;
             else
