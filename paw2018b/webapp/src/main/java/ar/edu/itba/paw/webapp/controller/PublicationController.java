@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 
+import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Random;
@@ -20,6 +21,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -74,7 +78,7 @@ public class PublicationController {
     	List<Filter> filters = ps.generateFilters(operation, propertyType, minPrice, maxPrice, minFloorSize, maxFloorSize, bedrooms, bathrooms, parking, locked);
     	List<PublicationDTO> publications = ps.getPublications(address,filters,page,limit,order);
     	response.setHeader(Constants.COUNT_HEADER, Integer.toString(ps.getCountPublications(address,filters)));
-    	return Response.ok().entity(publications).build();
+    	return rs.okRequest(publications);
     } 
     
     @GET
@@ -88,7 +92,7 @@ public class PublicationController {
     	if(publicationDTO == null)
     		rs.notFound();
     	
-    	return Response.ok().entity(publicationDTO).build();
+    	return rs.okRequest(publicationDTO);
     }
     
     @GET
@@ -103,7 +107,20 @@ public class PublicationController {
     		return rs.notFound();
     	byte[] data = uploadFile.getData();
     	byte[] dataBase64 = Base64.getEncoder().encode(data);
-        return Response.ok(dataBase64).build();
+        return rs.okRequest(dataBase64);
+    }
+    
+    @POST
+    @Path("/publications/{publicationid}/images")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadImageFile(@PathParam("publicationid") long publicationid,
+			@FormDataParam("files") List<FormDataBodyPart> bodyParts,
+			@FormDataParam("files") FormDataContentDisposition fileDispositions) throws IOException {
+    	if(!vs.validateID(publicationid))
+    		return rs.badRequest();
+    	if(bodyParts != null && bodyParts.size() > 0)
+    		is.create(bodyParts, publicationid);
+        return rs.createRequest();
     }
     
     @GET
@@ -152,9 +169,9 @@ public class PublicationController {
     	Random random = new Random();
     	PublicationDTO publicationDTO = new PublicationDTO();
     	publicationDTO.setTitle("adwada");
-    	publicationDTO.setProvinceID("14");
-    	publicationDTO.setCityID("22");
-    	publicationDTO.setNeighborhoodID("13");
+    	publicationDTO.setProvinceid("14");
+    	publicationDTO.setCityid("22");
+    	publicationDTO.setNeighborhoodid("13");
     	publicationDTO.setAddress("asdasd");
     	publicationDTO.setDescription("asdasd");
     	publicationDTO.setAmenities("SADASDA");
@@ -170,8 +187,8 @@ public class PublicationController {
     	publicationDTO.setCoveredFloorSize(Integer.toString(random.nextInt(5 + 1 - 0) + 0));
     	publicationDTO.setBalconies(Integer.toString(random.nextInt(5 + 1 - 0) + 0));
     	publicationDTO.setStorage("notCorresponding");
-    	ps.create(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodID(), 
-    			publicationDTO.getCityID(), publicationDTO.getProvinceID(), publicationDTO.getOperation(), 
+    	ps.create(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodid(), 
+    			publicationDTO.getCityid(), publicationDTO.getProvinceid(), publicationDTO.getOperation(), 
     			publicationDTO.getPrice(), publicationDTO.getDescription(), publicationDTO.getPropertyType(), 
     			publicationDTO.getBedrooms(), publicationDTO.getBathrooms(), publicationDTO.getDimention(), 
     			publicationDTO.getParking(),

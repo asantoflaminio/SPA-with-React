@@ -74,9 +74,9 @@ class Details extends React.Component {
                 }
                 currentComponent.setState({
                     publicationid: response.data.publicationid, 
-                    province: response.data.provinceID,
-                    city: response.data.cityID,
-                    neighborhood: response.data.neighborhoodID,
+                    province: response.data.provinceid,
+                    city: response.data.cityid,
+                    neighborhood: response.data.neighborhoodid,
                     address: response.data.address,
                     bedrooms: response.data.bedrooms,
                     bathrooms: response.data.bathrooms,

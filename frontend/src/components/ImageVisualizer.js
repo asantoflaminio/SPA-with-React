@@ -11,6 +11,8 @@ import JsonService from '../services/JsonService'
 import UserService from '../services/UserService'
 import * as statusCode from '../util/StatusCode'
 import defaultImage from '../resources/default.jpg'
+import * as StatusCode from '../util/StatusCode'
+import ErrorService from '../services/ErrorService';
 
 class ImageVisualizer extends React.Component {
     constructor(props) {
@@ -64,14 +66,18 @@ class ImageVisualizer extends React.Component {
     }
     
     updateImage(newIndex){
-        let component = this;
+        let currentComponent = this;
         let id = this.props.page + this.props.publicationid;
         let img = document.getElementById(id);
         let queryParameters = {};
         queryParameters.index = newIndex
         PublicationService.getImage(this.props.publicationid,queryParameters, this.props).then(function (response){
+            if(response.status !== StatusCode.OK){
+                ErrorService.logError(currentComponent.props,response)
+                return;
+            }
             img.src = utilFunction.setSRC(response.data)
-            component.setState({
+            currentComponent.setState({
                 index: newIndex
             })
         })

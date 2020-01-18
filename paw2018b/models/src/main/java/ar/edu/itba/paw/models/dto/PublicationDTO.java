@@ -3,9 +3,9 @@ package ar.edu.itba.paw.models.dto;
 public class PublicationDTO {
 	
 	private String title;
-	private String provinceID;
-	private String cityID;
-	private String neighborhoodID;
+	private String provinceid;
+	private String cityid;
+	private String neighborhoodid;
 	private String address;
 	private String operation;
 	private String price;
@@ -27,16 +27,16 @@ public class PublicationDTO {
 	private String phoneNumber;
 	
 	
-	public PublicationDTO(long publicationid, String title, String provinceID, String cityID, String neighborhoodID,
+	public PublicationDTO(long publicationid, String title, String provinceid, String cityid, String neighborhoodid,
 							String address, String operation, String price, String description,
 							String propertyType, String bedrooms, String bathrooms, String dimention,
 							String parking, String date,
 							String coveredFloorSize, String balconies, String amenities, String storage, String expenses) {
 		this.publicationid = publicationid;
 		this.title = title;
-		this.setProvinceID(provinceID);
-		this.setCityID(cityID);
-		this.setNeighborhoodID(neighborhoodID);
+		this.setProvinceid(provinceid);
+		this.setCityid(cityid);
+		this.setNeighborhoodid(neighborhoodid);
 		this.address = address;
 		this.operation = operation;
 		this.price = price;
@@ -137,30 +137,6 @@ public class PublicationDTO {
 		this.parking = parking;
 	}
 
-	public String getProvinceID() {
-		return provinceID;
-	}
-
-	public void setProvinceID(String provinceID) {
-		this.provinceID = provinceID;
-	}
-
-	public String getCityID() {
-		return cityID;
-	}
-
-	public void setCityID(String cityID) {
-		this.cityID = cityID;
-	}
-
-	public String getNeighborhoodID() {
-		return neighborhoodID;
-	}
-
-	public void setNeighborhoodID(String neighborhoodID) {
-		this.neighborhoodID = neighborhoodID;
-	}
-
 	public long getPublicationid() {
 		return publicationid;
 	}
@@ -239,6 +215,30 @@ public class PublicationDTO {
 
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
+	}
+
+	public String getNeighborhoodid() {
+		return neighborhoodid;
+	}
+
+	public void setNeighborhoodid(String neighborhoodid) {
+		this.neighborhoodid = neighborhoodid;
+	}
+
+	public String getCityid() {
+		return cityid;
+	}
+
+	public void setCityid(String cityid) {
+		this.cityid = cityid;
+	}
+
+	public String getProvinceid() {
+		return provinceid;
+	}
+
+	public void setProvinceid(String provinceid) {
+		this.provinceid = provinceid;
 	}
 
 }

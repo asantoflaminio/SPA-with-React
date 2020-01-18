@@ -36,7 +36,7 @@ function isEditable(t, erasableComponent, eraseFunction, publicationid, editable
         return (
             <div>
             <div class="more-info">
-                <Link to={{pathname: "/publication", search: "?publicationid=" + publicationid}}>
+                <Link to={{pathname: "/publications", search: "?publicationid=" + publicationid}}>
                     <a class="more-info-title" href="">{t('list.moreInfo')} ></a>
                 </Link>
             {erasableComponent}

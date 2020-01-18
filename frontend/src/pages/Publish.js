@@ -12,6 +12,10 @@ import UserService from '../services/UserService'
 import LocationService from '../services/LocationService'
 import LocalStorageService from '../services/LocalStorageService'
 import * as Constants from '../util/Constants'
+import * as StatusCode from '../util/StatusCode'
+import ErrorService from '../services/ErrorService';
+import JsonService from '../services/JsonService';
+import PublicationService from '../services/PublicationService';
 
 class Publish extends React.Component {
 
@@ -32,9 +36,13 @@ class Publish extends React.Component {
         let currentComponent = this
         document.getElementById("FSale").checked = true
         document.getElementById("House").checked = true
-        LocationService.getProvinces(this.props).then(function (provincesList){
+        LocationService.getProvinces().then(function (response){
+            if(response.status !== StatusCode.OK){
+                ErrorService.logError(currentComponent.props,response)
+                return;
+            }
             currentComponent.setState({
-                provinces: provincesList,
+                provinces: response.data,
             })
         })
       }
@@ -104,9 +112,10 @@ class Publish extends React.Component {
 
     updateCity(event,values){
         event.preventDefault();
-        values.provinceID = event.target.value
+        values.provinceid = event.target.value
         event.target.blur();
-        LocationService.getCities(values.provinceID, this.props).then(function (cities){
+        LocationService.getCities(values.provinceid).then(function (response){
+            let cities = response.data
             let select = document.getElementById("city-Select")
             let selectNeighborhood = document.getElementById("neighborhood-Select")
             select.selectedIndex = 0;
@@ -115,45 +124,62 @@ class Publish extends React.Component {
                 select.removeChild(select.childNodes[1]); 
             }
             for(let i = 0; i < cities.length; i++){
-                appendSelectElement(select,cities[i].city,cities[i].cityID)
+                appendSelectElement(select,cities[i].city,cities[i].cityid)
             }
         })
     }
 
     updateNeighborhood(event,values){
         event.preventDefault();
-        values.cityID = event.target.value
+        values.cityid = event.target.value
         event.target.blur();
-        LocationService.getNeighborhoods(values.provinceID,values.cityID, this.props).then(function (neighborhoods){
+        LocationService.getNeighborhoods(values.cityid).then(function (response){
+            let neighborhoods = response.data
             let select = document.getElementById("neighborhood-Select")
             select.selectedIndex = 0;
             while (select.childNodes[1]) {
                 select.removeChild(select.childNodes[1]); 
             }
             for(let i = 0; i < neighborhoods.length; i++){
-                appendSelectElement(select,neighborhoods[i].neighborhood,neighborhoods[i].neighborhoodID)
+                appendSelectElement(select,neighborhoods[i].neighborhood,neighborhoods[i].neighborhoodid)
             }
         })
     }
 
     updateNeighborhoodValue(event,values){
         event.preventDefault();
-        values.neighborhoodID = event.target.value
+        values.neighborhoodid = event.target.value
         event.target.blur();
     }
 
     handleFormSubmit(event,errors) {
         let currentComponent = this
         let userid = LocalStorageService.getUserid();
+        let publicationDTO = JsonService.getJSONParsed(event.target)
         event.preventDefault()
         if(Object.keys(errors).length === 0){
-            UserService.postPublication(userid,event, this.props).then(function (response){
-                UserService.postImages(response.data.id,currentComponent.state.pictures,currentComponent.props).then(function (){
-                    currentComponent.props.history.push({
-                        pathname: '/publication',
-                        search: '?publicationID=' + response.data.id,
-                    });
-                })
+            UserService.postPublication(userid,publicationDTO).then(function (response){
+                if(response.status !== StatusCode.CREATED){
+                    ErrorService.logError(currentComponent.props,response)
+                    return;
+                }
+                let publicationid = response.data.publicationid
+                let formData = new FormData();
+                for(let i = 0; i < currentComponent.state.pictures.length; i++) {
+                    formData.append('files', currentComponent.state.pictures[i])
+                }
+                if(currentComponent.state.pictures.length !== 0){
+                    PublicationService.postImages(publicationid,formData).then(function (response){
+                        if(response.status !== StatusCode.CREATED){
+                            ErrorService.logError(currentComponent.props,response)
+                            return;
+                        }
+                        currentComponent.props.history.push({
+                            pathname: '/publications',
+                            search: '?publicationid=' + publicationid,
+                        });
+                    })
+                }
             })
         }
     }
@@ -162,16 +188,16 @@ class Publish extends React.Component {
     render() {
         const { t } = this.props;
         const provinces = this.state.provinces.map(function(item){
-            return <option value={item.provinceID}>  {item.province} </option>;
+            return <option value={item.provinceid}>  {item.province} </option>;
           });
         const schema = yup.object({
         title: yup.string().required( t('errors.requiredField') )
                             .matches(Constants.lettesNumersAndSpacesRegex, t('errors.lettesNumersAndSpacesRegex'))
                             .min(Constants.FIRST_FORM_MIN_LENGTH, t('errors.lengthMin'))
                             .max(Constants.FIRST_FORM_MAX_LENGTH, t('errors.lengthMax')),
-        provinceID: yup.number().required(t('errors.requiredField')),
-        cityID: yup.number().required(t('errors.requiredField')),
-        neighborhoodID: yup.number().required(t('errors.requiredField')),
+        provinceid: yup.number().required(t('errors.requiredField')),
+        cityid: yup.number().required(t('errors.requiredField')),
+        neighborhoodid: yup.number().required(t('errors.requiredField')),
         address: yup.string().required(t('errors.requiredField'))
                             .matches(Constants.lettesNumersAndSpacesRegexComma, t('errors.lettesNumersAndSpacesRegexComma'))
                             .min(Constants.FIRST_FORM_MIN_LENGTH, t('errors.lengthMin'))
@@ -224,7 +250,7 @@ class Publish extends React.Component {
                 <hr/>
                 <Formik
                 validationSchema={schema}
-                initialValues={{ title:"", provinceID:"", cityID:"", neighborhoodID:"",
+                initialValues={{ title:"", provinceid:"", cityid:"", neighborhoodid:"",
                                  address:"", price:"", expenses:"", amenities:"",
                                  description:"", bedrooms:"", bathrooms:"", dimention: "",
                                  coveredFloorSize:"", parking:"", balconies:""}}
@@ -265,50 +291,50 @@ class Publish extends React.Component {
                                 <Form.Label>{t('publish.province')}</Form.Label>
                                 <Form.Control
                                     as="select"
-                                    name="provinceID"
+                                    name="provinceid"
                                     onChange={(event) => this.updateCity(event,values) && handleChange(event)}
                                     onBlur={handleBlur}
-                                    value={values.provinceID}
-                                    isInvalid={!!errors.provinceID && touched.provinceID}
+                                    value={values.provinceid}
+                                    isInvalid={!!errors.provinceid && touched.provinceid}
                                 >
                                     <option disabled selected value="">{t('publish.provinceHolder')}</option>
                                     {provinces}
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">
-                                    {errors.provinceID}
+                                    {errors.provinceid}
                                 </Form.Control.Feedback>
                             <Form.Group as={Col} md="12" controlId="validationFormik03">
                                 <Form.Label>{t('publish.city')}</Form.Label>
                                     <Form.Control
                                     as="select"
-                                    name="cityID"
+                                    name="cityid"
                                     id="city-Select"
                                     onChange={(event) => this.updateNeighborhood(event,values) && handleChange(event)}
                                     onBlur={handleBlur}
-                                    value={values.cityID}
-                                    isInvalid={!!errors.cityID && touched.cityID}
+                                    value={values.cityid}
+                                    isInvalid={!!errors.cityid && touched.cityid}
                                     >
                                         <option disabled selected value="">{t('publish.cityHolder')}</option>
                                     </Form.Control>  
                                     <Form.Control.Feedback type="invalid">
-                                    {errors.cityID}
+                                    {errors.cityid}
                                     </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group as={Col} md="12" controlId="validationFormik04">
                                 <Form.Label>{t('publish.neighborhood')}</Form.Label>
                                 <Form.Control
                                     as="select"
-                                    name="neighborhoodID"
+                                    name="neighborhoodid"
                                     id="neighborhood-Select"
-                                    value={values.neighborhoodID}
+                                    value={values.neighborhoodid}
                                     onChange={(event) => this.updateNeighborhoodValue(event,values) && handleChange(event)}
                                     onBlur={handleBlur}
-                                    isInvalid={!!errors.neighborhoodID && touched.neighborhoodID}
+                                    isInvalid={!!errors.neighborhoodid && touched.neighborhoodid}
                                 >
                                     <option disabled selected value="">{t('publish.neighborhoodHolder')}</option>
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">
-                                    {errors.neighborhoodID}
+                                    {errors.neighborhoodid}
                                 </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group as={Col} md="12" controlId="validationFormik05">

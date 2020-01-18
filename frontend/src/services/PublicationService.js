@@ -35,15 +35,19 @@ const PublicationService = (function(){
             method: 'get',
             url: `${PUBLICATIONS_PATH}/publications/${publicationid}/images`,
             params: queryParameters
-          })
-          .then(function (response) {
-            return response
-          })
-          .catch(function (error) {
-            alert(error)
-            ErrorService.logError(props,error)
-          });       
+          }).then(function (response){ return response }).catch(function (error){ return error.response })     
     }
+
+    async function _postImages(publicationid,dataDTO){
+      return await axios({
+          method: 'post',
+          url: `${PUBLICATIONS_PATH}/publications/${publicationid}/images`,
+          data: dataDTO,
+          headers: {
+              contentType:'multipart/form-data'},
+              authorization: LocalStorageService.getAccessToken()
+        }).then(function (response){ return response }).catch(function (error){ return error.response })     
+  }
 
     async function _isFavourite(array,props){
       return await axios({
@@ -79,6 +83,7 @@ const PublicationService = (function(){
         getPublication : _getPublication,
         getFilters : _getFilters,
         getImage : _getImage,
+        postImages : _postImages,
         isFavourite : _isFavourite,
         erasePublication : _erasePublication
       }

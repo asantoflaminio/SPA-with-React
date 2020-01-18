@@ -53,7 +53,7 @@ function App() {
             <Route exact path="/" component={Home} />
             <Route exact path="/SignUp" component={SignUp} />
             <Route exact path="/List" component={List} />
-            <Route exact path="/publication" component={Details} />
+            <Route exact path="/publications" component={Details} />
             <Route exact path="/error" component={ErrorBoundary} />
             <PrivateRoute exact path="/Publish" component={Publish} />
             <PrivateRoute exact path="/AdminGenerator" component={AdminGenerator} />

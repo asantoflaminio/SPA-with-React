@@ -84,9 +84,6 @@ public class UserController {
 	private RequestServiceImpl rs;
 	
 	@Autowired
-	private ImageServiceImpl is;
-	
-	@Autowired
 	private ChangePasswordServiceImpl cps;
 	
 	@Autowired
@@ -190,40 +187,29 @@ public class UserController {
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response createPublication (@Context HttpServletRequest request, @PathParam("userid") long userid, final PublicationDTO publicationDTO) {
-    	System.out.print(tas + " " + userid + " " + request);
     	if(!vs.validateID(userid))
     		return rs.badRequest();
     	if(tas.getUserIdAuthentication(request) != userid)
     		return rs.forbidden();
     	
-    	Publication pub = ps.create(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodID(), 
-    			publicationDTO.getCityID(), publicationDTO.getProvinceID(), publicationDTO.getOperation(), 
+    	Publication pub = ps.create(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodid(), 
+    			publicationDTO.getCityid(), publicationDTO.getProvinceid(), publicationDTO.getOperation(), 
     			publicationDTO.getPrice(), publicationDTO.getDescription(), publicationDTO.getPropertyType(), 
     			publicationDTO.getBedrooms(), publicationDTO.getBathrooms(), publicationDTO.getDimention(), 
     			publicationDTO.getParking(),
     			publicationDTO.getCoveredFloorSize(), publicationDTO.getBalconies(),
     			publicationDTO.getAmenities(), publicationDTO.getStorage(), publicationDTO.getExpenses(), tas.getUserIdAuthentication(request));
     	
-    	if(pub != null)
-    		return Response.ok().entity(new IDResponseDTO(pub.getPublicationid())).build();
+    	
+    	if(pub != null) {
+    		publicationDTO.setPublicationid(pub.getPublicationid());
+    		return rs.createRequest(publicationDTO);
+    	}
     	else 
     		return rs.badRequest();
 
     	
     }
-    
-    @POST
-    @Path("/images")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response uploadImageFile(@FormDataParam("publicationid") long publicationid,
-			@FormDataParam("files") List<FormDataBodyPart> bodyParts,
-			@FormDataParam("files") FormDataContentDisposition fileDispositions) throws IOException {
-    	if(bodyParts != null && bodyParts.size() > 0)
-    		is.create(bodyParts, publicationid);
-        return Response.ok().build();
-    }
-    
-
     
     @POST
     @Path("/messages")

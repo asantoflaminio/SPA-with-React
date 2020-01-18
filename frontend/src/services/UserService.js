@@ -94,41 +94,15 @@ const UserService = (function(){
         });
     }
 
-    async function _postPublication(userid,event, props){
+    async function _postPublication(userid,dataDTO){
         return await axios({
           method: 'post',
           url: `${USERS_PATH}/users/${userid}/publications`,
-          data: JsonService.getJSONParsed(event.target),
+          data: dataDTO,
           headers: {
             authorization: LocalStorageService.getAccessToken(),
           }
-        })
-        .then(function (response) {
-            return response;
-        })
-        .catch(function (error) {
-            ErrorService.logError(props,error)
-        });
-    }
-
-    async function _postImages(publicationID,images,props){
-        let formData = new FormData();
-        formData.append("publicationid",publicationID)
-        for(let i = 0; i < images.length; i++) {
-            formData.append('files', images[i])
-        }
-        axios({
-            method: 'post',
-            url: USERS_PATH + '/images',
-            data: formData,
-            headers: {
-                contentType:'multipart/form-data'},
-                authorization: LocalStorageService.getAccessToken()
-    
-          })
-          .catch(function (error) {
-            ErrorService.logError(props,error)
-          });
+        }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
     async function _sendMessage(dataDTO){
@@ -269,7 +243,6 @@ const UserService = (function(){
         createNewPassword: _createNewPassword,
         login : _login,
         postPublication : _postPublication,
-        postImages : _postImages,
         sendMessage : _sendMessage,
         getMyPublications : _getMyPublications,
         getMyFavoritesPublications : _getMyFavoritesPublications,
