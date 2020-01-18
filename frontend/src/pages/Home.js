@@ -11,6 +11,7 @@ import PublicationService from '../services/PublicationService'
 import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
+import ColoredCircularProgress from '../components/ColoredCircularProgress';
 
 class HomeReal extends React.Component {
    constructor(props) {
@@ -20,7 +21,8 @@ class HomeReal extends React.Component {
             publicationsRent: [],
             search: "",
             operation: "FSale",
-            propertyType: "House"
+            propertyType: "House",
+            circleloading: false
         };
       }
     
@@ -28,7 +30,9 @@ class HomeReal extends React.Component {
         let currentComponent = this
         let queryParameters_1 = {}
         let queryParameters_2 = {}
-
+        this.setState({
+            circleloading: true
+        });
         queryParameters_1.operation = Constants.FSALE
         queryParameters_1.order = Constants.NEWEST_PUBLICATION
         PublicationService.getPublications(queryParameters_1).then(function (response){
@@ -37,7 +41,8 @@ class HomeReal extends React.Component {
                 return;
             }
             currentComponent.setState({
-                publicationsSale: response.data
+                publicationsSale: response.data,
+                circleloading: false
             })
         })
         queryParameters_2.operation = Constants.FRENT
@@ -48,7 +53,8 @@ class HomeReal extends React.Component {
                 return;
             }
             currentComponent.setState({
-                publicationsRent: response.data
+                publicationsRent: response.data,
+                circleloading: false
             })
         })
       }
@@ -110,6 +116,10 @@ class HomeReal extends React.Component {
         this.renderNewest(this.state.publicationsSale, tableSale);
         this.renderNewest(this.state.publicationsRent, tableRent);
         return(
+            <div>
+            {this.state.circleloading ? 
+                ( <ColoredCircularProgress /> )
+               : (  
             <div>
                 <header>
                 <div className="header">
@@ -187,6 +197,8 @@ class HomeReal extends React.Component {
                 onClose={this.closeImgsViewer}
             />
             </div>
+        </div>
+            ) }
         </div>
         );
     }
