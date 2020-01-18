@@ -19,10 +19,10 @@ const LocationService = (function(){
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
     
-    async function _postCity(dataDTO){
+    async function _postCity(provinceid,dataDTO){
         return await axios({
           method: 'post',
-          url: `${LOCATIONS_PATH}/cities`,
+          url: `${LOCATIONS_PATH}/provinces/${provinceid}/cities`,
           data: dataDTO,
           headers: {
             authorization: LocalStorageService.getAccessToken(),
@@ -30,10 +30,10 @@ const LocationService = (function(){
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
-    async function _postNeighborhood(dataDTO){
+    async function _postNeighborhood(cityid,dataDTO){
         return await axios({
           method: 'post',
-          url: `${LOCATIONS_PATH}/neighborhoods`,
+          url: `${LOCATIONS_PATH}/cities/${cityid}/neighborhoods`,
           data: dataDTO,
           headers: {
             authorization: LocalStorageService.getAccessToken(),
@@ -55,10 +55,10 @@ const LocationService = (function(){
           }).then(function (response){ return response }).catch(function (error){ return error.response })
       }
 
-    async function _getNeighborhoods(provinceid,cityid){
+    async function _getNeighborhoods(cityid){
         return await axios({
             method: 'get',
-            url: `${LOCATIONS_PATH}/provinces/${provinceid}/cities/${cityid}/neighborhoods`,
+            url: `${LOCATIONS_PATH}/cities/${cityid}/neighborhoods`,
           }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
     

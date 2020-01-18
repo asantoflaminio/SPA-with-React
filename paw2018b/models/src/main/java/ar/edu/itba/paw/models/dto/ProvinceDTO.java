@@ -3,11 +3,11 @@ package ar.edu.itba.paw.models.dto;
 public class ProvinceDTO {
 	
 	private String province;
-	private long provinceID;
+	private long provinceid;
 	
-	public ProvinceDTO(String province, long provinceID) {
+	public ProvinceDTO(String province, long provinceid) {
 		this.setProvince(province);
-		this.setProvinceID(provinceID);
+		this.setProvinceid(provinceid);
 	}
 	
 	public ProvinceDTO() {}
@@ -20,12 +20,12 @@ public class ProvinceDTO {
 		this.province = province;
 	}
 
-	public long getProvinceID() {
-		return provinceID;
+	public long getProvinceid() {
+		return provinceid;
 	}
 
-	public void setProvinceID(long provinceID) {
-		this.provinceID = provinceID;
+	public void setProvinceid(long provinceid) {
+		this.provinceid = provinceid;
 	}
 	
 	

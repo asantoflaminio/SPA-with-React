@@ -3,12 +3,12 @@ package ar.edu.itba.paw.models.dto;
 public class CityDTO {
 	
 	private String city;
-	private long cityID;
-	private long provinceID;
+	private long cityid;
+	private long provinceid;
 	
-	public CityDTO(String city, long cityID) {
+	public CityDTO(String city, long cityid) {
 		this.setCity(city);
-		this.setCityID(cityID);
+		this.setCityid(cityid);
 	}
 	
 	public CityDTO(){}
@@ -20,22 +20,21 @@ public class CityDTO {
 	public void setCity(String city) {
 		this.city = city;
 	}
-
-	public long getCityID() {
-		return cityID;
+	
+	public long getProvinceid() {
+		return provinceid;
 	}
 
-	public void setCityID(long cityID) {
-		this.cityID = cityID;
+	public void setProvinceid(long provinceid) {
+		this.provinceid = provinceid;
 	}
 
-	public long getProvinceID() {
-		return provinceID;
+	public long getCityid() {
+		return cityid;
 	}
 
-	public void setProvinceID(long provinceID) {
-		this.provinceID = provinceID;
+	public void setCityid(long cityid) {
+		this.cityid = cityid;
 	}
-
 
 }

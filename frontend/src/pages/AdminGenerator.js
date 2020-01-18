@@ -70,9 +70,10 @@ class AdminGenerator extends React.Component {
         event.preventDefault();
         let currentComponent = this
         let city = event.target[1].value
+        let provinceid = event.target[0].value
         let cityDTO = JsonService.getJSONParsed(event.target)
         if(Object.keys(errors).length === 0){
-            LocationService.postCity(cityDTO).then(function (response){
+            LocationService.postCity(provinceid,cityDTO).then(function (response){
                 if(response.status === StatusCode.CONFLICT)
                     currentComponent.setModalError(city)
                 else if(response.status === StatusCode.CREATED)
@@ -88,9 +89,10 @@ class AdminGenerator extends React.Component {
         event.preventDefault();
         let currentComponent = this
         let neighborhood = event.target[2].value
+        let cityid = event.target[1].value
         let neighborhoodDTO = JsonService.getJSONParsed(event.target)
         if(Object.keys(errors).length === 0){
-            LocationService.postNeighborhood(neighborhoodDTO).then(function (response){
+            LocationService.postNeighborhood(cityid,neighborhoodDTO).then(function (response){
                 if(response.status === StatusCode.CONFLICT)
                     currentComponent.setModalError(neighborhood)
                 else if(response.status === StatusCode.CREATED)
@@ -104,10 +106,10 @@ class AdminGenerator extends React.Component {
     updateCity(event,values){
         event.preventDefault();
         let currentComponent = this
-        values.provinceID = event.target.value
+        values.provinceid = event.target.value
         event.target.blur();
-        let provinceID = event.target[0].parentElement.value
-        LocationService.getCities(provinceID).then(function (response){
+        let provinceid = event.target[0].parentElement.value
+        LocationService.getCities(provinceid).then(function (response){
             if(response.status !== StatusCode.OK)
                 ErrorService.logError(currentComponent.props,response)
             let select = document.getElementById("city_neighborhood")
@@ -117,20 +119,20 @@ class AdminGenerator extends React.Component {
                 select.removeChild(select.childNodes[1]); 
             }
             for(let i = 0; i < cities.length; i++){
-                appendSelectElement(select,cities[i].city,cities[i].cityID)
+                appendSelectElement(select,cities[i].city,cities[i].cityid)
             }
         })
     }
 
     updateProvinceValue(event,values){
         event.preventDefault();
-        values.provinceID = event.target.value
+        values.provinceid = event.target.value
         event.target.blur();
     }
 
     updateCityValue(event,values){
         event.preventDefault();
-        values.cityID = event.target.value
+        values.cityid = event.target.value
         event.target.blur();
     }
 
@@ -159,18 +161,18 @@ class AdminGenerator extends React.Component {
     render(){
         const { t } = this.props;
         const provinces = this.state.provinces.map(function(item){
-            return <option value={item.provinceID} name="provinceID">  {item.province} </option>;
+            return <option value={item.provinceid} name="provinceid">  {item.province} </option>;
           });
         const schemaProvince = yup.object({
             province: yup.string().required(t('errors.requiredField'))
         });
         const schemacity = yup.object({
-            provinceID: yup.string().required(t('errors.requiredField')),
+            provinceid: yup.string().required(t('errors.requiredField')),
             city: yup.string().required(t('errors.requiredField'))
         });
         const schemaNeighborhood = yup.object({
-            provinceID: yup.string().required(t('errors.requiredField')),
-            cityID: yup.string().required(t('errors.requiredField')),
+            provinceid: yup.string().required(t('errors.requiredField')),
+            cityid: yup.string().required(t('errors.requiredField')),
             neighborhood: yup.string().required(t('errors.requiredField'))
         });
         return(
@@ -235,7 +237,7 @@ class AdminGenerator extends React.Component {
                         <legend className="legendTag">{t('admin.cityLegend')}</legend>
                         <Formik 
                         validationSchema={schemacity}
-                        initialValues={{provinceID:"", city:""}}
+                        initialValues={{provinceid:"", city:""}}
                         onSubmit={(values, {setSubmitting, resetForm}) => {
                             setSubmitting(true);
                             resetForm();
@@ -257,18 +259,18 @@ class AdminGenerator extends React.Component {
                                         <Form.Label className="location-label">{t('admin.province')}</Form.Label>
                                         <Form.Control
                                             as="select"
-                                            name="provinceID"
+                                            name="provinceid"
                                             className="location-select"
-                                            value={values.provinceID}
+                                            value={values.provinceid}
                                             onChange={(event) => this.updateProvinceValue(event,values) && handleChange(event)}
                                             onBlur={handleBlur}
-                                            isInvalid={!!errors.provinceID && touched.provinceID}
+                                            isInvalid={!!errors.provinceid && touched.provinceid}
                                         >
                                             <option disabled selected value="">{t('publish.provinceHolder')}</option>
                                             {provinces}
                                         </Form.Control>
                                         <Form.Control.Feedback type="invalid">
-                                            {errors.provinceID}
+                                            {errors.provinceid}
                                         </Form.Control.Feedback>
                                         </div>
                                     </Form.Group>
@@ -298,7 +300,7 @@ class AdminGenerator extends React.Component {
                         <fieldset className="signup-list-item">
                         <legend className="legendTag">{t('admin.neighborhoodLegend')}</legend>
                         <Formik validationSchema={schemaNeighborhood}                        
-                        initialValues={{provinceID:"", cityID:"", neighborhood:""}}
+                        initialValues={{provinceid:"", cityid:"", neighborhood:""}}
                         onSubmit={(values, {setSubmitting, resetForm}) => {
                             setSubmitting(true);
                             resetForm();
@@ -319,18 +321,18 @@ class AdminGenerator extends React.Component {
                                         <Form.Label className="location-label">{t('admin.province')}</Form.Label>
                                         <Form.Control
                                             as="select"
-                                            name="provinceID"
+                                            name="provinceid"
                                             className="location-select"
-                                            value={values.provinceID}
+                                            value={values.provinceid}
                                             onChange={(event) => this.updateCity(event,values) && handleChange(event)}
                                             onBlur={handleBlur}
-                                            isInvalid={!!errors.provinceID && touched.provinceID}
+                                            isInvalid={!!errors.provinceid && touched.provinceid}
                                         >
                                             <option disabled selected value="">{t('publish.provinceHolder')}</option>
                                             {provinces}
                                         </Form.Control>
                                         <Form.Control.Feedback type="invalid">
-                                            {errors.provinceID}
+                                            {errors.provinceid}
                                         </Form.Control.Feedback>
                                         </div>
                                     </Form.Group>
@@ -340,18 +342,18 @@ class AdminGenerator extends React.Component {
                                         <Form.Control
                                             as="select"
                                             type="text"
-                                            name="cityID"
+                                            name="cityid"
                                             id="city_neighborhood"
                                             className="location-select"
-                                            value={values.cityID}
+                                            value={values.cityid}
                                             onBlur={handleBlur}
                                             onChange={(event) => this.updateCityValue(event,values) && handleChange(event)}
-                                            isInvalid={!!errors.cityID && touched.cityID}
+                                            isInvalid={!!errors.cityid && touched.cityid}
                                         >
                                             <option disabled selected value="">{t('publish.cityHolder')}</option>
                                         </Form.Control>
                                         <Form.Control.Feedback type="invalid">
-                                            {errors.cityID}
+                                            {errors.cityid}
                                         </Form.Control.Feedback>
                                         </div>
                                     </Form.Group>

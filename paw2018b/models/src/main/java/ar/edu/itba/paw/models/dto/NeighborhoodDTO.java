@@ -3,13 +3,13 @@ package ar.edu.itba.paw.models.dto;
 public class NeighborhoodDTO {
 	
 	private String neighborhood;
-	private long neighborhoodID;
-	private long cityID;
-	private long provinceID;
+	private long neighborhoodid;
+	private long cityid;
+	private long provinceid;
 	
-	public NeighborhoodDTO(String neighborhood, long neighborhoodID) {
+	public NeighborhoodDTO(String neighborhood, long neighborhoodid) {
 		this.setNeighborhood(neighborhood);
-		this.setNeighborhoodID(neighborhoodID);
+		this.setNeighborhoodid(neighborhoodid);
 	}
 	
 	public NeighborhoodDTO() {}
@@ -21,29 +21,29 @@ public class NeighborhoodDTO {
 	public void setNeighborhood(String neighborhood) {
 		this.neighborhood = neighborhood;
 	}
-
-	public long getNeighborhoodID() {
-		return neighborhoodID;
+	
+	public long getCityid() {
+		return cityid;
 	}
 
-	public void setNeighborhoodID(long neighborhoodID) {
-		this.neighborhoodID = neighborhoodID;
+	public void setCityid(long cityid) {
+		this.cityid = cityid;
 	}
 
-	public long getCityID() {
-		return cityID;
+	public long getProvinceid() {
+		return provinceid;
 	}
 
-	public void setCityID(long cityID) {
-		this.cityID = cityID;
+	public void setProvinceid(long provinceid) {
+		this.provinceid = provinceid;
 	}
 
-	public long getProvinceID() {
-		return provinceID;
+	public long getNeighborhoodid() {
+		return neighborhoodid;
 	}
 
-	public void setProvinceID(long provinceID) {
-		this.provinceID = provinceID;
+	public void setNeighborhoodid(long neighborhoodid) {
+		this.neighborhoodid = neighborhoodid;
 	}
 
 }

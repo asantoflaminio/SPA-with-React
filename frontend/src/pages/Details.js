@@ -97,7 +97,6 @@ class Details extends React.Component {
     handleSendMessage(event, errors){
         event.preventDefault()
         let currentComponent = this
-        const { t } = this.props
 
         let ownerEmail = this.state.ownerEmail
         let title = this.state.title

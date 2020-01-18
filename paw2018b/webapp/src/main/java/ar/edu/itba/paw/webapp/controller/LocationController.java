@@ -39,7 +39,7 @@ public class LocationController {
     @Path("/provinces")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response createProvince (final ProvinceDTO provinceDTO) {
-    	if(! vs.validateLocationAdmin(provinceDTO.getProvince(), "Province"))
+    	if(! vs.validateLocationAdmin(provinceDTO.getProvince(), Constants.Location.PROVINCE.getLocation()))
     		return rs.badRequest();
     	if(ls.findByProvinceName(provinceDTO.getProvince()) != null)
     		return rs.conflictRequest();
@@ -49,28 +49,30 @@ public class LocationController {
     }
     
     @POST
-    @Path("/cities")
+    @Path("/provinces/{provinceid}/cities")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response createCity (final CityDTO cityDTO) {
-		if(! vs.validateLocationAdmin(cityDTO.getCity(), "City"))
+    public Response createCity (@PathParam("provinceid") long provinceid, final CityDTO cityDTO) {
+		if(! vs.validateLocationAdmin(cityDTO.getCity(), Constants.Location.CITY.getLocation()) ||
+			! vs.validateID(provinceid))
 			return rs.badRequest();
-    	if(ls.findByCityName(cityDTO.getProvinceID(),cityDTO.getCity()) != null)
+    	if(ls.findByCityName(provinceid,cityDTO.getCity()) != null)
     		return rs.conflictRequest();
     	
-    	ls.createCity(cityDTO.getCity(),cityDTO.getProvinceID());
+    	ls.createCity(cityDTO.getCity(),provinceid);
         return rs.createRequest();
     }
     
     @POST
-    @Path("/neighborhoods")
+    @Path("/cities/{cityid}/neighborhoods")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response createNeighborhood (final NeighborhoodDTO neighborhoodDTO) {
-		if(! vs.validateLocationAdmin(neighborhoodDTO.getNeighborhood(), "Neighborhood"))
+    public Response createNeighborhood (@PathParam("cityid") long cityid,final NeighborhoodDTO neighborhoodDTO) {
+		if(! vs.validateLocationAdmin(neighborhoodDTO.getNeighborhood(), "Neighborhood") || 
+			! vs.validateID(cityid))
 			return rs.badRequest();
-    	if(ls.findByNeighborhoodName(neighborhoodDTO.getProvinceID() ,neighborhoodDTO.getCityID(),neighborhoodDTO.getNeighborhood()) != null)
+    	if(ls.findByNeighborhoodName(cityid,neighborhoodDTO.getNeighborhood()) != null)
     		return rs.conflictRequest();
     	
-    	ls.createNeighborhood(neighborhoodDTO.getNeighborhood(),neighborhoodDTO.getCityID());
+    	ls.createNeighborhood(neighborhoodDTO.getNeighborhood(),cityid);
         return rs.createRequest();
     }
     
@@ -87,7 +89,8 @@ public class LocationController {
     @Path("/provinces/{provinceid}/cities")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getCities (@PathParam("provinceid") long provinceid) {
-    	if(!vs.validateLocation(Long.toString(provinceid), Constants.Location.PROVINCE.toString()))
+    	if(!vs.validateLocation(Long.toString(provinceid), Constants.Location.PROVINCE.toString()) || 
+    		! vs.validateID(provinceid))
     		return rs.badRequest();
     	
     	List<CityDTO> cities = ls.getCities(provinceid);
@@ -95,13 +98,13 @@ public class LocationController {
     }
     
     @GET
-    @Path("provinces/{provinceid}/cities/{cityid}/neighborhoods")
+    @Path("/cities/{cityid}/neighborhoods")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getNeighborhoods (@PathParam("provinceid") long provinceid, @PathParam("cityid") long cityid) {
-    	if(!vs.validateLocation(Long.toString(provinceid), Constants.Location.PROVINCE.toString()) ||
-    		!vs.validateLocation(Long.toString(cityid), Constants.Location.CITY.toString()))
+    public Response getNeighborhoods (@PathParam("cityid") long cityid) {
+    	if(!vs.validateLocation(Long.toString(cityid), Constants.Location.CITY.toString()) ||
+    		! vs.validateID(cityid))
     		return rs.badRequest();
-    	List<NeighborhoodDTO> neighborhoods = ls.getNeighborhoods(provinceid, cityid);
+    	List<NeighborhoodDTO> neighborhoods = ls.getNeighborhoods(cityid);
     	
     	return rs.okRequest(neighborhoods);
     }
