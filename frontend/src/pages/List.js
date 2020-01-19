@@ -11,6 +11,7 @@ import PublicationService from '../services/PublicationService'
 import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
+import ColoredCircularProgress from '../components/ColoredCircularProgress';
 
 
 class List extends React.Component {
@@ -32,7 +33,8 @@ class List extends React.Component {
             order: Constants.NEWEST_PUBLICATION,
             page: this.setInitialPage(),
             pagesQuantity: 0,
-            filters : null
+            filters : null,
+            circleloading: false
         };
       }
 
@@ -42,6 +44,10 @@ class List extends React.Component {
         let names = ["address","operation","propertyType","minPrice","maxPrice","minFloorSize","maxFloorSize","bedrooms","bathrooms","parking"]
         let values = [query.address,query.operation,query.propertyType,query.minPrice,query.maxPrice,query.minFloorSize,query.maxFloorSize,
                         query.bedrooms,query.bathrooms,query.parking]
+        this.setState({
+            circleloading: true
+        });
+        
         this.updatePublications(names,values)      
         this.selectOperation(query.operation)
         this.selectPropertyType(query.propertyType)
@@ -72,7 +78,8 @@ class List extends React.Component {
                 bedrooms: queryParameters["bedrooms"],
                 bathrooms: queryParameters["bathrooms"],
                 parking: queryParameters["parking"],
-                order: queryParameters["order"]
+                order: queryParameters["order"] ,
+                circleloading: false
             })
             currentComponent.updateFilters(queryParameters)
         })
@@ -217,30 +224,45 @@ class List extends React.Component {
     }
 
     deleteAllFilters(){
+        this.setState({
+            circleloading: true
+        });
         let names = ["address","minPrice","maxPrice","minFloorSize","maxFloorSize","bedrooms","bathrooms","parking","page"]
         let values = ["","","","","","","","",0]
         this.updatePublications(names,values)
     }
 
     deleteFilter(stateName){
+        this.setState({
+            circleloading: true
+        });
         let names = [stateName,"page"]
         let values = ["",0]
         this.updatePublications(names,values);
     }
 
     handleSelect(event,stateName){
+        this.setState({
+            circleloading: true
+        });
         let names = [stateName]
         let values = [event.target.value]
         this.updatePublications(names,values)
     }
 
     handleFilter(stateName,value){
+        this.setState({
+            circleloading: true
+        });
         let names = [stateName,"page"]
         let values = [value,0]
         this.updatePublications(names,values)
     }
 
     handleOperation(operation){
+        this.setState({
+            circleloading: true
+        });
         let names = ["operation","page"]
         let values = [operation,0]
         this.selectOperation(operation);
@@ -248,6 +270,10 @@ class List extends React.Component {
     }
 
     handleSearch(){
+        
+        this.setState({
+            circleloading: true
+        });
         let value = document.getElementById("search-holder").value
         let names = ["address","page"]
         let values = [value,0]
@@ -255,15 +281,20 @@ class List extends React.Component {
     }
 
     handlePrice(){
+        this.setState({
+            circleloading: true
+        });
         let minPrice = document.getElementById("minPrice");
         let maxPrice = document.getElementById("maxPrice");
-
         let names = ["minPrice","maxPrice","page"]
         let values = [minPrice.value,maxPrice.value,0]
         this.updatePublications(names,values);
     }
 
     handleFloorSize(){
+        this.setState({
+            circleloading: true
+        });
         let minFloorSize = document.getElementById("minFloorSize");
         let maxFloorSize = document.getElementById("maxFloorSize");
 
@@ -323,6 +354,11 @@ class List extends React.Component {
     }
 
     handlePageClick = data => {
+        
+        // esto causa loop infinito
+        // this.setState({
+        //     circleloading: true
+        // });
         let names = ["page"]
         let values = [data.selected]
         this.updatePublications(names,values)
@@ -347,6 +383,7 @@ class List extends React.Component {
         let bathroomFilter = this.createFilterFields("bathrooms","list.bathroomSingular","list.bathroomPlural",t,"bathrooms")
         let parkingFilter = this.createFilterFields("parking","list.parkingSingular","list.parkingPlural",t,"parking")
         return(
+            <div>                
             <div>
                 <div class="wrap inlineBlock">
                     <div class="search_list inlineBlock">
@@ -470,6 +507,9 @@ class List extends React.Component {
                                 </div>
                             </div>
                         </aside>
+                        {this.state.circleloading ? 
+                            ( <ColoredCircularProgress/> )
+                        : (   
                         <section id="publications">
                             <div>
                                 {publications}
@@ -495,9 +535,12 @@ class List extends React.Component {
                                 /> 
                                 </div>) : null}
                         </section>
+                        ) }
                     </div>
                 </div>
             </div>
+                
+        </div>
             
         );
     }

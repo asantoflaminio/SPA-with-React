@@ -6,19 +6,20 @@ import PropTypes from 'prop-types';
 const defaultSize = 50;
 
 class ColoredCircularProgress extends Component {
+
     render() {
-      const { classes, size } = this.props;
+      const { classes, size, percentage } = this.props;
       return <CircularProgress {...this.props} classes={classes} size={size} />;
     }
   }
   
-  const styles = ({ size = defaultSize }) => ({
+  const styles = ({ size = defaultSize , percentage = 50}) => ({
     colorPrimary: {
       color: '#FD8907'
     },
     root: {
-      top: `calc(50% - ${size / 2}px)`,
-      left: `calc(50% - ${size / 2}px)`,
+      top: `calc(${percentage}% - ${size / 2}px)`,
+      left: `calc(${percentage}% - ${size / 2}px)`,
       position: 'absolute'
     }
   });
