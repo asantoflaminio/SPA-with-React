@@ -148,32 +148,26 @@ const UserService = (function(){
     }
 
 
-    async function _favouritePublication(array,props){
+    async function _addFavourite(userid,dataDTO){
         return await axios({
             method: 'post',
-            url: USERS_PATH + '/favouritePublication',
-            data: JsonService.getJSONParsed(array),
+            url: `${USERS_PATH}/users/${userid}/favourite-publications`,
+            data: dataDTO,
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
-          })
-          .catch(function (error) {
-              ErrorService.logError(props,error)
-          });
+          }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
-    async function _unfavouritePublication(array,props){
+    async function _removeFavourite(userid,dataDTO){
         return await axios({
-            method: 'post',
-            url: USERS_PATH + '/unfavouritePublication',
-            data: JsonService.getJSONParsed(array),
+            method: 'delete',
+            url: `${USERS_PATH}/users/${userid}/favourite-publications`,
+            data: dataDTO,
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
-          })
-          .catch(function (error) {
-              ErrorService.logError(props,error)
-          });
+          }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
     async function _updateInformation(array, props) {
@@ -246,8 +240,8 @@ const UserService = (function(){
         sendMessage : _sendMessage,
         getMyPublications : _getMyPublications,
         getMyFavoritesPublications : _getMyFavoritesPublications,
-        favouritePublication : _favouritePublication,
-        unfavouritePublication : _unfavouritePublication,
+        addFavourite : _addFavourite,
+        removeFavourite : _removeFavourite,
         updateInformation: _updateInformation,
         retrievePersonalInformation: _retrievePersonalInformation,
         updatePassword: _updatePassword,

@@ -9,11 +9,13 @@ public interface FavPublicationsService {
 	
 	public FavPublication addFavourite(long userid, long publicationid);
 	
-	public void removeFavourite(long userid, long publicationid);
+	public boolean removeFavourite(long userid, long publicationid);
 	
 	public List<PublicationDTO> getUserFavourites(long userid, Integer page, Integer limit);
 	
 	public int getCountUserFavourites(long userid);
+	
+	public List<PublicationDTO> checkFavorites(List<PublicationDTO> publications, long userid);
 	
 	public boolean isFavourite(long userid, long publicationid);
 

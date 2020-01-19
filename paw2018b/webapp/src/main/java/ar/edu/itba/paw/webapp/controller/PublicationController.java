@@ -67,7 +67,8 @@ public class PublicationController {
     @GET
     @Path("/publications")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getPublications (@Context HttpServletResponse response, @DefaultValue("0") @QueryParam("page") Integer page, @DefaultValue("10") @QueryParam("limit") Integer limit,
+    public Response getPublications (@Context HttpServletRequest request, @Context HttpServletResponse response, 
+    									@DefaultValue("0") @QueryParam("page") Integer page, @DefaultValue("10") @QueryParam("limit") Integer limit,
     									@QueryParam("operation") String operation, @QueryParam("propertyType") String propertyType, @QueryParam("address") String address,
     									@QueryParam("minPrice") Integer minPrice, @QueryParam("maxPrice") Integer maxPrice, @QueryParam("minFloorSize") Integer minFloorSize,
     									@QueryParam("maxFloorSize") Integer maxFloorSize, @QueryParam("bedrooms") Integer bedrooms, @QueryParam("bathrooms") Integer bathrooms,
@@ -78,6 +79,9 @@ public class PublicationController {
     	List<Filter> filters = ps.generateFilters(operation, propertyType, minPrice, maxPrice, minFloorSize, maxFloorSize, bedrooms, bathrooms, parking, locked);
     	List<PublicationDTO> publications = ps.getPublications(address,filters,page,limit,order);
     	response.setHeader(Constants.COUNT_HEADER, Integer.toString(ps.getCountPublications(address,filters)));
+    	final Long userid = tas.getUserIdAuthentication(request);
+    	if(userid != null)
+    		publications = fs.checkFavorites(publications, userid);
     	return rs.okRequest(publications);
     } 
     

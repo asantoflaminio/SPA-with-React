@@ -6,9 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,15 +20,12 @@ public class UserHibernateDao implements UserDao {
 	@PersistenceContext
 	private EntityManager em;
 	
-	@Autowired
-	private HttpServletRequest request;
-	
 	
 	@Transactional
-	public User create(final String firstName, final String lastName, final String email,
-						final String password, final String phoneNumber, String role) {
+	public User create(final String firstName, final String lastName, final String email, final String password, 
+					final String languaje, final String phoneNumber,  String role) {
 		
-		final User user = new User(firstName, lastName, email, password, phoneNumber, role, request.getHeader("Accept-Language").substring(0, Constants.MAX_LANGUAJE));
+		final User user = new User(firstName, lastName, email, password, phoneNumber, languaje, role);
 		em.persist(user);
 		return user;
 	}

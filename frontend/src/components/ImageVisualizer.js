@@ -13,31 +13,26 @@ import * as statusCode from '../util/StatusCode'
 import defaultImage from '../resources/default.jpg'
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
+import LocalStorageService from '../services/LocalStorageService';
 
 class ImageVisualizer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             index : 0,
-            isFavourite : false,
+            isFavourite : null,
         }
+        this.addFavourite = this.addFavourite.bind(this);
+        this.removeFavourite = this.removeFavourite.bind(this);
       }
 
     componentDidMount(){
-        let currentComponent = this;
-        let names;
-        let values;
-        /*if(UserService.isLogged()){ 
-            names = ["id"]
-            values = [this.props.publicationid]
-            
-            PublicationService.isFavourite(JsonService.createJSONArray(names,values),this.props).then(function (request){
-                currentComponent.setState({
-                    isFavourite : request.response
-                })
+        if(UserService.isLogged()){ 
+            this.setState({
+                isFavourite : this.props.isFavourite
             })
-        }*/
-        if(this.props.maxImages != null && this.props.maxImages != 0)
+        }
+        if(this.props.maxImages !== null && this.props.maxImages !== 0)
             this.updateImage(this.state.index)
         else
             this.setDefaultImage()
@@ -46,10 +41,11 @@ class ImageVisualizer extends React.Component {
     componentDidUpdate(prevProps,prevState){
         if (this.props !== prevProps){
             this.setState({
-                index: 0
+                index: 0,
+                isFavourite : this.props.isFavourite
             })
             
-            if(this.props.maxImages != null && this.props.maxImages != 0)
+            if(this.props.maxImages !== null && this.props.maxImages !== 0)
                 this.updateImage(0);
             else
                 this.setDefaultImage()
@@ -107,48 +103,61 @@ class ImageVisualizer extends React.Component {
         this.updateImage(previousIndex)
     }
 
+    getFavouriteState(){
+        let favIcon;
+        if(UserService.isLogged() && this.state.isFavourite !== null){
+            if(this.state.isFavourite)
+                favIcon = <img class="favorite-icon" src={heartFilled} onClick={this.removeFavourite} alt="Fave" />
+            else
+                favIcon = <img class="favorite-icon" src={heartEmpty} onClick={this.addFavourite} alt="Fave" />
+        }
+        return favIcon
+    }
 
-    favouritePublication(boolean){
-        let names = ["id"]
-        let values = [this.props.publicationid]
+    addFavourite(){
         let currentComponent = this;
-        if(boolean){
-            UserService.favouritePublication(JsonService.createJSONArray(names,values),this.props).then(function (data){
-                if(data.status === statusCode.OK)
-                    return;
-                currentComponent.setState({
-                    isFavourite: boolean
-                })
+        let userid = LocalStorageService.getUserid();
+        let favPublicationDTO = {}
+        favPublicationDTO.publicationid = this.props.publicationid
+        UserService.addFavourite(userid,favPublicationDTO).then(function (response){
+            if(response.status !== StatusCode.CREATED){
+                ErrorService.logError(currentComponent.props,response)
+                return;
+            }
+            currentComponent.setState({
+                isFavourite : true
             })
-        }
-        else{
-            UserService.unfavouritePublication(JsonService.createJSONArray(names,values),this.props).then(function (){
-                currentComponent.setState({
-                    isFavourite: boolean
-                })
+        })
+    }
+
+    removeFavourite(){
+        let currentComponent = this;
+        let userid = LocalStorageService.getUserid();
+        let favPublicationDTO = {}
+        favPublicationDTO.publicationid = this.props.publicationid
+        UserService.removeFavourite(userid,favPublicationDTO).then(function (response){
+            if(response.status !== StatusCode.NO_CONTENT){
+                ErrorService.logError(currentComponent.props,response)
+                return;
+            }
+            currentComponent.setState({
+                isFavourite : false
             })
-        }
+        })
     }
 
     render(){
         let price;
-        let favIcon;
+        let favIcon = this.getFavouriteState();
         if(this.props.price != null){
             price = <h2 class="price-tag">U$S {this.props.price}</h2>
-        }
-
-        if(UserService.isLogged() && this.props.favourites !== false){
-            if(this.state.isFavourite)
-                favIcon = <img class="favorite-icon" src={heartFilled} onClick={() => this.favouritePublication(! this.state.isFavourite)} alt="Fave" />
-            else
-                favIcon = <img class="favorite-icon" src={heartEmpty} onClick={() => this.favouritePublication(! this.state.isFavourite)} alt="Fave" />
         }
 
         return(
             <div class={this.props.containerClass}>
                 <img class={this.props.imageClass} alt="img" id={this.props.page + this.props.publicationid} />
                 {favIcon}
-                {this.props.maxImages != 0 ?
+                {this.props.maxImages !== 0 ?
                 (
                     <>
                         <img class={this.props.previousClass} src={previousArrow} alt="Previous" onClick={() => this.getPreviousImage()}/>

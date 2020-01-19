@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.HEAD;
@@ -41,6 +42,7 @@ import ar.edu.itba.paw.models.FavPublication;
 import ar.edu.itba.paw.models.Publication;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.dto.EmailDTO;
+import ar.edu.itba.paw.models.dto.FavPublicationDTO;
 import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.MessageDTO;
 import ar.edu.itba.paw.models.dto.PasswordDTO;
@@ -103,15 +105,15 @@ public class UserController {
     @POST
     @Path("/users")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response createUser (final UserDTO userDTO) {
+    public Response createUser (@Context HttpServletRequest request, final UserDTO userDTO) {
     	if(! vs.validateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), 
     			userDTO.getPassword(), userDTO.getRepeatPassword(), userDTO.getPhoneNumber()))
     		rs.badRequest();
     	if(us.findByUsername(userDTO.getEmail()) != null) 
     		return rs.conflictRequest();
     	
-    	us.create(userDTO.getFirstName(), userDTO.getLastName(), 
-    			userDTO.getEmail(), userDTO.getPassword(), userDTO.getRepeatPassword(), userDTO.getPhoneNumber(), Constants.Role.USER.getRole());
+    	us.create(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPassword(), userDTO.getRepeatPassword(), 
+    			userDTO.getPhoneNumber(),request.getHeader("Accept-Language").substring(0, Constants.MAX_LANGUAJE), Constants.Role.USER.getRole());
         return rs.createRequest();
     }
     
@@ -257,22 +259,29 @@ public class UserController {
     }
     
     @POST
-    @Path("/favouritePublication")
+    @Path("/users/{userid}/favourite-publications")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response favouritePublication (@Context HttpServletRequest request, final IDResponseDTO iDResponseDTO) {
-    	FavPublication favPublication = fps.addFavourite(tas.getUserIdAuthentication(request), iDResponseDTO.getId());
-    	if(favPublication == null)
-    		return rs.okRequest();
-    	else
-    		return rs.createRequest();
+    public Response addFavouritePublication (@Context HttpServletRequest request, @PathParam("userid") long userid, final FavPublicationDTO favPublicationDTO) {
+    	if(! vs.validateID(userid) || ! vs.validateID(favPublicationDTO.getPublicationid()))
+    		return rs.badRequest();
+    	if(tas.getUserIdAuthentication(request) != userid)
+    		return rs.forbidden();
+    	
+    	fps.addFavourite(userid, favPublicationDTO.getPublicationid());
+    	return rs.createRequest();
     }
     
-    @POST
-    @Path("/unfavouritePublication")
+    @DELETE
+    @Path("/users/{userid}/favourite-publications")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response unfavouritePublication (@Context HttpServletRequest request, final IDResponseDTO iDResponseDTO) {
-    	fps.removeFavourite(tas.getUserIdAuthentication(request), iDResponseDTO.getId());
-    	return Response.ok().build();
+    public Response removeFavouritePublication (@Context HttpServletRequest request, @PathParam("userid") long userid, final FavPublicationDTO favPublicationDTO) {
+    	if(! vs.validateID(userid) || ! vs.validateID(favPublicationDTO.getPublicationid()))
+    		return rs.badRequest();
+    	if(tas.getUserIdAuthentication(request) != userid)
+    		return rs.forbidden();
+    	if(! fps.removeFavourite(userid, favPublicationDTO.getPublicationid()))
+    		return rs.notFound();
+    	return rs.noContent();
     }
     
     @GET

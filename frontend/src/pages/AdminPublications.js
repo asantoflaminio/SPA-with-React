@@ -19,7 +19,7 @@ class AdminPublications extends React.Component {
             pagesQuantity: 0,
             page: 0,
             publications: [],
-            publicationIDToDelete: 0,
+            publicationidToDelete: 0,
             resultsQuantity: 0,
             showModal: false
         };
@@ -70,17 +70,17 @@ class AdminPublications extends React.Component {
         return pubComponents;
     }
 
-    showModalErasePublication(publicationID){
+    showModalErasePublication(publicationid){
         this.setState({
             showModal: true,
-            publicationIDToDelete: publicationID
+            publicationidToDelete: publicationid
         })
     }
 
-    erasePublication(publicationID){
+    erasePublication(publicationid){
         let currentComponent = this
         let data = {}
-        PublicationService.erasePublication(publicationID).then(function (response){
+        PublicationService.erasePublication(publicationid).then(function (response){
             if(response.status !== StatusCode.NO_CONTENT){
                 ErrorService.logError(currentComponent.props,response)
                 return;
@@ -124,7 +124,7 @@ class AdminPublications extends React.Component {
                     information={t('modal.deletePublicationDetail')}
                     checkModal={true}
                     acceptFunction={this.erasePublication}
-                    functionParameter={this.state.publicationIDToDelete}
+                    functionParameter={this.state.publicationidToDelete}
                 />
                 <div class="polaroid data">
                     <div class="title-container">

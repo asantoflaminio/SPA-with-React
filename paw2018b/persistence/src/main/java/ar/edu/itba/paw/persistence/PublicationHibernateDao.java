@@ -106,7 +106,7 @@ public class PublicationHibernateDao implements PublicationDao{
 		queryString = setOrderFilter(queryString,order);
 		TypedQuery<Publication> query = em.createQuery(queryString, Publication.class);
 		addFiltersValues(query,filters,address);
-		System.out.println(queryString);
+		//System.out.println(queryString);
 		//System.out.println(page+ " " + limit);
 		setPagination(query,page,limit);
 		//System.out.println(query.getResultList().size());

@@ -25,6 +25,7 @@ public class PublicationDTO {
 	private int images;
 	private String userEmail;
 	private String phoneNumber;
+	private boolean isFavourite;
 	
 	
 	public PublicationDTO(long publicationid, String title, String provinceid, String cityid, String neighborhoodid,
@@ -52,6 +53,7 @@ public class PublicationDTO {
 		this.storage = storage;
 		this.expenses = expenses;
 		this.setDate(date);
+		this.setFavourite(false);
 	}
 	
 	public PublicationDTO() {} ;
@@ -239,6 +241,14 @@ public class PublicationDTO {
 
 	public void setProvinceid(String provinceid) {
 		this.provinceid = provinceid;
+	}
+
+	public boolean isFavourite() {
+		return isFavourite;
+	}
+
+	public void setFavourite(boolean isFavourite) {
+		this.isFavourite = isFavourite;
 	}
 
 }

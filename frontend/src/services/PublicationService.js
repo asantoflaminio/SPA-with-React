@@ -11,15 +11,21 @@ const PublicationService = (function(){
       return await axios({
           method: 'get',
           url: `${PUBLICATIONS_PATH}/publications`,
-          params: queryParameters
-        }).then(function (response){ return response }).catch(function (error){ return error.response })
+          params: queryParameters,         
+          headers: {
+            authorization: LocalStorageService.getAccessToken()
+          }
+      }).then(function (response){ return response }).catch(function (error){ return error.response })
   }
 
     async function _getPublication(publicationid){
         return await axios({
             method: 'get',
             url: `${PUBLICATIONS_PATH}/publications/${publicationid}`,
-          }).then(function (response){ return response }).catch(function (error){ return error.response })
+            headers: {
+              authorization: LocalStorageService.getAccessToken()
+            }
+        }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
     async function _getFilters(queryParameters){
@@ -44,8 +50,9 @@ const PublicationService = (function(){
           url: `${PUBLICATIONS_PATH}/publications/${publicationid}/images`,
           data: dataDTO,
           headers: {
-              contentType:'multipart/form-data'},
+              contentType:'multipart/form-data',
               authorization: LocalStorageService.getAccessToken()
+            }
         }).then(function (response){ return response }).catch(function (error){ return error.response })     
   }
 

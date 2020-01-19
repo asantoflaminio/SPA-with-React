@@ -56,7 +56,8 @@ const Publication = ({ t , publication, page, favourites, editable, eraseFunctio
                     price={publication.price}
                     maxImages={publication.images}
                     page={page}
-                    favourites={favourites}
+                    isFavourite={publication.favourite}
+
                     imageClass="polaroid-property-img"
                     containerClass="img-with-tag"
                     nextClass="next-image pointer"

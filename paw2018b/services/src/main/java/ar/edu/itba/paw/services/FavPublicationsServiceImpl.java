@@ -29,18 +29,14 @@ public class FavPublicationsServiceImpl implements FavPublicationsService {
 
 	@Override
 	public FavPublication addFavourite(long userid, long publicationid) {
-		if(userid == publicationDao.findById(publicationid).getUser().getUserid()) {
-			LOGGER.debug("The publication belongs to the user");
-			return null;
-		}
 		LOGGER.debug("Adding publiction with id {} to favourites of user with id {}", publicationid, userid);
 		return favPublicationDao.addFavourite(userid, publicationid);
 	}
 	
 	@Override
-	public void removeFavourite(long userid, long publicationid) {
+	public boolean removeFavourite(long userid, long publicationid) {
 		LOGGER.debug("Removing publiction with id {} to favourites of user with id {}", publicationid, userid);
-		favPublicationDao.removeFavourite(userid, publicationid);
+		return favPublicationDao.removeFavourite(userid, publicationid);
 	}
 	
 	@Override
@@ -56,6 +52,19 @@ public class FavPublicationsServiceImpl implements FavPublicationsService {
 	@Override
 	public int getCountUserFavourites(long userid) {
 		return favPublicationDao.getCountUserFavourites(userid);
+	}
+	
+	@Override
+	public List<PublicationDTO> checkFavorites(List<PublicationDTO> publications, long userid){
+		List<Long> ids = favPublicationDao.getUserAllFavourites(userid);
+		for(Long publicationid: ids) {
+			for(PublicationDTO publication: publications) {
+				if(publicationid.equals(publication.getPublicationid())) {
+					publication.setFavourite(true);
+				}
+			}
+		}
+		return publications;
 	}
 	
 	@Override
