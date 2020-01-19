@@ -53,7 +53,7 @@ public class PublicationController {
 	private ImageServiceImpl is;
 	
 	@Autowired
-	private FavPublicationsServiceImpl fs;
+	private FavPublicationsServiceImpl fps;
 	
 	@Autowired
 	private TokenAuthenticationService tas;
@@ -81,21 +81,23 @@ public class PublicationController {
     	response.setHeader(Constants.COUNT_HEADER, Integer.toString(ps.getCountPublications(address,filters)));
     	final Long userid = tas.getUserIdAuthentication(request);
     	if(userid != null)
-    		publications = fs.checkFavorites(publications, userid);
+    		publications = fps.checkFavourites(publications, userid);
     	return rs.okRequest(publications);
     } 
     
     @GET
     @Path("/publications/{publicationid}")
     @Produces(value = { MediaType.APPLICATION_JSON})
-    public Response getPublicationById (@PathParam("publicationid") long publicationid) {
+    public Response getPublicationById (@Context HttpServletRequest request, @PathParam("publicationid") long publicationid) {
     	if(! vs.validateID(publicationid))
     		rs.badRequest();
     	
     	PublicationDTO publicationDTO = ps.findById(publicationid);
     	if(publicationDTO == null)
     		rs.notFound();
-    	
+    	final Long userid = tas.getUserIdAuthentication(request);
+    	if(userid != null)
+    		publicationDTO = fps.checkFavourite(publicationDTO, userid);
     	return rs.okRequest(publicationDTO);
     }
     
@@ -146,13 +148,6 @@ public class PublicationController {
     	return Response.ok().entity(filtersDTO).build();
     }
     
-    
-    @POST
-    @Path("/isFavourite")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response isFavourite(@Context HttpServletRequest request, final IDResponseDTO iDResponseDTO){
-    	return Response.ok().entity(new BooleanResponseDTO(fs.isFavourite(tas.getUserIdAuthentication(request), iDResponseDTO.getId()))).build();
-    }
     
     @DELETE
     @Path("/publications/{publicationID}")

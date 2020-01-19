@@ -15,8 +15,8 @@ public interface FavPublicationsService {
 	
 	public int getCountUserFavourites(long userid);
 	
-	public List<PublicationDTO> checkFavorites(List<PublicationDTO> publications, long userid);
+	public List<PublicationDTO> checkFavourites(List<PublicationDTO> publications, long userid);
 	
-	public boolean isFavourite(long userid, long publicationid);
+	public PublicationDTO checkFavourite(PublicationDTO publicationDTO, long userid);
 
 }

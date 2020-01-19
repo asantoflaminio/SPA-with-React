@@ -61,7 +61,7 @@ class AdminPublications extends React.Component {
                 <Publication t={t} 
                     publication={this.state.publications[i]}
                     page="AdminPublications"
-                    favourites={false}
+                    faveable={false}
                     editable={false}
                     eraseFunction={this.showModalErasePublication}
                 />

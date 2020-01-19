@@ -55,7 +55,7 @@ public class FavPublicationsServiceImpl implements FavPublicationsService {
 	}
 	
 	@Override
-	public List<PublicationDTO> checkFavorites(List<PublicationDTO> publications, long userid){
+	public List<PublicationDTO> checkFavourites(List<PublicationDTO> publications, long userid){
 		List<Long> ids = favPublicationDao.getUserAllFavourites(userid);
 		for(Long publicationid: ids) {
 			for(PublicationDTO publication: publications) {
@@ -68,8 +68,11 @@ public class FavPublicationsServiceImpl implements FavPublicationsService {
 	}
 	
 	@Override
-	public boolean isFavourite(long userid, long publicationid) {
-		return favPublicationDao.isFavourite(userid, publicationid);
+	public PublicationDTO checkFavourite(PublicationDTO publicationDTO, long userid) {
+		if(favPublicationDao.isFavourite(userid, publicationDTO.getPublicationid()))
+			publicationDTO.setFavourite(true);
+		return publicationDTO;
+			
 	}
 	
 	

@@ -46,7 +46,7 @@ function isEditable(t, erasableComponent, eraseFunction, publicationid, editable
     }
 }
 
-const Publication = ({ t , publication, page, favourites, editable, eraseFunction }) => {
+const Publication = ({ t , publication, page, faveable, editable, eraseFunction }) => {
     let erasableComponent = isErasable(t, eraseFunction, publication.publicationid);
     let editableComponent = isEditable(t, erasableComponent, eraseFunction, publication.publicationid, editable);
         return(
@@ -56,7 +56,7 @@ const Publication = ({ t , publication, page, favourites, editable, eraseFunctio
                     price={publication.price}
                     maxImages={publication.images}
                     page={page}
-                    isFavourite={publication.favourite}
+                    isFavourite={faveable ? publication.favourite : null}
 
                     imageClass="polaroid-property-img"
                     containerClass="img-with-tag"
@@ -67,7 +67,7 @@ const Publication = ({ t , publication, page, favourites, editable, eraseFunctio
                     <div class="first-column">								
                         <div class="property-title-container">
                             <h3 class="property-title">{publication.title}</h3>
-                            <h4 class="address" id="address"> {publication.address}, {publication.neighborhoodID}, {publication.cityID}, {publication.provinceID}</h4>
+                            <h4 class="address" id="address"> {publication.address}, {publication.neighborhoodid}, {publication.cityid}, {publication.provinceid}</h4>
                         </div>					
                     
                         <div class="property-characteristics">

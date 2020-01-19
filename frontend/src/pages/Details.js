@@ -22,33 +22,12 @@ import ToastNotification from '../components/ToastNotification'
 const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credentials.mapsKey}` ;
 
 class Details extends React.Component {
-
-
     constructor(props) {
         super(props);
         this.state = {
             error: null,
             code: null,
-            publicationid: null,
-            province: null,
-            city: null,
-            neighborhood: null,
-            address: null,
-            bedrooms: null,
-            bathrooms: null,
-            floorSize: null,
-            coveredFloorSize: null, 
-            parking: null,
-            price: null,
-            title: null,
-            description: null,
-            maxImages: null,
-            ownerEmail: null,
-            phoneNumber: null,
-            balconies: null,
-            amenities: null,
-            storage: null,
-            expenses: null,
+            publication: null,
             loading: false,
             circleloading: false,
             showModal: false,
@@ -73,26 +52,7 @@ class Details extends React.Component {
                     return;
                 }
                 currentComponent.setState({
-                    publicationid: response.data.publicationid, 
-                    province: response.data.provinceid,
-                    city: response.data.cityid,
-                    neighborhood: response.data.neighborhoodid,
-                    address: response.data.address,
-                    bedrooms: response.data.bedrooms,
-                    bathrooms: response.data.bathrooms,
-                    floorSize: response.data.dimention,
-                    coveredFloorSize: response.data.coveredFloorSize,
-                    parking: response.data.parking,
-                    price: response.data.price,
-                    title: response.data.title,
-                    description: response.data.description,
-                    maxImages: response.data.images,
-                    phoneNumber: response.data.phoneNumber,
-                    ownerEmail: response.data.userEmail,
-                    amenities: response.data.amenities,
-                    storage: response.data.storage,
-                    expenses: response.data.expenses,
-                    balconies: response.data.balconies,
+                    publication: response.data,
                     loading: false,
                     circleloading: false
                 })
@@ -104,8 +64,8 @@ class Details extends React.Component {
         event.preventDefault()
         let currentComponent = this
 
-        let ownerEmail = this.state.ownerEmail
-        let title = this.state.title
+        let ownerEmail = this.state.publication.ownerEmail
+        let title = this.state.publication.title
         let emailDTO = JsonService.getJSONParsed(event.target)
         emailDTO.ownerEmail = ownerEmail
         emailDTO.title = title
@@ -145,34 +105,37 @@ class Details extends React.Component {
                                     .min(Constants.SECOND_FORM_MIN_LENGTH, t('errors.lengthMin'))
                                     .max(Constants.SECOND_FORM_MAX_LENGTH, t('errors.lengthMax'))
                 });
+
+                if(this.state.publication === null)
+                    return(null)
                 
                 let coveredFloorSize; 
-                if(this.state.coveredFloorSize === "-1") {
+                if(this.state.publication.coveredFloorSize === "-1") {
                     coveredFloorSize = t('details.notAvailable');
                 } else {
-                    coveredFloorSize = this.state.coveredFloorSize + " m2";
+                    coveredFloorSize = this.state.publication.coveredFloorSize + " m2";
                 }
                 
-                if(this.state.balconies === "-1") {
+                if(this.state.publication.balconies === "-1") {
                     this.state.balconies = t('details.notAvailable');
                 }
-                if(this.state.amenities === "-1") {
+                if(this.state.publication.amenities === "-1") {
                     this.state.amenities = t('details.notAvailable');
                 } 
                 
                 let expenses;
-                if(this.state.expenses === "-1") {
+                if(this.state.publication.expenses === "-1") {
                     expenses = t('details.notAvailable');
                 } else {
-                    expenses = this.state.expenses + " U$S";
+                    expenses = this.state.publication.expenses + " U$S";
                 }
 
-                if(this.state.storage === "-1") {
-                    this.state.storage = t('details.notAvailable');
+                if(this.state.publication.storage === "-1") {
+                    this.state.publication.storage = t('details.notAvailable');
                 } else if (this.state.storage === "yes") {
-                    this.state.storage = t('details.Yes');
+                    this.state.publication.storage = t('details.Yes');
                 } else {
-                    this.state.storage = t('details.No');
+                    this.state.publication.storage = t('details.No');
                 }
             return(   
                     <div>
@@ -193,7 +156,8 @@ class Details extends React.Component {
                             <div class="polaroid">
                                 <ImageVisualizer 
                                     publicationid={query.publicationid}
-                                    maxImages={this.state.maxImages}
+                                    maxImages={this.state.publication.maxImages}
+                                    isFavourite={this.state.publication.favourite}
                                     page="Details"
                                     imageClass="imageSize"
                                     containerClass="img-with-tag mySlides"
@@ -201,21 +165,21 @@ class Details extends React.Component {
                                     previousClass="prev-image pointer centerArrow"
                                 />
                                 <div class="container-list">
-                                    <p class="direction">{this.state.address},{this.state.neighborhood}, {this.state.city},{this.state.province}</p>
+                                    <p class="direction">{this.state.publication.address},{this.state.publication.neighborhoodid}, {this.state.publication.cityid},{this.state.publication.provinceid}</p>
                                 </div>
                             </div>
                         
                             <div class="polaroid_overview">
                                 <div class="container4">
                                     <p class="polaroid_title">{t('details.overview')}</p>
-                                    <p class="agency_text">{t('details.bedrooms')} {this.state.bedrooms}</p>
-                                    <p class="agency_text">{t('details.bathrooms')} {this.state.bathrooms}</p>
-                                    <p class="agency_text">{t('details.floorSize')} {this.state.floorSize} m2</p>
+                                    <p class="agency_text">{t('details.bedrooms')} {this.state.publication.bedrooms}</p>
+                                    <p class="agency_text">{t('details.bathrooms')} {this.state.publication.bathrooms}</p>
+                                    <p class="agency_text">{t('details.floorSize')} {this.state.publication.floorSize} m2</p>
                                     <p class="agency_text">{t('details.coveredFloorSize')} {coveredFloorSize} </p>
-                                    <p class="agency_text">{t('details.parking')} {this.state.parking}</p>
-                                    <p class="agency_text">{t('details.balconies')} {this.state.balconies}</p>
-                                    <p class="agency_text">{t('details.amenities')} {this.state.amenities}</p>
-                                    <p class="agency_text">{t('details.storage')} {this.state.storage}</p>
+                                    <p class="agency_text">{t('details.parking')} {this.state.publication.parking}</p>
+                                    <p class="agency_text">{t('details.balconies')} {this.state.publication.balconies}</p>
+                                    <p class="agency_text">{t('details.amenities')} {this.state.publication.amenities}</p>
+                                    <p class="agency_text">{t('details.storage')} {this.state.publication.storage}</p>
                                     <p class="agency_text">{t('details.expenses')} {expenses}</p>
                                 </div>
                             </div>
@@ -226,7 +190,7 @@ class Details extends React.Component {
                                 <div class="container2">
                                     <div class="price_text">
                                         <p id="rent_sale">{t('details.price')} </p> 
-                                        <p id="price_tag">U$S {this.state.price}</p>
+                                        <p id="price_tag">U$S {this.state.publication.price}</p>
                                     </div>
                                 </div>
                             </div>
@@ -236,7 +200,7 @@ class Details extends React.Component {
                                     <p class="agency_text_contact">{t('details.contact')}</p>
                                     <div id="tel-container">
                                         <p class="tel-text">{t('details.phoneNumber')}</p>
-                                        <p class="tel-num">{this.state.phoneNumber}</p>
+                                        <p class="tel-num">{this.state.publication.phoneNumber}</p>
                                     </div>
                                     <div class="fillers">
                                         <Formik
@@ -317,18 +281,18 @@ class Details extends React.Component {
                     </div>
                     <div class="polaroid_des">
                         <div class="container-list">
-                            <p class="polaroid_title">{this.state.title}</p>
-                            <p class="agency_text">{this.state.description}</p>
+                            <p class="polaroid_title">{this.state.publication.title}</p>
+                            <p class="agency_text">{this.state.publication.description}</p>
                         </div>
                     </div>  
                     <div class="polaroid_des">
                         <div class="container-list">
                             <p class="polaroid_title">{t('details.location')}</p>
                             <MapContainer 
-                            address = {this.state.address}
-                            neighborhood =  {this.state.neighborhood}
-                            city = {this.state.city}
-                            province = {this.state.province}
+                            address = {this.state.publication.address}
+                            neighborhood =  {this.state.publication.neighborhood}
+                            city = {this.state.publication.city}
+                            province = {this.state.publication.province}
                             googleMapURL= {mapURL}
                             containerElement= {<div style={{height: '300px'}}/>}
                             mapElement= {<div style={{height:'100%'}} />}

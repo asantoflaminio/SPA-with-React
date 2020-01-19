@@ -151,6 +151,7 @@ class List extends React.Component {
                     publication={this.state.publications[i]}
                     page="List"
                     editable={false}
+                    faveable={true}
                 />
 
             )
