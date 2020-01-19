@@ -94,7 +94,7 @@ public class PublicationController {
     	
     	PublicationDTO publicationDTO = ps.findById(publicationid);
     	if(publicationDTO == null)
-    		rs.notFound();
+    		return rs.notFound();
     	final Long userid = tas.getUserIdAuthentication(request);
     	if(userid != null)
     		publicationDTO = fps.checkFavourite(publicationDTO, userid);

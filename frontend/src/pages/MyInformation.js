@@ -125,7 +125,7 @@ class MyInformation extends React.Component {
         
         return(
             <div>
-                <ProfileAsideBar t={t} />
+                <ProfileAsideBar t={t} active="MyInformation"/>
                 <header>
                     <div className="Data">
                         

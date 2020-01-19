@@ -26,9 +26,6 @@ class MyFavorites extends React.Component {
             pagesQuantity: 0,
             showModal: false
         };
-
-        this.showModalErasePublication = this.showModalErasePublication.bind(this);
-        this.erasePublication = this.erasePublication.bind(this);
     }
 
     componentDidMount() {
@@ -60,7 +57,7 @@ class MyFavorites extends React.Component {
         queryParameters.limit = Constants.PUBLICATIONS_PAGE_LIMIT
         queryParameters.locked = true;
         userid = LocalStorageService.getUserid();
-        UserService.getMyFavoritesPublications(userid,queryParameters,this.props).then(function(response) {
+        UserService.getMyFavoritesPublications(userid,queryParameters).then(function(response) {
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return;
@@ -75,34 +72,6 @@ class MyFavorites extends React.Component {
         })
     }
 
-    showModalErasePublication(publicationID){
-        this.setState({
-            showModal: true,
-            publicationIDToDelete: publicationID
-        })
-    }
-
-    erasePublication(publicationID){
-        let currentComponent = this
-        let data = {}
-        PublicationService.erasePublication(publicationID,this.props).then(function (response){
-            if(response.status !== StatusCode.NO_CONTENT){
-                ErrorService.logError(currentComponent.props,response)
-                return;
-            }
-            currentComponent.setState({
-                myFavorites: [],
-                showModal: false
-            })
-            if(Math.ceil((currentComponent.state.resultsQuantity - 1) / Constants.PUBLICATIONS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
-                && currentComponent.state.page === currentComponent.state.pagesQuantity - 1)
-                data.selected = currentComponent.state.page - 1;
-            else
-                data.selected = currentComponent.state.page;
-            currentComponent.handlePageClick(data)
-        })
-    }
-
 
     initializePublications(t){
         let pubComponents = [];
@@ -113,8 +82,9 @@ class MyFavorites extends React.Component {
                     publication={this.state.myFavorites[i]}  
                     page="MyFavorites"
                     favourites={false}
+                    faveable={true}
                     editable={false}
-                    eraseFunction={this.showModalErasePublication}/>
+                    />
             )
         }
         
@@ -127,7 +97,7 @@ class MyFavorites extends React.Component {
       
         return(
             <div>
-                <ProfileAsideBar t={t} />
+                <ProfileAsideBar t={t} active="MyFavourites"/>
                 <ToastNotification 
                     show={this.state.showModal}
                     title={t('modal.deletePublication')}

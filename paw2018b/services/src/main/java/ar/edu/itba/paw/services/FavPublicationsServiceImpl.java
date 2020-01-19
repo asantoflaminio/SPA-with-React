@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.itba.paw.interfaces.FavPublicationsDao;
 import ar.edu.itba.paw.interfaces.FavPublicationsService;
+import ar.edu.itba.paw.interfaces.ImageDao;
 import ar.edu.itba.paw.interfaces.PublicationDao;
 import ar.edu.itba.paw.models.FavPublication;
 import ar.edu.itba.paw.models.Publication;
@@ -26,6 +27,9 @@ public class FavPublicationsServiceImpl implements FavPublicationsService {
 	
 	@Autowired
 	private PublicationDao publicationDao;
+	
+	@Autowired
+	private ImageDao imageDao;
 
 	@Override
 	public FavPublication addFavourite(long userid, long publicationid) {
@@ -89,8 +93,8 @@ public class FavPublicationsServiceImpl implements FavPublicationsService {
 										Optional.ofNullable(pub.getAmenities()).toString(),
 										Optional.ofNullable(pub.getStorage()).toString(),
 										Optional.ofNullable(pub.getExpenses()).toString());
-			current.setImages(pub.getImages().size());
-			
+			current.setImages(imageDao.getImagesCountByPublicationId(pub.getPublicationid()));
+			current.setFavourite(true);
 			publicationsDTO.add(current);
 		}
 		

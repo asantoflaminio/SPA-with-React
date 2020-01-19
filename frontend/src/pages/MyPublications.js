@@ -58,7 +58,7 @@ class MyPublications extends React.Component {
         queryParameters.limit = Constants.PUBLICATIONS_PAGE_LIMIT
         queryParameters.locked = true;
         userid = LocalStorageService.getUserid();
-        UserService.getMyPublications(userid,queryParameters,this.props).then(function(response) {
+        UserService.getMyPublications(userid,queryParameters).then(function(response) {
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return
@@ -127,7 +127,7 @@ class MyPublications extends React.Component {
       
         return(
             <div>
-                <ProfileAsideBar t={t} />
+                <ProfileAsideBar t={t} active="MyPublications"/>
                 <ToastNotification 
                     show={this.state.showModal}
                     title={t('modal.deletePublication')}

@@ -113,7 +113,7 @@ const UserService = (function(){
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
-    async function _getMyPublications(userid, queryParameters, props){
+    async function _getMyPublications(userid, queryParameters){
         return await axios({
             method: 'get',
             url: `${USERS_PATH}/users/${userid}/publications`,
@@ -121,16 +121,10 @@ const UserService = (function(){
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
-          })
-          .then(function (response) {
-              return response
-          })
-          .catch(function (error) {
-              ErrorService.logError(props,error)
-          });
+          }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
-    async function _getMyFavoritesPublications(userid, queryParameters, props){
+    async function _getMyFavoritesPublications(userid, queryParameters){
         return await axios({
             method: 'get',
             url: `${USERS_PATH}/users/${userid}/favourite-publications`,
@@ -138,13 +132,7 @@ const UserService = (function(){
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
-          })
-          .then(function (response) {
-              return response
-          })
-          .catch(function (error) {
-              ErrorService.logError(props,error)
-          });
+          }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
 

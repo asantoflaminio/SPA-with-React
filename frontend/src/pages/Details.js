@@ -64,7 +64,7 @@ class Details extends React.Component {
         event.preventDefault()
         let currentComponent = this
 
-        let ownerEmail = this.state.publication.ownerEmail
+        let ownerEmail = this.state.publication.userEmail
         let title = this.state.publication.title
         let emailDTO = JsonService.getJSONParsed(event.target)
         emailDTO.ownerEmail = ownerEmail

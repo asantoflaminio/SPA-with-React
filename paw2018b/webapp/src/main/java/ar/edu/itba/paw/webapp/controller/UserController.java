@@ -217,6 +217,7 @@ public class UserController {
     @Path("/messages")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response sendMessage (MessageDTO messageDTO) {
+    	System.out.print(messageDTO.getOwnerEmail());
     	if(! vs.validateEmailMessage(messageDTO.getName(), messageDTO.getEmail(), 
     			messageDTO.getMessage(), messageDTO.getOwnerEmail(), messageDTO.getTitle()))
     		return rs.badRequest();

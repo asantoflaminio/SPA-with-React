@@ -92,7 +92,6 @@ public class PublicationServiceImpl implements PublicationService {
         
         if(pub == null)
         	return null;
-        
         publication = transform(pub);
         publication.setUserEmail(pub.getUser().getEmail());
         publication.setPhoneNumber(pub.getUser().getPhoneNumber());

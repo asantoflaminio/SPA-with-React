@@ -13,7 +13,7 @@ import ErrorBoundary from './pages/ErrorBoundary'
 import ForgottenPassword from './pages/ForgottenPassword'
 import NewPassword from './pages/NewPassword'
 import MyPublications from './pages/MyPublications'
-import MyFavorites from './pages/MyFavorites'
+import MyFavourites from './pages/MyFavourites'
 import MyInformation from './pages/MyInformation'
 import EditPublication from './pages/EditPublication'
 import UserService from './services/UserService'
@@ -60,7 +60,7 @@ function App() {
             <PrivateRoute exact path="/AdminUsers" component={AdminUsers} />
             <PrivateRoute exact path="/AdminPublications" component={AdminPublications} />
             <PrivateRoute exact path="/MyPublications" component={MyPublications} />
-            <PrivateRoute exact path="/MyFavorites" component={MyFavorites} />
+            <PrivateRoute exact path="/MyFavourites" component={MyFavourites} />
             <PrivateRoute exact path="/MyInformation" component={MyInformation} />
             <PrivateRoute exact path="/EditPublication" component={EditPublication} />
             <OnlyPublicRoute exact path="/ForgottenPassword" component={ForgottenPassword} />
