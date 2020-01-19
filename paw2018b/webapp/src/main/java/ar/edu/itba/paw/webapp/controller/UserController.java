@@ -34,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import ar.edu.itba.paw.interfaces.FavPublicationsService;
+import ar.edu.itba.paw.interfaces.PATCH;
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.ChangePassword;
@@ -88,8 +89,6 @@ public class UserController {
 	@Autowired
 	private ChangePasswordServiceImpl cps;
 	
-	@Autowired
-	private PasswordEncoder encoder;
 	
     @GET
     @Path("/users")
@@ -107,14 +106,29 @@ public class UserController {
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response createUser (@Context HttpServletRequest request, final UserDTO userDTO) {
     	if(! vs.validateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), 
-    			userDTO.getPassword(), userDTO.getRepeatPassword(), userDTO.getPhoneNumber()))
+    			userDTO.getPassword(), userDTO.getPhoneNumber()))
     		rs.badRequest();
     	if(us.findByUsername(userDTO.getEmail()) != null) 
     		return rs.conflictRequest();
     	
-    	us.create(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPassword(), userDTO.getRepeatPassword(), 
-    			userDTO.getPhoneNumber(),request.getHeader("Accept-Language").substring(0, Constants.MAX_LANGUAJE), Constants.Role.USER.getRole());
+    	us.create(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPassword(), userDTO.getPhoneNumber(),
+    			request.getHeader("Accept-Language").substring(0, Constants.MAX_LANGUAJE), Constants.Role.USER.getRole());
         return rs.createRequest();
+    }
+    
+    @GET
+    @Path("/users/{userid}")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response retrievePersonalInformation (@Context HttpServletRequest request, @PathParam("userid") long userid) {
+    	if(! vs.validateID(userid))
+    		return rs.badRequest();
+    	if(tas.getUserIdAuthentication(request) != userid)
+    		return rs.forbidden();
+    	User user = us.findById(userid);
+    	if(user == null)
+    		return rs.notFound();
+    	UserDTO profileInformationDto = new UserDTO(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhoneNumber());
+    	return Response.ok().entity(profileInformationDto).build();
     }
     
     @HEAD
@@ -125,6 +139,45 @@ public class UserController {
     	else
     		return rs.okRequest();
     	
+    }
+    
+    @PATCH
+    @Path("/users/{userid}")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response updateInformation (@Context HttpServletRequest request, @PathParam("userid") long userid, final UserDTO userDTO) {
+    	if(! vs.validateID(userid))
+    		return rs.badRequest();
+    	if(tas.getUserIdAuthentication(request) != userid)
+    		return rs.forbidden();
+    	User user = us.findById(userid);
+    	if(user == null)
+    		return rs.notFound();
+    	
+    	if(userDTO.getPassword() != null) {
+    		if(! vs.validateUserPassword(userDTO.getPassword()))
+    			return rs.badGateway();
+    		us.editPassword(userDTO.getPassword(), userid);
+    		return rs.okRequest();
+    	}else {
+    		if(! vs.validateUserData(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPhoneNumber()))
+    			return rs.badGateway();
+        	us.editData(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPhoneNumber(),
+        			user.getEmail(),userid);
+        	return tas.refreshToken(userDTO.getEmail());
+    	}
+    }
+    
+    @PATCH
+    @Path("/users/{userid}/lock")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response lockUser (@PathParam("userid") long userid, @NotNull @QueryParam("lock") boolean lock) {
+    	if(!vs.validateID(userid))
+    		return rs.badRequest();
+    	if(us.findById(userid) == null)
+    		return rs.notFound();
+    	us.lock(lock, userid);
+    	return rs.okRequest();
     }
     
     @POST
@@ -285,51 +338,8 @@ public class UserController {
     	return rs.noContent();
     }
     
-    @GET
-    @Path("/profile")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response retrievePersonalInformation (@Context HttpServletRequest request) {
-    	User user = us.findById(tas.getUserIdAuthentication(request));
-    	UserDTO profileInformationDto = new UserDTO(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhoneNumber(), user.getPassword());
-    	return Response.ok().entity(profileInformationDto).build();
-    }
+
     
-    @PUT
-    @Path("/information")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response updateInformation (@Context HttpServletRequest request, final UserDTO userDTO) {
-    	Long id = tas.getUserIdAuthentication(request);
-    	User user = us.findById(id);
-    	us.editData(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPhoneNumber(),
-    			user.getEmail());
-    	
-    	return tas.refreshToken(userDTO.getEmail());
-    }
-    
-    @PUT
-    @Path("/password")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response updatePassword (@Context HttpServletRequest request, PasswordDTO passwordDTO) {
-    	Long id = tas.getUserIdAuthentication(request);
-    	if(encoder.matches(passwordDTO.getPassword(), us.findById(id).getPassword())) {
-    		us.editPassword(passwordDTO.getPassword(), passwordDTO.getNewpassword(), us.findById(id).getEmail());
-    		return Response.ok().build();
-    	} else {
-    		return Response.serverError().build();
-    	}
-    }
-    
-    @PUT
-    @Path("/users/{userid}/lock")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response lockUser (@PathParam("userid") long userid, @NotNull @QueryParam("lock") boolean lock) {
-    	if(!vs.validateID(userid))
-    		return rs.badRequest();
-    	if(us.findById(userid) == null)
-    		return rs.notFound();
-    	us.lock(lock, userid);
-    	return rs.okRequest();
-    }
+
 
 }

@@ -158,55 +158,31 @@ const UserService = (function(){
           }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
-    async function _updateInformation(array, props) {
-        return await axios({
-            method: 'put',
-            url: USERS_PATH + '/information',
-            data: JsonService.getJSONParsed(array),
-            headers: {
-                authorization: LocalStorageService.getAccessToken(),
-            }
-        })
-        .then(function (response) {
-            LocalStorageService.setToken(response.headers.authorization, response.headers.authorities, response.headers.username)
-        })
-        .catch(function (error) {
-              ErrorService.logError(props,error)
-        });
-    }
 
-    async function _retrievePersonalInformation(props){
+    async function _getUser(userid){
         return await axios({
             method: 'get',
-            url: USERS_PATH + '/profile',
+            url: `${USERS_PATH}/users/${userid}`,
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
-          })
-          .then(function (response) {
-              return response.data
-          })
-          .catch(function (error) {
-              ErrorService.logError(props,error)
-          });
+          }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
-    async function _updatePassword(array, props) {
+    async function _editUser(userid,dataDTO) {
         return await axios({
-            method: 'put',
-            url: USERS_PATH + '/password',
-            data: JsonService.getJSONParsed(array),
+            method: 'patch',
+            url: `${USERS_PATH}/users/${userid}`,
+            data: dataDTO,
             headers: {
                 authorization: LocalStorageService.getAccessToken(),
             }
-        }).catch(function (error) {
-            ErrorService.logError(props,error)
-        });
+        }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
     async function _lockUser(userid,queryParameters){
         return await axios({
-            method: 'put',
+            method: 'patch',
             url: `${USERS_PATH}/users/${userid}/lock`,
             params: queryParameters,
             headers: {
@@ -218,6 +194,7 @@ const UserService = (function(){
    return {
         isLogged : _isLogged,
         getUsers : _getUsers,
+        getUser: _getUser,
         signUp : _signUp,
         checkEmailAvailability : _checkEmailAvailability,
         isAccount : _isAccount,
@@ -230,9 +207,7 @@ const UserService = (function(){
         getMyFavoritesPublications : _getMyFavoritesPublications,
         addFavourite : _addFavourite,
         removeFavourite : _removeFavourite,
-        updateInformation: _updateInformation,
-        retrievePersonalInformation: _retrievePersonalInformation,
-        updatePassword: _updatePassword,
+        editUser: _editUser,
         lockUser : _lockUser
    }
    })();

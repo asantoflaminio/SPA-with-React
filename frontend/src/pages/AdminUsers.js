@@ -35,7 +35,7 @@ class AdminUsers extends React.Component {
         newList[index].locked = event.target.checked;
         UserService.lockUser(userid,queryParameters).then(function (response){
             if(response.status !== StatusCode.OK){
-                ErrorService.logError(this.props,response)
+                ErrorService.logError(currentComponent.props,response)
                 return;
             }
             currentComponent.setState({

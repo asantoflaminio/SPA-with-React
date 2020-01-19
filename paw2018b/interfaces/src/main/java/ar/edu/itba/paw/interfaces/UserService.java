@@ -8,15 +8,15 @@ import ar.edu.itba.paw.models.dto.UserDTO;
 public interface UserService {
 	
 	public User create(String firstName, String lastName,String email, String password, 
-			String repeatPassword, String phoneNumber, String languaje, String role);
+			String phoneNumber, String languaje, String role);
 	
 	public User findById(final long userid);
 
 	public User findByUsername(String email);
 	
-	public boolean editData(String firstName, String lastName, String email, String phoneNumber, String oldEmail);
+	public boolean editData(String firstName, String lastName, String email, String phoneNumber, String oldEmail, long userid);
 	
-	public boolean editPassword(String oldPassword,String newPassword, String oldEmail);
+	public boolean editPassword(String newPassword, long userid);
 	
 	public void setPassword(String newPassword, String oldEmail);
 	

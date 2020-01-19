@@ -48,7 +48,7 @@ public class ValidateServiceImpl implements ValidateService{
 	
 	
 	@Override
-	public boolean validateUser(String firstName, String lastName, String email, String password, String repeatPassword, String phoneNumber) {
+	public boolean validateUser(String firstName, String lastName, String email, String password, String phoneNumber) {
 		
 		final String lettersAndSpacesRegex = "^[a-zA-ZñÑáÁéÉíÍóÓúÚüÜ ]*$";
 		final String lettersAndNumbersRegex = "^[0-9a-zA-Z]+$";
@@ -61,7 +61,6 @@ public class ValidateServiceImpl implements ValidateService{
 			! validateInputText(lastName, SHORT_STRING_MIN_LENGTH, SHORT_STRING_MAX_LENGTH, lettersAndSpacesRegex, "LastName") ||
 			! validateInputEmail(email, SHORT_STRING_MIN_LENGTH, EMAIL_MAX_LENGTH, emailRegex, "Email") ||
 			! validateInputText(password, LONG_STRING_MIN_LENGTH, LONG_STRING_MAX_LENGTH_PASS, lettersAndNumbersRegex, "Password") ||
-			! password.equals(repeatPassword) ||
 			! validateInputText(phoneNumber, BLANK_LENGTH, LONG_STRING_MAX_LENGTH, numbersDashRegex, "PhoneNumber")
 		)
 		   {
@@ -73,7 +72,7 @@ public class ValidateServiceImpl implements ValidateService{
 	
 	@Override
 	public boolean validateUserData(String firstName, String lastName, String email, String phoneNumber) {
-		return validateUser(firstName,lastName,email,CORRECT_PASSWORD,CORRECT_PASSWORD,phoneNumber);
+		return validateUser(firstName,lastName,email,CORRECT_PASSWORD,phoneNumber);
 	}
 	
 	@Override

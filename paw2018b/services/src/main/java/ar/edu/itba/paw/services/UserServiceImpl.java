@@ -23,39 +23,26 @@ public class UserServiceImpl implements UserService{
 	private UserDao userDao;
 	
 	@Autowired
-	private ValidateServiceImpl vs;
-	
-	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
 	@Override
-	public User create(String firstName, String lastName,String email,String password, 
-			String repeatPassword, String phoneNumber, String languaje, String role) {
+	public User create(String firstName, String lastName,String email,String password,
+			String phoneNumber, String languaje, String role) {
 		LOGGER.trace("Creating user with email {}", email);
 		return userDao.create(firstName, lastName, email, passwordEncoder.encode(password), phoneNumber, languaje, role);
 	}
 	
 	@Override
-	public boolean editData(String firstName, String lastName, String email, String phoneNumber, String oldEmail) {
-		if(! vs.validateUserData(firstName,lastName, email, phoneNumber))
-			return false;
-		userDao.editData(firstName, lastName, email, phoneNumber,userDao.findByUsername(oldEmail).getUserid());
+	public boolean editData(String firstName, String lastName, String email, String phoneNumber, String oldEmail, long userid) {
+		userDao.editData(firstName, lastName, email, phoneNumber,userid);
 		LOGGER.trace("Editing data of user with email {}", email);
 		return true;
 	}
 	
 	@Override
-	public boolean editPassword(String oldPassword,String newPassword, String oldEmail) {
-		User user = userDao.findByUsername(oldEmail);
-		
-		if(! vs.validateUserPassword(newPassword)) 
-			return false;
-		
-		if(! passwordEncoder.matches(oldPassword, user.getPassword())) 
-			return false;
-		
-		userDao.editPassword(passwordEncoder.encode(newPassword), user.getUserid());
-		LOGGER.trace("Editing password of user with email {}", oldEmail);
+	public boolean editPassword(String newPassword, long userid) {
+		userDao.editPassword(passwordEncoder.encode(newPassword), userid);
+		LOGGER.trace("Editing password of user with id {}", userid);
 		return true;
 	}
 	

@@ -10,7 +10,10 @@ import '../css/SignUp.css';
 import * as yup from 'yup';
 import UserService from '../services/UserService'
 import * as Constants from '../util/Constants'
+import * as StatusCode from '../util/StatusCode'
 import JsonService from '../services/JsonService'
+import LocalStorageService from '../services/LocalStorageService';
+import ErrorService from '../services/ErrorService';
 
 class MyInformation extends React.Component {
     constructor(props) {
@@ -25,73 +28,85 @@ class MyInformation extends React.Component {
     }
 
     componentDidMount() {
-        this.retrievePersonalInformation();
+        let currentComponent = this;
+        let userid = LocalStorageService.getUserid();
+        UserService.getUser(userid).then(function (response) {
+            if(response.status !== StatusCode.OK){
+                ErrorService.logError(currentComponent.props,response)
+                return;
+            }
+            currentComponent.setState({
+                firstName: response.data.firstName,
+                lastName: response.data.lastName,
+                email: response.data.email,
+                phoneNumber: response.data.phoneNumber,
+            })    
+        })
     }
 
-    checkEmailAvailability(event) {
-        UserService.checkEmailAvailability(event,this.props).then(function (status){
-            if(status)
-                document.getElementById("emailTakenError").style.display = "none"
-            else
+    checkEmailAvailability(event){
+        let email = event.target.value
+        UserService.checkEmailAvailability(email).then(function (response){
+            if(response.status === StatusCode.OK){
                 document.getElementById("emailTakenError").style.display = "block"
+            }else if(response.status === StatusCode.NOT_FOUND || response.status === StatusCode.BAD_REQUEST)
+                document.getElementById("emailTakenError").style.display = "none"
+            else{
+                ErrorService.logError(this.props,response)
+            }
         })
         return true;
     }
 
-    retrievePersonalInformation() {
-        let currentComponent = this;
-    
-        UserService.retrievePersonalInformation(this.props).then(function (data) {
-            currentComponent.setState({
-                firstName: data.firstName,
-                lastName: data.lastName,
-                email: data.email,
-                phoneNumber: data.phoneNumber,
-            })    
-        })
-        
-    }
-
-    updatePersonalInformation(values) {
-        this.setState({
-            firstName: values.firstName,
-            lastName: values.lastName,
-            email: values.email,
-            phoneNumber: values.phoneNumber
-        })
-    }
-
-    handleFormSubmit(values,event,errors) {
-        let currentComponent = this
-        let val = values;
+    handleFormSubmit(event,errors) {
         event.preventDefault();
-        
+        let currentComponent = this
+        let userDTO = JsonService.getJSONParsed(event.target)
+        let userid = LocalStorageService.getUserid()
         if(Object.keys(errors).length === 0) {
-            let names = ["firstName","lastName","email","phoneNumber"];
-            let values = [val.firstName, val.lastName, val.email, val.phoneNumber]
-            UserService.updateInformation(JsonService.createJSONArray(names,values),currentComponent.props).then(function(data){
-                currentComponent.updatePersonalInformation(values);
-                currentComponent.componentDidMount();
+            UserService.editUser(userid,userDTO).then(function(response){
+                if(response.status !== StatusCode.OK){
+                    ErrorService.logError(currentComponent.props,response)
+                }
+                currentComponent.setState({
+                    firstName: response.data.firstName,
+                    lastName: response.data.lastName,
+                    email: response.data.email,
+                    phoneNumber: response.data.phoneNumber
+                })
+                
             })
         }
     }
 
-    handlePasswordFormSubmit(values,event,errors) {
-        let currentComponent = this
-        let val = values;
+    handlePasswordFormSubmit(event,errors) {
         event.preventDefault();
-        
+        let currentComponent = this
+        let userDTO = {}
+        userDTO.password = event.target[1].value
+        let userid = LocalStorageService.getUserid()
+
         if(Object.keys(errors).length === 0) {
-            let names = ["password","newpassword"];
-            let values = [val.password, val.newpassword];
-            UserService.updatePassword(JsonService.createJSONArray(names,values),currentComponent.props).then(function(){
-                currentComponent.componentDidMount();
+            UserService.editUser(userid,userDTO).then(function(response){
+                if(response.status !== StatusCode.OK){
+                    ErrorService.logError(currentComponent.props,response)
+                }
             })
         }
+    }
+
+    reInitializeForm(){
+        let schema = {}
+        schema.firstName = this.state.firstName;
+        schema.lastName = this.state.lastName;
+        schema.email = this.state.email;
+        schema.phoneNumber = this.state.phoneNumber
+        return schema;
     }
 
     render(){
         const { t } = this.props;
+        let initialSchema = this.reInitializeForm()
         
         const personalInformationSchema = yup.object({
             firstName: yup.string().required( t('errors.requiredField') )
@@ -136,12 +151,11 @@ class MyInformation extends React.Component {
                                 <Formik
                                 validationSchema={personalInformationSchema}
                                 enableReinitialize={true}
-                                initialValues={{firstName:this.state.firstName, lastName:this.state.lastName
-                                , email:this.state.email, phoneNumber:this.state.phoneNumber}}
+                                initialValues={initialSchema}
                                 onSubmit={(values, {setSubmitting, resetForm}) => {
-                                setSubmitting(true);
-                                resetForm();
-                                setSubmitting(false);
+                                    setSubmitting(true)
+                                    resetForm()
+                                    setSubmitting(false)
                                 }}
                                 >
                                 {({
@@ -153,7 +167,7 @@ class MyInformation extends React.Component {
                                     handleSubmit,
                                     isSubmitting
                                 }) => (
-                                    <Form noValidate onSubmit={(event) => handleSubmit(event) || this.handleFormSubmit(values,event,errors)}>
+                                    <Form noValidate onSubmit={(event) => handleSubmit(event) || this.handleFormSubmit(event,errors)}>
                                         <Form.Group as={Col} md="8" controlId="validationFormik01">
                                             <Form.Label>{t('profile.firstName')}</Form.Label>
                                             <Form.Control
@@ -246,7 +260,7 @@ class MyInformation extends React.Component {
                                     handleSubmit,
                                     isSubmitting
                                 }) => (
-                                    <Form noValidate onSubmit={(event) => handleSubmit(event) || this.handlePasswordFormSubmit(values,event,errors)}>
+                                    <Form noValidate onSubmit={(event) => handleSubmit(event) || this.handlePasswordFormSubmit(event,errors)}>
                                         <Form.Group as={Col} md="8" controlId="validationFormik01">
                                             <Form.Label>{t('profile.password')}</Form.Label>
                                             <Form.Control
