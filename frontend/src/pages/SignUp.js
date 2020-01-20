@@ -14,6 +14,7 @@ import ErrorService from '../services/ErrorService'
 import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
 import {Link} from 'react-router-dom';
+import ColoredLinearProgress from '../components/ColoredLinearProgress';
 
 
 
@@ -21,7 +22,8 @@ class SignUp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLogged: UserService.isLogged()
+            isLogged: UserService.isLogged(),
+            loading: false
         };
       }
 
@@ -35,12 +37,16 @@ class SignUp extends React.Component {
         let loginDTO = {}
         loginDTO.email = signUpDTO.email;
         loginDTO.password = signUpDTO.password;
+        this.setState({
+            loading: true
+        })
         if(Object.keys(errors).length === 0 && emailError.getAttribute("hasError") === "false"){
         UserService.signUp(signUpDTO).then(function (response){
             if(response.status !== StatusCode.CREATED){
                 ErrorService.logError(currentComponent.props,response)
                 return;
             }
+            
                 
             UserService.login(loginDTO).then(function (response){
                 if(response.status !== StatusCode.OK){
@@ -51,7 +57,8 @@ class SignUp extends React.Component {
                                                 response.headers.username, response.headers["user-id"])
                 currentComponent.props.history.push(currentPath)
                 currentComponent.setState({
-                    isLogged: true
+                    isLogged: true,
+                    loading: false
                     })
                 })
             })
@@ -65,18 +72,24 @@ class SignUp extends React.Component {
         let loginDTO = {}
         loginDTO.email = event.target[0].value;
         loginDTO.password = event.target[1].value
+        this.setState({
+            loading: true
+        })
         if(Object.keys(errors).length === 0){
             UserService.login(loginDTO).then(function(response){
                 if(response.status === StatusCode.OK){
                     LocalStorageService.setToken(response.headers.authorization, response.headers.authorities, 
                                                     response.headers.username, response.headers["user-id"])
-                    document.getElementById("errorLoginSignUp").style.display = "none"
+                    document.getElementById("errorLoginSignUp").style.display = "none"                   
                     currentComponent.props.history.push(currentPath)
                 }else if(response.status === StatusCode.UNAUTHORIZED){
                     document.getElementById("errorLoginSignUp").style.display = "block"
                 }else{
                     ErrorService.logError(this.props,response)
                 }
+                currentComponent.setState({
+                    loading: false
+                })
             })
         }
     }
@@ -135,6 +148,8 @@ class SignUp extends React.Component {
         password: yup.string().required( t('errors.requiredField') )
         });
     return (
+        <div>
+        {this.state.loading ? <ColoredLinearProgress /> : null} 
         <div className="flex">
             <div className="box_form_signUp">
                 <div>
@@ -323,6 +338,7 @@ class SignUp extends React.Component {
                     <a id="recover_pass" href="./ForgottenPassword">{t('navbar.recoverPass')}</a>
                 </Link>
             </div>
+        </div>
         </div>
     );
     }
