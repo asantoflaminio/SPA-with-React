@@ -12,51 +12,21 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import ar.edu.itba.paw.interfaces.UserDao;
 
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-@ComponentScan({"src.main.java.ar.edu.itba.paw.persistence"})
+@ComponentScan({"ar.edu.itba.paw.persistence",   })
 @Configuration
-@EnableTransactionManagement
 public class TestConfig {
-		
-	 @Mock
-	 @Autowired
-	 private UserHibernateDao userHibernateDao;
-	 
-	 @Bean
-	 @Autowired
-	 public UserHibernateDao getUserHibernateDao() {
-		 return userHibernateDao;
-	 }
-	
-	 @Bean
-	 @Autowired
-	 public LocalContainerEntityManagerFactoryBean getEntityManagerFactory() {
-	     final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
-	     factoryBean.setPackagesToScan("ar.edu.itba.paw.models");
-	     factoryBean.setDataSource(dataSource());
-	     final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-	     factoryBean.setJpaVendorAdapter(vendorAdapter);
-	     final Properties properties = new Properties();
-	     properties.setProperty("hibernate.hbm2ddl.auto", "none");
-	     properties.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
-	     // Si ponen esto en prod, hay tabla!!!
-	     properties.setProperty("hibernate.show_sql", "true");
-	     properties.setProperty("format_sql", "true");
-	     factoryBean.setJpaProperties(properties);
-	     return factoryBean;
-	   }
 	
 	@Bean
-	@Autowired
 	public DataSource dataSource() {
 		final SimpleDriverDataSource ds = new SimpleDriverDataSource();
 		ds.setDriverClass(JDBCDriver.class);
@@ -67,8 +37,34 @@ public class TestConfig {
 	}
 	
 	 @Bean
-	 @Autowired
+	 public LocalContainerEntityManagerFactoryBean getEntityManagerFactory() {
+	     final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
+	     factoryBean.setPackagesToScan("ar.edu.itba.paw.models");
+	     factoryBean.setDataSource(dataSource());
+	     final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+	     factoryBean.setJpaVendorAdapter(vendorAdapter);
+	     final Properties properties = new Properties();
+	     properties.setProperty("hibernate.hbm2ddl.auto", "update");
+	     properties.setProperty("hibernate.search.default.directory_provider", "filesystem");
+		 properties.setProperty("hibernate.search.default.indexBase", "lucene/indexes");
+		 properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+	     //properties.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
+	     // Si ponen esto en prod, hay tabla!!!
+	     properties.setProperty("hibernate.show_sql", "true");
+	     properties.setProperty("format_sql", "true");
+	     factoryBean.setJpaProperties(properties);
+	     return factoryBean;
+	   }
+	
+	
+	
+	 @Bean
 	 public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
 	      return new JpaTransactionManager(emf);
 	 }
+	 
+	 @Bean
+		public PasswordEncoder passwordEncoder() {
+			return new BCryptPasswordEncoder();
+		}
 }
