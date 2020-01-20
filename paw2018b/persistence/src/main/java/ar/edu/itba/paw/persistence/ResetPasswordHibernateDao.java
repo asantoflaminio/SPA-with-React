@@ -1,21 +1,20 @@
 package ar.edu.itba.paw.persistence;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
+
 
 import javax.persistence.*;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.edu.itba.paw.interfaces.ChangePasswordDao;
-import ar.edu.itba.paw.models.ChangePassword;
+import ar.edu.itba.paw.interfaces.ResetPasswordDao;
+import ar.edu.itba.paw.models.ResetPassword;
 import ar.edu.itba.paw.models.User;
 
 @Repository
-public class ChangePasswordHibernateDao implements ChangePasswordDao{
+public class ResetPasswordHibernateDao implements ResetPasswordDao{
 
 
     @PersistenceContext
@@ -23,17 +22,17 @@ public class ChangePasswordHibernateDao implements ChangePasswordDao{
 
     @Transactional
     @Override
-    public ChangePassword createRequest(String token, long userId, String date){
+    public ResetPassword createRequest(String token, long userId, String date){
         User user = em.find(User.class, userId);
-        ChangePassword cp = new ChangePassword(user, date, token);
-        em.persist(cp);
-        return cp;
+        ResetPassword rp = new ResetPassword(user, date, token);
+        em.persist(rp);
+        return rp;
     }
 
     @Override
     public Optional<User> getUser(String token){
-        final TypedQuery<User> queryString = em.createQuery("SELECT cp.userRequesting FROM ChangePassword cp " +
-                "WHERE cp.token = :token", User.class);
+        final TypedQuery<User> queryString = em.createQuery("SELECT rp.userRequesting FROM ResetPassword rp " +
+                "WHERE rp.token = :token", User.class);
 
         queryString.setParameter("token", token);
         final List<User> list = queryString.getResultList();
@@ -46,11 +45,11 @@ public class ChangePasswordHibernateDao implements ChangePasswordDao{
 
     @Override
     public boolean checkToken(String token){
-        final TypedQuery<ChangePassword> queryString = em.createQuery("FROM ChangePassword cp " +
-                "WHERE cp.token = :token", ChangePassword.class);
+        final TypedQuery<ResetPassword> queryString = em.createQuery("FROM ResetPassword rp " +
+                "WHERE rp.token = :token", ResetPassword.class);
 
         queryString.setParameter("token", token);
-        final List<ChangePassword> list = queryString.getResultList();
+        final List<ResetPassword> list = queryString.getResultList();
         
         if(list.isEmpty()) {
         	return true;
@@ -63,19 +62,19 @@ public class ChangePasswordHibernateDao implements ChangePasswordDao{
     @Transactional
     @Override
     public void deleteRequest(Integer id){
-        ChangePassword token = em.find(ChangePassword.class, id);
+    	ResetPassword token = em.find(ResetPassword.class, id);
         if(token != null){
             em.remove(token);         
         } 
     }
 
     @Override
-    public Optional<ChangePassword> getRequest(String token){
-        final TypedQuery<ChangePassword> queryString = em.createQuery("FROM ChangePassword cp " +
-                "WHERE cp.token = :token", ChangePassword.class);
+    public Optional<ResetPassword> getRequest(String token){
+        final TypedQuery<ResetPassword> queryString = em.createQuery("FROM ResetPassword rp " +
+                "WHERE rp.token = :token", ResetPassword.class);
 
         queryString.setParameter("token", token);
-        final List<ChangePassword> list = queryString.getResultList();
+        final List<ResetPassword> list = queryString.getResultList();
         if(list.isEmpty()) {
         	return Optional.empty();
         } else {

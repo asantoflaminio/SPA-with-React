@@ -42,10 +42,10 @@ public class LocationController {
     	if(! vs.validateLocationAdmin(provinceDTO.getProvince(), Constants.Location.PROVINCE.getLocation()))
     		return rs.badRequest();
     	if(ls.findByProvinceName(provinceDTO.getProvince()) != null)
-    		return rs.conflictRequest();
+    		return rs.conflict();
     	
     	ls.createProvince(provinceDTO.getProvince());
-        return rs.createRequest();
+        return rs.create();
     }
     
     @POST
@@ -56,10 +56,10 @@ public class LocationController {
 			! vs.validateID(provinceid))
 			return rs.badRequest();
     	if(ls.findByCityName(provinceid,cityDTO.getCity()) != null)
-    		return rs.conflictRequest();
+    		return rs.conflict();
     	
     	ls.createCity(cityDTO.getCity(),provinceid);
-        return rs.createRequest();
+        return rs.create();
     }
     
     @POST
@@ -70,10 +70,10 @@ public class LocationController {
 			! vs.validateID(cityid))
 			return rs.badRequest();
     	if(ls.findByNeighborhoodName(cityid,neighborhoodDTO.getNeighborhood()) != null)
-    		return rs.conflictRequest();
+    		return rs.conflict();
     	
     	ls.createNeighborhood(neighborhoodDTO.getNeighborhood(),cityid);
-        return rs.createRequest();
+        return rs.create();
     }
     
     @GET
@@ -81,7 +81,7 @@ public class LocationController {
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getProvinces () {
     	List<ProvinceDTO> provinces = ls.getProvinces();
-    	return rs.okRequest(provinces);
+    	return rs.ok(provinces);
     }
     
     
@@ -94,7 +94,7 @@ public class LocationController {
     		return rs.badRequest();
     	
     	List<CityDTO> cities = ls.getCities(provinceid);
-    	return rs.okRequest(cities);
+    	return rs.ok(cities);
     }
     
     @GET
@@ -106,7 +106,7 @@ public class LocationController {
     		return rs.badRequest();
     	List<NeighborhoodDTO> neighborhoods = ls.getNeighborhoods(cityid);
     	
-    	return rs.okRequest(neighborhoods);
+    	return rs.ok(neighborhoods);
     }
 
 }

@@ -11,6 +11,7 @@ import toast from 'toasted-notes'
 import 'toasted-notes/src/styles.css';
 import * as StatusCode from '../util/StatusCode';
 import ColoredLinearProgress from '../components/ColoredLinearProgress';
+import ErrorService from '../services/ErrorService';
 
 class ForgottenPassword extends React.Component {
 
@@ -21,33 +22,39 @@ class ForgottenPassword extends React.Component {
         };
     }
 
-    handleFormSubmit(event){
+    handleFormSubmit(event,errors){
         let currentComponent = this;
         const { t } = this.props;
         event.preventDefault();
         event.persist();
+        let email = event.target[0].value
 
-        this.setState({
-            loading: true
-          });
 
-        UserService.checkEmail(event, this.props).then(function(response) {
-            if(response.status === StatusCode.OK) {
-                UserService.forgottenPasswordEmail(event, currentComponent.props).then(function (response){
-                   toast.notify(t('forgottenPassword.emailSent'));  
-                   currentComponent.setState({
-                    loading: false
+        if(Object.keys(errors).length === 0){
+        this.setState({loading: true});
+        UserService.checkEmail(email).then(function(response) {
+                if(response.status === StatusCode.OK) {
+                    UserService.forgottenPasswordEmail(email).then(function (response){
+                    if(response.status !== StatusCode.CREATED){
+                        ErrorService.logError(currentComponent.props,response)
+                        return;
+                    }
+                    toast.notify(t('forgottenPassword.emailSent'));  
+                    currentComponent.setState({
+                        loading: false
+                        });  
+                    currentComponent.props.history.push("/home")
+                    }) 
+                } else if(response.status === StatusCode.NOT_FOUND){
+                    currentComponent.setState({
+                        loading: false
                     });  
-                   currentComponent.props.history.push("/home")
-                 }) 
-            } else {
-                currentComponent.setState({
-                    loading: false
-                });  
-               toast.notify(t('forgottenPassword.emailNotSent'));
-            }
-            
-        })     
+                toast.notify(t('forgottenPassword.emailNotSent'));
+                } else{
+                    ErrorService.logError(currentComponent.props,response)
+                }
+            })
+        }     
     }
 
 
@@ -58,8 +65,8 @@ class ForgottenPassword extends React.Component {
         const { t } = this.props;
         const schema = yup.object({
             email: yup.string().required( t('errors.requiredField') ).matches(Constants.emailRegex, t('errors.emailRegex'))
-            .min(Constants.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
-            .max(Constants.EMAIL_MAX_LENGTH, t('errors.lengthMax')),
+                                .min(Constants.SHORT_STRING_MIN_LENGTH, t('errors.lengthMin'))
+                                .max(Constants.EMAIL_MAX_LENGTH, t('errors.lengthMax')),
             });
             return ( 
                 <div>
@@ -78,7 +85,7 @@ class ForgottenPassword extends React.Component {
                                         handleBlur
                                     }) => (
                                     <Form noValidate onSubmit={event => {
-                                            this.handleFormSubmit(event)
+                                            this.handleFormSubmit(event,errors)
                                     }}>
                                         <Form.Group as={Col} md="6" controlId="validationFormik01">
                                             <Form.Label>{t('navbar.mail')}</Form.Label>
@@ -96,7 +103,7 @@ class ForgottenPassword extends React.Component {
                                                 {errors.email}
                                             </Form.Control.Feedback>
                                         </Form.Group>
-                                    <Button id="forgottenButton" type="submit">{t('forgottenPassword.send')}</Button>
+                                    <Button id="forgottenButton" type="submit" onClick={handleChange}>{t('forgottenPassword.send')}</Button>
                                     </Form>
                                 )}
                             </Formik>

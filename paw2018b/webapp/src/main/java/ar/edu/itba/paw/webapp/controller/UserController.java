@@ -1,12 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +13,6 @@ import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.HEAD;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -27,9 +21,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,29 +28,21 @@ import ar.edu.itba.paw.interfaces.FavPublicationsService;
 import ar.edu.itba.paw.interfaces.PATCH;
 import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.ChangePassword;
 import ar.edu.itba.paw.models.Constants;
-import ar.edu.itba.paw.models.FavPublication;
 import ar.edu.itba.paw.models.Publication;
+import ar.edu.itba.paw.models.ResetPassword;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.models.dto.EmailDTO;
 import ar.edu.itba.paw.models.dto.FavPublicationDTO;
-import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.MessageDTO;
-import ar.edu.itba.paw.models.dto.PasswordDTO;
-import ar.edu.itba.paw.models.dto.PasswordsCheckDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
-import ar.edu.itba.paw.models.dto.RecoveryMessageDTO;
+import ar.edu.itba.paw.models.dto.ResetPasswordDTO;
 import ar.edu.itba.paw.models.dto.UserDTO;
-import ar.edu.itba.paw.models.dto.UserLoginDTO;
-import ar.edu.itba.paw.services.ChangePasswordServiceImpl;
-import ar.edu.itba.paw.services.ImageServiceImpl;
 import ar.edu.itba.paw.services.MailServiceImpl;
 import ar.edu.itba.paw.services.RequestServiceImpl;
+import ar.edu.itba.paw.services.ResetPasswordServiceImpl;
 import ar.edu.itba.paw.services.ValidateServiceImpl;
 import ar.edu.itba.paw.webapp.auth.TokenAuthenticationService;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Path("users-managment")
 @Component
@@ -87,7 +70,7 @@ public class UserController {
 	private RequestServiceImpl rs;
 	
 	@Autowired
-	private ChangePasswordServiceImpl cps;
+	private ResetPasswordServiceImpl rps;
 	
 	
     @GET
@@ -98,7 +81,7 @@ public class UserController {
     		return rs.badRequest();
     	List<UserDTO> users = us.findAllUsers(page,limit);
     	response.setHeader(Constants.COUNT_HEADER, Integer.toString(us.getAllUsersCount()));
-    	return rs.okRequest(users);
+    	return rs.ok(users);
     }
 	
     @POST
@@ -109,11 +92,11 @@ public class UserController {
     			userDTO.getPassword(), userDTO.getPhoneNumber()))
     		rs.badRequest();
     	if(us.findByUsername(userDTO.getEmail()) != null) 
-    		return rs.conflictRequest();
+    		return rs.conflict();
     	
     	us.create(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPassword(), userDTO.getPhoneNumber(),
     			request.getHeader("Accept-Language").substring(0, Constants.MAX_LANGUAJE), Constants.Role.USER.getRole());
-        return rs.createRequest();
+        return rs.create();
     }
     
     @GET
@@ -137,7 +120,7 @@ public class UserController {
     	if(us.findByUsername(email) == null)
     		return rs.notFound();
     	else
-    		return rs.okRequest();
+    		return rs.ok();
     	
     }
     
@@ -158,7 +141,7 @@ public class UserController {
     		if(! vs.validateUserPassword(userDTO.getPassword()))
     			return rs.badGateway();
     		us.editPassword(userDTO.getPassword(), userid);
-    		return rs.okRequest();
+    		return rs.ok();
     	}else {
     		if(! vs.validateUserData(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPhoneNumber()))
     			return rs.badGateway();
@@ -177,63 +160,39 @@ public class UserController {
     	if(us.findById(userid) == null)
     		return rs.notFound();
     	us.lock(lock, userid);
-    	return rs.okRequest();
+    	return rs.ok();
     }
     
     @POST
-    @Path("/isAccount")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response checkForExistingMail (final EmailDTO emailDTO) {
-    	if(us.findByUsername(emailDTO.getEmail()) != null)
-    		return Response.ok().build();
-    	else
+    @Path("/users/{email}/password-reset")
+    public Response passwordReset (@PathParam("email") String email) {
+    	User user = us.findByUsername(email);
+    	if(user == null) 
     		return rs.notFound();
-    	
-    }
-    
-    @POST
-    @Path("/forgottenPasswordEmail")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response forgottenPasswordEmail (RecoveryMessageDTO recoveryMessageDTO) {
-    	String token = UUID.randomUUID().toString();
-    	User user = us.findByUsername(recoveryMessageDTO.getEmail());
-    	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-    	ChangePassword changePassword = cps.createRequest(user, dtf.format(now));
-        return Response.ok().build();
-    }
-    
-    @POST
-    @Path("/createNewPassword")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response changePassword (PasswordsCheckDTO passwordsCheckDTO) {
 
-    	if(passwordsCheckDTO.getNewPassword1().equals(passwordsCheckDTO.getNewPassword2())) {
-    		
-    		Integer token = passwordsCheckDTO.getToken().hashCode();
-            Optional<ChangePassword> cp =  cps.getRequest(token.toString());
-            
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            LocalDateTime now = LocalDateTime.now();           
-            LocalDateTime tokenDate = LocalDateTime.parse(cp.get().getDate(), dtf);       
-            long minutes = ChronoUnit.MINUTES.between(tokenDate, now);
-            
-            if(cp.isPresent() && minutes <= 60) {
-            	
-            	User userRequesting = cp.get().getUserRequesting();
-            	us.setPassword(passwordsCheckDTO.getNewPassword1(), userRequesting.getEmail());
-            	cps.deleteRequest(cp.get().getRequestId());
-                
-                return Response.ok().build();
-            	
-            } else { 	
-            	return rs.badRequest();
-            }          		
-    		
-    	} else {
+    	rps.createRequest(user);
+        return rs.create();
+    }
+    
+    @PATCH
+    @Path("/users/password-reset")
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response changePassword (ResetPasswordDTO resetPasswordDTO) {
+    	if(! vs.validateUserPassword(resetPasswordDTO.getNewPassword()))
     		return rs.badRequest();
-    	}
+    	
+    	Integer token = resetPasswordDTO.getToken().hashCode();
+    	Optional<ResetPassword> resetPassword =  rps.getRequest(token.toString());
+    	
+    	if(rps.isTokenExpired(token,resetPassword))
+    		return rs.unauthorized();
+
+            	
+        User userRequesting = resetPassword.get().getUserRequesting();
+        us.setPassword(resetPasswordDTO.getNewPassword(), userRequesting.getEmail());
+        rps.deleteRequest(resetPassword.get().getRequestId());
+                
+        return rs.ok();  		
 
     }
     
@@ -258,7 +217,7 @@ public class UserController {
     	
     	if(pub != null) {
     		publicationDTO.setPublicationid(pub.getPublicationid());
-    		return rs.createRequest(publicationDTO);
+    		return rs.create(publicationDTO);
     	}
     	else 
     		return rs.badRequest();
@@ -279,7 +238,7 @@ public class UserController {
     	if(email == null)
     		return rs.badGateway();
     	
-        return rs.createRequest();
+        return rs.create();
     }
     
     @GET
@@ -322,7 +281,7 @@ public class UserController {
     		return rs.forbidden();
     	
     	fps.addFavourite(userid, favPublicationDTO.getPublicationid());
-    	return rs.createRequest();
+    	return rs.create();
     }
     
     @DELETE

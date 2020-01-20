@@ -13,7 +13,7 @@ const PublicationService = (function(){
           url: `${PUBLICATIONS_PATH}/publications`,
           params: queryParameters,         
           headers: {
-            authorization: LocalStorageService.getAccessToken()
+            authorization: LocalStorageService.getAuthorization()
           }
       }).then(function (response){ return response }).catch(function (error){ return error.response })
   }
@@ -23,7 +23,7 @@ const PublicationService = (function(){
             method: 'get',
             url: `${PUBLICATIONS_PATH}/publications/${publicationid}`,
             headers: {
-              authorization: LocalStorageService.getAccessToken()
+              authorization: LocalStorageService.getAuthorization()
             }
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -51,7 +51,7 @@ const PublicationService = (function(){
           data: dataDTO,
           headers: {
               contentType:'multipart/form-data',
-              authorization: LocalStorageService.getAccessToken()
+              authorization: LocalStorageService.getAuthorization()
             }
         }).then(function (response){ return response }).catch(function (error){ return error.response })     
   }
@@ -62,7 +62,7 @@ const PublicationService = (function(){
         url: PUBLICATIONS_PATH + '/isFavourite',
         data: JsonService.getJSONParsed(array),
         headers: {
-          authorization: LocalStorageService.getAccessToken(),
+          authorization: LocalStorageService.getAuthorization()
       }
       })
       .then(function (response) {
@@ -78,7 +78,7 @@ const PublicationService = (function(){
         method: 'delete',
         url: `${PUBLICATIONS_PATH}/publications/${publicationID}`,
         headers: {
-          authorization: LocalStorageService.getAccessToken(),
+          authorization: LocalStorageService.getAuthorization()
       }
       }).then(function (response){ return response }).catch(function (error){ return error.response }) 
     }

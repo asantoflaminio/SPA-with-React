@@ -31,9 +31,7 @@ import ar.edu.itba.paw.interfaces.PublicationService;
 import ar.edu.itba.paw.models.Constants;
 import ar.edu.itba.paw.models.Filter;
 import ar.edu.itba.paw.models.UploadFile;
-import ar.edu.itba.paw.models.dto.BooleanResponseDTO;
 import ar.edu.itba.paw.models.dto.FiltersDTO;
-import ar.edu.itba.paw.models.dto.IDResponseDTO;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 import ar.edu.itba.paw.services.FavPublicationsServiceImpl;
 import ar.edu.itba.paw.services.ImageServiceImpl;
@@ -82,7 +80,7 @@ public class PublicationController {
     	final Long userid = tas.getUserIdAuthentication(request);
     	if(userid != null)
     		publications = fps.checkFavourites(publications, userid);
-    	return rs.okRequest(publications);
+    	return rs.ok(publications);
     } 
     
     @GET
@@ -98,7 +96,7 @@ public class PublicationController {
     	final Long userid = tas.getUserIdAuthentication(request);
     	if(userid != null)
     		publicationDTO = fps.checkFavourite(publicationDTO, userid);
-    	return rs.okRequest(publicationDTO);
+    	return rs.ok(publicationDTO);
     }
     
     @GET
@@ -113,7 +111,7 @@ public class PublicationController {
     		return rs.notFound();
     	byte[] data = uploadFile.getData();
     	byte[] dataBase64 = Base64.getEncoder().encode(data);
-        return rs.okRequest(dataBase64);
+        return rs.ok(dataBase64);
     }
     
     @POST
@@ -126,7 +124,7 @@ public class PublicationController {
     		return rs.badRequest();
     	if(bodyParts != null && bodyParts.size() > 0)
     		is.create(bodyParts, publicationid);
-        return rs.createRequest();
+        return rs.create();
     }
     
     @GET
@@ -145,7 +143,7 @@ public class PublicationController {
     	filtersDTO.setBathrooms(ps.getSimpleFilter(filters, address, Constants.DataBaseFilterName.BATHROOMS.getDataBaseFilterName()));
     	filtersDTO.setParking(ps.getSimpleFilter(filters, address, Constants.DataBaseFilterName.PARKING.getDataBaseFilterName()));
     	
-    	return Response.ok().entity(filtersDTO).build();
+    	return rs.ok(filtersDTO);
     }
     
     
@@ -193,6 +191,6 @@ public class PublicationController {
     			publicationDTO.getParking(),
     			publicationDTO.getCoveredFloorSize(), publicationDTO.getBalconies(),
     			publicationDTO.getAmenities(), publicationDTO.getStorage(), publicationDTO.getExpenses(), 62);
-    	return rs.okRequest(publicationDTO);
+    	return rs.ok(publicationDTO);
     }
 }

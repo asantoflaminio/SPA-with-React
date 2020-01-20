@@ -8,25 +8,27 @@ public interface RequestService {
 	
 	public Locale getLocale(String languaje);
 	
-	public Response okRequest();
+	public Response ok();
 	
-	public Response okRequest(Object objectDTO);
+	public Response ok(Object objectDTO);
 	
-	public Response createRequest();
+	public Response create();
 	
-	public Response createRequest(Object objectDTO);
+	public Response create(Object objectDTO);
 	
 	public Response badRequest();
 	
 	public Response notFound();
 	
-	public Response conflictRequest();
+	public Response conflict();
 
 	public Response noContent();
 
 	public Response forbidden();
 
 	public Response badGateway();
+
+	public Response unauthorized();
 	
 
 

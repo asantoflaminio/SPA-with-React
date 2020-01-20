@@ -1,22 +1,20 @@
 package ar.edu.itba.paw.interfaces;
 
-import java.util.Date;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
-import ar.edu.itba.paw.models.ChangePassword;
+import ar.edu.itba.paw.models.ResetPassword;
 import ar.edu.itba.paw.models.User;
 
 @Service
-public interface ChangePasswordDao {
+public interface ResetPasswordDao {
 
-	 	ChangePassword createRequest(String token, long userId, String date);
+	ResetPassword createRequest(String token, long userId, String date);
 
 	    Optional<User> getUser(String token);
 	    
-	    Optional<ChangePassword> getRequest(String token);
+	    Optional<ResetPassword> getRequest(String token);
 
 	    boolean checkToken(String token);
 

@@ -16,9 +16,10 @@ const LocalStorageService = (function(){
       return _service
     }
 
-    function _refreshToken(authorization, access, username) {
+    function _refreshToken(authorization, username) {
         _clearToken();
-        _setToken(authorization, access, username);
+        _setAuthorization(authorization)
+        _setUsername(username)
     }
 
     function _setToken(authorization, access, username, userid) {
@@ -29,7 +30,15 @@ const LocalStorageService = (function(){
       localStorage.setItem(USERID_TOKEN,userid)
     }
 
-    function _getAccessToken() {
+    function _setAuthorization(authorization){
+      return localStorage.setItem(AUTH_TOKEN,authorization)
+    }
+
+    function _setUsername(username){
+      return localStorage.setItem(USERNAME_TOKEN,username)
+    }
+
+    function _getAuthorization() {
       return localStorage.getItem(AUTH_TOKEN);
     }
 
@@ -47,9 +56,7 @@ const LocalStorageService = (function(){
 
     function _clearToken() {
       localStorage.removeItem(AUTH_TOKEN);
-      localStorage.removeItem(ACCESS_TOKEN);
       localStorage.removeItem(USERNAME_TOKEN)
-      localStorage.removeItem(USERID_TOKEN)
     }
 
     function _decideAccess(access_role){
@@ -63,7 +70,9 @@ const LocalStorageService = (function(){
       getService : _getService,
       refreshToken : _refreshToken,
       setToken : _setToken,
-      getAccessToken : _getAccessToken,
+      setAuthorization : _setAuthorization,
+      setUsername : _setUsername,
+      getAuthorization : _getAuthorization,
       getAccessRole : _getAccessRole,
       getUsername : _getUsername,
       getUserid : _getUserid,

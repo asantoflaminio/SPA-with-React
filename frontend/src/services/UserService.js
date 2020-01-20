@@ -9,7 +9,7 @@ const UserService = (function(){
     const USERS_PATH = process.env.PUBLIC_URL + '/meinHaus/users-managment'
 
     function _isLogged(){
-        if(LocalStorageService.getAccessToken() != null)
+        if(LocalStorageService.getAuthorization() != null)
             return true;
         else
             return false;
@@ -21,7 +21,7 @@ const UserService = (function(){
             url: `${USERS_PATH}/users`,
             params: queryParameters,
             headers: {
-                authorization: LocalStorageService.getAccessToken(),
+                authorization: LocalStorageService.getAuthorization(),
             }
           }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -47,35 +47,21 @@ const UserService = (function(){
           url: `${USERS_PATH}/login`,
           data: dataDTO
         }).then(function (response){ return response }).catch(function (error){ return error.response })
-        //OJO Q aca cambiaron cosas y seguro en lo de ro ROMPE!!!!!
     }
 
-    async function _forgottenPasswordEmail(event, props){
+    async function _forgottenPasswordEmail(email){
         return await axios({
           method: 'post',
-          url: USERS_PATH + '/forgottenPasswordEmail',
-          data: JsonService.getJSONParsed(event.target)
-        })
-        .then(function (response) {
-            return response.status;
-        })
-        .catch(function (error) {
-            ErrorService.logError(props,error)
-        });
+          url: `${USERS_PATH}/users/${email}/password-reset`,
+        }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
-    async function _createNewPassword(event, props){
+    async function _resetPassword(dataDTO){
         return await axios({
-          method: 'post',
-          url: USERS_PATH + '/createNewPassword',
-          data: JsonService.getJSONParsed(event.target)
-        })
-        .then(function (response) {
-            return response.status;
-        })
-        .catch(function (error) {
-            ErrorService.logError(props,error)
-        });
+          method: 'patch',
+          url: `${USERS_PATH}/users/password-reset`,
+          data: dataDTO
+        }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
     async function _postPublication(userid,dataDTO){
@@ -84,7 +70,7 @@ const UserService = (function(){
           url: `${USERS_PATH}/users/${userid}/publications`,
           data: dataDTO,
           headers: {
-            authorization: LocalStorageService.getAccessToken(),
+            authorization: LocalStorageService.getAuthorization(),
           }
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -103,7 +89,7 @@ const UserService = (function(){
             url: `${USERS_PATH}/users/${userid}/publications`,
             params: queryParameters,
             headers: {
-                authorization: LocalStorageService.getAccessToken(),
+                authorization: LocalStorageService.getAuthorization(),
             }
           }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -114,7 +100,7 @@ const UserService = (function(){
             url: `${USERS_PATH}/users/${userid}/favourite-publications`,
             params: queryParameters,
             headers: {
-                authorization: LocalStorageService.getAccessToken(),
+                authorization: LocalStorageService.getAuthorization(),
             }
           }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -126,7 +112,7 @@ const UserService = (function(){
             url: `${USERS_PATH}/users/${userid}/favourite-publications`,
             data: dataDTO,
             headers: {
-                authorization: LocalStorageService.getAccessToken(),
+                authorization: LocalStorageService.getAuthorization(),
             }
           }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -137,7 +123,7 @@ const UserService = (function(){
             url: `${USERS_PATH}/users/${userid}/favourite-publications`,
             data: dataDTO,
             headers: {
-                authorization: LocalStorageService.getAccessToken(),
+                authorization: LocalStorageService.getAuthorization(),
             }
           }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -148,7 +134,7 @@ const UserService = (function(){
             method: 'get',
             url: `${USERS_PATH}/users/${userid}`,
             headers: {
-                authorization: LocalStorageService.getAccessToken(),
+                authorization: LocalStorageService.getAuthorization(),
             }
           }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -159,7 +145,7 @@ const UserService = (function(){
             url: `${USERS_PATH}/users/${userid}`,
             data: dataDTO,
             headers: {
-                authorization: LocalStorageService.getAccessToken(),
+                authorization: LocalStorageService.getAuthorization(),
             }
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -170,7 +156,7 @@ const UserService = (function(){
             url: `${USERS_PATH}/users/${userid}/lock`,
             params: queryParameters,
             headers: {
-                authorization: LocalStorageService.getAccessToken(),
+                authorization: LocalStorageService.getAuthorization(),
             }
           }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -182,7 +168,7 @@ const UserService = (function(){
         signUp : _signUp,
         checkEmail : _checkEmail,
         forgottenPasswordEmail: _forgottenPasswordEmail,
-        createNewPassword: _createNewPassword,
+        resetPassword: _resetPassword,
         login : _login,
         postPublication : _postPublication,
         sendMessage : _sendMessage,

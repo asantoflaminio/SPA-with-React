@@ -68,6 +68,7 @@ class MyInformation extends React.Component {
                 if(response.status !== StatusCode.OK){
                     ErrorService.logError(currentComponent.props,response)
                 }
+                LocalStorageService.refreshToken(response.headers.authorization, userDTO.email)
                 currentComponent.setState({
                     firstName: response.data.firstName,
                     lastName: response.data.lastName,

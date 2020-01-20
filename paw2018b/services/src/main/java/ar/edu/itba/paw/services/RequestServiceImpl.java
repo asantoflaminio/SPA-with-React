@@ -24,22 +24,22 @@ public class RequestServiceImpl implements RequestService{
     }
 	
 	@Override
-	public Response okRequest() {
+	public Response ok() {
 		return Response.ok().build();
 	}
 	
 	@Override
-	public Response okRequest(Object objectDTO) {
+	public Response ok(Object objectDTO) {
 		return Response.ok().entity(objectDTO).build();
 	}
 	
 	@Override
-	public Response createRequest() {
+	public Response create() {
 		return Response.status(Response.Status.CREATED).build();
 	}
 	
 	@Override
-	public Response createRequest(Object objectDTO) {
+	public Response create(Object objectDTO) {
 		return Response.status(Response.Status.CREATED).entity(objectDTO).build();
 	}
 
@@ -59,8 +59,13 @@ public class RequestServiceImpl implements RequestService{
 	}
 
 	@Override
-	public Response conflictRequest() {
+	public Response conflict() {
 		return Response.status(Response.Status.CONFLICT).build();
+	}
+	
+	@Override
+	public Response unauthorized() {
+		return Response.status(Response.Status.UNAUTHORIZED).build();
 	}
 	
 	@Override

@@ -9,9 +9,10 @@ import * as Constants from '../util/Constants';
 import UserService from '../services/UserService';
 import toast from 'toasted-notes' 
 import 'toasted-notes/src/styles.css';
-import * as statusCode from '../util/StatusCode'
+import * as StatusCode from '../util/StatusCode'
 import LinearProgress from "@material-ui/core/LinearProgress";
 import ColoredLinearProgress from '../components/ColoredLinearProgress';
+import ErrorService from '../services/ErrorService';
 
 class NewPassword extends React.Component {
 
@@ -22,26 +23,30 @@ class NewPassword extends React.Component {
         };
     }
 
-    handleFormSubmit(event){
-
-        this.setState({
-            loading: true
-          });
-        
-        let currentComponent = this;
-        const { t } = this.props;
+    handleFormSubmit(event,errors){
         event.preventDefault();
-        UserService.createNewPassword(event, this.props).then(function(status) {
-            if(status === statusCode.OK) {
-                toast.notify(t('newPassword.passwordUpdated'));  
-                currentComponent.props.history.push("/home");
-            } else {
-                toast.notify(t('newPassword.passwordNotUpdated')); 
-            }  
-            currentComponent.setState({
-                loading: false
-            });
-        })     
+        const { t } = this.props;
+        let currentComponent = this;
+        let resetPasswordDTO = {}
+        resetPasswordDTO.newPassword = event.target[0].value
+        resetPasswordDTO.token = this.props.match.params.token
+        if(Object.keys(errors).length === 0){
+            this.setState({loading: true});
+            UserService.resetPassword(resetPasswordDTO).then(function(response) {
+                if(response.status === StatusCode.OK) {
+                    toast.notify(t('newPassword.passwordUpdated'));  
+                    currentComponent.props.history.push("/home");
+                } else if(response.status === StatusCode.UNAUTHORIZED) {
+                    toast.notify(t('newPassword.passwordNotUpdated')); 
+                }else {
+                    ErrorService.logError(currentComponent.props,response)
+                    return;
+                }  
+                currentComponent.setState({
+                    loading: false
+                });
+            })
+        }    
     }
 
 
@@ -51,12 +56,12 @@ class NewPassword extends React.Component {
     render(){
         const { t } = this.props;
         const schema = yup.object({
-            newPassword1: yup.string().required( t('errors.requiredField') )
+            newPassword: yup.string().required( t('errors.requiredField') )
                             .matches(Constants.simpleLettersAndNumbersRegex, t('errors.lettersAndNumbersRegex'))
                             .min(Constants.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
                             .max(Constants.LONG_STRING_MAX_LENGTH_PASS, t('errors.lengthMax')),
-            newPassword2: yup.string().oneOf([yup.ref('newPassword1'), null], t('errors.passwordMatch')),
-            token: yup.string()
+            repeatPassword: yup.string().required( t('errors.requiredField') )
+                                    .oneOf([yup.ref('newPassword'), null], t('errors.passwordMatch')),
             });
             return ( 
                 <div>
@@ -75,21 +80,21 @@ class NewPassword extends React.Component {
                                         handleBlur
                                     }) => (
                                     <Form noValidate onSubmit={event => {
-                                            this.handleFormSubmit(event)
+                                            this.handleFormSubmit(event,errors)
                                     }}>
                                         <Form.Group as={Col} md="6" controlId="validationFormik01">
                                             <Form.Label>{t('signUp.password')}</Form.Label>
                                             <Form.Control
                                                 type="password"
                                                 placeholder={t('signUp.passwordHolder')}
-                                                name="newPassword1"
-                                                value={values.newPassword1}
+                                                name="newPassword"
+                                                value={values.newPassword}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
-                                                isInvalid={!!errors.newPassword1 && touched.newPassword1}
+                                                isInvalid={!!errors.newPassword && touched.newPassword}
                                             />
                                             <Form.Control.Feedback type="invalid">
-                                                {errors.newPassword1}
+                                                {errors.newPassword}
                                             </Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="6" controlId="validationFormik02">
@@ -97,26 +102,15 @@ class NewPassword extends React.Component {
                                             <Form.Control
                                                 type="password"
                                                 placeholder={t('signUp.passwordHolder')}
-                                                name="newPassword2"
-                                                value={values.newPassword2}
+                                                name="repeatPassword"
+                                                value={values.repeatPassword}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
-                                                isInvalid={!!errors.newPassword2 && touched.newPassword2}
+                                                isInvalid={!!errors.repeatPassword && touched.repeatPassword}
                                             />
                                             <Form.Control.Feedback type="invalid">
-                                                {errors.newPassword2}
+                                                {errors.repeatPassword}
                                             </Form.Control.Feedback>
-                                        </Form.Group>
-                                        <Form.Group as={Col} md="6" bsPrefix="hidden" controlId="validationFormik03">
-                                            <Form.Label bsPrefix="contact-title">{t('details.message')}</Form.Label>
-                                            <Form.Control
-                                                as="input"
-                                                placeholder={t('details.messagePlaceholder')}
-                                                name="token"
-                                                onChange={handleChange}
-                                                value={this.props.match.params.token}
-                                            >
-                                            </Form.Control>
                                         </Form.Group>
                                     <Button id="newPasswordButton" type="submit">{t('newPassword.send')}</Button>
                                     </Form>

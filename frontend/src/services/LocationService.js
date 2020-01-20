@@ -11,7 +11,7 @@ const LocationService = (function(){
             url: `${LOCATIONS_PATH}/provinces`,
             data: dataDTO,
             headers: {
-                authorization: LocalStorageService.getAccessToken(),
+                authorization: LocalStorageService.getAuthorization()
             }
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -22,7 +22,7 @@ const LocationService = (function(){
           url: `${LOCATIONS_PATH}/provinces/${provinceid}/cities`,
           data: dataDTO,
           headers: {
-            authorization: LocalStorageService.getAccessToken(),
+            authorization: LocalStorageService.getAuthorization()
         }
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -33,7 +33,7 @@ const LocationService = (function(){
           url: `${LOCATIONS_PATH}/cities/${cityid}/neighborhoods`,
           data: dataDTO,
           headers: {
-            authorization: LocalStorageService.getAccessToken(),
+            authorization: LocalStorageService.getAuthorization()
         }
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }

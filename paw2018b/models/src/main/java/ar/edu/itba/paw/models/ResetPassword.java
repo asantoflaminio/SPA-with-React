@@ -1,16 +1,13 @@
 package ar.edu.itba.paw.models;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import javax.persistence.*;
 @Entity
-@Table(name = "changepassword")
-public class ChangePassword {
+@Table(name = "resetPassword")
+public class ResetPassword {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "changepassword_requestId_seq")
-    @SequenceGenerator(sequenceName = "changepassword_requestId_seq", name = "changepassword_requestId_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "resetPassword_requestId_seq")
+    @SequenceGenerator(sequenceName = "resetPassword_requestId_seq", name = "resetPassword_requestId_seq", allocationSize = 1)
     @Column(name = "requestId")
     private Integer requestId;
 
@@ -23,13 +20,13 @@ public class ChangePassword {
     @Column(length = 32)
     private String token;
 
-    public ChangePassword(User userRequesting, String date, String token) {
+    public ResetPassword(User userRequesting, String date, String token) {
         this.userRequesting = userRequesting;
         this.date = date;
         this.token = token;
     }
 
-    public ChangePassword(){}
+    public ResetPassword(){}
 
     public Integer getRequestId() {
         return requestId;
