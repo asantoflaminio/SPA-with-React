@@ -34,7 +34,7 @@ const UserService = (function(){
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
-    async function _checkEmailAvailability(email){
+    async function _checkEmail(email){
         return await axios({
           method: 'head',
           url: `${USERS_PATH}/users/${email}`,
@@ -48,22 +48,6 @@ const UserService = (function(){
           data: dataDTO
         }).then(function (response){ return response }).catch(function (error){ return error.response })
         //OJO Q aca cambiaron cosas y seguro en lo de ro ROMPE!!!!!
-    }
-
-    async function _isAccount(event, props){
-        return await axios({
-          method: 'post',
-          url: USERS_PATH + '/isAccount',
-          data: JsonService.getJSONParsed(event.target)
-        }).then(function (response) {
-            return response.status;
-        })
-        .catch(function (error) {
-            if(String(error).includes(statusCode.NOT_FOUND))
-                return statusCode.NOT_FOUND;
-            else 
-                ErrorService.logError(props,error)
-        });
     }
 
     async function _forgottenPasswordEmail(event, props){
@@ -196,8 +180,7 @@ const UserService = (function(){
         getUsers : _getUsers,
         getUser: _getUser,
         signUp : _signUp,
-        checkEmailAvailability : _checkEmailAvailability,
-        isAccount : _isAccount,
+        checkEmail : _checkEmail,
         forgottenPasswordEmail: _forgottenPasswordEmail,
         createNewPassword: _createNewPassword,
         login : _login,

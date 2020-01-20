@@ -44,9 +44,9 @@ class MyInformation extends React.Component {
         })
     }
 
-    checkEmailAvailability(event){
+    checkEmail(event){
         let email = event.target.value
-        UserService.checkEmailAvailability(email).then(function (response){
+        UserService.checkEmail(email).then(function (response){
             if(response.status === StatusCode.OK){
                 document.getElementById("emailTakenError").style.display = "block"
             }else if(response.status === StatusCode.NOT_FOUND || response.status === StatusCode.BAD_REQUEST)
@@ -207,7 +207,7 @@ class MyInformation extends React.Component {
                                                 name="email"
                                                 value={values.email}
                                                 onChange={handleChange}
-                                                onBlur={(event) => this.checkEmailAvailability(event,errors) && handleBlur(event)}
+                                                onBlur={(event) => this.checkEmail(event,errors) && handleBlur(event)}
                                                 isInvalid={!!errors.email && touched.email}
                                                 />
                                                 <Form.Control.Feedback type="invalid">

@@ -29,20 +29,22 @@ class SignUp extends React.Component {
         event.preventDefault();
         let currentComponent = this
         let currentPath = this.props.location;
+        let emailError = document.getElementById("emailTakenError")
         let signUpDTO = JsonService.getJSONParsed(event.target)
+        delete signUpDTO.repeatPassword;
         let loginDTO = {}
         loginDTO.email = signUpDTO.email;
         loginDTO.password = signUpDTO.password;
-        if(Object.keys(errors).length === 0){
+        if(Object.keys(errors).length === 0 && emailError.getAttribute("hasError") === "false"){
         UserService.signUp(signUpDTO).then(function (response){
             if(response.status !== StatusCode.CREATED){
-                ErrorService.logError(this.props,response)
+                ErrorService.logError(currentComponent.props,response)
                 return;
             }
                 
             UserService.login(loginDTO).then(function (response){
                 if(response.status !== StatusCode.OK){
-                    ErrorService.logError(this.props,response)
+                    ErrorService.logError(currentComponent.props,response)
                     return;
                 }
                 LocalStorageService.setToken(response.headers.authorization, response.headers.authorities, 
@@ -79,15 +81,20 @@ class SignUp extends React.Component {
         }
     }
 
-    checkEmailAvailability(event){
+    checkEmail(event){
         let email = event.target.value
-        UserService.checkEmailAvailability(email).then(function (response){
+        let currentComponent = this
+        let emailError = document.getElementById("emailTakenError")
+        UserService.checkEmail(email).then(function (response){
             if(response.status === StatusCode.OK){
-                document.getElementById("emailTakenError").style.display = "block"
-            }else if(response.status === StatusCode.NOT_FOUND || response.status === StatusCode.BAD_REQUEST)
-                document.getElementById("emailTakenError").style.display = "none"
+                emailError.style.display = "block"
+                emailError.setAttribute("hasError",true)
+            }else if(response.status === StatusCode.NOT_FOUND || response.status === StatusCode.BAD_REQUEST){
+                emailError.style.display = "none"
+                emailError.setAttribute("hasError",false)
+            }
             else{
-                ErrorService.logError(this.props,response)
+                currentComponent.logError(this.props,response)
             }
         })
         return true;
@@ -116,7 +123,8 @@ class SignUp extends React.Component {
                             .matches(Constants.simpleLettersAndNumbersRegex, t('errors.lettersAndNumbersRegex'))
                             .min(Constants.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
                             .max(Constants.LONG_STRING_MAX_LENGTH_PASS, t('errors.lengthMax')),
-    repeatPassword: yup.string().oneOf([yup.ref('password'), null], t('errors.passwordMatch')),
+    repeatPassword: yup.string().required( t('errors.requiredField') )
+                            .oneOf([yup.ref('password'), null], t('errors.passwordMatch')),
     phoneNumber: yup.string()
                             .matches(Constants.numbersDashRegex, t('errors.numbersDashRegex'))
                             .min(Constants.LONG_STRING_MIN_LENGTH, t('errors.lengthMin'))
@@ -138,7 +146,6 @@ class SignUp extends React.Component {
                 initialValues={{ firstName:"", lastName:"", email:"", password:"", repeatPassword:"", phoneNumber:""}}
                 onSubmit={(values, {setSubmitting, resetForm}) => {
                 setSubmitting(true);
-                resetForm();
                 setSubmitting(false);
                 }}
                 >
@@ -192,7 +199,7 @@ class SignUp extends React.Component {
                                 name="email"
                                 value={values.email}
                                 onChange={handleChange}
-                                onBlur={(event) => this.checkEmailAvailability(event,errors) && handleBlur(event)}
+                                onBlur={(event) => this.checkEmail(event,errors) && handleBlur(event)}
                                 isInvalid={!!errors.email && touched.email}
                                 />
                                 <Form.Control.Feedback type="invalid">

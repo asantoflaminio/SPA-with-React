@@ -66,6 +66,7 @@ public class ValidateServiceImpl implements ValidateService{
 		   {
 			return false;
 		}
+		System.out.println("User valid");
 		LOGGER.debug("All fields are valid");
 		return true;
 	}

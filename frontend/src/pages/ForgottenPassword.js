@@ -9,7 +9,7 @@ import * as Constants from '../util/Constants';
 import UserService from '../services/UserService';
 import toast from 'toasted-notes' 
 import 'toasted-notes/src/styles.css';
-import * as statusCode from '../util/StatusCode';
+import * as StatusCode from '../util/StatusCode';
 import ColoredLinearProgress from '../components/ColoredLinearProgress';
 
 class ForgottenPassword extends React.Component {
@@ -31,9 +31,9 @@ class ForgottenPassword extends React.Component {
             loading: true
           });
 
-        UserService.isAccount(event, this.props).then(function(status) {
-            if(status === statusCode.OK) {
-                UserService.forgottenPasswordEmail(event, currentComponent.props).then(function (status){
+        UserService.checkEmail(event, this.props).then(function(response) {
+            if(response.status === StatusCode.OK) {
+                UserService.forgottenPasswordEmail(event, currentComponent.props).then(function (response){
                    toast.notify(t('forgottenPassword.emailSent'));  
                    currentComponent.setState({
                     loading: false
