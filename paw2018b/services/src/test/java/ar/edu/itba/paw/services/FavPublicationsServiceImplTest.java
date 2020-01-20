@@ -23,6 +23,7 @@ import ar.edu.itba.paw.interfaces.PublicationDao;
 import ar.edu.itba.paw.models.FavPublication;
 import ar.edu.itba.paw.models.Publication;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.dto.PublicationDTO;
 
 public class FavPublicationsServiceImplTest {
 	
@@ -100,7 +101,12 @@ public class FavPublicationsServiceImplTest {
 	public void testIsFavourite() {
 
 		when(favPublicationDao.isFavourite(anyLong(), anyLong())).thenReturn(true);
-		assertSame(true, fps.isFavourite(USERID, PUBLICATIONID));
+		
+		PublicationDTO pDTO = new PublicationDTO(PUBLICATIONID, TITLE, NEIGHBORHOODID, CITYID, 
+				PROVINCEID, ADDRESS, OPERATION, PRICE, DESCRIPTION, PROPERTYTYPE, BEDROOMS, 
+				BATHROOMS, FLOORSIZE, PARKING, DATESTRING,
+				COVEREDFLOORSIZE, BALCONIES, AMENITIES, STORAGE, EXPENSES);
+		assertSame(PUBLICATIONID, fps.checkFavourite(pDTO, PUBLICATIONID).getPublicationid());
 		verify(favPublicationDao).isFavourite(anyLong(), anyLong());
 	}
 	

@@ -69,14 +69,14 @@ public class UserServiceImplTest {
 		
 		User u = new User(USERID, FIRSTNAME, LASTNAME, EMAIL, PASSWORD, PHONENUMBER, ROLE, LANGUAGE);
 		when(userDao.create(anyString(), anyString(), anyString(),
-				anyString(), anyString(), anyString())).thenReturn(u);
+				anyString(), anyString(), anyString(), anyString())).thenReturn(u);
 		when(userDao.findByUsername(anyString())).thenReturn(null);
 		when(passwordEncoder.encode(PASSWORD)).thenReturn(HASHEDPASSWORD);
-		when(vs.validateUser(anyString(), anyString(), anyString(), anyString(),anyString(), anyString())).thenReturn(true);
+		when(vs.validateUser(anyString(), anyString(), anyString(),anyString(), anyString())).thenReturn(true);
 		User newUser = us.create(FIRSTNAME, LASTNAME, EMAIL, PASSWORD, PASSWORD, PHONENUMBER, ROLE);
 		
 		assertSame(u, newUser);
-		verify(userDao).create(anyString(), anyString(), anyString(), anyString(), anyString(), anyString());
+		verify(userDao).create(anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString());
 
 	}
 	
@@ -120,7 +120,7 @@ public class UserServiceImplTest {
 		when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
 		when(passwordEncoder.encode(PASSWORD)).thenReturn(HASHEDPASSWORD);
 		Mockito.doNothing().when(userDao).editPassword(anyString(), anyLong());
-		assertSame(true, us.editPassword(HASHEDPASSWORD, PASSWORD, EMAIL));
+		assertSame(true, us.editPassword(PASSWORD, USERID));
 		verify(userDao).editPassword(anyString(), anyLong());
 		
 	}
@@ -131,7 +131,7 @@ public class UserServiceImplTest {
 		when(vs.validateUserData(anyString(), anyString(), anyString(), anyString())).thenReturn(true);
 		User u = new User(USERID, FIRSTNAME, LASTNAME, EMAIL, PASSWORD, PHONENUMBER, ROLE, LANGUAGE);
 		when(userDao.findByUsername(anyString())).thenReturn(u);
-		assertSame(true, us.editData(FIRSTNAME, LASTNAME, EMAIL, PHONENUMBER, EMAIL));
+		assertSame(true, us.editData(FIRSTNAME, LASTNAME, EMAIL, PHONENUMBER, EMAIL, USERID));
 		verify(userDao).editData(FIRSTNAME, LASTNAME, EMAIL, PHONENUMBER, USERID);
 		
 	}
