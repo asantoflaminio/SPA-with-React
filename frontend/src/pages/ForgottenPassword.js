@@ -76,16 +76,23 @@ class ForgottenPassword extends React.Component {
                         <p id="forgotten-message">{t('forgottenPassword.message')}</p>
                         <Formik
                                     validationSchema={schema}
+                                    initialValues={{ email:""}}
+                                    onSubmit={(values, {setSubmitting, resetForm}) => {
+                                        setSubmitting(true);
+                                        resetForm();
+                                        setSubmitting(false);}}
                                     >
                                     {({
                                         values,
                                         touched,
                                         errors,
                                         handleChange,
-                                        handleBlur
+                                        handleBlur,
+                                        handleSubmit,
+                                        isSubmitting
                                     }) => (
                                     <Form noValidate onSubmit={event => {
-                                            this.handleFormSubmit(event,errors)
+                                        handleSubmit(event) || this.handleFormSubmit(event,errors)
                                     }}>
                                         <Form.Group as={Col} md="6" controlId="validationFormik01">
                                             <Form.Label>{t('navbar.mail')}</Form.Label>
@@ -103,7 +110,7 @@ class ForgottenPassword extends React.Component {
                                                 {errors.email}
                                             </Form.Control.Feedback>
                                         </Form.Group>
-                                    <Button id="forgottenButton" type="submit" onClick={handleChange}>{t('forgottenPassword.send')}</Button>
+                                    <Button id="forgottenButton" disabled={isSubmitting} type="submit" onClick={handleChange}>{t('forgottenPassword.send')}</Button>
                                     </Form>
                                 )}
                             </Formik>

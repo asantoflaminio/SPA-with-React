@@ -71,16 +71,24 @@ class NewPassword extends React.Component {
                         <p id="newpassword-message">{t('newPassword.message')}</p>
                         <Formik
                                     validationSchema={schema}
+                                    initialValues={{ newPassword:"", repeatPassword: ""}}
+                                    onSubmit={(values, {setSubmitting, resetForm}) => {
+                                        setSubmitting(true);
+                                        resetForm();
+                                        setSubmitting(false);}}
                                     >
+                                    
                                     {({
                                         values,
                                         touched,
                                         errors,
                                         handleChange,
-                                        handleBlur
+                                        handleBlur,
+                                        handleSubmit,
+                                        isSubmitting
                                     }) => (
                                     <Form noValidate onSubmit={event => {
-                                            this.handleFormSubmit(event,errors)
+                                        handleSubmit(event) || this.handleFormSubmit(event,errors)
                                     }}>
                                         <Form.Group as={Col} md="6" controlId="validationFormik01">
                                             <Form.Label>{t('signUp.password')}</Form.Label>
@@ -112,7 +120,7 @@ class NewPassword extends React.Component {
                                                 {errors.repeatPassword}
                                             </Form.Control.Feedback>
                                         </Form.Group>
-                                    <Button id="newPasswordButton" type="submit">{t('newPassword.send')}</Button>
+                                    <Button id="newPasswordButton" disabled={isSubmitting} type="submit" onClick={handleChange}>{t('newPassword.send')}</Button>
                                     </Form>
                                 )}
                             </Formik>

@@ -85,6 +85,11 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     public void deleteRequest(Integer id) {
     	resetPasswordDao.deleteRequest(id);
     }
+    
+    @Override
+    public void deleteOldRequests(User user) {
+    	resetPasswordDao.deleteOldRequests(user.getUserid());
+    }
 
     @Override
     public Optional<ResetPassword> getRequest(String token) {
@@ -93,14 +98,20 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Override
 	public boolean isTokenExpired(Integer token, Optional<ResetPassword> resetPassword) {
+    	
+    	if(resetPassword.isPresent()) {
+    		
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();           
         LocalDateTime tokenDate = LocalDateTime.parse(resetPassword.get().getDate(), dtf);       
         long minutes = ChronoUnit.MINUTES.between(tokenDate, now);
         
-        if(resetPassword.isPresent() && minutes <= 60) {
-        	return false;
-        }
+	        if(minutes <= 60) {
+	        	return false;
+	        } else {
+	        	resetPasswordDao.deleteRequest(resetPassword.get().getRequestId());
+	        }
+    	}
         
         return true;
 	}

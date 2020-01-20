@@ -1,5 +1,8 @@
 package ar.edu.itba.paw.persistence;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,5 +84,20 @@ public class ResetPasswordHibernateDao implements ResetPasswordDao{
         	return Optional.ofNullable(list.get(0));
         }
     }
+
+	@Override
+	@Transactional
+	public void deleteOldRequests(long userId) {
+		User user = em.find(User.class, userId);
+		final TypedQuery<ResetPassword> queryString = em.createQuery("FROM ResetPassword rp " +
+                "WHERE rp.userRequesting = :userRequesting", ResetPassword.class);
+
+        queryString.setParameter("userRequesting", user);
+        final List<ResetPassword> list = queryString.getResultList();
+        
+        for(ResetPassword token: list) {
+        	em.remove(token);
+        }
+	}
 
 }

@@ -166,10 +166,11 @@ public class UserController {
     @POST
     @Path("/users/{email}/password-reset")
     public Response passwordReset (@PathParam("email") String email) {
+    	
     	User user = us.findByUsername(email);
     	if(user == null) 
     		return rs.notFound();
-
+    	rps.deleteOldRequests(user);
     	rps.createRequest(user);
         return rs.create();
     }

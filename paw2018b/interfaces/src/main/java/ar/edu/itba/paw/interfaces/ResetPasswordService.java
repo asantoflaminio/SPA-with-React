@@ -14,6 +14,8 @@ public interface ResetPasswordService {
     public boolean checkToken(String token);
 
     public void deleteRequest(Integer id);
+    
+    public void deleteOldRequests(User user);
 
     public String encrypt(String pure);
 
