@@ -147,10 +147,10 @@ class ImageVisualizer extends React.Component {
     }
 
     incrementCounter(){
-        let currentComponent = this
+        let currentComponent = this;
         setTimeout(function(){
-        LocalStorageService.incrementCounter()
-        currentComponent.props.setReady()
+            LocalStorageService.incrementCounter()
+            currentComponent.props.setReady()
     }, this.props.index)
     }
 

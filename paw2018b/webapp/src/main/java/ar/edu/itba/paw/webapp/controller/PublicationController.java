@@ -66,7 +66,7 @@ public class PublicationController {
     @Path("/publications")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response getPublications (@Context HttpServletRequest request, @Context HttpServletResponse response, 
-    									@DefaultValue("0") @QueryParam("page") Integer page, @DefaultValue("10") @QueryParam("limit") Integer limit,
+    									@DefaultValue("0") @QueryParam("page") Integer page, @DefaultValue("8") @QueryParam("limit") Integer limit,
     									@QueryParam("operation") String operation, @QueryParam("propertyType") String propertyType, @QueryParam("address") String address,
     									@QueryParam("minPrice") Integer minPrice, @QueryParam("maxPrice") Integer maxPrice, @QueryParam("minFloorSize") Integer minFloorSize,
     									@QueryParam("maxFloorSize") Integer maxFloorSize, @QueryParam("bedrooms") Integer bedrooms, @QueryParam("bathrooms") Integer bathrooms,

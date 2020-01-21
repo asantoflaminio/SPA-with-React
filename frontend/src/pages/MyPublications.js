@@ -67,7 +67,7 @@ class MyPublications extends React.Component {
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return
-            }   
+            }
             currentComponent.setState({
                 myPublications: response.data,
                 page: queryParameters.page,
@@ -110,7 +110,7 @@ class MyPublications extends React.Component {
     initializePublications(t){
         let pubComponents = [];
         
-        for(let i = 0; i < Constants.PUBLICATIONS_PAGE_LIMIT; i++){
+        for(let i = 0; i < this.state.myPublications.length; i++){
             pubComponents.push(
                 <Publication t={t} 
                     publication={this.state.myPublications[i]}  
@@ -136,7 +136,7 @@ class MyPublications extends React.Component {
 
     loadingContainers(){
         let pubComponents = [];
-        for(let i = 0; i < this.state.myPublications.length; i++){
+        for(let i = 0; i < Constants.PUBLICATIONS_PAGE_LIMIT; i++){
             pubComponents.push(
                 <div className="loader-container"> 
                     <PublicationLoader/>

@@ -42,6 +42,7 @@ export const numbersDashRegex = new RegExp("^[-0-9]*$");
 
 export const USERS_PAGE_LIMIT = 5;
 export const PUBLICATIONS_PAGE_LIMIT = 3;
+export const HOME_MAX_PUBLICATIONS = 8;
 
 //Logic Constants
 

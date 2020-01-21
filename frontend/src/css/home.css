@@ -414,3 +414,8 @@ div.card-body.row.no-gutters.align-items-center {
 }
 
 
+.minWidth{
+	min-width: 250px !important;
+}
+
+

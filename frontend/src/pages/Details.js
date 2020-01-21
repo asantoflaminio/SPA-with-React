@@ -18,6 +18,7 @@ import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
 import ToastNotification from '../components/ToastNotification'
+import LocalStorageService from '../services/LocalStorageService'
 
 const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credentials.mapsKey}` ;
 
@@ -32,6 +33,7 @@ class Details extends React.Component {
             circleloading: false,
             showModal: false,
         }
+        this.setReady = this.setReady.bind(this)
       }
 
       static defaultProps = {
@@ -46,6 +48,8 @@ class Details extends React.Component {
         this.setState({
             circleloading: true
         });
+        LocalStorageService.deleteCounter();
+        LocalStorageService.initializeCounter()
         PublicationService.getPublication(query.publicationid).then(function (response){
                 if(response.status !== StatusCode.OK){
                     ErrorService.logError(currentComponent.props,response)
@@ -54,7 +58,6 @@ class Details extends React.Component {
                 currentComponent.setState({
                     publication: response.data,
                     loading: false,
-                    circleloading: false
                 })
             })
         
@@ -85,6 +88,10 @@ class Details extends React.Component {
                 });
             })
         }
+    }
+
+    setReady(){
+        this.setState({circleloading: false})
     }
 
     render(){
@@ -149,8 +156,8 @@ class Details extends React.Component {
                     {this.state.loading ? <ColoredLinearProgress /> : null}  
                     {this.state.circleloading ? 
                      ( <ColoredCircularProgress /> )
-                    : (          
-                    <div>
+                    :null}        
+                    <div className={this.state.circleloading === true ? "hidden":null}>
                     <div id="cols">
                         <div id="left-col">   
                             <div class="polaroid">
@@ -163,6 +170,8 @@ class Details extends React.Component {
                                     containerClass="img-with-tag mySlides"
                                     nextClass="next-image pointer centerArrow"
                                     previousClass="prev-image pointer centerArrow"
+                                    setReady={this.setReady}
+                                    index={0}
                                 />
                                 <div class="container-list">
                                     <p class="direction">{this.state.publication.address},{this.state.publication.neighborhoodid}, {this.state.publication.cityid},{this.state.publication.provinceid}</p>
@@ -300,8 +309,7 @@ class Details extends React.Component {
                             />
                         </div>
                     </div>                               
-                </div>
-                 ) }  
+                </div> 
                 </div>
                 
             )

@@ -2,17 +2,14 @@ import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { withRouter } from "react-router";
 import '../css/home.css';
-import ImgsViewer from 'react-images-viewer'
-import image1 from '../resources/examples/1.jpg'
-import image2 from '../resources/examples/2.jpg'
 import HomeCard from '../components/HomeCard'
 import {Link} from 'react-router-dom';
 import PublicationService from '../services/PublicationService'
 import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
-import ColoredCircularProgress from '../components/ColoredCircularProgress';
 import LocalStorageService from '../services/LocalStorageService'
+import HomeCardLoader from '../components/HomeCardLoader';
 
 class HomeReal extends React.Component {
    constructor(props) {
@@ -23,7 +20,7 @@ class HomeReal extends React.Component {
             search: "",
             operation: "FSale",
             propertyType: "House",
-            circleloading: false
+            loading: false
         };
         this.setReady = this.setReady.bind(this)
       }
@@ -33,19 +30,18 @@ class HomeReal extends React.Component {
         let queryParameters_1 = {}
         let queryParameters_2 = {}
         this.setState({
-            circleloading: true
+            loading: true
         });
         queryParameters_1.operation = Constants.FSALE
         queryParameters_1.order = Constants.NEWEST_PUBLICATION
+        LocalStorageService.deleteCounter();
+        LocalStorageService.initializeCounter()
         PublicationService.getPublications(queryParameters_1).then(function (response){
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return;
             }
-            currentComponent.setState({
-                publicationsSale: response.data,
-                circleloading: false
-            })
+            currentComponent.setState({ publicationsSale: response.data })
         })
         queryParameters_2.operation = Constants.FRENT
         queryParameters_2.order = Constants.NEWEST_PUBLICATION
@@ -54,17 +50,14 @@ class HomeReal extends React.Component {
                 ErrorService.logError(currentComponent.props,response)
                 return;
             }
-            currentComponent.setState({
-                publicationsRent: response.data,
-                circleloading: false
-            })
+            currentComponent.setState({ publicationsRent: response.data })
         })
       }
 
 
-    renderNewest(array, table) {
+    renderNewest(array, table, lastIndex) {
         if(array.length > 0) {
-            const maxResults = 8;
+            const maxResults = Constants.HOME_MAX_PUBLICATIONS;
             let loopEnd;
             if(maxResults > array.length) {
                 loopEnd = array.length;
@@ -73,12 +66,13 @@ class HomeReal extends React.Component {
             }
 
 
-            for(let i = 0; i < loopEnd; i ++) { 
+            for(let i = 0; i < loopEnd; i ++) {
+                let index = lastIndex + i
                 table.push(
                     <HomeCard 
                     publication={array[i]}
                     ready={this.setReady}
-                    index={i}
+                    index={index}
                     />
                 )
             }
@@ -118,21 +112,32 @@ class HomeReal extends React.Component {
     setReady(){
         if(LocalStorageService.getCounter() === this.state.publicationsSale.length){
             LocalStorageService.deleteCounter()
-            this.setState({loadingPublications: false})
+            this.setState({loading: false})
         }    
+    }
+
+    loadingContainers(){
+        let pubComponents = [];
+        for(let i = 0; i < Constants.HOME_MAX_PUBLICATIONS; i++){
+            pubComponents.push(
+                <li class="polaroid minWidth">
+                    <HomeCardLoader/>
+                </li>
+            )
+        }
+        return pubComponents;
     }
 
     render(){
         const { t } = this.props;
         let tableSale = [];
         let tableRent = [];
-        this.renderNewest(this.state.publicationsSale, tableSale);
-        this.renderNewest(this.state.publicationsRent, tableRent);
+        let tableLoader = this.loadingContainers()
+        this.renderNewest(this.state.publicationsSale, tableSale, 0);
+        this.renderNewest(this.state.publicationsRent, tableRent, Constants.HOME_MAX_PUBLICATIONS);
         return(
             <div>
-            {this.state.circleloading ? 
-                ( <ColoredCircularProgress /> )
-               : (  
+ 
             <div>
                 <header>
                 <div className="header">
@@ -187,9 +192,20 @@ class HomeReal extends React.Component {
                         <h3>{t('home.newPropsOnSale')}</h3>
                     </div>
                     <div>
-                        <ul id="newest-homes-fsale" class="newest-homes-list">
-                            {tableSale}
-                        </ul>
+                        {this.state.loading === true ? 
+                        (
+                        <div>
+                            <ul id="newest-homes-fsale"  class="newest-homes-list">
+                                {tableLoader}
+                            </ul>
+                        </div>
+                        )
+                        : null}
+                        <div>
+                            <ul id="newest-homes-fsale"  class={this.state.loading === true ? "hidden newest-homes-list" : "newest-homes-list"}>
+                                {tableSale}
+                            </ul>
+                        </div>
                     </div>
             </section>
             <section class="newest_homes">
@@ -197,21 +213,24 @@ class HomeReal extends React.Component {
                         <h3>{t('home.newPropsOnRent')}</h3>
                     </div>
                     <div>
-                        <ul id="newest-homes-fsale" class="newest-homes-list">
-                            {tableRent}
-                        </ul>
+                    {this.state.loading === true ? 
+                        (
+                        <div>
+                            <ul id="newest-homes-fsale"  class="newest-homes-list">
+                                {tableLoader}
+                            </ul>
+                        </div>
+                        )
+                        : null}
+                        <div>
+                            <ul id="newest-homes-fsale" class={this.state.loading === true ? "hidden newest-homes-list" : "newest-homes-list"}>
+                                {tableRent}
+                            </ul>
+                        </div>
                     </div>
             </section>
-            <ImgsViewer
-                imgs={[{ src: image1 }, { src: image2 }]}
-                isOpen={this.state.isOpen}
-                onClickPrev={this.gotoPrevious}
-                onClickNext={this.gotoNext}
-                onClose={this.closeImgsViewer}
-            />
             </div>
         </div>
-            ) }
         </div>
         );
     }
