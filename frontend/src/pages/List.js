@@ -67,6 +67,7 @@ class List extends React.Component {
                 ErrorService.logError(currentComponent.props,response)
                 return;
             }
+            currentComponent.markSamePublications(currentComponent.state.publications,response.data)
             currentComponent.setState({
                 publications: response.data,
                 resultsQuantity: response.headers["x-total-count"],
@@ -131,6 +132,19 @@ class List extends React.Component {
         for(let i = 0; i < names.length; i++){
             queryParameters[names[i]] = values[i];
         }
+    }
+    markSamePublications(prevPublications,newPublications){
+        let equals = 0;
+        for(let i = 0; i < prevPublications.length;i++){
+            for(let j = 0; j < newPublications.length; j++){
+                if(prevPublications[i].publicationid === newPublications[j].publicationid){
+                    LocalStorageService.incrementCounter();
+                    equals++;
+                }
+            }
+        }
+        if(equals === newPublications.length)
+            this.setReady()
     }
 
 

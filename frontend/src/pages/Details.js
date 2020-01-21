@@ -92,6 +92,7 @@ class Details extends React.Component {
 
     setReady(){
         this.setState({circleloading: false})
+        LocalStorageService.deleteCounter();
     }
 
     render(){
@@ -163,7 +164,7 @@ class Details extends React.Component {
                             <div class="polaroid">
                                 <ImageVisualizer 
                                     publicationid={query.publicationid}
-                                    maxImages={this.state.publication.maxImages}
+                                    maxImages={this.state.publication.images}
                                     isFavourite={this.state.publication.favourite}
                                     page="Details"
                                     imageClass="imageSize"
@@ -183,7 +184,7 @@ class Details extends React.Component {
                                     <p class="polaroid_title">{t('details.overview')}</p>
                                     <p class="agency_text">{t('details.bedrooms')} {this.state.publication.bedrooms}</p>
                                     <p class="agency_text">{t('details.bathrooms')} {this.state.publication.bathrooms}</p>
-                                    <p class="agency_text">{t('details.floorSize')} {this.state.publication.floorSize} m2</p>
+                                    <p class="agency_text">{t('details.floorSize')} {this.state.publication.dimention} m2</p>
                                     <p class="agency_text">{t('details.coveredFloorSize')} {coveredFloorSize} </p>
                                     <p class="agency_text">{t('details.parking')} {this.state.publication.parking}</p>
                                     <p class="agency_text">{t('details.balconies')} {this.state.publication.balconies}</p>

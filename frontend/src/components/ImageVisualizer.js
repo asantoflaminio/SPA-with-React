@@ -30,7 +30,7 @@ class ImageVisualizer extends React.Component {
                 isFavourite : this.props.isFavourite
             })
         }
-        if(this.props.maxImages !== null && this.props.maxImages !== 0)
+        if(this.props.maxImages !== null && this.props.maxImages !== undefined && this.props.maxImages !== 0)
             this.updateImage(this.state.index)
         else
             this.setDefaultImage()
@@ -42,8 +42,7 @@ class ImageVisualizer extends React.Component {
                 index: 0,
                 isFavourite : this.props.isFavourite
             })
-            
-            if(this.props.maxImages !== null && this.props.maxImages !== 0)
+            if(this.props.maxImages !== null && this.props.maxImages !== undefined && this.props.maxImages !== 0)
                 this.updateImage(0);
             else
                 this.setDefaultImage()
