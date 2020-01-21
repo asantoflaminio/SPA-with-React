@@ -56,23 +56,6 @@ const PublicationService = (function(){
         }).then(function (response){ return response }).catch(function (error){ return error.response })     
   }
 
-    async function _isFavourite(array,props){
-      return await axios({
-        method: 'post',
-        url: PUBLICATIONS_PATH + '/isFavourite',
-        data: JsonService.getJSONParsed(array),
-        headers: {
-          authorization: LocalStorageService.getAuthorization()
-      }
-      })
-      .then(function (response) {
-        return response.data
-      })
-      .catch(function (error) {
-        ErrorService.logError(props,error)
-      });   
-    }
-
     async function _erasePublication(publicationID){
       return await axios({
         method: 'delete',
@@ -91,7 +74,6 @@ const PublicationService = (function(){
         getFilters : _getFilters,
         getImage : _getImage,
         postImages : _postImages,
-        isFavourite : _isFavourite,
         erasePublication : _erasePublication
       }
      })();

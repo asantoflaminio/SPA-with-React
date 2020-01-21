@@ -1,7 +1,5 @@
 import LocalStorageService from './LocalStorageService'
-import ErrorService from './ErrorService'
-import JsonService from './JsonService'
-import * as statusCode from '../util/StatusCode'
+import * as ResourcesVersions from '../util/ResourcesVersions'
 import axios from 'axios';
 
 const UserService = (function(){
@@ -30,7 +28,10 @@ const UserService = (function(){
         return await axios({
           method: 'post',
           url: `${USERS_PATH}/users`,
-          data: dataDTO
+          data: dataDTO,
+          headers:{
+            'Content-Type': ResourcesVersions.USER,
+          }
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
@@ -60,7 +61,10 @@ const UserService = (function(){
         return await axios({
           method: 'patch',
           url: `${USERS_PATH}/users/password-reset`,
-          data: dataDTO
+          data: dataDTO,
+          headers : {
+            'Content-Type': ResourcesVersions.RESETPASSWORD
+          }
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
@@ -71,6 +75,7 @@ const UserService = (function(){
           data: dataDTO,
           headers: {
             authorization: LocalStorageService.getAuthorization(),
+            'Content-Type': ResourcesVersions.PUBLICATION
           }
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -79,7 +84,10 @@ const UserService = (function(){
         return await axios({
           method: 'post',
           url: `${USERS_PATH}/messages`,
-          data: dataDTO
+          data: dataDTO,
+          headers: {
+            'Content-Type': ResourcesVersions.MESSAGE
+          }
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
@@ -113,15 +121,15 @@ const UserService = (function(){
             data: dataDTO,
             headers: {
                 authorization: LocalStorageService.getAuthorization(),
+                'Content-Type': ResourcesVersions.FAVPUBLICATION
             }
           }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
-    async function _removeFavourite(userid,dataDTO){
+    async function _removeFavourite(userid,publicationid){
         return await axios({
             method: 'delete',
-            url: `${USERS_PATH}/users/${userid}/favourite-publications`,
-            data: dataDTO,
+            url: `${USERS_PATH}/users/${userid}/favourite-publications/${publicationid}`,
             headers: {
                 authorization: LocalStorageService.getAuthorization(),
             }
@@ -146,6 +154,7 @@ const UserService = (function(){
             data: dataDTO,
             headers: {
                 authorization: LocalStorageService.getAuthorization(),
+                'Content-Type': ResourcesVersions.USER,
             }
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }

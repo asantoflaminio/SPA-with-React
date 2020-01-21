@@ -1,0 +1,9 @@
+export const USER = "application/vnd.meinHaus.user-v1.0+json";
+export const PUBLICATION = "application/vnd.meinHaus.publication-v1.0+json"
+export const FAVPUBLICATION = "application/vnd.meinHaus.favPublication-v1.0+json"
+export const PROVINCE = "application/vnd.meinHaus.province-v1.0+json"
+export const CITY = "application/vnd.meinHaus.city-v1.0+json"
+export const NEIGHBORHOOD = "application/vnd.meinHaus.neighborhood-v1.0+json"
+export const FILTERS = "application/vnd.meinHaus.filters-v1.0+json"
+export const MESSAGE = "application/vnd.meinHaus.message-v1.0+json"
+export const RESETPASSWORD = "application/vnd.meinHaus.resetPassword-v1.0+json"

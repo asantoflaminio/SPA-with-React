@@ -1,4 +1,5 @@
 import LocalStorageService from './LocalStorageService'
+import * as ResourcesVersions from '../util/ResourcesVersions'
 import axios from 'axios';
 
 const LocationService = (function(){
@@ -11,7 +12,8 @@ const LocationService = (function(){
             url: `${LOCATIONS_PATH}/provinces`,
             data: dataDTO,
             headers: {
-                authorization: LocalStorageService.getAuthorization()
+                authorization: LocalStorageService.getAuthorization(),
+                'Content-Type': ResourcesVersions.PROVINCE
             }
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -22,7 +24,8 @@ const LocationService = (function(){
           url: `${LOCATIONS_PATH}/provinces/${provinceid}/cities`,
           data: dataDTO,
           headers: {
-            authorization: LocalStorageService.getAuthorization()
+            authorization: LocalStorageService.getAuthorization(),
+            'Content-Type': ResourcesVersions.CITY
         }
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -33,7 +36,8 @@ const LocationService = (function(){
           url: `${LOCATIONS_PATH}/cities/${cityid}/neighborhoods`,
           data: dataDTO,
           headers: {
-            authorization: LocalStorageService.getAuthorization()
+            authorization: LocalStorageService.getAuthorization(),
+            'Content-Type': ResourcesVersions.NEIGHBORHOOD
         }
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }

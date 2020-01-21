@@ -64,7 +64,7 @@ public class PublicationController {
 	
     @GET
     @Path("/publications")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { PublicationDTO.MediaType })
     public Response getPublications (@Context HttpServletRequest request, @Context HttpServletResponse response, 
     									@DefaultValue("0") @QueryParam("page") Integer page, @DefaultValue("8") @QueryParam("limit") Integer limit,
     									@QueryParam("operation") String operation, @QueryParam("propertyType") String propertyType, @QueryParam("address") String address,
@@ -85,7 +85,7 @@ public class PublicationController {
     
     @GET
     @Path("/publications/{publicationid}")
-    @Produces(value = { MediaType.APPLICATION_JSON})
+    @Produces(value = { PublicationDTO.MediaType })
     public Response getPublicationById (@Context HttpServletRequest request, @PathParam("publicationid") long publicationid) {
     	if(! vs.validateID(publicationid))
     		rs.badRequest();
@@ -102,7 +102,6 @@ public class PublicationController {
     @GET
     @Path("/publications/{publicationid}/images")
     @Produces(value = { MediaType.APPLICATION_OCTET_STREAM })
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response getImg (@PathParam("publicationid") long publicationid, @DefaultValue("0") @QueryParam("index") Integer index) {
     	if(! vs.validateID(publicationid) || ! vs.validateIndex(index))
     		rs.badRequest();
@@ -129,7 +128,7 @@ public class PublicationController {
     
     @GET
     @Path("/publications/filters")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { FiltersDTO.MediaType })
     public Response getFilters (@QueryParam("operation") String operation, @QueryParam("propertyType") String propertyType, @QueryParam("address") String address,
 								@QueryParam("minPrice") Integer minPrice, @QueryParam("maxPrice") Integer maxPrice, @QueryParam("minFloorSize") Integer minFloorSize,
 								@QueryParam("maxFloorSize") Integer maxFloorSize, @QueryParam("bedrooms") Integer bedrooms, @QueryParam("bathrooms") Integer bathrooms,
@@ -161,7 +160,7 @@ public class PublicationController {
     //SOLO DEVELOP, ESTA FUNCION SE DEBE BORRAR EN PRODUCCION!!!!!!!
     @POST
     @Path("/publications/random")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { PublicationDTO.MediaType })
     public Response createRandom() {
     	Random random = new Random();
     	PublicationDTO publicationDTO = new PublicationDTO();

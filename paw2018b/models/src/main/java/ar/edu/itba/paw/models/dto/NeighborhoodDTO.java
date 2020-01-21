@@ -2,6 +2,8 @@ package ar.edu.itba.paw.models.dto;
 
 public class NeighborhoodDTO {
 	
+	public final static String MediaType ="application/vnd.meinHaus.neighborhood-v1.0+json";
+	
 	private String neighborhood;
 	private long neighborhoodid;
 	private long cityid;

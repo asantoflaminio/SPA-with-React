@@ -2,6 +2,8 @@ package ar.edu.itba.paw.models.dto;
 
 public class CityDTO {
 	
+	public final static String MediaType ="application/vnd.meinHaus.city-v1.0+json";
+	
 	private String city;
 	private long cityid;
 	private long provinceid;

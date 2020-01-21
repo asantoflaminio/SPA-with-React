@@ -4,6 +4,8 @@ import java.util.Map;
 
 public class FiltersDTO {
 	
+	public final static String MediaType ="application/vnd.meinHaus.filters-v1.0+json";
+	
 	private Map<String,Long> locations;
 	private Map<Integer,Long> bedrooms;
 	private Map<Integer,Long> bathrooms;

@@ -2,6 +2,8 @@ package ar.edu.itba.paw.models.dto;
 
 public class ResetPasswordDTO {
 	
+		public final static String MediaType ="application/vnd.meinHaus.resetPassword-v1.0+json";
+	
 		private String token;
 	    private String newPassword;
 	    

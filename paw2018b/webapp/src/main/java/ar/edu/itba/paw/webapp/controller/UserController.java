@@ -18,7 +18,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +74,7 @@ public class UserController {
 	
     @GET
     @Path("/users")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { UserDTO.MediaType })
     public Response getUsers (@Context HttpServletResponse response, @NotNull @QueryParam("page") int page, @NotNull @QueryParam("limit") int limit) {
     	if(!vs.validatePagination(page,limit))
     		return rs.badRequest();
@@ -86,7 +85,7 @@ public class UserController {
 	
     @POST
     @Path("/users")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = { UserDTO.MediaType })
     public Response createUser (@Context HttpServletRequest request, final UserDTO userDTO) {
     	if(! vs.validateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), 
     			userDTO.getPassword(), userDTO.getPhoneNumber()))
@@ -101,7 +100,7 @@ public class UserController {
     
     @GET
     @Path("/users/{userid}")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { UserDTO.MediaType })
     public Response retrievePersonalInformation (@Context HttpServletRequest request, @PathParam("userid") long userid) {
     	if(! vs.validateID(userid))
     		return rs.badRequest();
@@ -110,8 +109,8 @@ public class UserController {
     	User user = us.findById(userid);
     	if(user == null)
     		return rs.notFound();
-    	UserDTO profileInformationDto = new UserDTO(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhoneNumber());
-    	return Response.ok().entity(profileInformationDto).build();
+    	UserDTO userDTO = new UserDTO(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhoneNumber());
+    	return Response.ok().entity(userDTO).build();
     }
     
     @HEAD
@@ -126,8 +125,7 @@ public class UserController {
     
     @PATCH
     @Path("/users/{userid}")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = { UserDTO.MediaType, })
     public Response updateInformation (@Context HttpServletRequest request, @PathParam("userid") long userid, final UserDTO userDTO) {
     	if(! vs.validateID(userid))
     		return rs.badRequest();
@@ -153,7 +151,6 @@ public class UserController {
     
     @PATCH
     @Path("/users/{userid}/lock")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response lockUser (@PathParam("userid") long userid, @NotNull @QueryParam("lock") boolean lock) {
     	if(!vs.validateID(userid))
     		return rs.badRequest();
@@ -165,8 +162,7 @@ public class UserController {
     
     @POST
     @Path("/users/{email}/password-reset")
-    public Response passwordReset (@PathParam("email") String email) {
-    	
+    public Response passwordReset(@PathParam("email") String email) {
     	User user = us.findByUsername(email);
     	if(user == null) 
     		return rs.notFound();
@@ -177,7 +173,7 @@ public class UserController {
     
     @PATCH
     @Path("/users/password-reset")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = { ResetPasswordDTO.MediaType })
     public Response changePassword (ResetPasswordDTO resetPasswordDTO) {
     	if(! vs.validateUserPassword(resetPasswordDTO.getNewPassword()))
     		return rs.badRequest();
@@ -199,8 +195,8 @@ public class UserController {
     
     @POST
     @Path("/users/{userid}/publications")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = { PublicationDTO.MediaType })
+    @Produces(value = { PublicationDTO.MediaType })
     public Response createPublication (@Context HttpServletRequest request, @PathParam("userid") long userid, final PublicationDTO publicationDTO) {
     	if(!vs.validateID(userid))
     		return rs.badRequest();
@@ -228,9 +224,8 @@ public class UserController {
     
     @POST
     @Path("/messages")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = { MessageDTO.MediaType })
     public Response sendMessage (MessageDTO messageDTO) {
-    	System.out.print(messageDTO.getOwnerEmail());
     	if(! vs.validateEmailMessage(messageDTO.getName(), messageDTO.getEmail(), 
     			messageDTO.getMessage(), messageDTO.getOwnerEmail(), messageDTO.getTitle()))
     		return rs.badRequest();
@@ -244,7 +239,7 @@ public class UserController {
     
     @GET
     @Path("/users/{userid}/publications")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { PublicationDTO.MediaType })
     public Response getUserPublications (@Context HttpServletResponse response, @Context HttpServletRequest request, @PathParam("userid") long userid,
     									@DefaultValue("0") @QueryParam("page") Integer page, @DefaultValue("10") @QueryParam("limit") Integer limit) {
     	if(!vs.validatePagination(page,limit) || !vs.validateID(userid))
@@ -259,7 +254,7 @@ public class UserController {
     
     @GET
     @Path("/users/{userid}/favourite-publications")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { PublicationDTO.MediaType })
     public Response getUserFavoutirePublications (@Context HttpServletResponse response, @Context HttpServletRequest request, @PathParam("userid") long userid,
     									@DefaultValue("0") @QueryParam("page") Integer page, @DefaultValue("10") @QueryParam("limit") Integer limit) {
     	if(!vs.validatePagination(page,limit) || !vs.validateID(userid))
@@ -274,7 +269,7 @@ public class UserController {
     
     @POST
     @Path("/users/{userid}/favourite-publications")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = { FavPublicationDTO.MediaType })
     public Response addFavouritePublication (@Context HttpServletRequest request, @PathParam("userid") long userid, final FavPublicationDTO favPublicationDTO) {
     	if(! vs.validateID(userid) || ! vs.validateID(favPublicationDTO.getPublicationid()))
     		return rs.badRequest();
@@ -286,14 +281,13 @@ public class UserController {
     }
     
     @DELETE
-    @Path("/users/{userid}/favourite-publications")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response removeFavouritePublication (@Context HttpServletRequest request, @PathParam("userid") long userid, final FavPublicationDTO favPublicationDTO) {
-    	if(! vs.validateID(userid) || ! vs.validateID(favPublicationDTO.getPublicationid()))
+    @Path("/users/{userid}/favourite-publications/{publicationid}")
+    public Response removeFavouritePublication (@Context HttpServletRequest request, @PathParam("userid") long userid, @PathParam("publicationid") long publicationid) {
+    	if(! vs.validateID(userid) || ! vs.validateID(publicationid))
     		return rs.badRequest();
     	if(tas.getUserIdAuthentication(request) != userid)
     		return rs.forbidden();
-    	if(! fps.removeFavourite(userid, favPublicationDTO.getPublicationid()))
+    	if(! fps.removeFavourite(userid, publicationid))
     		return rs.notFound();
     	return rs.noContent();
     }

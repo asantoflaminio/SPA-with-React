@@ -132,9 +132,8 @@ class ImageVisualizer extends React.Component {
     removeFavourite(){
         let currentComponent = this;
         let userid = LocalStorageService.getUserid();
-        let favPublicationDTO = {}
-        favPublicationDTO.publicationid = this.props.publicationid
-        UserService.removeFavourite(userid,favPublicationDTO).then(function (response){
+        let publicationid = this.props.publicationid
+        UserService.removeFavourite(userid,publicationid).then(function (response){
             if(response.status !== StatusCode.NO_CONTENT){
                 ErrorService.logError(currentComponent.props,response)
                 return;

@@ -8,7 +8,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class LocationController {
 	
     @POST
     @Path("/provinces")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = { ProvinceDTO.MediaType })
     public Response createProvince (final ProvinceDTO provinceDTO) {
     	if(! vs.validateLocationAdmin(provinceDTO.getProvince(), Constants.Location.PROVINCE.getLocation()))
     		return rs.badRequest();
@@ -50,7 +49,7 @@ public class LocationController {
     
     @POST
     @Path("/provinces/{provinceid}/cities")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = { CityDTO.MediaType })
     public Response createCity (@PathParam("provinceid") long provinceid, final CityDTO cityDTO) {
 		if(! vs.validateLocationAdmin(cityDTO.getCity(), Constants.Location.CITY.getLocation()) ||
 			! vs.validateID(provinceid))
@@ -64,7 +63,7 @@ public class LocationController {
     
     @POST
     @Path("/cities/{cityid}/neighborhoods")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = { NeighborhoodDTO.MediaType })
     public Response createNeighborhood (@PathParam("cityid") long cityid,final NeighborhoodDTO neighborhoodDTO) {
 		if(! vs.validateLocationAdmin(neighborhoodDTO.getNeighborhood(), "Neighborhood") || 
 			! vs.validateID(cityid))
@@ -78,7 +77,7 @@ public class LocationController {
     
     @GET
     @Path("/provinces")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { ProvinceDTO.MediaType })
     public Response getProvinces () {
     	List<ProvinceDTO> provinces = ls.getProvinces();
     	return rs.ok(provinces);
@@ -87,7 +86,7 @@ public class LocationController {
     
     @GET
     @Path("/provinces/{provinceid}/cities")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { CityDTO.MediaType })
     public Response getCities (@PathParam("provinceid") long provinceid) {
     	if(!vs.validateLocation(Long.toString(provinceid), Constants.Location.PROVINCE.toString()) || 
     		! vs.validateID(provinceid))
@@ -99,7 +98,7 @@ public class LocationController {
     
     @GET
     @Path("/cities/{cityid}/neighborhoods")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { NeighborhoodDTO.MediaType })
     public Response getNeighborhoods (@PathParam("cityid") long cityid) {
     	if(!vs.validateLocation(Long.toString(cityid), Constants.Location.CITY.toString()) ||
     		! vs.validateID(cityid))
