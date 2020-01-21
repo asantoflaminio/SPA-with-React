@@ -12,6 +12,7 @@ import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
 import ColoredCircularProgress from '../components/ColoredCircularProgress';
+import LocalStorageService from '../services/LocalStorageService'
 
 class HomeReal extends React.Component {
    constructor(props) {
@@ -24,6 +25,7 @@ class HomeReal extends React.Component {
             propertyType: "House",
             circleloading: false
         };
+        this.setReady = this.setReady.bind(this)
       }
     
     componentDidMount(){
@@ -73,7 +75,11 @@ class HomeReal extends React.Component {
 
             for(let i = 0; i < loopEnd; i ++) { 
                 table.push(
-                    <HomeCard publication={array[i]}/>
+                    <HomeCard 
+                    publication={array[i]}
+                    ready={this.setReady}
+                    index={i}
+                    />
                 )
             }
         }   
@@ -107,6 +113,13 @@ class HomeReal extends React.Component {
         this.setState({
             search: value
         })
+    }
+
+    setReady(){
+        if(LocalStorageService.getCounter() === this.state.publicationsSale.length){
+            LocalStorageService.deleteCounter()
+            this.setState({loadingPublications: false})
+        }    
     }
 
     render(){

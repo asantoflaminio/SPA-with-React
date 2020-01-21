@@ -57,8 +57,7 @@ class ImageVisualizer extends React.Component {
         this.setState({
             index: 0
         })
-        LocalStorageService.incrementCounter()
-        //this.props.setReady()
+        this.incrementCounter();
     }
     
     updateImage(newIndex){
@@ -76,8 +75,7 @@ class ImageVisualizer extends React.Component {
             currentComponent.setState({
                 index: newIndex
             })
-            LocalStorageService.incrementCounter()
-            //currentComponent.props.setReady();
+            currentComponent.incrementCounter();
         })
     }
 
@@ -146,6 +144,14 @@ class ImageVisualizer extends React.Component {
                 isFavourite : false
             })
         })
+    }
+
+    incrementCounter(){
+        let currentComponent = this
+        setTimeout(function(){
+        LocalStorageService.incrementCounter()
+        currentComponent.props.setReady()
+    }, this.props.index)
     }
 
     render(){

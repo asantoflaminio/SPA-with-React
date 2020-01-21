@@ -11,6 +11,7 @@ import LocalStorageService from '../services/LocalStorageService';
 import ToastNotification from '../components/ToastNotification'
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
+import PublicationLoader from '../components/PublicationLoader'
 
 
 
@@ -24,8 +25,10 @@ class MyFavorites extends React.Component {
             publicationIDToDelete: 0,
             page: 0,
             pagesQuantity: 0,
-            showModal: false
+            showModal: false,
+            loadingPublications: false,
         };
+        this.setReady = this.setReady.bind(this)
     }
 
     componentDidMount() {
@@ -55,8 +58,10 @@ class MyFavorites extends React.Component {
         let userid;
         queryParameters.page = parseInt(page);
         queryParameters.limit = Constants.PUBLICATIONS_PAGE_LIMIT
-        queryParameters.locked = true;
         userid = LocalStorageService.getUserid();
+        this.setState({loadingPublications: true})
+        LocalStorageService.deleteCounter();
+        LocalStorageService.initializeCounter()
         UserService.getMyFavoritesPublications(userid,queryParameters).then(function(response) {
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
@@ -84,6 +89,7 @@ class MyFavorites extends React.Component {
                     favourites={false}
                     faveable={true}
                     editable={false}
+                    ready={this.setReady}
                     />
             )
         }
@@ -91,10 +97,29 @@ class MyFavorites extends React.Component {
         return pubComponents;
     }
 
+    setReady(){
+        if(LocalStorageService.getCounter() === this.state.myFavorites.length){
+            LocalStorageService.deleteCounter()
+            this.setState({loadingPublications: false})
+        }    
+    }
+
+    loadingContainers(){
+        let pubComponents = [];
+        for(let i = 0; i < Constants.PUBLICATIONS_PAGE_LIMIT; i++){
+            pubComponents.push(
+                <div className="loader-container"> 
+                    <PublicationLoader/>
+                </div>
+            )
+        }
+        return pubComponents;
+    }
+
     render(){
         const { t } = this.props;
         let favorites = this.initializePublications(t);  
-      
+        let loadingPublications = this.loadingContainers()
         return(
             <div>
                 <ProfileAsideBar t={t} active="MyFavourites"/>
@@ -109,11 +134,17 @@ class MyFavorites extends React.Component {
                 <div className="Favorites">
                     <h2 className="title_section">{t('myfavorites.title_section')}: {this.state.myFavoritesCounter}</h2> 
                 </div>
+                {this.state.loadingPublications === true ?
+                                <div className="loader-all-container">
+                                    {loadingPublications}
+                                </div>
+                        : null}
                 <section className="section_publications">
-                            <div>
+                            <div className={this.state.loadingPublications === true ? "hidden":null}>
                                 {favorites}
                             </div>
-                            <div class="pubsPagination">
+                            {this.state.myFavorites.length != 0 ?
+                            (<div class="pubsPagination">
                                 <ReactPaginate
                                 previousLabel={'<'}
                                 nextLabel={'>'}
@@ -130,7 +161,7 @@ class MyFavorites extends React.Component {
                                 previousClassName={''}
                                 nextClassName={''}
                             />
-                            </div>
+                            </div>) : null}
                     </section>
             </div>
         );

@@ -224,7 +224,6 @@ public class PublicationHibernateDao implements PublicationDao{
 		groupByClause = "GROUP BY pub."+ filterName + " ORDER BY pub." + filterName + " ASC";
 		hqlString = countClause + whereStatement + groupByClause;
 		queryCount = em.createQuery(hqlString, FilterCountQuery.class);
-		System.out.println(hqlString);
 		addFiltersValues(queryCount,filters,address);
 		List<FilterCountQuery> list = queryCount.getResultList();
 		HashMap<Integer,Long> hash = new HashMap<Integer,Long>();

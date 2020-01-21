@@ -15,6 +15,8 @@ class HomeCard extends React.Component {
                         price={this.props.publication.price}
                         maxImages={this.props.publication.images}
                         isFavourite={this.props.publication.favourite}
+                        setReady={this.props.ready}
+                        index={this.props.index}
                         page="Home"
                         imageClass="polaroid-property-img-home"
                         containerClass="arrows-div"

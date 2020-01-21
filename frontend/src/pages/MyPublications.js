@@ -11,6 +11,7 @@ import * as Constants from '../util/Constants'
 import LocalStorageService from '../services/LocalStorageService';
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
+import PublicationLoader from '../components/PublicationLoader'
 
 class MyPublications extends React.Component {
     constructor(props) {
@@ -22,11 +23,13 @@ class MyPublications extends React.Component {
             publicationIDToDelete: 0,
             page: 0,
             pagesQuantity: 0,
-            showModal: false
+            showModal: false,
+            loadingPublications: false,
         };
 
         this.showModalErasePublication = this.showModalErasePublication.bind(this);
         this.erasePublication = this.erasePublication.bind(this);
+        this.setReady = this.setReady.bind(this)
     }
 
     componentDidMount() {
@@ -56,8 +59,10 @@ class MyPublications extends React.Component {
         let userid;
         queryParameters.page = parseInt(page);
         queryParameters.limit = Constants.PUBLICATIONS_PAGE_LIMIT
-        queryParameters.locked = true;
         userid = LocalStorageService.getUserid();
+        this.setState({loadingPublications: true})
+        LocalStorageService.deleteCounter();
+        LocalStorageService.initializeCounter()
         UserService.getMyPublications(userid,queryParameters).then(function(response) {
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
@@ -105,17 +110,39 @@ class MyPublications extends React.Component {
     initializePublications(t){
         let pubComponents = [];
         
-        for(let i = 0; i < this.state.myPublications.length; i++){
+        for(let i = 0; i < Constants.PUBLICATIONS_PAGE_LIMIT; i++){
             pubComponents.push(
                 <Publication t={t} 
                     publication={this.state.myPublications[i]}  
                     page="MyPublications"
                     favourites={false}
                     editable={true}
-                    eraseFunction={this.showModalErasePublication}/>
+                    eraseFunction={this.showModalErasePublication}
+                    ready={this.setReady}
+                    index={i}
+                    />
             )
         }
         
+        return pubComponents;
+    }
+
+    setReady(){
+        if(LocalStorageService.getCounter() === this.state.myPublications.length){
+            LocalStorageService.deleteCounter()
+            this.setState({loadingPublications: false})
+        }    
+    }
+
+    loadingContainers(){
+        let pubComponents = [];
+        for(let i = 0; i < this.state.myPublications.length; i++){
+            pubComponents.push(
+                <div className="loader-container"> 
+                    <PublicationLoader/>
+                </div>
+            )
+        }
         return pubComponents;
     }
 
@@ -124,7 +151,7 @@ class MyPublications extends React.Component {
     render(){
         const { t } = this.props;
         let publications = this.initializePublications(t);  
-      
+        let loadingPublications = this.loadingContainers()
         return(
             <div>
                 <ProfileAsideBar t={t} active="MyPublications"/>
@@ -139,11 +166,17 @@ class MyPublications extends React.Component {
                 <div className="Publications">
                     <h2 className="title_section">{t('mypublications.title_section')}: {this.state.myPublicationsCounter}</h2> 
                 </div>
+                {this.state.loadingPublications === true ?
+                                <div className="loader-all-container">
+                                    {loadingPublications}
+                                </div>
+                        : null}
                 <section className="section_publications">
-                            <div>
+                            <div className={this.state.loadingPublications === true ? "hidden":null}>
                                 {publications}
                             </div>
-                            <div class="pubsPagination">
+                            {this.state.myPublications.length != 0 ?
+                            (<div class="pubsPagination">
                                 <ReactPaginate
                                 previousLabel={'<'}
                                 nextLabel={'>'}
@@ -160,7 +193,7 @@ class MyPublications extends React.Component {
                                 previousClassName={''}
                                 nextClassName={''}
                             />
-                            </div>
+                            </div>) : null}
                     </section>
             </div>
         );

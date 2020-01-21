@@ -160,7 +160,7 @@ class List extends React.Component {
                     editable={false}
                     faveable={true}
                     ready={this.setReady}
-                    index = {i}
+                    index={i}
                 />
 
             )
@@ -357,13 +357,12 @@ class List extends React.Component {
         if(LocalStorageService.getCounter() === this.state.publications.length){
             LocalStorageService.deleteCounter()
             this.setState({loadingPublications: false})
-        }
-            
+        }    
     }
 
     loadingContainers(){
         let pubComponents = [];
-        for(let i = 0; i < this.state.publications.length; i++){
+        for(let i = 0; i < Constants.PUBLICATIONS_PAGE_LIMIT; i++){
             pubComponents.push(
                 <div className="loader-container"> 
                     <PublicationLoader/>
@@ -520,7 +519,6 @@ class List extends React.Component {
                             {this.state.publications.length != 0 ?
                                 (<div class="pubsPagination">
                                     <ReactPaginate
-                                    initialPage={this.state.page}
                                     forcePage={this.state.page}
                                     previousLabel={'<'}
                                     nextLabel={'>'}

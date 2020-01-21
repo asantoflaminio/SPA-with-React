@@ -66,8 +66,7 @@ const LocalStorageService = (function(){
     }
 
     function _incrementCounter(){
-      let increment = _getCounter() + 1;
-      localStorage.setItem(COUNTER,String(increment))
+      localStorage.setItem(COUNTER,String(parseInt(_getCounter()) + 1))
     }
 
     function _getCounter(){
