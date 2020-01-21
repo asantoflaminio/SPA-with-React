@@ -111,6 +111,7 @@ public class PublicationController {
     		return rs.notFound();
     	byte[] data = uploadFile.getData();
     	byte[] dataBase64 = Base64.getEncoder().encode(data);
+    	System.out.println("ME LLAMARIN");
         return rs.ok(dataBase64);
     }
     

@@ -46,7 +46,7 @@ function isEditable(t, erasableComponent, eraseFunction, publicationid, editable
     }
 }
 
-const Publication = ({ t , publication, page, faveable, editable, eraseFunction }) => {
+const Publication = ({ t , publication, page, faveable, editable, eraseFunction, ready, index }) => {
     let erasableComponent = isErasable(t, eraseFunction, publication.publicationid);
     let editableComponent = isEditable(t, erasableComponent, eraseFunction, publication.publicationid, editable);
         return(
@@ -61,6 +61,8 @@ const Publication = ({ t , publication, page, faveable, editable, eraseFunction 
                     containerClass="img-with-tag"
                     nextClass="next-image pointer"
                     previousClass="prev-image pointer"
+                    setReady={ready}
+                    index={index}
                 />
                 <div class="property-container">
                     <div class="first-column">								

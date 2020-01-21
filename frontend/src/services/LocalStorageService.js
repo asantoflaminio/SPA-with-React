@@ -7,6 +7,7 @@ const LocalStorageService = (function(){
     const USERID_TOKEN = "userid";
     const ROLE_ADMIN = "ROLE_ADMIN";
     const ROLE_USER = "ROLE_USER";
+    const COUNTER = "counter"
 
     function _getService() {
         if(!_service) {
@@ -21,6 +22,7 @@ const LocalStorageService = (function(){
         _setAuthorization(authorization)
         _setUsername(username)
     }
+
 
     function _setToken(authorization, access, username, userid) {
       let max_acess = _decideAccess(access);
@@ -59,6 +61,23 @@ const LocalStorageService = (function(){
       localStorage.removeItem(USERNAME_TOKEN)
     }
 
+    function _initializeCounter(){
+      localStorage.setItem(COUNTER,"0")
+    }
+
+    function _incrementCounter(){
+      let increment = _getCounter() + 1;
+      localStorage.setItem(COUNTER,String(increment))
+    }
+
+    function _getCounter(){
+      return parseInt(localStorage.getItem(COUNTER))
+    }
+
+    function _deleteCounter(){
+      localStorage.removeItem(COUNTER)
+    }
+
     function _decideAccess(access_role){
       if(access_role.includes(ROLE_ADMIN))
         return ROLE_ADMIN
@@ -77,6 +96,10 @@ const LocalStorageService = (function(){
       getUsername : _getUsername,
       getUserid : _getUserid,
       clearToken : _clearToken,
+      initializeCounter : _initializeCounter,
+      incrementCounter : _incrementCounter,
+      getCounter: _getCounter,
+      deleteCounter : _deleteCounter
     }
    })();
    export default LocalStorageService;

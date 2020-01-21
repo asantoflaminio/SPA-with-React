@@ -7,9 +7,7 @@ import heartFilled from '../resources/heart_filled.png';
 import heartEmpty from '../resources/heart.png'
 import * as utilFunction from '../util/function';
 import PublicationService from '../services/PublicationService';
-import JsonService from '../services/JsonService'
 import UserService from '../services/UserService'
-import * as statusCode from '../util/StatusCode'
 import defaultImage from '../resources/default.jpg'
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
@@ -39,7 +37,7 @@ class ImageVisualizer extends React.Component {
     }
 
     componentDidUpdate(prevProps,prevState){
-        if (this.props !== prevProps){
+        if (this.props.publicationid !== prevProps.publicationid){
             this.setState({
                 index: 0,
                 isFavourite : this.props.isFavourite
@@ -59,6 +57,8 @@ class ImageVisualizer extends React.Component {
         this.setState({
             index: 0
         })
+        LocalStorageService.incrementCounter()
+        //this.props.setReady()
     }
     
     updateImage(newIndex){
@@ -76,6 +76,8 @@ class ImageVisualizer extends React.Component {
             currentComponent.setState({
                 index: newIndex
             })
+            LocalStorageService.incrementCounter()
+            //currentComponent.props.setReady();
         })
     }
 

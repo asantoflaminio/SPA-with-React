@@ -623,3 +623,20 @@ h3 {
 .second-column {
 	width: 34%;
 }
+
+.loader-container{
+	background-color: white;
+	float: left;
+	width: 100%;
+	height: 200px;
+	margin: 10px;
+}
+
+.loader-all-container{
+	width: 75%;
+	float: left;
+}
+
+.hidden{
+	display: none;
+}

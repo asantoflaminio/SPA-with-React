@@ -12,6 +12,10 @@ import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
 import ColoredCircularProgress from '../components/ColoredCircularProgress';
+import PublicationLoader from '../components/PublicationLoader'
+import { LinearProgress } from '@material-ui/core';
+import { createStore } from 'redux'
+import LocalStorageService from '../services/LocalStorageService';
 
 
 class List extends React.Component {
@@ -19,6 +23,7 @@ class List extends React.Component {
         super(props);
         this.state = {
             resultsQuantity: 0,
+            loadingPublications: false,
             publications: [],
             operation:"",
             propertyType:"",
@@ -34,8 +39,8 @@ class List extends React.Component {
             page: this.setInitialPage(),
             pagesQuantity: 0,
             filters : null,
-            circleloading: false
         };
+        this.setReady = this.setReady.bind(this)
       }
 
       componentDidMount(){
@@ -44,9 +49,6 @@ class List extends React.Component {
         let names = ["address","operation","propertyType","minPrice","maxPrice","minFloorSize","maxFloorSize","bedrooms","bathrooms","parking"]
         let values = [query.address,query.operation,query.propertyType,query.minPrice,query.maxPrice,query.minFloorSize,query.maxFloorSize,
                         query.bedrooms,query.bathrooms,query.parking]
-        this.setState({
-            circleloading: true
-        });
         
         this.updatePublications(names,values)      
         this.selectOperation(query.operation)
@@ -56,8 +58,10 @@ class List extends React.Component {
       updatePublications(names,values){
         let queryParameters = this.generateQueryParametersPackage();
         this.updateQueryParameters(queryParameters,names,values)
-        this.pushParameters(names,values);
         let currentComponent = this
+        this.setState({loadingPublications: true})
+        LocalStorageService.deleteCounter();
+        LocalStorageService.initializeCounter()
         PublicationService.getPublications(queryParameters).then(function (response){
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
@@ -79,9 +83,11 @@ class List extends React.Component {
                 bathrooms: queryParameters["bathrooms"],
                 parking: queryParameters["parking"],
                 order: queryParameters["order"] ,
-                circleloading: false
             })
+            if(response.headers["x-total-count"] === 0)
+                currentComponent.setState({loadingPublications: false})
             currentComponent.updateFilters(queryParameters)
+            currentComponent.pushParameters(names,values);
         })
     }
 
@@ -147,11 +153,14 @@ class List extends React.Component {
         const { t } = this.props 
         for(let i = 0; i < this.state.publications.length; i++){
             pubComponents.push(
-                <Publication t={t} 
+                <Publication
+                    t={t}
                     publication={this.state.publications[i]}
                     page="List"
                     editable={false}
                     faveable={true}
+                    ready={this.setReady}
+                    index = {i}
                 />
 
             )
@@ -225,45 +234,30 @@ class List extends React.Component {
     }
 
     deleteAllFilters(){
-        this.setState({
-            circleloading: true
-        });
         let names = ["address","minPrice","maxPrice","minFloorSize","maxFloorSize","bedrooms","bathrooms","parking","page"]
         let values = ["","","","","","","","",0]
         this.updatePublications(names,values)
     }
 
     deleteFilter(stateName){
-        this.setState({
-            circleloading: true
-        });
         let names = [stateName,"page"]
         let values = ["",0]
         this.updatePublications(names,values);
     }
 
     handleSelect(event,stateName){
-        this.setState({
-            circleloading: true
-        });
         let names = [stateName]
         let values = [event.target.value]
         this.updatePublications(names,values)
     }
 
     handleFilter(stateName,value){
-        this.setState({
-            circleloading: true
-        });
         let names = [stateName,"page"]
         let values = [value,0]
         this.updatePublications(names,values)
     }
 
     handleOperation(operation){
-        this.setState({
-            circleloading: true
-        });
         let names = ["operation","page"]
         let values = [operation,0]
         this.selectOperation(operation);
@@ -271,10 +265,6 @@ class List extends React.Component {
     }
 
     handleSearch(){
-        
-        this.setState({
-            circleloading: true
-        });
         let value = document.getElementById("search-holder").value
         let names = ["address","page"]
         let values = [value,0]
@@ -282,9 +272,6 @@ class List extends React.Component {
     }
 
     handlePrice(){
-        this.setState({
-            circleloading: true
-        });
         let minPrice = document.getElementById("minPrice");
         let maxPrice = document.getElementById("maxPrice");
         let names = ["minPrice","maxPrice","page"]
@@ -293,9 +280,6 @@ class List extends React.Component {
     }
 
     handleFloorSize(){
-        this.setState({
-            circleloading: true
-        });
         let minFloorSize = document.getElementById("minFloorSize");
         let maxFloorSize = document.getElementById("maxFloorSize");
 
@@ -343,7 +327,7 @@ class List extends React.Component {
         const queryParams = queryParser.parse(this.props.history.location.search);
         for(let i = 0; i < names.length; i++){
             if(names[i] === Constants.PAGE)
-                queryParams[names[i]] = values[i] + 1;
+                queryParams[names[i]] = parseInt(values[i]) + 1;
             else
             queryParams[names[i]] = values[i];
         }
@@ -355,11 +339,6 @@ class List extends React.Component {
     }
 
     handlePageClick = data => {
-        
-        // esto causa loop infinito
-        // this.setState({
-        //     circleloading: true
-        // });
         let names = ["page"]
         let values = [data.selected]
         this.updatePublications(names,values)
@@ -374,9 +353,30 @@ class List extends React.Component {
             filter.classList.add("show")
     }
 
+    setReady(){
+        if(LocalStorageService.getCounter() === this.state.publications.length){
+            LocalStorageService.deleteCounter()
+            this.setState({loadingPublications: false})
+        }
+            
+    }
+
+    loadingContainers(){
+        let pubComponents = [];
+        for(let i = 0; i < this.state.publications.length; i++){
+            pubComponents.push(
+                <div className="loader-container"> 
+                    <PublicationLoader/>
+                </div>
+            )
+        }
+        return pubComponents;
+    }
+
     render(){
         const { t } = this.props;
         let publications = this.initializePublications();
+        let loadingPublications = this.loadingContainers()
         let filters = this.createFiltersNotes(t);
         let cleanAll = this.createDeleteAll(t);
         let locationFilter = this.createFilterFields("locations","","",t,"address")
@@ -508,11 +508,13 @@ class List extends React.Component {
                                 </div>
                             </div>
                         </aside>
-                        {this.state.circleloading ? 
-                            ( <ColoredCircularProgress/> )
-                        : (   
+                        {this.state.loadingPublications === true ?
+                                <div className="loader-all-container">
+                                    {loadingPublications}
+                                </div>
+                        : null}
                         <section id="publications">
-                            <div>
+                            <div className={this.state.loadingPublications === true ? "hidden":null}>
                                 {publications}
                             </div>
                             {this.state.publications.length != 0 ?
@@ -536,7 +538,7 @@ class List extends React.Component {
                                 /> 
                                 </div>) : null}
                         </section>
-                        ) }
+                         
                     </div>
                 </div>
             </div>
