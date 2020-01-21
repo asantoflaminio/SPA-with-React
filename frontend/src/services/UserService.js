@@ -20,6 +20,7 @@ const UserService = (function(){
             params: queryParameters,
             headers: {
                 authorization: LocalStorageService.getAuthorization(),
+                'Accept': ResourcesVersions.USER
             }
           }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -31,6 +32,7 @@ const UserService = (function(){
           data: dataDTO,
           headers:{
             'Content-Type': ResourcesVersions.USER,
+            'Accept': ResourcesVersions.USER
           }
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -75,7 +77,8 @@ const UserService = (function(){
           data: dataDTO,
           headers: {
             authorization: LocalStorageService.getAuthorization(),
-            'Content-Type': ResourcesVersions.PUBLICATION
+            'Content-Type': ResourcesVersions.PUBLICATION,
+            'Accept': ResourcesVersions.PUBLICATION
           }
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -98,6 +101,7 @@ const UserService = (function(){
             params: queryParameters,
             headers: {
                 authorization: LocalStorageService.getAuthorization(),
+                'Accept': ResourcesVersions.PUBLICATION
             }
           }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -109,6 +113,7 @@ const UserService = (function(){
             params: queryParameters,
             headers: {
                 authorization: LocalStorageService.getAuthorization(),
+                'Accept': ResourcesVersions.PUBLICATION
             }
           }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -143,6 +148,7 @@ const UserService = (function(){
             url: `${USERS_PATH}/users/${userid}`,
             headers: {
                 authorization: LocalStorageService.getAuthorization(),
+                'Accept': ResourcesVersions.USER
             }
           }).then(function (response){ return response }).catch(function (error){ return error.response })
     }

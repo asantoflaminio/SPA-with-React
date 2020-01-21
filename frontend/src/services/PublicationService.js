@@ -1,6 +1,5 @@
-import ErrorService from "./ErrorService";
 import axios from 'axios';
-import JsonService from './JsonService'
+import * as ResourcesVersions from '../util/ResourcesVersions'
 import LocalStorageService from './LocalStorageService'
 
 const PublicationService = (function(){
@@ -11,9 +10,9 @@ const PublicationService = (function(){
       return await axios({
           method: 'get',
           url: `${PUBLICATIONS_PATH}/publications`,
-          params: queryParameters,         
+          params: queryParameters,
           headers: {
-            authorization: LocalStorageService.getAuthorization()
+            'Accept': ResourcesVersions.PUBLICATION
           }
       }).then(function (response){ return response }).catch(function (error){ return error.response })
   }
@@ -23,7 +22,8 @@ const PublicationService = (function(){
             method: 'get',
             url: `${PUBLICATIONS_PATH}/publications/${publicationid}`,
             headers: {
-              authorization: LocalStorageService.getAuthorization()
+              authorization: LocalStorageService.getAuthorization(),
+              'Accept': ResourcesVersions.PUBLICATION
             }
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
@@ -32,11 +32,14 @@ const PublicationService = (function(){
         return await axios({
             method: 'get',
             url: `${PUBLICATIONS_PATH}/publications/filters`,
-            params:queryParameters
+            params:queryParameters,
+            headers: {
+              'Accept': ResourcesVersions.FILTERS
+            }
           }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
-    async function _getImage(publicationid,queryParameters,props){
+    async function _getImage(publicationid,queryParameters){
         return await axios({
             method: 'get',
             url: `${PUBLICATIONS_PATH}/publications/${publicationid}/images`,

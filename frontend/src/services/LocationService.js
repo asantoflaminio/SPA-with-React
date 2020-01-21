@@ -46,6 +46,9 @@ const LocationService = (function(){
         return await axios({
             method: 'get',
             url: `${LOCATIONS_PATH}/provinces`,
+            headers: {
+                'Accept': ResourcesVersions.PROVINCE
+            }
           }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
@@ -53,6 +56,9 @@ const LocationService = (function(){
         return await axios({
             method: 'get',
             url: `${LOCATIONS_PATH}/provinces/${provinceid}/cities`,
+            headers: {
+                'Accept': ResourcesVersions.CITY
+            }
           }).then(function (response){ return response }).catch(function (error){ return error.response })
       }
 
@@ -60,6 +66,9 @@ const LocationService = (function(){
         return await axios({
             method: 'get',
             url: `${LOCATIONS_PATH}/cities/${cityid}/neighborhoods`,
+            headers: {
+                'Accept': ResourcesVersions.NEIGHBORHOOD
+            }
           }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
     
