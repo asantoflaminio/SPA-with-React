@@ -31,7 +31,7 @@ class Details extends React.Component {
             publication: null,
             loading: false,
             circleloading: false,
-            showModal: false,
+            showModal: false
         }
         this.setReady = this.setReady.bind(this)
       }
@@ -57,7 +57,7 @@ class Details extends React.Component {
                 }
                 currentComponent.setState({
                     publication: response.data,
-                    loading: false,
+                    circleloading: false
                 })
             })
         
@@ -157,8 +157,8 @@ class Details extends React.Component {
                     {this.state.loading ? <ColoredLinearProgress /> : null}  
                     {this.state.circleloading ? 
                      ( <ColoredCircularProgress /> )
-                    :null}        
-                    <div className={this.state.circleloading === true ? "hidden":null}>
+                    : (        
+                    <div>
                     <div id="cols">
                         <div id="left-col">   
                             <div class="polaroid">
@@ -300,9 +300,9 @@ class Details extends React.Component {
                             <p class="polaroid_title">{t('details.location')}</p>
                             <MapContainer 
                             address = {this.state.publication.address}
-                            neighborhood =  {this.state.publication.neighborhood}
-                            city = {this.state.publication.city}
-                            province = {this.state.publication.province}
+                            neighborhood = {this.state.publication.neighborhoodid}
+                            city = {this.state.publication.cityid}
+                            province = {this.state.publication.provinceid}
                             googleMapURL= {mapURL}
                             containerElement= {<div style={{height: '300px'}}/>}
                             mapElement= {<div style={{height:'100%'}} />}
@@ -311,6 +311,7 @@ class Details extends React.Component {
                         </div>
                     </div>                               
                 </div> 
+                    ) }
                 </div>
                 
             )

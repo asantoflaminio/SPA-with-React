@@ -27,7 +27,7 @@ class MapContainer extends React.Component {
     }
 
     componentDidMount() {
-          this.setState({neighborhood: this.props.neighborhood});;
+          
           let component = this
           Geocode.setApiKey(credentials.mapsKey);
           Geocode.setRegion("AR");
@@ -54,7 +54,6 @@ class MapContainer extends React.Component {
       const Y = this.state.lng;
       if(X && Y) {
         return (
-          
           <GoogleMap 
           zoom={16}
           center={{lat: X, lng: Y}}>
