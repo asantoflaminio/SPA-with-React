@@ -63,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         	.antMatchers(HttpMethod.GET, "/meinHaus/publications-management/publications/filters").permitAll()
         	.antMatchers(HttpMethod.GET, "/meinHaus/publications-management/publications/{publicationid}").permitAll()
         	.antMatchers(HttpMethod.GET, "/meinHaus/publications-management/publications/{publicationid}/images").permitAll()
-        	.antMatchers(HttpMethod.POST, "/meinHaus/publications-management/publications/{publicationid}/images").hasAnyRole(Constants.Role.ADMIN.getRole(),Constants.Role.USER.getRole())
+        	.antMatchers(HttpMethod.POST, "/meinHaus/publications-management/publications/{publicationid}/images").access("! hasRole('ROLE_LOCKED')")
         	.antMatchers(HttpMethod.DELETE, "/meinHaus/publications-management/publications/{publicationID}").hasRole(Constants.Role.ADMIN.getRole())
         		
         
@@ -77,7 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     		.antMatchers(HttpMethod.HEAD, "/meinHaus/users-management/users/{email}").permitAll()
     		.antMatchers(HttpMethod.POST, "/meinHaus/users-management/users/{email}/password-reset").permitAll()
     		.antMatchers(HttpMethod.PATCH, "/meinHaus/users-management/users/password-reset").permitAll()
-    		.antMatchers(HttpMethod.POST, "/meinHaus/users-management/users/{userid}/publications").hasAnyRole(Constants.Role.ADMIN.getRole(),Constants.Role.USER.getRole())
+    		.antMatchers(HttpMethod.POST, "/meinHaus/users-management/users/{userid}/publications").access("! hasRole('ROLE_LOCKED')")
     		.antMatchers(HttpMethod.POST, "/meinHaus/users-management/users/messages").permitAll()
     		.antMatchers(HttpMethod.GET, "/meinHaus/users-management/users/{userid}/publications").authenticated()
     		.antMatchers(HttpMethod.GET, "/meinHaus/users-management/users/{userid}/favourite-publications").authenticated()
