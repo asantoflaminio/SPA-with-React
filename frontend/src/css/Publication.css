@@ -7,7 +7,7 @@
 	background-color: white;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	display: flex;
-	min-width: 700px;
+	min-width: 930px;
 }
 
 .img-with-tag {
@@ -67,20 +67,19 @@
 .property-title {
 	text-align: left !important;
 	color: #999;
-	margin-left: 10px;
 	font-size: 20px !important;
-	display: inline-block;
+	float: left;
 	max-width: 95%;
 	white-space: nowrap;
     overflow: hidden;
 	text-overflow: ellipsis !important;
+	margin: 3px 0 8px 20px !important;
 }
 
 .property-date {
 	float: right !important;
 	color: #888;
 	font-size: 13px !important;
-	display: inline-block;
 	margin-top: 15px;
 	margin-right: 5px;
 }
@@ -97,7 +96,7 @@
 .property-characteristics {
 	margin-left: 30px;
 	height: 100px;
-	margin-top: 20px;
+	margin-top: 10px !important;
 	margin-right: 200px;
 	display: flex;	
 }
@@ -107,7 +106,7 @@
 	font-size: 16px !important;
 	color: #888 !important;
 	margin-left: 10px;
-	margin-top: 3px;
+	padding-top: 40px !important;
 	text-align: left !important;
 }
 
@@ -136,7 +135,7 @@ h4 {
 
 .more-info {
 	height: 20px;
-	margin-top: 35%;	
+	padding-top: 40%;	
 }
 
 .more-info-title {

@@ -428,7 +428,6 @@ class List extends React.Component {
                         {this.getResults(t)}
                     </div>
                     <div class="results" id="order" onChange={(event) => this.handleSelect(event,"order")}>
-                        <h3 id="order-title-select">{t('list.order')}</h3>
                         <select id="order-select">
                             <option disabled selected value={Constants.NO_ORDER}>{t('list.noOrder')}</option>
                             <option value={Constants.NEWEST_PUBLICATION}>{t('list.newest')}</option>
@@ -436,6 +435,7 @@ class List extends React.Component {
                             <option value={Constants.ASCENDANT_ORDER}>{t('list.lowest')}</option>
                             <option value={Constants.DESCENDANT_ORDER}>{t('list.highest')}</option>                 
                         </select>
+                        <h3 id="order-title-select">{t('list.order')}</h3>
                     </div>
                 </div>
 
