@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.Constants;
 import ar.edu.itba.paw.webapp.auth.CustomAccessDeniedHandler;
 import ar.edu.itba.paw.webapp.auth.PawUserDetailsService;
 import ar.edu.itba.paw.webapp.auth.PlainTextBasicAuthenticationEntryPoint;
@@ -44,42 +45,46 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    	http.csrf().disable();
+    	http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests()
+    	http.authorizeRequests()
         
-        		//permitAll
-        		.antMatchers(HttpMethod.GET, "/publications/getSalePublications").permitAll()
-                .antMatchers(HttpMethod.GET, "/publications/getRentPublications").permitAll()
-                .antMatchers(HttpMethod.POST, "/publications/getPublicationsQuantity").permitAll()
-                .antMatchers(HttpMethod.POST, "/publications/getPublications").permitAll()
-                .antMatchers(HttpMethod.POST, "/publications/getPublicationByID").permitAll()
-                .antMatchers(HttpMethod.POST, "/publications/getFilters").permitAll()
-                .antMatchers(HttpMethod.POST, "/publications/getPublicationImage").permitAll()
-                .antMatchers(HttpMethod.POST, "/users/sendMessage").permitAll()
-                .antMatchers(HttpMethod.POST, "/users/signUp").permitAll()
-                .antMatchers(HttpMethod.POST, "/admin/getProvinces").permitAll()
-                .antMatchers(HttpMethod.POST, "/admin/getCities").permitAll()
-                .antMatchers(HttpMethod.POST, "/admin/getNeighborhoods").permitAll()
+        	//LocationController
+        	.antMatchers(HttpMethod.POST, "/meinHaus/locations-managment/provinces").hasRole(Constants.Role.ADMIN.getRole())
+        	.antMatchers(HttpMethod.POST, "/meinHaus/locations-managment/provinces/{provinceid}/cities").hasRole(Constants.Role.ADMIN.getRole())
+        	.antMatchers(HttpMethod.POST, "/meinHaus/locations-managment/cities/{cityid}/neighborhoods").hasRole(Constants.Role.ADMIN.getRole())
+        	.antMatchers(HttpMethod.GET, "/meinHaus/locations-managment/provinces").permitAll()
+        	.antMatchers(HttpMethod.GET, "/meinHaus/locations-managment/provinces/{provinceid}/cities").permitAll()
+        	.antMatchers(HttpMethod.GET, "/meinHaus/locations-managment/cities/{cityid}/neighborhoods").permitAll()
                 
                 
-                //access(USER OR ADMIN)
-                .antMatchers(HttpMethod.POST, "/users/publish").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.POST, "/publications/images").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.POST, "/users/getMyPublicationsQuantity").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.POST, "/users/getMyFavoritesQuantity").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.POST, "/users/getMyPublications").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.POST, "/users/getMyPublicationsCount").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+            //PublicationController
+        	.antMatchers(HttpMethod.GET, "/meinHaus/publications-managment/publications").permitAll()
+        	.antMatchers(HttpMethod.GET, "/meinHaus/publications-managment/publications/filters").permitAll()
+        	.antMatchers(HttpMethod.GET, "/meinHaus/publications-managment/publications/{publicationid}").permitAll()
+        	.antMatchers(HttpMethod.GET, "/meinHaus/publications-managment/publications/{publicationid}/images").permitAll()
+        	.antMatchers(HttpMethod.POST, "/meinHaus/publications-managment/publications/{publicationid}/images").hasAnyRole(Constants.Role.ADMIN.getRole(),Constants.Role.USER.getRole())
+        	.antMatchers(HttpMethod.DELETE, "/meinHaus/publications-managment/publications/{publicationID}").hasRole(Constants.Role.ADMIN.getRole())
         		
         
-        		//access(ADMIN)
-                .antMatchers(HttpMethod.POST, "/admin/province").access("hasRole('ROLE_ADMIN')")
-        		.antMatchers(HttpMethod.POST, "/admin/city").access("hasRole('ROLE_ADMIN')")
-        		.antMatchers(HttpMethod.POST, "/admin/neighborhood").access("hasRole('ROLE_ADMIN')")
-        		.antMatchers(HttpMethod.POST, "/admin/getUsers").access("hasRole('ROLE_ADMIN')")
-        		.antMatchers(HttpMethod.POST, "/admin/getUsersQuantity").access("hasRole('ROLE_ADMIN')")
-        		.antMatchers(HttpMethod.POST, "/admin/lockUser").access("hasRole('ROLE_ADMIN')");
+        	//UserController
+        	.antMatchers(HttpMethod.POST, "/meinHaus/users-managment/login").permitAll()
+        	.antMatchers(HttpMethod.GET, "/meinHaus/users-managment/users").hasRole(Constants.Role.ADMIN.getRole())
+        	.antMatchers(HttpMethod.POST, "/meinHaus/users-managment/users").permitAll()
+    		.antMatchers(HttpMethod.GET, "/meinHaus/users-managment/users/{userid}").authenticated()
+    		.antMatchers(HttpMethod.PATCH, "/meinHaus/users-managment/users/{userid}").authenticated()
+    		.antMatchers(HttpMethod.PATCH, "/meinHaus/users-managment/users/{userid}/lock").hasRole(Constants.Role.ADMIN.getRole())
+    		.antMatchers(HttpMethod.HEAD, "/meinHaus/users-managment/users/{email}").permitAll()
+    		.antMatchers(HttpMethod.POST, "/meinHaus/users-managment/users/{email}/password-reset").permitAll()
+    		.antMatchers(HttpMethod.PATCH, "/meinHaus/users-managment/users/password-reset").permitAll()
+    		.antMatchers(HttpMethod.POST, "/meinHaus/users-managment/users/{userid}/publications").hasAnyRole(Constants.Role.ADMIN.getRole(),Constants.Role.USER.getRole())
+    		.antMatchers(HttpMethod.POST, "/meinHaus/users-managment/users/messages").permitAll()
+    		.antMatchers(HttpMethod.GET, "/meinHaus/users-managment/users/{userid}/publications").authenticated()
+    		.antMatchers(HttpMethod.GET, "/meinHaus/users-managment/users/{userid}/favourite-publications").authenticated()
+    		.antMatchers(HttpMethod.POST, "/meinHaus/users-managment/users/{userid}/favourite-publications").authenticated()
+    		.antMatchers(HttpMethod.DELETE, "/meinHaus/users-managment/users/{userid}/favourite-publications/{publicationid}").authenticated();
+    		
 
 
         http.addFilterBefore(new StatelessLoginFilter("/meinHaus/users-managment/login", tokenAuthenticationService, userDetailsService, userService,

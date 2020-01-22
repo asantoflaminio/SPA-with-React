@@ -81,7 +81,26 @@ public class PublicationController {
     	if(userid != null)
     		publications = fps.checkFavourites(publications, userid);
     	return rs.ok(publications);
-    } 
+    }
+    
+    @GET
+    @Path("/publications/filters")
+    @Produces(value = { FiltersDTO.MediaType })
+    public Response getFilters (@QueryParam("operation") String operation, @QueryParam("propertyType") String propertyType, @QueryParam("address") String address,
+								@QueryParam("minPrice") Integer minPrice, @QueryParam("maxPrice") Integer maxPrice, @QueryParam("minFloorSize") Integer minFloorSize,
+								@QueryParam("maxFloorSize") Integer maxFloorSize, @QueryParam("bedrooms") Integer bedrooms, @QueryParam("bathrooms") Integer bathrooms,
+								@QueryParam("parking") Integer parking, @DefaultValue("false") @QueryParam("locked") Boolean locked) {
+    	FiltersDTO filtersDTO = new FiltersDTO();
+    	List<Filter> filters = ps.generateFilters(operation, propertyType, minPrice, maxPrice, minFloorSize, maxFloorSize, bedrooms, bathrooms, parking, locked);
+    	
+    	
+    	filtersDTO.setLocations(ps.getLocationFilter(filters, address));
+    	filtersDTO.setBedrooms(ps.getSimpleFilter(filters, address, Constants.DataBaseFilterName.BEDROOMS.getDataBaseFilterName()));
+    	filtersDTO.setBathrooms(ps.getSimpleFilter(filters, address, Constants.DataBaseFilterName.BATHROOMS.getDataBaseFilterName()));
+    	filtersDTO.setParking(ps.getSimpleFilter(filters, address, Constants.DataBaseFilterName.PARKING.getDataBaseFilterName()));
+    	
+    	return rs.ok(filtersDTO);
+    }
     
     @GET
     @Path("/publications/{publicationid}")
@@ -124,25 +143,6 @@ public class PublicationController {
     	if(bodyParts != null && bodyParts.size() > 0)
     		is.create(bodyParts, publicationid);
         return rs.create();
-    }
-    
-    @GET
-    @Path("/publications/filters")
-    @Produces(value = { FiltersDTO.MediaType })
-    public Response getFilters (@QueryParam("operation") String operation, @QueryParam("propertyType") String propertyType, @QueryParam("address") String address,
-								@QueryParam("minPrice") Integer minPrice, @QueryParam("maxPrice") Integer maxPrice, @QueryParam("minFloorSize") Integer minFloorSize,
-								@QueryParam("maxFloorSize") Integer maxFloorSize, @QueryParam("bedrooms") Integer bedrooms, @QueryParam("bathrooms") Integer bathrooms,
-								@QueryParam("parking") Integer parking, @DefaultValue("false") @QueryParam("locked") Boolean locked) {
-    	FiltersDTO filtersDTO = new FiltersDTO();
-    	List<Filter> filters = ps.generateFilters(operation, propertyType, minPrice, maxPrice, minFloorSize, maxFloorSize, bedrooms, bathrooms, parking, locked);
-    	
-    	
-    	filtersDTO.setLocations(ps.getLocationFilter(filters, address));
-    	filtersDTO.setBedrooms(ps.getSimpleFilter(filters, address, Constants.DataBaseFilterName.BEDROOMS.getDataBaseFilterName()));
-    	filtersDTO.setBathrooms(ps.getSimpleFilter(filters, address, Constants.DataBaseFilterName.BATHROOMS.getDataBaseFilterName()));
-    	filtersDTO.setParking(ps.getSimpleFilter(filters, address, Constants.DataBaseFilterName.PARKING.getDataBaseFilterName()));
-    	
-    	return rs.ok(filtersDTO);
     }
     
     

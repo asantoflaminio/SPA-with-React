@@ -113,16 +113,6 @@ public class UserController {
     	return Response.ok().entity(userDTO).build();
     }
     
-    @HEAD
-    @Path("/users/{email}")
-    public Response checkEmail (@PathParam("email") String email) {
-    	if(us.findByUsername(email) == null)
-    		return rs.notFound();
-    	else
-    		return rs.ok();
-    	
-    }
-    
     @PATCH
     @Path("/users/{userid}")
     @Consumes(value = { UserDTO.MediaType, })
@@ -158,6 +148,16 @@ public class UserController {
     		return rs.notFound();
     	us.lock(lock, userid);
     	return rs.ok();
+    }
+    
+    @HEAD
+    @Path("/users/{email}")
+    public Response checkEmail (@PathParam("email") String email) {
+    	if(us.findByUsername(email) == null)
+    		return rs.notFound();
+    	else
+    		return rs.ok();
+    	
     }
     
     @POST

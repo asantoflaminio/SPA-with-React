@@ -23,7 +23,7 @@ public class UserHibernateDao implements UserDao {
 	
 	@Transactional
 	public User create(final String firstName, final String lastName, final String email, final String password, 
-					final String languaje, final String phoneNumber,  String role) {
+					final String phoneNumber, final String languaje,  String role) {
 		
 		final User user = new User(firstName, lastName, email, password, phoneNumber, languaje, role);
 		em.persist(user);

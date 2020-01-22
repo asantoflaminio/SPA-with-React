@@ -39,7 +39,8 @@ public class Constants {
 	
 	public static enum Role{
 		USER("USER"),
-		ADMIN("ADMIN");
+		ADMIN("ADMIN"),
+		LOCKED("LOCKED");
 		
 		private final String role;
 	

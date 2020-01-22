@@ -18,7 +18,8 @@ const LocalStorageService = (function(){
     }
 
     function _refreshToken(authorization, username) {
-        _clearToken();
+        _clearAuthorization()
+        _clearUsername()
         _setAuthorization(authorization)
         _setUsername(username)
     }
@@ -56,9 +57,27 @@ const LocalStorageService = (function(){
       return localStorage.getItem(USERID_TOKEN)
     }
 
+    function _clearAuthorization() {
+      localStorage.removeItem(AUTH_TOKEN);
+    }
+
+    function _clearAccessRole() {
+      localStorage.removeItem(ACCESS_TOKEN)
+    }
+
+    function _clearUsername(){
+      localStorage.removeItem(USERNAME_TOKEN)
+    }
+
+    function _clearUserid(){
+      localStorage.removeItem(USERID_TOKEN)
+    }
+
     function _clearToken() {
       localStorage.removeItem(AUTH_TOKEN);
       localStorage.removeItem(USERNAME_TOKEN)
+      localStorage.removeItem(ACCESS_TOKEN)
+      localStorage.removeItem(USERID_TOKEN)
     }
 
     function _initializeCounter(){
@@ -94,6 +113,10 @@ const LocalStorageService = (function(){
       getAccessRole : _getAccessRole,
       getUsername : _getUsername,
       getUserid : _getUserid,
+      clearAuthorization : _clearAuthorization,
+      clearAccessRole : _clearAccessRole,
+      clearUsername : _clearUsername,
+      clearUserid : _clearUserid,
       clearToken : _clearToken,
       initializeCounter : _initializeCounter,
       incrementCounter : _incrementCounter,

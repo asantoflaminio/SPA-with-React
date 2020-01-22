@@ -58,7 +58,7 @@ public class User {
 	
 	
 	public User(long userid,String firstName, String lastName,
-			String email, String password, String phoneNumber, String role, String languaje) {
+			String email, String password, String phoneNumber, String languaje, String role) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -71,7 +71,7 @@ public class User {
 	}
 	
 	public User(String firstName, String lastName,
-			String email, String password, String phoneNumber, String role, String languaje) {
+			String email, String password, String phoneNumber, String languaje, String role) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
