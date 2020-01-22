@@ -42,7 +42,7 @@ class StandarNavbar extends React.Component {
             }else if(response.status === StatusCode.UNAUTHORIZED){
                 document.getElementById("errorLogin").style.display = "block"
             }else{
-                ErrorService.logError(this.props,response)
+                ErrorService.logError(currentComponent.props,response)
             }
         })
         

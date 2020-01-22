@@ -43,7 +43,7 @@ import ar.edu.itba.paw.services.ValidateServiceImpl;
 import ar.edu.itba.paw.webapp.auth.TokenAuthenticationService;
 
 
-@Path("users-managment")
+@Path("users-management")
 @Component
 public class UserController {
 	

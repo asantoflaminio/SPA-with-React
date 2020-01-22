@@ -32,7 +32,6 @@ public class StatelessLoginFilter extends AbstractAuthenticationProcessingFilter
         this.tokenAuthenticationService = tokenAuthenticationService;
         this.userService = userService;
         this.setAuthenticationManager(authManager);
-        this.setAuthenticationFailureHandler(new RestAuthenticationFailureHandler());
     }
 
     @Override
@@ -40,11 +39,7 @@ public class StatelessLoginFilter extends AbstractAuthenticationProcessingFilter
             throws AuthenticationException, IOException, ServletException {
         Authentication authentication;
 
-        try {
-            authentication = tokenAuthenticationService.getAuthenticationForLogin(request);
-        } catch (UserNotActiveException e) {
-            throw new UserAuthenticationException("User is not active");
-        }
+        authentication = tokenAuthenticationService.getAuthenticationForLogin(request);
 
         if (authentication == null) {
             throw new UserAuthenticationException("Authentication failed");

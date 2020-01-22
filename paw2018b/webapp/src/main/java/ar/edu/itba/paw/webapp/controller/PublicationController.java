@@ -40,7 +40,7 @@ import ar.edu.itba.paw.services.ValidateServiceImpl;
 import ar.edu.itba.paw.webapp.auth.TokenAuthenticationService;
 
 
-@Path("publications-managment")
+@Path("publications-management")
 @Component
 public class PublicationController {
 	

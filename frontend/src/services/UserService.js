@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const UserService = (function(){
 
-    const USERS_PATH = process.env.PUBLIC_URL + '/meinHaus/users-managment'
+    const USERS_PATH = process.env.PUBLIC_URL + '/meinHaus/users-management'
 
     function _isLogged(){
         if(LocalStorageService.getAuthorization() != null)

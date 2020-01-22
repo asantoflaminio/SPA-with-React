@@ -2,7 +2,7 @@ package ar.edu.itba.paw.webapp.auth;
 
 interface TokenHandler {
 	
-    String createToken(String username);
+    public String createToken(String username);
 
-    String getUsername(String token);
+    public String getUsername(String token);
 }
