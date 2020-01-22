@@ -13,6 +13,7 @@ import JsonService from '../services/JsonService'
 import { withRouter } from "react-router";
 import ToastNotification from '../components/ToastNotification'
 import * as StatusCode from '../util/StatusCode'
+import UserService from '../services/UserService';
 
 class AdminGenerator extends React.Component {
 
@@ -32,6 +33,11 @@ class AdminGenerator extends React.Component {
 
     componentDidMount(){
         let currentComponent = this
+        UserService.isAdmin().then(function (response){
+            if(response.status !== StatusCode.OK)
+                ErrorService.logError(currentComponent.props,response)
+                return;
+        })
         LocationService.getProvinces().then(function (response){
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
@@ -179,6 +185,8 @@ class AdminGenerator extends React.Component {
             cityid: yup.string().required(t('errors.requiredField')),
             neighborhood: yup.string().required(t('errors.requiredField'))
         });
+
+
         return(
             <div>
                 <AdminManagment t={t} active={"AdminGenerator"}/>

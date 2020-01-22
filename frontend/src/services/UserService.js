@@ -13,7 +13,17 @@ const UserService = (function(){
             return false;
     }
 
-    async function _getUsers(queryParameters, props){
+    async function _isAdmin(){
+      return await axios({
+        method: 'head',
+        url: `${USERS_PATH}/users/admin`,
+        headers: {
+          authorization: LocalStorageService.getAuthorization()
+      }
+      }).then(function (response){ return response }).catch(function (error){ return error.response }) 
+    }
+
+    async function _getUsers(queryParameters){
         return await axios({
             method: 'get',
             url: `${USERS_PATH}/users`,
@@ -178,6 +188,7 @@ const UserService = (function(){
 
    return {
         isLogged : _isLogged,
+        isAdmin: _isAdmin,
         getUsers : _getUsers,
         getUser: _getUser,
         signUp : _signUp,

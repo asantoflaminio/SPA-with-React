@@ -5,8 +5,6 @@ const LocalStorageService = (function(){
     const ACCESS_TOKEN = "access_role";
     const USERNAME_TOKEN = "username";
     const USERID_TOKEN = "userid";
-    const ROLE_ADMIN = "ROLE_ADMIN";
-    const ROLE_USER = "ROLE_USER";
     const COUNTER = "counter"
 
     function _getService() {
@@ -25,16 +23,16 @@ const LocalStorageService = (function(){
     }
 
 
-    function _setToken(authorization, access, username, userid) {
-      let max_acess = _decideAccess(access);
-      localStorage.setItem(AUTH_TOKEN, authorization);
-      localStorage.setItem(ACCESS_TOKEN, max_acess)
-      localStorage.setItem(USERNAME_TOKEN,username)
+    function _setToken(authorization, username, userid) {
+      _setAuthorization(authorization)
+      _setUsername(username)
       localStorage.setItem(USERID_TOKEN,userid)
     }
 
     function _setAuthorization(authorization){
-      return localStorage.setItem(AUTH_TOKEN,authorization)
+      let token = authorization
+      let reducedToken = token.replace("Bearer ","")
+      return localStorage.setItem(AUTH_TOKEN,reducedToken)
     }
 
     function _setUsername(username){
@@ -76,7 +74,6 @@ const LocalStorageService = (function(){
     function _clearToken() {
       localStorage.removeItem(AUTH_TOKEN);
       localStorage.removeItem(USERNAME_TOKEN)
-      localStorage.removeItem(ACCESS_TOKEN)
       localStorage.removeItem(USERID_TOKEN)
     }
 
@@ -94,13 +91,6 @@ const LocalStorageService = (function(){
 
     function _deleteCounter(){
       localStorage.removeItem(COUNTER)
-    }
-
-    function _decideAccess(access_role){
-      if(access_role.includes(ROLE_ADMIN))
-        return ROLE_ADMIN
-      else
-      return ROLE_USER
     }
 
    return {

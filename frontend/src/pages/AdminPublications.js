@@ -10,6 +10,7 @@ import * as StatusCode from '../util/StatusCode'
 import ToastNotification from '../components/ToastNotification'
 import ErrorService from '../services/ErrorService';
 import LocalStorageService from '../services/LocalStorageService';
+import UserService from '../services/UserService';
 import PublicationLoader from '../components/PublicationLoader'
 
 class AdminPublications extends React.Component {
@@ -32,6 +33,12 @@ class AdminPublications extends React.Component {
     }
 
     componentDidMount(){
+        let currentComponent = this
+        UserService.isAdmin().then(function (response){
+            if(response.status !== StatusCode.OK)
+                ErrorService.logError(currentComponent.props,response)
+                return;
+        })
         this.updatePublications(this.state.page)
     }
 

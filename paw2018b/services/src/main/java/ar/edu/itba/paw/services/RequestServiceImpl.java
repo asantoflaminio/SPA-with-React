@@ -7,6 +7,7 @@ import javax.ws.rs.core.Response;
 import org.springframework.stereotype.Service;
 
 import ar.edu.itba.paw.interfaces.RequestService;
+import ar.edu.itba.paw.models.dto.ErrorDTO;
 
 @Service
 public class RequestServiceImpl implements RequestService{

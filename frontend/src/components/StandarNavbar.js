@@ -35,8 +35,7 @@ class StandarNavbar extends React.Component {
         loginDTO.password = event.target[1].value
         UserService.login(loginDTO).then(function(response){
             if(response.status === StatusCode.OK){
-                LocalStorageService.setToken(response.headers.authorization, response.headers.authorities, 
-                                                response.headers.username, response.headers["user-id"])
+                LocalStorageService.setToken(response.headers.authorization, response.headers.username, response.headers["user-id"])
                 document.getElementById("errorLogin").style.display = "none"
                 currentComponent.props.history.push(currentPath)
             }else if(response.status === StatusCode.UNAUTHORIZED){

@@ -53,8 +53,7 @@ class SignUp extends React.Component {
                     ErrorService.logError(currentComponent.props,response)
                     return;
                 }
-                LocalStorageService.setToken(response.headers.authorization, response.headers.authorities, 
-                                                response.headers.username, response.headers["user-id"])
+                LocalStorageService.setToken(response.headers.authorization, response.headers.username, response.headers["user-id"])
                 currentComponent.props.history.push(currentPath)
                 currentComponent.setState({
                     isLogged: true,
@@ -78,8 +77,7 @@ class SignUp extends React.Component {
         if(Object.keys(errors).length === 0){
             UserService.login(loginDTO).then(function(response){
                 if(response.status === StatusCode.OK){
-                    LocalStorageService.setToken(response.headers.authorization, response.headers.authorities, 
-                                                    response.headers.username, response.headers["user-id"])
+                    LocalStorageService.setToken(response.headers.authorization, response.headers.username, response.headers["user-id"])
                     document.getElementById("errorLoginSignUp").style.display = "none"                   
                     currentComponent.props.history.push(currentPath)
                 }else if(response.status === StatusCode.UNAUTHORIZED){

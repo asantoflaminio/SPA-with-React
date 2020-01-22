@@ -18,10 +18,11 @@ import MyInformation from './pages/MyInformation'
 import EditPublication from './pages/EditPublication'
 import UserService from './services/UserService'
 import Navbar from './components/Navbar'
+import * as StatusCode from './util/StatusCode'
+import ErrorService from './services/ErrorService';
 
 
 const PrivateRoute = ({component: Component, ...rest}) => {
-
   return (
       <Route {...rest} render={props => (
         UserService.isLogged() ?
@@ -51,7 +52,7 @@ function App() {
           <Navbar />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/SignUp" component={SignUp} />
+            <OnlyPublicRoute exact path="/SignUp" component={SignUp} />
             <Route exact path="/List" component={List} />
             <Route exact path="/publications" component={Details} />
             <Route exact path="/error" component={ErrorBoundary} />

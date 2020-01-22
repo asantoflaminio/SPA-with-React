@@ -4,26 +4,44 @@ import { withTranslation } from 'react-i18next';
 import StandarNavbar from './StandarNavbar';
 import UserNavbar from './UserNavbar';
 import UserService from '../services/UserService'
-import AdminService from '../services/AdminService'
+import * as StatusCode from '../util/StatusCode'
 
 class Navbar extends React.Component {
 
     constructor(props) {
          super(props);
          this.state = {
-            isLogged: UserService.isLogged(),
-            isAdmin: AdminService.isAdmin()
+            isLogged: false,
+            isAdmin: false
          };
        }
+
+    componentDidMount(){
+        let currentComponent = this
+        if(UserService.isLogged()){
+            UserService.isAdmin().then(function (response){
+                if(response.status === StatusCode.OK)
+                    currentComponent.setState({ isLogged: true, isAdmin: true })
+                else
+                    currentComponent.setState({ isLogged: true, isAdmin: false })
+            })
+        }
+    }
     
     componentDidUpdate(prevProps,prevState){
-        let isLoggedUpdate = UserService.isLogged()
-        let isAdminUpdate = AdminService.isAdmin()
-        if (this.state.isLogged !== isLoggedUpdate || this.state.isAdmin !== isAdminUpdate){
-            this.setState({
-                isLogged : isLoggedUpdate,
-                isAdmin : isAdminUpdate
-            })
+        let currentComponent = this
+        let isLoggedUpdate = UserService.isLogged();
+        if (this.state.isLogged !== isLoggedUpdate){
+            if(isLoggedUpdate){
+                UserService.isAdmin().then(function (response){
+                    if(response.status === StatusCode.OK)
+                        currentComponent.setState({ isLogged: true, isAdmin: true })
+                    else
+                        currentComponent.setState({ isLogged: true, isAdmin: false })
+                })
+            }else{
+                currentComponent.setState({ isLogged: false, isAdmin: false })
+            }
         }
     }
 

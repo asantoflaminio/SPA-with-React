@@ -9,8 +9,16 @@ import LocalStorageService from '../services/LocalStorageService'
 class UserNavbar extends React.Component {
     constructor(props) {
          super(props);
+         this.state = {
+             username: null
+         }
+
          this.logout = this.logout.bind(this);
        }
+
+    componentDidMount(){
+        this.setState({ username: LocalStorageService.getUsername()})
+    }
 
     logout(){
         let currentPath = this.props.location;
@@ -40,7 +48,7 @@ class UserNavbar extends React.Component {
                         <img src={logo} alt="Home" id="logo"/>
                     </a>
                 </Link>
-                <NavDropdown title={LocalStorageService.getUsername()} id="basic-nav-dropdown">
+                <NavDropdown title={this.state.username} id="basic-nav-dropdown">
                     <Link to={{pathname: "/MyInformation"}}>
                         <a href="#" className="dropdown-item">{t('userNavbar.profile')}</a>
                     </Link>
