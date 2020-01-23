@@ -10,7 +10,8 @@ class UserNavbar extends React.Component {
     constructor(props) {
          super(props);
          this.state = {
-             username: null
+             username: null,
+             redirect: false
          }
 
          this.logout = this.logout.bind(this);
@@ -22,8 +23,9 @@ class UserNavbar extends React.Component {
 
     logout(){
         let currentPath = this.props.location;
+        let currentComponent = this;
         LocalStorageService.clearToken()
-        this.props.history.push(currentPath)
+        currentComponent.props.history.push("/SignUp")
     }
 
     isAdmin(t){
@@ -57,7 +59,7 @@ class UserNavbar extends React.Component {
                     </Link>
                     {adminOption}
                     <NavDropdown.Divider/>
-                    <a href="#" onClick={this.logout} className="dropdown-item">{t('userNavbar.logout')}</a>
+                        <a href="#" onClick={this.logout} className="dropdown-item">{t('userNavbar.logout')}</a>
                 </NavDropdown>
             </nav>
         )

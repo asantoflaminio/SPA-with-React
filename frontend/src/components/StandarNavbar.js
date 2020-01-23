@@ -30,7 +30,6 @@ class StandarNavbar extends React.Component {
         event.preventDefault();
         let currentComponent = this;
         let currentPath = this.props.location;
-        alert(JSON.stringify(currentPath))
         let loginDTO = {}
         loginDTO.email = event.target[0].value;
         loginDTO.password = event.target[1].value
@@ -38,7 +37,8 @@ class StandarNavbar extends React.Component {
             if(response.status === StatusCode.OK){
                 LocalStorageService.setToken(response.headers.authorization, response.headers.username, response.headers["user-id"])
                 document.getElementById("errorLogin").style.display = "none"
-                alert("pushing")
+
+                currentComponent.props.history.push("/SignUp")
                 currentComponent.props.history.push(currentPath)
             }else if(response.status === StatusCode.UNAUTHORIZED){
                 document.getElementById("errorLogin").style.display = "block"

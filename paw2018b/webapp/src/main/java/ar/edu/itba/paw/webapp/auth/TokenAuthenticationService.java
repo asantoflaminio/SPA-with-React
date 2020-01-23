@@ -56,6 +56,18 @@ public class TokenAuthenticationService {
     	return null;
     }
     
+    public String getUserAuthorities(final HttpServletRequest request) {
+    	final String token = request.getHeader(AUTH_HEADER);
+    	
+    	if (token != null) {
+    		final String username = tokenHandler.getUsername(token);
+    		if(username != null)
+    			return us.findByUsername(username).getRole();
+    	}
+    	
+    	return null;
+    }
+    
     Authentication getAuthentication(final HttpServletRequest request) {
         final String token = request.getHeader(AUTH_HEADER);
         Authentication authentication = null;

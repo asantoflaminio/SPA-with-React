@@ -12,7 +12,6 @@ const ErrorService = (function(){
             pathname: '/SignUp',
             search: '?expiredAuthorization=true',
         });
-        alert("asd")
         return
         }
 
