@@ -53,7 +53,7 @@ public class JWTTokenHandler implements TokenHandler {
                     .parseClaimsJws(token.replace(TOKEN_BEARER_PREFIX, "")).getBody().getSubject();
 
             return username;
-        } catch (final Exception e) {// SignatureException | ExpiredJwtException exceptions catched
+        } catch (final Exception e) {
             return null;
         }
 

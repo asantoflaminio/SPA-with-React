@@ -13,7 +13,9 @@
       "phoneNumber": "CELULAR",
       "phoneNumberHolder": "Celular...",
       "submit": "Enviar",
-      "login": "Iniciar Sesión"
+      "login": "Iniciar Sesión",
+      "expiredToken": "Sesión expirada",
+      "expiredTokenInformation": "La sesión ha expirado. Por favor, vuelve a iniciar sesión."
     },
     "home": {
       "title": "Encuentre su nuevo hogar",

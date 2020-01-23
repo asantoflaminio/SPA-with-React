@@ -33,11 +33,6 @@ class AdminGenerator extends React.Component {
 
     componentDidMount(){
         let currentComponent = this
-        UserService.isAdmin().then(function (response){
-            if(response.status !== StatusCode.OK)
-                ErrorService.logError(currentComponent.props,response)
-                return;
-        })
         LocationService.getProvinces().then(function (response){
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)

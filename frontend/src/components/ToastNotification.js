@@ -7,7 +7,8 @@ class ToastNotification extends React.Component{
   constructor(props) {
     super(props);
      this.state = { 
-        show: false
+        show: false,
+        oneTimeShow: true
     };
     this.handleClose = this.handleClose.bind(this)
     this.handleShow = this.handleShow.bind(this)
@@ -22,14 +23,22 @@ class ToastNotification extends React.Component{
   }
 
   handleClose(){
+    let showAgain = true;
+    if(this.props.oneTimeShow !== undefined)
+      showAgain = false;
+
     this.setState({
-      show: false
+      show: false,
+      oneTimeShow: showAgain
     })
   }
 
   handleShow(){
+    let showAgain = true;
+    if(this.props.oneTimeShow !== undefined)
+      showAgain = false;
     if(this.props.checkModal === false)
-      setTimeout(() => {this.setState({show: false})}, 7000)
+      setTimeout(() => {this.setState({show: false, oneTimeShow: showAgain})}, 7000)
   }
 
   showButtons(){
@@ -53,7 +62,7 @@ class ToastNotification extends React.Component{
     let buttons = this.showButtons()
     return (
       <Modal 
-        show={this.state.show} 
+        show={this.state.show && this.state.oneTimeShow} 
         onHide={this.handleClose} 
         backdrop={false}
         onShow={this.handleShow}

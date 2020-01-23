@@ -25,14 +25,6 @@ class AdminUsers extends React.Component {
         };
     }
 
-    componentDidMount(){
-        let currentComponent = this
-        UserService.isAdmin().then(function (response){
-            if(response.status !== StatusCode.OK)
-                ErrorService.logError(currentComponent.props,response)
-        })
-    }
-
 
     lockUser(event,index){
         let currentComponent = this

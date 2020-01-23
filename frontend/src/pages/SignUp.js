@@ -15,6 +15,7 @@ import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
 import {Link} from 'react-router-dom';
 import ColoredLinearProgress from '../components/ColoredLinearProgress';
+import ToastNotification from '../components/ToastNotification'
 
 
 
@@ -23,9 +24,19 @@ class SignUp extends React.Component {
         super(props);
         this.state = {
             isLogged: UserService.isLogged(),
-            loading: false
+            loading: false,
+            showModal: false
         };
       }
+
+    componentDidMount(){
+        const queryString = require('query-string');
+        const query = queryString.parse(this.props.location.search)
+        if(query.expiredAuthorization === "true"){
+            this.setState({ showModal: true })
+        }
+
+    }
 
     handleSignUpForm(event,errors) {
         event.preventDefault();
@@ -147,6 +158,14 @@ class SignUp extends React.Component {
         });
     return (
         <div>
+        <ToastNotification 
+            show={this.state.showModal}
+            title={t('signUp.expiredToken')}
+            information={t('signUp.expiredTokenInformation')}
+            type="Information"
+            checkModal={false}
+            oneTimeShow={true}
+        />
         {this.state.loading ? <ColoredLinearProgress /> : null} 
         <div className="flex">
             <div className="box_form_signUp">
