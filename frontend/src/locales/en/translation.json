@@ -12,7 +12,10 @@
       "repeatPassword": "REPEAT PASSWORD*",
       "phoneNumber": "CELLPHONE",
       "phoneNumberHolder": "Cellphone...",
-      "submit": "Submit"
+      "submit": "Submit",
+      "login": "Log In",
+      "expiredToken": "Expired session",
+      "expiredTokenInformation": "Your session has expired. Please log in again."
     },
     "home": {
       "title": "Find your new home",
@@ -43,6 +46,7 @@
       "passwordMatch": "Passwords must match",
       "positiveNumber" : "Field value must be positive",
       "emailTaken" : "Email already in use",
+      "errorLogin" : "Invalid email or password",
       "errorTitle": "¡Oops! There seems to be a problem.",
       "errorCode": "Error code: ",
       "errorMessage": "Go back to homepage.",
@@ -150,6 +154,7 @@
       "house": "House",
       "apartment": "Apartment",
       "order": "Order by",
+      "noOrder": "",
       "lowest": "Lowest price",
       "highest": "Highest price",
       "newest": "Newest",
@@ -176,7 +181,8 @@
       "parkingPlural": "parking spaces",
       "sqmeters": "square meters",
       "moreInfo": "More information ",
-      "cleanAll": "Clean all"
+      "cleanAll": "Clean all",
+      "noPublications": "Could not find properties for the selected filters"
       },
       "details": {
         "overview": "Overview",
@@ -204,7 +210,8 @@
         "expenses": "Expenses:",
         "Yes": "Yes",
         "No": "No",
-        "messageSent": "Message sent."
+        "messageTitle": "Contact",
+        "messageDetail": "Message sent"
      }, 
      "profile": {
       "titlePersonalData": "PERSONAL INFORMATION",
@@ -215,8 +222,8 @@
       "lastNameHolder": "Last name",
       "email": "EMAIL",
       "emailHolder": "Email",
-      "phoneNumber": "PHONE NUMBER",
-      "phoneNumberHolder": "Phone number",
+      "phonenumber": "PHONE NUMBER",
+      "phonenumberHolder": "Phone number",
       "password": "CURRENT PASSWORD",
       "passwordHolder": "Current password",
       "newpassword": "NEW PASSWORD",

@@ -154,7 +154,7 @@
       "house": "Casa",
       "apartment": "Departamento",
       "order": "Ordenar por",
-      "noOrder": "Orden por...",
+      "noOrder": "",
       "lowest": "Precio más bajo",
       "highest": "Precio más alto",
       "newest": "Lo más nuevo",
