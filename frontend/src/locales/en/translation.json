@@ -164,7 +164,7 @@
       "filters": "FILTERS",
       "location": "LOCATIONS",
       "price": "PRICE",
-      "floorsizetitle": "AREA",
+      "floorSizeTitle": "AREA",
       "bedrooms": "ROOMS",
       "bathrooms": "BATHROOMS",
       "parking": "PARKING",
