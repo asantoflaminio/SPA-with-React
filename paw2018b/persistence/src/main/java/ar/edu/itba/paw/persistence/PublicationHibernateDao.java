@@ -136,8 +136,8 @@ public class PublicationHibernateDao implements PublicationDao{
 	@Transactional
 	public boolean editData(String title, String address,String neighborhood, String city, String province, String operation, String price,
 			   String description, String propertyType, String bedrooms,
-			   String bathrooms, String floorSize, String parking, long publicationid,
-			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses) {
+			   String bathrooms, String floorSize, String parking,
+			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses, long publicationid) {
 		final Query query =  em.createQuery("update Publication as pub set pub.title = :title, "
 													 + "pub.address = :address, "
 													 + "pub.operation = :operation, pub.price = :price, "

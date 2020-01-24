@@ -16,20 +16,20 @@ public interface RequestService {
 	
 	public Response create(Object objectDTO);
 	
-	public Response badRequest();
+	public Response noContent();
+	
+	public Response badRequest(String details);
+	
+	public Response unauthorized(String details);
+	
+	public Response forbidden(String details);
 	
 	public Response notFound();
 	
-	public Response conflict();
-
-	public Response noContent();
-
-	public Response forbidden();
-
-	public Response badGateway();
-
-	public Response unauthorized();
+	public Response notFound(String details);
 	
+	public Response conflict(String details);
 
+	public Response badGateway(String details);
 
 }

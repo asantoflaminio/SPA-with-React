@@ -7,8 +7,8 @@ public interface ValidateService {
 	public boolean validatePublication(String title, String address, String neighborhood,
 			   String city, String province, String operation, String price,
 			   String description, String propertyType, String bedrooms,
-			   String bathrooms, String floorSize, String parking, long userid,
-			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses);
+			   String bathrooms, String floorSize, String parking,
+			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses, long userid);
 	
 	public boolean validateUser(String firstName, String lastName, String email, String password, String phoneNumber);
 	

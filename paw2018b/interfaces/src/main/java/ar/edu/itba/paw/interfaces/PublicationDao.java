@@ -29,8 +29,8 @@ public interface PublicationDao {
 	
 	public boolean editData(String title, String address,String neighborhood, String city, String province, String operation, String price,
 			   String description, String propertyType, String bedrooms,
-			   String bathrooms, String floorSize, String parking, long publicationid,
-			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses);
+			   String bathrooms, String floorSize, String parking,
+			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses, long publicationid);
 	
 	public void lockUnlockPublication(boolean status, long publicationid);
 	

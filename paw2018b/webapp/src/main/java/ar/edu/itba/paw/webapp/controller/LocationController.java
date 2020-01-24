@@ -39,9 +39,9 @@ public class LocationController {
     @Consumes(value = { ProvinceDTO.MediaType })
     public Response createProvince (final ProvinceDTO provinceDTO) {
     	if(! vs.validateLocationAdmin(provinceDTO.getProvince(), Constants.Location.PROVINCE.getLocation()))
-    		return rs.badRequest();
+    		return rs.badRequest("The province input is invalid");
     	if(ls.findByProvinceName(provinceDTO.getProvince()) != null)
-    		return rs.conflict();
+    		return rs.conflict("The province input already exists");
     	
     	ls.createProvince(provinceDTO.getProvince());
         return rs.create();
@@ -51,11 +51,12 @@ public class LocationController {
     @Path("/provinces/{provinceid}/cities")
     @Consumes(value = { CityDTO.MediaType })
     public Response createCity (@PathParam("provinceid") long provinceid, final CityDTO cityDTO) {
-		if(! vs.validateLocationAdmin(cityDTO.getCity(), Constants.Location.CITY.getLocation()) ||
-			! vs.validateID(provinceid))
-			return rs.badRequest();
+		if(! vs.validateLocationAdmin(cityDTO.getCity(), Constants.Location.CITY.getLocation()))
+			return rs.badRequest("The city input is invalid");
+		if(! vs.validateID(provinceid))
+			return rs.badRequest("The province id is invalid");
     	if(ls.findByCityName(provinceid,cityDTO.getCity()) != null)
-    		return rs.conflict();
+    		return rs.conflict("The city input already exists");
     	
     	ls.createCity(cityDTO.getCity(),provinceid);
         return rs.create();
@@ -65,11 +66,12 @@ public class LocationController {
     @Path("/cities/{cityid}/neighborhoods")
     @Consumes(value = { NeighborhoodDTO.MediaType })
     public Response createNeighborhood (@PathParam("cityid") long cityid,final NeighborhoodDTO neighborhoodDTO) {
-		if(! vs.validateLocationAdmin(neighborhoodDTO.getNeighborhood(), "Neighborhood") || 
-			! vs.validateID(cityid))
-			return rs.badRequest();
+		if(! vs.validateLocationAdmin(neighborhoodDTO.getNeighborhood(), "Neighborhood"))
+			return rs.badRequest("The neighborhood input is invalid");
+		if(! vs.validateID(cityid))
+			return rs.badRequest("The city id is invalid");
     	if(ls.findByNeighborhoodName(cityid,neighborhoodDTO.getNeighborhood()) != null)
-    		return rs.conflict();
+    		return rs.conflict("The neighborhood input already exists");
     	
     	ls.createNeighborhood(neighborhoodDTO.getNeighborhood(),cityid);
         return rs.create();
@@ -90,7 +92,7 @@ public class LocationController {
     public Response getCities (@PathParam("provinceid") long provinceid) {
     	if(!vs.validateLocation(Long.toString(provinceid), Constants.Location.PROVINCE.toString()) || 
     		! vs.validateID(provinceid))
-    		return rs.badRequest();
+    		return rs.badRequest("The province id is invalid");
     	
     	List<CityDTO> cities = ls.getCities(provinceid);
     	return rs.ok(cities);
@@ -102,7 +104,7 @@ public class LocationController {
     public Response getNeighborhoods (@PathParam("cityid") long cityid) {
     	if(!vs.validateLocation(Long.toString(cityid), Constants.Location.CITY.toString()) ||
     		! vs.validateID(cityid))
-    		return rs.badRequest();
+    		return rs.badRequest("The city id is invalid");
     	List<NeighborhoodDTO> neighborhoods = ls.getNeighborhoods(cityid);
     	
     	return rs.ok(neighborhoods);

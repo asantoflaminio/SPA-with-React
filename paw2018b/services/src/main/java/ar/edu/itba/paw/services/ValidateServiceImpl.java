@@ -86,8 +86,8 @@ public class ValidateServiceImpl implements ValidateService{
 	public boolean validatePublication(String title, String address, String neighborhood,
 			   String city, String province, String operation, String price,
 			   String description, String propertyType, String bedrooms,
-			   String bathrooms, String floorSize, String parking, long userid,
-			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses){
+			   String bathrooms, String floorSize, String parking,
+			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses, long id){
 		
 		final String numbersRegex = "^[0-9]*$";
 		final String emptyOrNumbersRegex = "$|^[0-9]*$";
@@ -124,7 +124,7 @@ public class ValidateServiceImpl implements ValidateService{
 		if(! propertyType.equals(Constants.PropertyType.HOUSE.getPropertyType()) && ! propertyType.equals(Constants.PropertyType.APARTMENT.getPropertyType()))
 			return false;
 		
-		LOGGER.debug("The publication with title {} of user {} is valid", title, userid);
+		LOGGER.debug("The publication with title {} of user {} is valid", title, id);
 		return true;
 	}
 	

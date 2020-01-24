@@ -146,6 +146,25 @@ public class Constants {
 			return queryOrder;
 		}
 	}
+	
+	public static enum Error{
+		BAD_REQUEST("The request could not be understood by the server due to malformed syntax"),
+		UNAUTHORIZED("The request requires user authentication"),
+		FORBIDDEN("The server understood the request, but is refusing to fulfill it"),
+		NOT_FOUND("The server has not found any resource matching the Request-URI"),
+		CONFLICT("The request could not be completed due to a conflict with the current state of the resource"),
+		BAD_GATEWAY("The server, while acting as a gateway or proxy, received an invalid response from the upstream server it accessed in attempting to fulfill the request");
+		
+		private final String error;
+	
+		Error(String error){
+			this.error = error;
+		}
+	
+		public String getError() {
+			return error;
+		}
+	}
 
 
 }

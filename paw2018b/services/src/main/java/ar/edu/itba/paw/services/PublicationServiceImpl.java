@@ -58,13 +58,6 @@ public class PublicationServiceImpl implements PublicationService {
 		LOGGER.debug("Publication coveredFloorSize is {}", coveredFloorSize);
 		LOGGER.debug("Publication parking is {}", parking);
 		LOGGER.debug("Publication baulera is {}", storage);
-		
-		if(! vs.validatePublication(title, address, neighborhood,
-				   city, province, operation, price,
-				   description, propertyType, bedrooms,
-				   bathrooms, floorSize, parking, userid, coveredFloorSize, balconies, amenities, storage, expenses)) 
-			return null;
-		
 		LOGGER.debug("Creating publication with title {}", title);
 		
 		if(expenses.length() == 0) {
@@ -108,21 +101,21 @@ public class PublicationServiceImpl implements PublicationService {
 	@Override
 	public boolean editData(String title, String address,String neighborhood, String city, String province, String operation, String price,
 			   String description, String propertyType, String bedrooms,
-			   String bathrooms, String floorSize, String parking, long publicationid,
-			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses) {
+			   String bathrooms, String floorSize, String parking,
+			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses, long publicationid) {
 		
 		if(! vs.validatePublication(title, address, neighborhood,
 				   city, province, operation, price,
 				   description, propertyType, bedrooms,
-				   bathrooms, floorSize, parking, publicationid,
-				   coveredFloorSize, balconies, amenities, storage, expenses))
+				   bathrooms, floorSize, parking,
+				   coveredFloorSize, balconies, amenities, storage, expenses, publicationid))
 			return false;
 		
 		LOGGER.debug("Editing data of publication with title {}", title);
 		return publicationDao.editData(title, address, neighborhood, city, province, operation, price,
 				   description, propertyType, bedrooms,
-				   bathrooms, floorSize, parking, publicationid,
-				   coveredFloorSize, balconies, amenities, storage, expenses);
+				   bathrooms, floorSize, parking,
+				   coveredFloorSize, balconies, amenities, storage, expenses, publicationid);
 
 	}
 	

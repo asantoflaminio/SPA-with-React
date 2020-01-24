@@ -73,7 +73,7 @@ public class PublicationController {
     									@QueryParam("parking") Integer parking, @DefaultValue("false") @QueryParam("locked") Boolean locked, 
     									@DefaultValue("No order") @QueryParam("order") String order) {
     	if(!vs.validatePagination(page,limit))
-    		return rs.badRequest();
+    		return rs.badRequest("The pagination parameters are invalid");
     	List<Filter> filters = ps.generateFilters(operation, propertyType, minPrice, maxPrice, minFloorSize, maxFloorSize, bedrooms, bathrooms, parking, locked);
     	List<PublicationDTO> publications = ps.getPublications(address,filters,page,limit,order);
     	response.setHeader(Constants.COUNT_HEADER, Integer.toString(ps.getCountPublications(address,filters)));
@@ -107,11 +107,11 @@ public class PublicationController {
     @Produces(value = { PublicationDTO.MediaType })
     public Response getPublicationById (@Context HttpServletRequest request, @PathParam("publicationid") long publicationid) {
     	if(! vs.validateID(publicationid))
-    		rs.badRequest();
+    		rs.badRequest("The publication id es invalid");
     	
     	PublicationDTO publicationDTO = ps.findById(publicationid);
     	if(publicationDTO == null)
-    		return rs.notFound();
+    		return rs.notFound("No publication found with the specified id");
     	final Long userid = tas.getUserIdAuthentication(request);
     	if(userid != null)
     		publicationDTO = fps.checkFavourite(publicationDTO, userid);
@@ -122,11 +122,13 @@ public class PublicationController {
     @Path("/publications/{publicationid}/images")
     @Produces(value = { MediaType.APPLICATION_OCTET_STREAM })
     public Response getImg (@PathParam("publicationid") long publicationid, @DefaultValue("0") @QueryParam("index") Integer index) {
-    	if(! vs.validateID(publicationid) || ! vs.validateIndex(index))
-    		rs.badRequest();
+    	if(! vs.validateID(publicationid))
+    		rs.badRequest("The publication id es invalid");
+    	if(! vs.validateIndex(index))
+    		rs.badRequest("The image index is invalid");
     	UploadFile uploadFile = is.findByIndexAndId(publicationid,index);
     	if(uploadFile == null)
-    		return rs.notFound();
+    		return rs.notFound("No image found with the specified publication id or index");
     	byte[] data = uploadFile.getData();
     	byte[] dataBase64 = Base64.getEncoder().encode(data);
         return rs.ok(dataBase64);
@@ -139,7 +141,7 @@ public class PublicationController {
 			@FormDataParam("files") List<FormDataBodyPart> bodyParts,
 			@FormDataParam("files") FormDataContentDisposition fileDispositions) throws IOException {
     	if(!vs.validateID(publicationid))
-    		return rs.badRequest();
+    		return rs.badRequest("The publication id es invalid");
     	if(bodyParts != null && bodyParts.size() > 0)
     		is.create(bodyParts, publicationid);
         return rs.create();
@@ -150,9 +152,9 @@ public class PublicationController {
     @Path("/publications/{publicationID}")
     public Response deletePublication(@PathParam("publicationID") long publicationID){
     	if(! vs.validateID(publicationID))
-    		return rs.badRequest();
+    		return rs.badRequest("The publication id es invalid");
     	if(! ps.deletePublication(publicationID))
-    		return rs.notFound();
+    		return rs.notFound("No publication found with the specified id");
     	
     	return rs.noContent();
     }
