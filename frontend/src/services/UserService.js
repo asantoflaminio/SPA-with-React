@@ -93,6 +93,16 @@ const UserService = (function(){
         }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
+    async function _getPublication(userid, publicationid) {
+      return await axios({
+          method: 'get',
+          url: `${USERS_PATH}/users/${userid}/publications/${publicationid}`,
+          headers: {
+              authorization: LocalStorageService.getAuthorization(),
+          }
+      }).then(function (response){ return response }).catch(function (error){ return error.response })
+  }
+
     async function _sendMessage(dataDTO){
         return await axios({
           method: 'post',
@@ -197,6 +207,7 @@ const UserService = (function(){
         resetPassword: _resetPassword,
         login : _login,
         postPublication : _postPublication,
+        getPublication: _getPublication,
         sendMessage : _sendMessage,
         getMyPublications : _getMyPublications,
         getMyFavoritesPublications : _getMyFavoritesPublications,

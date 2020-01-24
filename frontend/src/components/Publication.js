@@ -21,7 +21,7 @@ function isEditable(t, erasableComponent, eraseFunction, publicationid, editable
         return(	
             <div>
             <div class="more-info">
-                <Link to={{pathname: "/EditPublication", search: "?publicationID=" + publicationid}}>
+                <Link to={{pathname: "/EditPublication", search: "?publicationid=" + publicationid}}>
                     <img class="delete" src={pencil} alt="Edit" />
                     <a class="more-info-title">{t('profilepublication.edit')} </a> 
                 </Link>

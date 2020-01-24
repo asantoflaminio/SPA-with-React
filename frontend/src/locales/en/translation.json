@@ -102,8 +102,8 @@
       "type": "Property type",
       "house": "House",
       "apartment": "Apartment",
-      "bedrooms": "Rooms",
-      "bedroomsHolder": "Room quantity...",
+      "bedrooms": "Bedrooms",
+      "bedroomsHolder": "Bedroom quantity...",
       "bathrooms": "Bathrooms",
       "bathroomsHolder": "Bathroom quantity...",
       "dimention": "Total area",
@@ -261,5 +261,8 @@
       "postLocationDetailError" : "There was an error adding {{location}} to the database",
       "deletePublication": "Delete publication",
       "deletePublicationDetail": "Are you sure you want to delete the post?"
+    },"editpublication":{
+      "edit": "Edit publication",
+      "submit": "Edit"
     }
   }

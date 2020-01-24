@@ -240,6 +240,18 @@ public class UserController {
     	return rs.create(publicationDTO);
     }
     
+    @GET
+    @Path("/users/{userid}/publications/{publicationid}")
+    public Response retrievePublicationInformation (@Context HttpServletRequest request, @PathParam("userid") long userid, @PathParam("publicationid") long publicationid) {
+      	if(! vs.validateID(userid))
+    		return rs.badRequest("The user id is invalid");
+    	if(tas.getUserIdAuthentication(request) != userid)
+    		return rs.forbidden("The user has no authority to perform this action");
+    	PublicationDTO publication = ps.findById(publicationid);
+    	if(publication == null)
+    		return rs.notFound();
+    	return Response.ok().entity(publication).build();
+    }
     
     //Deberia mejorarse el errorDTO
     @POST
