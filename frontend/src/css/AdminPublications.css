@@ -15,3 +15,8 @@ body {
     background-size:100% auto;
     background-color: #eee !important;    
 }
+
+.loader-container-admin{
+    min-width: 1050px !important;
+    min-height: 250px !important;
+}

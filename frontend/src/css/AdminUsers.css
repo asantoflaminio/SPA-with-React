@@ -45,3 +45,8 @@
     width: 0;
     height: 0;
   }
+
+  .loader-container-users{
+	  min-height: 120px;
+	  min-width: 1040px;
+  }

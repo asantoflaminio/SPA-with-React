@@ -12,6 +12,7 @@ import * as Constants from '../util/Constants'
 import UserService from '../services/UserService';
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
+import UserLoader from '../components/UserLoader';
 
 class AdminUsers extends React.Component {
 
@@ -21,8 +22,37 @@ class AdminUsers extends React.Component {
             initialPage: this.getInitialPage(),
             pagesQuantity: 0,
             usersList: [],
-            resultsQuantity: 0
+            resultsQuantity: 0,
+            page: this.getInitialPage(),
+            loading: false
         };
+    }
+
+    componentDidMount(){
+        this.updateUsers(this.state.page)
+    }
+
+    updateUsers(page){
+        let currentComponent = this;
+        let queryParameters = {}
+
+        queryParameters.page = parseInt(page);
+        queryParameters.limit = Constants.USERS_PAGE_LIMIT
+        this.setState({ loading: true })
+        UserService.getUsers(queryParameters).then(function (response){
+            if(response.status !== StatusCode.OK){
+                ErrorService.logError(currentComponent.props,response)
+                return;
+            }
+            currentComponent.pushPageParam(queryParameters.page + 1);
+            currentComponent.setState({
+                usersList: response.data,
+                resultsQuantity: response.headers["x-total-count"],
+                pagesQuantity: Math.ceil(response.headers["x-total-count"] / Constants.USERS_PAGE_LIMIT),
+                loading: false,
+                page: queryParameters.page
+            })
+        })
     }
 
 
@@ -96,28 +126,25 @@ class AdminUsers extends React.Component {
 
 
     handlePageClick = data => {
-        let currentComponent = this;
-        let queryParameters = {}
+        this.updateUsers(data.selected)
+    }
 
-        queryParameters.page = parseInt(data.selected);
-        queryParameters.limit = Constants.USERS_PAGE_LIMIT
-        UserService.getUsers(queryParameters).then(function (response){
-            if(response.status !== StatusCode.OK){
-                ErrorService.logError(currentComponent.props,response)
-                return;
-            }
-            currentComponent.pushPageParam(queryParameters.page + 1);
-            currentComponent.setState({
-                usersList: response.data,
-                resultsQuantity: response.headers["x-total-count"],
-                pagesQuantity: Math.ceil(response.headers["x-total-count"] / Constants.USERS_PAGE_LIMIT)
-            })
-        })
+    loadingContainers(){
+        let pubComponents = [];
+        for(let i = 0; i < Constants.USERS_PAGE_LIMIT; i++){
+            pubComponents.push(
+                <div className="loader-container-users"> 
+                    <UserLoader/>
+                </div>
+            )
+        }
+        return pubComponents;
     }
 
     render(){
         const { t } = this.props;
         let tableUsers = [];
+        let loadingUsers = this.loadingContainers()
         this.generateUsers(tableUsers,this.state.usersList, t);
         return(
             <div>
@@ -127,11 +154,18 @@ class AdminUsers extends React.Component {
                         <div class="title-container">
                             <h3>{t('admin.users')}</h3>
                         </div>
-                        <div id="users-list">
-                        {tableUsers}
-                        </div>
-                        <ReactPaginate
-                            initialPage={this.state.initialPage}
+                        {this.state.loading === true ?
+                            <div className="loader-all-container">
+                                {loadingUsers}
+                            </div>
+                        : 
+                            <div id="users-list">
+                                {tableUsers}
+                            </div>
+                        }
+                        {this.state.usersList.length != 0 ?
+                        (<ReactPaginate
+                            forcePage={this.state.page}
                             previousLabel={'<'}
                             nextLabel={'>'}
                             breakLabel={'...'}
@@ -145,7 +179,7 @@ class AdminUsers extends React.Component {
                             pageClassName={''}
                             previousClassName={''}
                             nextClassName={''}
-                        />
+                        />) : null}
                     </div>
                 </div>
             </div>

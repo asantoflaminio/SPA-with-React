@@ -2,6 +2,7 @@ import React from 'react';
 import { withTranslation } from 'react-i18next';
 import AdminManagment from '../components/AdminManagment';
 import Publication from '../components/Publication';
+import '../css/AdminPublications.css';
 import ReactPaginate from 'react-paginate';
 import { withRouter } from "react-router";
 import PublicationService from '../services/PublicationService'
@@ -10,7 +11,6 @@ import * as StatusCode from '../util/StatusCode'
 import ToastNotification from '../components/ToastNotification'
 import ErrorService from '../services/ErrorService';
 import LocalStorageService from '../services/LocalStorageService';
-import UserService from '../services/UserService';
 import PublicationLoader from '../components/PublicationLoader'
 
 class AdminPublications extends React.Component {
@@ -136,7 +136,7 @@ class AdminPublications extends React.Component {
         let pubComponents = [];
         for(let i = 0; i < Constants.PUBLICATIONS_PAGE_LIMIT; i++){
             pubComponents.push(
-                <div className="loader-container"> 
+                <div className="loader-container-admin"> 
                     <PublicationLoader/>
                 </div>
             )
