@@ -111,7 +111,7 @@ public class PublicationServiceImplTest {
 		
 		when(vs.validatePublication(anyString(), anyString(), anyString(), anyString(), anyString(), anyString(),
 				anyString(), anyString(), anyString(), anyString(), anyString(), anyString(),
-				anyString(), anyLong(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(true);
+				anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyLong())).thenReturn(true);
 		
 		Publication newPublication = ps.create(TITLE, ADDRESS, NEIGHBORHOOD, CITY, PROVINCE, OPERATION, PRICE, DESCRIPTION, PROPERTYTYPE, BEDROOMS, 
 				BATHROOMS, FLOORSIZE, PARKING, 
@@ -132,17 +132,17 @@ public class PublicationServiceImplTest {
 		
 		when(vs.validatePublication(anyString(), anyString(), anyString(), anyString(), anyString(), anyString(),
 				anyString(), anyString(), anyString(), anyString(), anyString(), anyString(),
-				anyString(), anyLong(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(true);
+				anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyLong())).thenReturn(true);
 		
-		when(publicationDao.editData(TITLE, ADDRESS, NEIGHBORHOOD, CITY, PROVINCE, OPERATION, PRICE, DESCRIPTION, PROPERTYTYPE, BEDROOMS, BATHROOMS, FLOORSIZE, PARKING, PUBLICATIONID,
-				COVEREDFLOORSIZE, BALCONIES, AMENITIES, STORAGE, EXPENSES)).thenReturn(true);
+		when(publicationDao.editData(TITLE, ADDRESS, NEIGHBORHOOD, CITY, PROVINCE, OPERATION, PRICE, DESCRIPTION, PROPERTYTYPE, BEDROOMS, BATHROOMS, FLOORSIZE, PARKING, EXPENSES,
+				COVEREDFLOORSIZE, BALCONIES, AMENITIES, STORAGE, PUBLICATIONID)).thenReturn(true);
 		
-		assertSame(true, ps.editData(TITLE, ADDRESS, NEIGHBORHOOD, CITY, PROVINCE, OPERATION, PRICE, DESCRIPTION, PROPERTYTYPE, BEDROOMS, BATHROOMS, FLOORSIZE, PARKING, PUBLICATIONID, 
-				COVEREDFLOORSIZE, BALCONIES, AMENITIES, STORAGE, EXPENSES));
+		assertSame(true, ps.editData(TITLE, ADDRESS, NEIGHBORHOOD, CITY, PROVINCE, OPERATION, PRICE, DESCRIPTION, PROPERTYTYPE, BEDROOMS, BATHROOMS, FLOORSIZE, PARKING, EXPENSES, 
+				COVEREDFLOORSIZE, BALCONIES, AMENITIES, STORAGE, PUBLICATIONID));
 		
 		verify(publicationDao).editData(anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), 
-				anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyString(), 
-				anyString(), anyString(), anyString());
+				anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), 
+				anyString(), anyString(), anyLong());
 		
 	}
 	
