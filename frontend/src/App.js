@@ -32,6 +32,16 @@ const PrivateRoute = ({component: Component, ...rest}) => {
   );
 };
 
+const AdminRoute = ({component: Component, ...rest}) => {
+  return (
+      <Route {...rest} render={props => (
+        UserService.isAdmin() ?
+              <Component {...props} />
+          : <Redirect to="/SignUp" />
+      )} />
+  );
+};
+
 const OnlyPublicRoute = ({component: Component, ...rest}) => {
 
   return (
@@ -57,9 +67,9 @@ function App() {
             <Route exact path="/publications" component={Details} />
             <Route exact path="/error" component={ErrorBoundary} />
             <PrivateRoute exact path="/Publish" component={Publish} />
-            <PrivateRoute exact path="/AdminGenerator" component={AdminGenerator} />
-            <PrivateRoute exact path="/AdminUsers" component={AdminUsers} />
-            <PrivateRoute exact path="/AdminPublications" component={AdminPublications} />
+            <AdminRoute exact path="/AdminGenerator" component={AdminGenerator} />
+            <AdminRoute exact path="/AdminUsers" component={AdminUsers} />
+            <AdminRoute exact path="/AdminPublications" component={AdminPublications} />
             <PrivateRoute exact path="/MyPublications" component={MyPublications} />
             <PrivateRoute exact path="/MyFavourites" component={MyFavourites} />
             <PrivateRoute exact path="/MyInformation" component={MyInformation} />

@@ -5,6 +5,7 @@ import axios from 'axios';
 const UserService = (function(){
 
     const USERS_PATH = process.env.PUBLIC_URL + '/meinHaus/users-management'
+    const ROLE_ADMIN = "ROLE_ADMIN"
 
     function _isLogged(){
         if(LocalStorageService.getAuthorization() != null)
@@ -13,14 +14,11 @@ const UserService = (function(){
             return false;
     }
 
-    async function _isAdmin(){
-      return await axios({
-        method: 'head',
-        url: `${USERS_PATH}/users/admin`,
-        headers: {
-          authorization: LocalStorageService.getAuthorization()
-      }
-      }).then(function (response){ return response }).catch(function (error){ return error.response }) 
+    function _isAdmin(){
+      if(LocalStorageService.getRole().includes(ROLE_ADMIN))
+        return true;
+      else
+        return false;
     }
 
     async function _getUsers(queryParameters){

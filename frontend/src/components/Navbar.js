@@ -17,14 +17,13 @@ class Navbar extends React.Component {
        }
 
     componentDidMount(){
+        
         let currentComponent = this
         if(UserService.isLogged()){
-            UserService.isAdmin().then(function (response){
-                if(response.status === StatusCode.OK)
-                    currentComponent.setState({ isLogged: true, isAdmin: true })
-                else
-                    currentComponent.setState({ isLogged: true, isAdmin: false })
-            })
+            if(UserService.isAdmin())
+                currentComponent.setState({ isLogged: true, isAdmin: true })
+            else
+                currentComponent.setState({ isLogged: true, isAdmin: false })
         }
     }
     
@@ -33,12 +32,10 @@ class Navbar extends React.Component {
         let isLoggedUpdate = UserService.isLogged();
         if (this.state.isLogged !== isLoggedUpdate){
             if(isLoggedUpdate){
-                UserService.isAdmin().then(function (response){
-                    if(response.status === StatusCode.OK)
-                        currentComponent.setState({ isLogged: true, isAdmin: true })
-                    else
-                        currentComponent.setState({ isLogged: true, isAdmin: false })
-                })
+                if(UserService.isAdmin())
+                    currentComponent.setState({ isLogged: true, isAdmin: true })
+                else
+                    currentComponent.setState({ isLogged: true, isAdmin: false })
             }else{
                 currentComponent.setState({ isLogged: false, isAdmin: false })
             }
@@ -48,9 +45,9 @@ class Navbar extends React.Component {
 
     render(){
         if(this.state.isLogged){
-            return <UserNavbar rerenderParentCallback={this.rerenderParentCallback} isAdmin={this.state.isAdmin}/>
+            return <UserNavbar isAdmin={this.state.isAdmin}/>
         }else{
-            return <StandarNavbar rerenderParentCallback={this.rerenderParentCallback}/>
+            return <StandarNavbar/>
         }
     }
 

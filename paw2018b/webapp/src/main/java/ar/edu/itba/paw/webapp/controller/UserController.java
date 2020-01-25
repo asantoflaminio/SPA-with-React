@@ -100,17 +100,6 @@ public class UserController {
         return rs.create();
     }
     
-    @HEAD
-    @Path("/users/admin")
-    @Consumes(value = { UserDTO.MediaType })
-    public Response checkAdmin (@Context HttpServletRequest request) {
-    	String role = tas.getUserAuthorities(request);
-    	if(role.equals(Constants.Role.ADMIN.getRole()))
-    		return rs.ok();
-    	else
-    		return rs.notFound();
-    }
-    
     @GET
     @Path("/users/{userid}")
     @Produces(value = { UserDTO.MediaType })

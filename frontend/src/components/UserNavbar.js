@@ -22,7 +22,6 @@ class UserNavbar extends React.Component {
     }
 
     logout(){
-        let currentPath = this.props.location;
         let currentComponent = this;
         LocalStorageService.clearToken()
         currentComponent.props.history.push("/SignUp")

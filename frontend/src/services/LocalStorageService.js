@@ -6,6 +6,15 @@ const LocalStorageService = (function(){
     const USERNAME_TOKEN = "username";
     const USERID_TOKEN = "userid";
     const COUNTER = "counter"
+    const CryptoJS = require("crypto-js");
+
+    const KEY = "MIIBOQIBAAJAcrqH0L91/j8sglOeroGyuKr1ABvTkZj0ATLBcvsA91/C7fipAsOn\
+    RqRPZr4Ja+MCx0Qvdc6JKXa5tSb51bNwxwIDAQABAkBPzI5LE+DuRuKeg6sLlgrJ\
+    h5+Bw9kUnF6btsH3R78UUANOk0gGlu9yUkYKUkT0SC9c6HDEKpSqILAUsXdx6SOB\
+    AiEA1FbR++FJ56CEw1BiP7l1drM9Mr1UVvUp8W71IsoZb1MCIQCKUafDLg+vPj1s\
+    HiEdrPZ3pvzvteXLSuniH15AKHEuPQIhAIsgB519UysMpXBDbtxJ64jGj8Z6/pOr\
+    NrwV80/EEz45AiBlgTLZ2w2LjuNIWnv26R0eBZ+M0jHGlD06wcZK0uLsCQIgT1kC\
+    uNcDTERjwEbFKJpXC8zTLSPcaEOlbiriIKMnpNw"
 
     function _getService() {
         if(!_service) {
@@ -23,10 +32,11 @@ const LocalStorageService = (function(){
     }
 
 
-    function _setToken(authorization, username, userid) {
+    function _setToken(authorization, role, username, userid) {
       _setAuthorization(authorization)
+      _setRole(role)
       _setUsername(username)
-      localStorage.setItem(USERID_TOKEN,userid)
+      _setUserid(userid)
     }
 
     function _setAuthorization(authorization){
@@ -35,24 +45,41 @@ const LocalStorageService = (function(){
       return localStorage.setItem(AUTH_TOKEN,reducedToken)
     }
 
+    function _setRole(role){
+      let cypherRole = CryptoJS.AES.encrypt(role,KEY)
+      return localStorage.setItem(ACCESS_TOKEN,cypherRole)
+    }
+
     function _setUsername(username){
-      return localStorage.setItem(USERNAME_TOKEN,username)
+      let cypherUsername = CryptoJS.AES.encrypt(username,KEY)
+      return localStorage.setItem(USERNAME_TOKEN,cypherUsername)
+    }
+
+    function _setUserid(userid){
+      let cypherUsername = CryptoJS.AES.encrypt(userid,KEY)
+      return localStorage.setItem(USERID_TOKEN,cypherUsername)
     }
 
     function _getAuthorization() {
       return localStorage.getItem(AUTH_TOKEN);
     }
 
-    function _getAccessRole() {
-      return localStorage.getItem(ACCESS_TOKEN);
+    function _getRole() {
+      let cypherRole = localStorage.getItem(ACCESS_TOKEN)
+      let role = CryptoJS.AES.decrypt(cypherRole,KEY)
+      return role.toString(CryptoJS.enc.Utf8)
     }
 
     function _getUsername(){
-      return localStorage.getItem(USERNAME_TOKEN)
+      let cypherUsername = localStorage.getItem(USERNAME_TOKEN)
+      let username = CryptoJS.AES.decrypt(cypherUsername,KEY)
+      return username.toString(CryptoJS.enc.Utf8)
     }
 
     function _getUserid(){
-      return localStorage.getItem(USERID_TOKEN)
+      let cypherUserid = localStorage.getItem(USERID_TOKEN)
+      let userid = CryptoJS.AES.decrypt(cypherUserid,KEY)
+      return userid.toString(CryptoJS.enc.Utf8)
     }
 
     function _clearAuthorization() {
@@ -75,6 +102,7 @@ const LocalStorageService = (function(){
       localStorage.removeItem(AUTH_TOKEN);
       localStorage.removeItem(USERNAME_TOKEN)
       localStorage.removeItem(USERID_TOKEN)
+      localStorage.removeItem(ACCESS_TOKEN)
     }
 
     function _initializeCounter(){
@@ -98,9 +126,11 @@ const LocalStorageService = (function(){
       refreshToken : _refreshToken,
       setToken : _setToken,
       setAuthorization : _setAuthorization,
+      setRole: _setRole,
       setUsername : _setUsername,
+      setUserid: _setUserid,
       getAuthorization : _getAuthorization,
-      getAccessRole : _getAccessRole,
+      getRole : _getRole,
       getUsername : _getUsername,
       getUserid : _getUserid,
       clearAuthorization : _clearAuthorization,
