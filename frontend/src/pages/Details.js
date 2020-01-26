@@ -60,7 +60,6 @@ class Details extends React.Component {
                     circleloading: false
                 })
             })
-        
     }
 
     handleSendMessage(event, errors){
@@ -117,35 +116,6 @@ class Details extends React.Component {
 
                 if(this.state.publication === null)
                     return(null)
-                
-                let coveredFloorSize; 
-                if(this.state.publication.coveredFloorSize === "-1") {
-                    coveredFloorSize = t('details.notAvailable');
-                } else {
-                    coveredFloorSize = this.state.publication.coveredFloorSize + " m2";
-                }
-                
-                if(this.state.publication.balconies === "-1") {
-                    this.state.balconies = t('details.notAvailable');
-                }
-                if(this.state.publication.amenities === "-1") {
-                    this.state.amenities = t('details.notAvailable');
-                } 
-                
-                let expenses;
-                if(this.state.publication.expenses === "-1") {
-                    expenses = t('details.notAvailable');
-                } else {
-                    expenses = this.state.publication.expenses + " U$S";
-                }
-
-                if(this.state.publication.storage === "-1") {
-                    this.state.publication.storage = t('details.notAvailable');
-                } else if (this.state.storage === "yes") {
-                    this.state.publication.storage = t('details.Yes');
-                } else {
-                    this.state.publication.storage = t('details.No');
-                }
             return(   
                     <div>
                     <ToastNotification 
@@ -186,12 +156,12 @@ class Details extends React.Component {
                                     <p class="agency_text">{t('details.bedrooms')} {this.state.publication.bedrooms}</p>
                                     <p class="agency_text">{t('details.bathrooms')} {this.state.publication.bathrooms}</p>
                                     <p class="agency_text">{t('details.floorSize')} {this.state.publication.dimention} m2</p>
-                                    <p class="agency_text">{t('details.coveredFloorSize')} {coveredFloorSize} </p>
+                                    <p class="agency_text">{t('details.coveredFloorSize')} {this.state.publication.coveredFloorSize === "-1" ? t('details.notAvailable') : this.state.publication.coveredFloorSize + " m2"}</p>
                                     <p class="agency_text">{t('details.parking')} {this.state.publication.parking}</p>
-                                    <p class="agency_text">{t('details.balconies')} {this.state.publication.balconies}</p>
-                                    <p class="agency_text">{t('details.amenities')} {this.state.publication.amenities}</p>
-                                    <p class="agency_text">{t('details.storage')} {this.state.publication.storage}</p>
-                                    <p class="agency_text">{t('details.expenses')} {expenses}</p>
+                                    <p class="agency_text">{t('details.balconies')} {this.state.publication.balconies === "-1" ? t('details.notAvailable') : this.state.publication.balconies}</p>
+                                    <p class="agency_text">{t('details.amenities')} {this.state.publication.amenities === "-1" ? t('details.notAvailable') : this.state.publication.amenities}</p>
+                                    <p class="agency_text">{t('details.storage')} {this.state.publication.storage === "-1" ? t('details.notAvailable'): this.state.publication.storage === "yes" ? t('details.Yes'): t('details.No')}</p>
+                                    <p class="agency_text">{t('details.expenses')} {this.state.publication.expenses === "-1" ? t('details.notAvailable'): this.state.publication.expenses + " U$S"}</p>
                                 </div>
                             </div>
                         </div>

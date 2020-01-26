@@ -14,10 +14,6 @@ import * as StatusCode from '../util/StatusCode'
 
 
 class StandarNavbar extends React.Component {
-    constructor(props){
-        super(props)
-    }
-
     showlogin(close){
         let login = document.getElementById("sign-in");
         if(getComputedStyle(login, null).display === 'none' && close !== true)
@@ -60,9 +56,7 @@ class StandarNavbar extends React.Component {
         return(
                 <nav>
                     <Link to={{pathname: "/"}}>
-                    <a>
                         <img src={logo} alt="Home" id="logo"/>
-                    </a>
                     </Link>
                     <div className="dropdown">
                         <a className="navbar_item" onClick={this.showlogin} href="#">{t('navbar.signIn')}</a>
@@ -77,7 +71,7 @@ class StandarNavbar extends React.Component {
                                     <Form noValidate onSubmit={event => {
                                             this.handleLoginForm(event)
                                     }}>
-                                        <Form.Group as={Col} md="12" controlId="validationFormik01">
+                                        <Form.Group as={Col} md="12">
                                             <Form.Label>{t('navbar.mail')}</Form.Label>
                                             <Form.Control
                                                 type="text"
@@ -91,12 +85,13 @@ class StandarNavbar extends React.Component {
                                                 {errors.email}
                                             </Form.Control.Feedback>
                                         </Form.Group>
-                                        <Form.Group as={Col} md="12" controlId="validationFormik02">
+                                        <Form.Group as={Col} md="12">
                                             <Form.Label>{t('navbar.password')}</Form.Label>
                                             <Form.Control
                                                 type="password"
                                                 placeholder={t('navbar.passHolder')}
                                                 name="password"
+                                                id="password"
                                                 isInvalid={!!errors.password}
                                             />
                                             <Form.Control.Feedback type="invalid">
@@ -109,13 +104,13 @@ class StandarNavbar extends React.Component {
                                 )}
                             </Formik>
                             <Link to={{pathname: "/ForgottenPassword"}}>
-                                <a id="recover_pass" href="./ForgottenPassword" onClick={this.showlogin}>{t('navbar.recoverPass')}</a>
+                                <p id="recover_pass" onClick={this.showlogin}>{t('navbar.recoverPass')}</p>
                             </Link>
                         </div>
                     </div>
                 <div>
                     <Link to={{pathname: "/SignUp"}}>
-                        <a className="navbar_item" id="sign_up" href="./SignUp" onClick={() => this.showlogin(true)}>{t('navbar.signUp')}</a>
+                        <p className="navbar_item" id="sign_up" onClick={() => this.showlogin(true)}>{t('navbar.signUp')}</p>
                     </Link>
                 </div>
             </nav>

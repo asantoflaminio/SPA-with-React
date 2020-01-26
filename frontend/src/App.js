@@ -18,8 +18,6 @@ import MyInformation from './pages/MyInformation'
 import EditPublication from './pages/EditPublication'
 import UserService from './services/UserService'
 import Navbar from './components/Navbar'
-import * as StatusCode from './util/StatusCode'
-import ErrorService from './services/ErrorService';
 
 
 const PrivateRoute = ({component: Component, ...rest}) => {

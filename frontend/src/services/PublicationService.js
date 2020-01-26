@@ -11,7 +11,7 @@ const PublicationService = (function(){
       return await axios({
           method: 'get',
           url: `${PUBLICATIONS_PATH}/publications`,
-          //cancelToken: CancelTokenService.getSource().token,
+          cancelToken: CancelTokenService.getSource().token,
           params: queryParameters,
           headers: {
             authorization: LocalStorageService.getAuthorization(),

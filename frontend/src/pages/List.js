@@ -243,7 +243,7 @@ class List extends React.Component {
         return(
             Object.entries(this.state.filters[field]).map( ([key, value]) =>
             <div>
-                <a class="filters-item-name" href="#" onClick={() => this.handleFilter(stateName,key)}>{key} {utilFunction.decidePlural(t(singularInformation),t(pluralInformation),key)} ({value})</a>
+                <button class="filters-item-name" onClick={() => this.handleFilter(stateName,key)}>{key} {utilFunction.decidePlural(t(singularInformation),t(pluralInformation),key)} ({value})</button>
             </div>
             )
         )
@@ -530,7 +530,7 @@ class List extends React.Component {
                             <div className={this.state.loadingPublications === true ? "hidden":null}>
                                 {publications}
                             </div>
-                            {this.state.publications.length != 0 ?
+                            {this.state.publications.length !== 0 ?
                                 (<div class="pubsPagination">
                                     <ReactPaginate
                                     forcePage={this.state.page}

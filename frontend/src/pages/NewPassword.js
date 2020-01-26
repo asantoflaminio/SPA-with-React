@@ -10,7 +10,6 @@ import UserService from '../services/UserService';
 import toast from 'toasted-notes' 
 import 'toasted-notes/src/styles.css';
 import * as StatusCode from '../util/StatusCode'
-import LinearProgress from "@material-ui/core/LinearProgress";
 import ColoredLinearProgress from '../components/ColoredLinearProgress';
 import ErrorService from '../services/ErrorService';
 

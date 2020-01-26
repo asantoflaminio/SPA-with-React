@@ -175,7 +175,7 @@ class MyPublications extends React.Component {
                             <div className={this.state.loadingPublications === true ? "hidden":null}>
                                 {publications}
                             </div>
-                            {this.state.myPublications.length != 0 ?
+                            {this.state.myPublications.length !== 0 ?
                             (<div class="pubsPagination">
                                 <ReactPaginate
                                 previousLabel={'<'}

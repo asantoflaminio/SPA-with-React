@@ -163,7 +163,7 @@ class AdminUsers extends React.Component {
                                 {tableUsers}
                             </div>
                         }
-                        {this.state.usersList.length != 0 ?
+                        {this.state.usersList.length !== 0 ?
                         (<ReactPaginate
                             forcePage={this.state.page}
                             previousLabel={'<'}

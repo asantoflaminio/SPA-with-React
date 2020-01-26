@@ -170,7 +170,7 @@ class AdminPublications extends React.Component {
                     <div className={this.state.loadingPublications === true ? "hidden":null}>
                         {this.initializePublications(t)}
                     </div>
-                    {this.state.publications.length != 0 ?
+                    {this.state.publications.length !== 0 ?
                     (<div class="pubsPagination">
                                 <ReactPaginate
                                 previousLabel={'<'}

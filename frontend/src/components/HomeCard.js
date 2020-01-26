@@ -30,7 +30,7 @@ class HomeCard extends React.Component {
                             <label  class="expenses">{this.props.publication.title}</label>
                             <label>{this.props.publication.address}</label>
                             <Link to={{pathname: "/publications", search: "?publicationid=" + this.props.publication.publicationid}}>
-                                <a class="more-info-home" href="">{t('home.moreInfo')} ></a>
+                                <p class="more-info-home">{t('home.moreInfo')} ></p>
                             </Link>
                         </div>
                 </li>
