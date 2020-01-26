@@ -1,18 +1,18 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
+import { withRouter } from "react-router";
 import AdminManagment from '../components/AdminManagment';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import UserLoader from '../components/UserLoader';
+import ReactPaginate from 'react-paginate';
+import Switch from '@material-ui/core/Switch';
+import UserService from '../services/UserService';
+import ErrorService from '../services/ErrorService';
+import * as Constants from '../util/Constants'
+import * as StatusCode from '../util/StatusCode'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/AdminUsers.css';
 import '../css/Pagination.css';
-import ReactPaginate from 'react-paginate';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { withRouter } from "react-router";
-import * as Constants from '../util/Constants'
-import UserService from '../services/UserService';
-import * as StatusCode from '../util/StatusCode'
-import ErrorService from '../services/ErrorService';
-import UserLoader from '../components/UserLoader';
 
 class AdminUsers extends React.Component {
 
@@ -83,30 +83,27 @@ class AdminUsers extends React.Component {
             else
                 label = t('admin.unlocked')
             tableUsers.push(
-                <hr></hr>
-            )
-            tableUsers.push(
-                <div class="row">
-                    <div class="column">
-                        <p class="user-email">{users[i].email}</p>
+                <div key={users[i].email}>
+                    <div className="row">
+                        <div className="column">
+                            <p className="user-email">{users[i].email}</p>
+                        </div>
+                        <div className="column">
+                            <FormControlLabel
+                                value="start"
+                                control={<Switch color="primary" id={users[i].id.toString()}/>}
+                                checked={users[i].locked}
+                                onChange={(event) => this.lockUser(event,i)}
+                                label={label}
+                                labelPlacement="start"
+                                className="switch"
+                            />
+                        </div>
                     </div>
-                    <div class="column">
-                        <FormControlLabel
-                            value="start"
-                            control={<Switch color="primary" id={users[i].id}/>}
-                            checked={users[i].locked}
-                            onChange={(event) => this.lockUser(event,i)}
-                            label={label}
-                            labelPlacement="start"
-                            className="switch"
-                        />
-                     </div>
+                    <hr/>
                 </div>
             )
         }
-        tableUsers.push(
-            <hr></hr>
-        )
         
     }
 
@@ -133,7 +130,7 @@ class AdminUsers extends React.Component {
         let pubComponents = [];
         for(let i = 0; i < Constants.USERS_PAGE_LIMIT; i++){
             pubComponents.push(
-                <div className="loader-container-users"> 
+                <div className="loader-container-users" key={i}> 
                     <UserLoader/>
                 </div>
             )
@@ -150,8 +147,8 @@ class AdminUsers extends React.Component {
             <div>
                 <AdminManagment t={t} active={"AdminUsers"}/>
                 <div>
-                    <div class="polaroid data">
-                        <div class="title-container">
+                    <div className="polaroid data">
+                        <div className="title-container">
                             <h3>{t('admin.users')}</h3>
                         </div>
                         {this.state.loading === true ?

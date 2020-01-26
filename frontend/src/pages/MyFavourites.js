@@ -4,7 +4,6 @@ import { withRouter } from "react-router";
 import ProfileAsideBar from '../components/ProfileAsideBar'
 import Publication from '../components/Publication'
 import UserService from '../services/UserService'
-import PublicationService from '../services/PublicationService'
 import ReactPaginate from 'react-paginate';
 import * as Constants from '../util/Constants'
 import LocalStorageService from '../services/LocalStorageService';
@@ -143,7 +142,7 @@ class MyFavorites extends React.Component {
                             <div className={this.state.loadingPublications === true ? "hidden":null}>
                                 {favorites}
                             </div>
-                            {this.state.myFavorites.length != 0 ?
+                            {this.state.myFavorites.length !== 0 ?
                             (<div class="pubsPagination">
                                 <ReactPaginate
                                 previousLabel={'<'}

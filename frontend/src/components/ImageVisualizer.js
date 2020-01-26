@@ -105,9 +105,9 @@ class ImageVisualizer extends React.Component {
     getFavouriteState(){
         let favIcon;
         if(this.state.isFavourite)
-            favIcon = <img class="favorite-icon" src={heartFilled} onClick={this.removeFavourite} alt="Fave" />
+            favIcon = <img className="favorite-icon" src={heartFilled} onClick={this.removeFavourite} alt="Fave" />
         else if(this.state.isFavourite === false)
-            favIcon = <img class="favorite-icon" src={heartEmpty} onClick={this.addFavourite} alt="Fave" />
+            favIcon = <img className="favorite-icon" src={heartEmpty} onClick={this.addFavourite} alt="Fave" />
         return favIcon
     }
 
@@ -154,18 +154,18 @@ class ImageVisualizer extends React.Component {
         let price;
         let favIcon = this.getFavouriteState();
         if(this.props.price != null){
-            price = <h2 class="price-tag">U$S {this.props.price}</h2>
+            price = <h2 className="price-tag">U$S {this.props.price}</h2>
         }
 
         return(
-            <div class={this.props.containerClass}>
-                <img class={this.props.imageClass} alt="img" id={this.props.page + this.props.publicationid} />
+            <div className={this.props.containerClass}>
+                <img className={this.props.imageClass} alt="img" id={this.props.page + this.props.publicationid} />
                 {favIcon}
                 {this.props.maxImages !== 0 ?
                 (
                     <>
-                        <img class={this.props.previousClass} src={previousArrow} alt="Previous" onClick={() => this.getPreviousImage()}/>
-                        <img class={this.props.nextClass} src={nextArrow} alt="Next" onClick={() => this.getNextImage()}/>
+                        <img className={this.props.previousClass} src={previousArrow} alt="Previous" onClick={() => this.getPreviousImage()}/>
+                        <img className={this.props.nextClass} src={nextArrow} alt="Next" onClick={() => this.getNextImage()}/>
                     </>
                 ):null}
 

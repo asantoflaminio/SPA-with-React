@@ -1,17 +1,17 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
+import { withRouter } from "react-router";
 import AdminManagment from '../components/AdminManagment';
 import Publication from '../components/Publication';
-import '../css/AdminPublications.css';
 import ReactPaginate from 'react-paginate';
-import { withRouter } from "react-router";
+import ToastNotification from '../components/ToastNotification'
+import PublicationLoader from '../components/PublicationLoader'
+import ErrorService from '../services/ErrorService';
+import LocalStorageService from '../services/LocalStorageService';
 import PublicationService from '../services/PublicationService'
 import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
-import ToastNotification from '../components/ToastNotification'
-import ErrorService from '../services/ErrorService';
-import LocalStorageService from '../services/LocalStorageService';
-import PublicationLoader from '../components/PublicationLoader'
+import '../css/AdminPublications.css';
 
 class AdminPublications extends React.Component {
 
@@ -68,15 +68,17 @@ class AdminPublications extends React.Component {
         let pubComponents = [];
         for(let i = 0; i < this.state.publications.length; i++){
             pubComponents.push(
-                <Publication t={t} 
-                    publication={this.state.publications[i]}
-                    page="AdminPublications"
-                    faveable={false}
-                    editable={false}
-                    eraseFunction={this.showModalErasePublication}
-                    ready={this.setReady}
-                    index={i}
-                />
+                <div key={this.state.publications[i].publicationid}>
+                    <Publication t={t} 
+                        publication={this.state.publications[i]}
+                        page="AdminPublications"
+                        faveable={false}
+                        editable={false}
+                        eraseFunction={this.showModalErasePublication}
+                        ready={this.setReady}
+                        index={i}
+                    />
+                </div>
             )
         }
         return pubComponents;
@@ -136,7 +138,7 @@ class AdminPublications extends React.Component {
         let pubComponents = [];
         for(let i = 0; i < Constants.PUBLICATIONS_PAGE_LIMIT; i++){
             pubComponents.push(
-                <div className="loader-container-admin"> 
+                <div className="loader-container-admin" key={i}> 
                     <PublicationLoader/>
                 </div>
             )
@@ -158,8 +160,8 @@ class AdminPublications extends React.Component {
                     acceptFunction={this.erasePublication}
                     functionParameter={this.state.publicationidToDelete}
                 />
-                <div class="polaroid data">
-                    <div class="title-container">
+                <div className="polaroid data">
+                    <div className="title-container">
                         <h3>{t('admin.publications')}</h3>
                     </div>
                     {this.state.loadingPublications === true ?
@@ -171,7 +173,7 @@ class AdminPublications extends React.Component {
                         {this.initializePublications(t)}
                     </div>
                     {this.state.publications.length !== 0 ?
-                    (<div class="pubsPagination">
+                    (<div className="pubsPagination">
                                 <ReactPaginate
                                 previousLabel={'<'}
                                 nextLabel={'>'}

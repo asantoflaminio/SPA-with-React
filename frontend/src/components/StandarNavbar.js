@@ -59,7 +59,7 @@ class StandarNavbar extends React.Component {
                         <img src={logo} alt="Home" id="logo"/>
                     </Link>
                     <div className="dropdown">
-                        <a className="navbar_item" onClick={this.showlogin} href="#">{t('navbar.signIn')}</a>
+                        <button className="navbar_item" onClick={this.showlogin}>{t('navbar.signIn')}</button>
                             <div className="dropdown-content-p dropdown-padding get-this" id="sign-in">
                                 <Formik
                                     validationSchema={schema}
