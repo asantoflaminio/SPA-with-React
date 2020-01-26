@@ -24,8 +24,6 @@ public interface ValidateService {
 	
 	public boolean validateInputNumber(String text, Integer minLength, Integer maxLength, String regex, String input);
 	
-	public boolean validateSearch(String address, String minPrice, String maxPrice, String minFloorSize, String maxFloorSize);
-	
 	public boolean valideBothInputNumberFields(String minInput, String maxInput, Integer minLength, Integer maxLength, 
 			   String firstInput, String secondInput);
 	

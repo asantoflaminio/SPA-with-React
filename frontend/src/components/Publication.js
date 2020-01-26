@@ -5,6 +5,7 @@ import trash from '../resources/trash.png';
 import pencil from '../resources/pencil.png';
 import ImgVisualizer from './ImageVisualizer';
 import {Link} from 'react-router-dom';
+import UserService from '../services/UserService';
 
 function isErasable(t, eraseFunction, publicationid){
     if(eraseFunction){
@@ -56,7 +57,7 @@ const Publication = ({ t , publication, page, faveable, editable, eraseFunction,
                     price={publication.price}
                     maxImages={publication.images}
                     page={page}
-                    isFavourite={faveable ? publication.favourite : null}
+                    isFavourite={faveable && UserService.isLogged() ? publication.favourite : null}
                     imageClass="polaroid-property-img"
                     containerClass="img-with-tag"
                     nextClass="next-image pointer"

@@ -46,16 +46,22 @@ public class ValidateServiceImpl implements ValidateService{
 	private final static int MIN_LOCATION_LENGTH = 3;
 	private final static int MAX_LOCATION_LENGTH = 40;
 	
+	//Pattern constants
+	
+	final String numbersRegex = "^[0-9]*$";
+	final String emptyOrNumbersRegex = "$|^[0-9]*$";
+	final String numbersDashRegex = "^[-0-9]*$";
+	final String lettersAndSpacesRegex = "^[a-zA-ZñÑáÁéÉíÍóÓúÚüÜ ]*$";
+	final String lettersAndNumbersRegex = "^[0-9a-zA-Z]+$";
+	final String lettesNumersAndSpacesRegex = "^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ ]*$";
+	final String lettesNumersAndSpacesRegexOrEmpty = "^$|^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ ]*$";
+	final String lettesNumersAndSpacesRegexComma = "^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ ,]*$";
+	final Pattern emailRegex = Pattern.compile("(.+)@(.+){2,}\\.(.+){2,}");
+	final String descriptionRegex = "^[-a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ¿?:%!¡,.()$ ]*$";
+	
 	
 	@Override
 	public boolean validateUser(String firstName, String lastName, String email, String password, String phoneNumber) {
-		
-		final String lettersAndSpacesRegex = "^[a-zA-ZñÑáÁéÉíÍóÓúÚüÜ ]*$";
-		final String lettersAndNumbersRegex = "^[0-9a-zA-Z]+$";
-		final String numbersDashRegex = "^[-0-9]*$";
-		final Pattern emailRegex = Pattern.compile("(.+)@(.+){2,}\\.(.+){2,}");
-		
-		
 		if(
 			! validateInputText(firstName, SHORT_STRING_MIN_LENGTH, SHORT_STRING_MAX_LENGTH, lettersAndSpacesRegex, "FirstName") ||
 			! validateInputText(lastName, SHORT_STRING_MIN_LENGTH, SHORT_STRING_MAX_LENGTH, lettersAndSpacesRegex, "LastName") ||
@@ -88,14 +94,6 @@ public class ValidateServiceImpl implements ValidateService{
 			   String description, String propertyType, String bedrooms,
 			   String bathrooms, String floorSize, String parking,
 			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses, long id){
-		
-		final String numbersRegex = "^[0-9]*$";
-		final String emptyOrNumbersRegex = "$|^[0-9]*$";
-		final String lettesNumersAndSpacesRegex = "^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ ]*$";
-		final String lettesNumersAndSpacesRegexOrEmpty = "^$|^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ ]*$";
-		final String lettesNumersAndSpacesRegexComma = "^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ ,]*$";
-		final String descriptionRegex = "^[-a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ¿?:%!¡,.()$/\n/ ]*$";
-		
 		if(
 			! validateInputText(title, FIRST_FORM_MIN_LENGTH, FIRST_FORM_MAX_LENGTH, lettesNumersAndSpacesRegex, "Title") ||
 			! validateInputText(address, FIRST_FORM_MIN_LENGTH, FIRST_FORM_MAX_LENGTH_ADDRESS, lettesNumersAndSpacesRegexComma, "Address") ||
@@ -130,15 +128,10 @@ public class ValidateServiceImpl implements ValidateService{
 	
 	@Override
 	public boolean validateEmailMessage(String name, String email, String message, String ownerEmail, String title) {
-		final String messageRegex = "^[-a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ¿?:%!¡,.()$/\n/ ]*$";
-		final Pattern emailRegex = Pattern.compile("(.+)@(.+){2,}\\.(.+){2,}");
-		final String lettesNumersAndSpacesRegex = "^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚüÜ ]*$";
-		final String lettersAndSpacesRegex = "^[a-zA-ZñÑáÁéÉíÍóÓúÚüÜ ]*$";
-		
 		if( 
 			! validateInputText(name, SHORT_STRING_MIN_LENGTH, SHORT_STRING_MAX_LENGTH, lettersAndSpacesRegex, "Name") ||
 			! validateInputEmail(email, SHORT_STRING_MIN_LENGTH, EMAIL_MAX_LENGTH, emailRegex, "Email") ||
-			! validateInputText(message, SECOND_FORM_MIN_LENGTH, SECOND_FORM_MAX_LENGTH, messageRegex, "Message") ||
+			! validateInputText(message, SECOND_FORM_MIN_LENGTH, SECOND_FORM_MAX_LENGTH, descriptionRegex, "Message") ||
 			! validateInputEmail(ownerEmail, SHORT_STRING_MIN_LENGTH, EMAIL_MAX_LENGTH, emailRegex, "Email") ||
 			! validateInputText(title, FIRST_FORM_MIN_LENGTH, FIRST_FORM_MAX_LENGTH, lettesNumersAndSpacesRegex, "Title")
 		) {
@@ -186,18 +179,6 @@ public class ValidateServiceImpl implements ValidateService{
 			return false;
 		}
 		return true;	
-	}
-	
-	@Override
-	public boolean validateSearch(String address, String minPrice, String maxPrice, String minFloorSize, String maxFloorSize) {
-		final String lettesNumersAndSpacesRegexComma = "[\\p{L}0-9, ]+";
-		
-		if(! valideBothInputNumberFields(minPrice, maxPrice, PRICE_MIN_LENGTH, PRICE_MAX_LENGTH, "MinPrice", "MaxPrice")|| 
-		   ! valideBothInputNumberFields(minFloorSize, maxFloorSize, THIRD_FORM_MIN_LENGTH, THIRD_FORM_MAX_LENGTH, "MinFloorSize", "MaxFloorSize") ||
-		   ! validateInputText(address, 0, FIRST_FORM_MAX_LENGTH_ADDRESS, lettesNumersAndSpacesRegexComma, "Address"))
-					return false;
-		
-		return true;
 	}
 	
 	@Override

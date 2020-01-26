@@ -37,7 +37,7 @@ const AdminRoute = ({component: Component, ...rest}) => {
       <Route {...rest} render={props => (
         UserService.isAdmin() ?
               <Component {...props} />
-          : <Redirect to="/SignUp" />
+          : <Redirect to="/" />
       )} />
   );
 };

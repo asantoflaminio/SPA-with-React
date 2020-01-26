@@ -1,21 +1,23 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { withRouter } from "react-router";
+import ReactPaginate from 'react-paginate';
+import PublicationService from '../services/PublicationService';
+import ErrorService from '../services/ErrorService';
+import LocalStorageService from '../services/LocalStorageService';
+import Publication from '../components/Publication';
+import PublicationLoader from '../components/PublicationLoader'
+import * as utilFunction from '../util/function';
+import * as Constants from '../util/Constants'
+import * as StatusCode from '../util/StatusCode'
 import '../css/list.css';
 import '../css/Pagination.css';
 import arrowDown from '../resources/arrow_down.png';
-import Publication from '../components/Publication';
-import * as utilFunction from '../util/function';
-import ReactPaginate from 'react-paginate';
-import PublicationService from '../services/PublicationService'
-import * as Constants from '../util/Constants'
-import * as StatusCode from '../util/StatusCode'
-import ErrorService from '../services/ErrorService';
-import ColoredCircularProgress from '../components/ColoredCircularProgress';
-import PublicationLoader from '../components/PublicationLoader'
-import { LinearProgress } from '@material-ui/core';
-import { createStore } from 'redux'
-import LocalStorageService from '../services/LocalStorageService';
+
+
+
+
+
 
 
 class List extends React.Component {
@@ -46,16 +48,16 @@ class List extends React.Component {
       componentDidMount(){
         const queryString = require('query-string');
         const query = queryString.parse(this.props.location.search)
-        let names = ["address","operation","propertyType","minPrice","maxPrice","minFloorSize","maxFloorSize","bedrooms","bathrooms","parking"]
+        let names = ["address","operation","propertyType","minPrice","maxPrice","minFloorSize","maxFloorSize","bedrooms","bathrooms","parking","page"]
         let values = [query.address,query.operation,query.propertyType,query.minPrice,query.maxPrice,query.minFloorSize,query.maxFloorSize,
-                        query.bedrooms,query.bathrooms,query.parking]
+                        query.bedrooms,query.bathrooms,query.parking,this.setInitialPage()]
         
-        this.updatePublications(names,values)      
+        this.updatePublications(names,values,true)      
         this.selectOperation(query.operation)
         this.selectPropertyType(query.propertyType)
       }
 
-      updatePublications(names,values){
+      updatePublications(names,values,updateFilters){
         let queryParameters = this.generateQueryParametersPackage();
         this.updateQueryParameters(queryParameters,names,values)
         let currentComponent = this
@@ -85,9 +87,10 @@ class List extends React.Component {
                 parking: queryParameters["parking"],
                 order: queryParameters["order"] ,
             })
-            if(response.headers["x-total-count"] === 0)
+            if(response.headers["x-total-count"] === "0")
                 currentComponent.setState({loadingPublications: false})
-            currentComponent.updateFilters(queryParameters)
+            if(updateFilters === true)
+                currentComponent.updateFilters(queryParameters)
             currentComponent.pushParameters(names,values);
         })
     }
@@ -250,39 +253,39 @@ class List extends React.Component {
     deleteAllFilters(){
         let names = ["address","minPrice","maxPrice","minFloorSize","maxFloorSize","bedrooms","bathrooms","parking","page"]
         let values = ["","","","","","","","",0]
-        this.updatePublications(names,values)
+        this.updatePublications(names,values,true)
     }
 
     deleteFilter(stateName){
         let names = [stateName,"page"]
         let values = ["",0]
-        this.updatePublications(names,values);
+        this.updatePublications(names,values,true);
     }
 
     handleSelect(event,stateName){
         let names = [stateName]
         let values = [event.target.value]
-        this.updatePublications(names,values)
+        this.updatePublications(names,values,false)
     }
 
     handleFilter(stateName,value){
         let names = [stateName,"page"]
         let values = [value,0]
-        this.updatePublications(names,values)
+        this.updatePublications(names,values,true)
     }
 
     handleOperation(operation){
         let names = ["operation","page"]
         let values = [operation,0]
         this.selectOperation(operation);
-        this.updatePublications(names,values)
+        this.updatePublications(names,values,true)
     }
 
     handleSearch(){
         let value = document.getElementById("search-holder").value
         let names = ["address","page"]
         let values = [value,0]
-        this.updatePublications(names,values)
+        this.updatePublications(names,values,true)
     }
 
     handlePrice(){
@@ -290,7 +293,7 @@ class List extends React.Component {
         let maxPrice = document.getElementById("maxPrice");
         let names = ["minPrice","maxPrice","page"]
         let values = [minPrice.value,maxPrice.value,0]
-        this.updatePublications(names,values);
+        this.updatePublications(names,values,true);
     }
 
     handleFloorSize(){
@@ -299,7 +302,7 @@ class List extends React.Component {
 
         let names = ["minFloorSize","maxFloorSize","page"]
         let values = [minFloorSize.value,maxFloorSize.value,0]
-        this.updatePublications(names,values);
+        this.updatePublications(names,values,true);
     }
 
     selectOperation(operation){
@@ -328,9 +331,6 @@ class List extends React.Component {
     setInitialPage(){
         const params = new URLSearchParams(this.props.location.search); 
         const queryPageParam = params.get(Constants.PAGE);
-        let names = ["page"]
-        let values = [queryPageParam || 1];
-        this.pushParameters(names,values)
         return parseInt(queryPageParam) - 1 || 0;
     }
 
@@ -355,7 +355,7 @@ class List extends React.Component {
     handlePageClick = data => {
         let names = ["page"]
         let values = [data.selected]
-        this.updatePublications(names,values)
+        this.updatePublications(names,values,false)
         
     }
 

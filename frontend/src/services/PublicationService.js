@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as ResourcesVersions from '../util/ResourcesVersions'
 import LocalStorageService from './LocalStorageService'
+import CancelTokenService from './CancelRequestService';
 
 const PublicationService = (function(){
 
@@ -10,6 +11,7 @@ const PublicationService = (function(){
       return await axios({
           method: 'get',
           url: `${PUBLICATIONS_PATH}/publications`,
+          //cancelToken: CancelTokenService.getSource().token,
           params: queryParameters,
           headers: {
             authorization: LocalStorageService.getAuthorization(),

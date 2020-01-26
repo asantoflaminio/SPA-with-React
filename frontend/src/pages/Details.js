@@ -74,7 +74,8 @@ class Details extends React.Component {
         emailDTO.title = title
         if(Object.keys(errors).length === 0){
             this.setState({
-                loading: true
+                loading: true,
+                showModal:false
             });
 
             UserService.sendMessage(emailDTO).then(function (response){

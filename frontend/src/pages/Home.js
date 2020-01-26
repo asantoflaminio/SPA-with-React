@@ -10,6 +10,7 @@ import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
 import LocalStorageService from '../services/LocalStorageService'
 import HomeCardLoader from '../components/HomeCardLoader';
+import CancelTokenService from '../services/CancelRequestService';
 
 class HomeReal extends React.Component {
    constructor(props) {
@@ -110,7 +111,7 @@ class HomeReal extends React.Component {
     }
 
     setReady(){
-        if(LocalStorageService.getCounter() === this.state.publicationsSale.length){
+        if(LocalStorageService.getCounter() === this.state.publicationsSale.length + this.state.publicationsRent.length){
             LocalStorageService.deleteCounter()
             this.setState({loading: false})
         }    
@@ -126,6 +127,10 @@ class HomeReal extends React.Component {
             )
         }
         return pubComponents;
+    }
+
+    componentWillUnmount(){
+        CancelTokenService.getSource().cancel();
     }
 
     render(){
