@@ -16,7 +16,7 @@ class ToastNotification extends React.Component{
 }
 
   componentDidUpdate(prevProps,prevState){
-    if(prevProps != this.props){
+    if(prevProps !== this.props){
       this.setState({
         show: this.props.show
       })

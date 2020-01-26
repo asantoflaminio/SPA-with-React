@@ -1,5 +1,6 @@
 import LocalStorageService from './LocalStorageService'
 import * as ResourcesVersions from '../util/ResourcesVersions'
+import CancelTokenService from './CancelRequestService';
 import axios from 'axios';
 
 const LocationService = (function(){
@@ -46,6 +47,7 @@ const LocationService = (function(){
         return await axios({
             method: 'get',
             url: `${LOCATIONS_PATH}/provinces`,
+            cancelToken: CancelTokenService.getSource().token,
             headers: {
                 'Accept': ResourcesVersions.PROVINCE
             }

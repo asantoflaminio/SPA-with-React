@@ -130,7 +130,7 @@ class HomeReal extends React.Component {
     }
 
     componentWillUnmount(){
-        CancelTokenService.getSource().cancel();
+        CancelTokenService.getSource().cancel()
     }
 
     render(){

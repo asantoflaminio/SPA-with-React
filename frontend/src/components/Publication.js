@@ -24,12 +24,12 @@ function isEditable(t, erasableComponent, eraseFunction, publicationid, editable
             <div class="more-info">
                 <Link to={{pathname: "/EditPublication", search: "?publicationid=" + publicationid}}>
                     <img class="delete" src={pencil} alt="Edit" />
-                    <a class="more-info-title">{t('profilepublication.edit')} </a> 
+                    <p class="more-info-title">{t('profilepublication.edit')} </p> 
                 </Link>
             </div>
             <div class="more-info">
                 <img class="delete" src={trash} alt="Delete" />
-                <a class="more-info-title" onClick={() => eraseFunction(publicationid)}>{t('profilepublication.delete')}</a>
+                <p class="more-info-title" onClick={() => eraseFunction(publicationid)}>{t('profilepublication.delete')}</p>
             </div>
             </div>
         )
@@ -38,7 +38,7 @@ function isEditable(t, erasableComponent, eraseFunction, publicationid, editable
             <div>
             <div class="more-info">
                 <Link to={{pathname: "/publications", search: "?publicationid=" + publicationid}}>
-                    <a class="more-info-title" href="">{t('list.moreInfo')} ></a>
+                    <p class="more-info-title">{t('list.moreInfo')} ></p>
                 </Link>
             {erasableComponent}
             </div>

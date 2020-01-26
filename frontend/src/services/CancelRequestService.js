@@ -3,10 +3,16 @@ import axios from 'axios';
 const CancelTokenService = (function(){
 
     const CancelToken = axios.CancelToken;
-    const source = CancelToken.source();
+    let source = CancelToken.source();
 
     function _getSource(){
-        return source;
+        let cancelToken = source;
+        source = createNewToken()
+        return cancelToken;
+    }
+
+    function createNewToken(){
+        return CancelToken.source();
     }
 
     return {

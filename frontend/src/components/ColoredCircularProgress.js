@@ -8,7 +8,7 @@ const defaultSize = 50;
 class ColoredCircularProgress extends Component {
 
     render() {
-      const { classes, size, percentage } = this.props;
+      const { classes, size } = this.props;
       return <CircularProgress {...this.props} classes={classes} size={size} />;
     }
   }

@@ -10,7 +10,7 @@ class UserNavbar extends React.Component {
     constructor(props) {
          super(props);
          this.state = {
-             username: null,
+             username: "",
              redirect: false
          }
 
@@ -31,7 +31,7 @@ class UserNavbar extends React.Component {
         if(this.props.isAdmin)
             return(
                 <Link to={{pathname: "/AdminGenerator"}}>
-                    <a href="#" className="dropdown-item">{t("userNavbar.manage")}</a>
+                    <p className="dropdown-item">{t("userNavbar.manage")}</p>
                 </Link>
             )
         else
@@ -45,20 +45,18 @@ class UserNavbar extends React.Component {
         return(
             <nav>
                 <Link to={{pathname: "/"}}>
-                    <a href="">
-                        <img src={logo} alt="Home" id="logo"/>
-                    </a>
+                    <img src={logo} alt="Home" id="logo"/>
                 </Link>
                 <NavDropdown title={this.state.username} id="basic-nav-dropdown">
                     <Link to={{pathname: "/MyInformation"}}>
-                        <a href="#" className="dropdown-item">{t('userNavbar.profile')}</a>
+                        <p className="dropdown-item">{t('userNavbar.profile')}</p>
                     </Link>
                     <Link to={{pathname: "/Publish"}}>
-                        <a href="#" className="dropdown-item">{t('userNavbar.publish')}</a>
+                        <p className="dropdown-item">{t('userNavbar.publish')}</p>
                     </Link>
                     {adminOption}
                     <NavDropdown.Divider/>
-                        <a href="#" onClick={this.logout} className="dropdown-item">{t('userNavbar.logout')}</a>
+                        <button onClick={this.logout} className="dropdown-item">{t('userNavbar.logout')}</button>
                 </NavDropdown>
             </nav>
         )

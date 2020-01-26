@@ -38,7 +38,7 @@ const JsonService = (function(){
     function _getJSON(array){
         let result = "{";
         for(var i = 0; i < array.length; i++){
-            result += '"' + array[i].name + '"' + ":" + '"' + array[i].value + '"' ;
+            result += '"' + array[i].name + '":"' + array[i].value + '"' ;
             if(i !== array.length - 1)
                 result += ",";
         }
