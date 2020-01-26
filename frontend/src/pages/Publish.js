@@ -24,12 +24,14 @@ class Publish extends React.Component {
          this.state = { 
              pictures: [],
              actualImage: 0,
-             provinces: []
+             provinces: [],
+             selectedOption: 'yes'
         };
          this.onDrop = this.onDrop.bind(this);
          this.previousImage = this.previousImage.bind(this);
          this.nextImage = this.nextImage.bind(this);
-         this.handleFormSubmit = this.handleFormSubmit.bind(this)
+         this.handleFormSubmit = this.handleFormSubmit.bind(this);
+         this.handleRadioChange = this.handleRadioChange.bind(this);
     }
 
     componentDidMount(){
@@ -157,6 +159,7 @@ class Publish extends React.Component {
         let userid = LocalStorageService.getUserid();
         let publicationDTO = JsonService.getJSONParsed(event.target)
         event.preventDefault()
+        
         if(Object.keys(errors).length === 0){
             UserService.postPublication(userid,publicationDTO).then(function (response){
                 if(response.status !== StatusCode.CREATED){
@@ -184,12 +187,19 @@ class Publish extends React.Component {
         }
     }
 
+    handleRadioChange(changeEvent) {
+        this.setState({
+            selectedOption: changeEvent.target.value,
+        })
+    }
+
 
     render() {
         const { t } = this.props;
         const provinces = this.state.provinces.map(function(item){
             return <option value={item.provinceid}>  {item.province} </option>;
-          });
+        });
+          
         const schema = yup.object({
         title: yup.string().required( t('errors.requiredField') )
                             .matches(Constants.lettesNumersAndSpacesRegex, t('errors.lettesNumersAndSpacesRegex'))
@@ -297,8 +307,8 @@ class Publish extends React.Component {
                                     value={values.provinceid}
                                     isInvalid={!!errors.provinceid && touched.provinceid}
                                 >
-                                    <option disabled selected value="">{t('publish.provinceHolder')}</option>
-                                    {provinces}
+                                <option disabled selected value="">{t('publish.provinceHolder')}</option>
+                                {provinces}
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">
                                     {errors.provinceid}
@@ -546,19 +556,24 @@ class Publish extends React.Component {
                                         label={t('publish.Yes')}
                                         name="storage"
                                         value="yes"
-                                        checked
+                                        checked={this.state.selectedOption === 'yes'}
+                                        onChange={this.handleRadioChange}
                                     />
                                     <Form.Check
                                         type="radio"
                                         label={t('publish.No')}
                                         name="storage"
                                         value="no"
+                                        checked={this.state.selectedOption === 'no'}
+                                        onChange={this.handleRadioChange}
                                     />
                                     <Form.Check
                                         type="radio"
                                         label={t('publish.notCorresponding')}
                                         name="storage"
                                         value="notCorresponding"
+                                        checked={this.state.selectedOption === 'notCorresponding'}
+                                        onChange={this.handleRadioChange}
                                     />
                             </Form.Group>
                             </div>
