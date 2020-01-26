@@ -137,17 +137,17 @@ public class PublicationHibernateDao implements PublicationDao{
 	public boolean editData(String title, String address,String neighborhood, String city, String province, String operation, String price,
 			   String description, String propertyType, String bedrooms,
 			   String bathrooms, String floorSize, String parking,
-			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses, long publicationid) {
+			   String coveredfloorsize, String balconies, String amenities, String storage, String expenses, long publicationid) {
 		final Query query =  em.createQuery("update Publication as pub set pub.title = :title, "
 													 + "pub.address = :address, "
 													 + "pub.operation = :operation, pub.price = :price, "
 													 + "pub.description = :description, pub.propertyType = :propertyType, "
 													 + "pub.bedrooms = :bedrooms, pub.bathrooms = :bathrooms, pub.floorSize = :floorSize, "
-													 + "pub.parking = :parking "
-													 + "pub.coveredfloorsize = :coveredFloorSize "
-													 + "pub.balconies = :balconies "
-													 + "pub.amenities = :amenities "
-													 + "pub.storage = :storage "
+													 + "pub.parking = :parking, "
+													 + "pub.coveredfloorsize = :coveredfloorsize, "
+													 + "pub.balconies = :balconies, "
+													 + "pub.amenities = :amenities, "
+													 + "pub.storage = :storage, "
 													 + "pub.expenses = :expenses "
 													 + "where pub.publicationid = :publicationid");
 
@@ -162,7 +162,7 @@ public class PublicationHibernateDao implements PublicationDao{
 		query.setParameter("floorSize", Integer.parseInt(floorSize));
 		query.setParameter("parking", Integer.parseInt(parking));
 		query.setParameter("publicationid", publicationid);
-		query.setParameter("coveredFloorSize", Integer.parseInt(coveredFloorSize));
+		query.setParameter("coveredfloorsize", Integer.parseInt(coveredfloorsize));
 		query.setParameter("balconies", Integer.parseInt(balconies));
 		query.setParameter("amenities", amenities);
 		query.setParameter("storage", storage);

@@ -99,7 +99,20 @@ const UserService = (function(){
               authorization: LocalStorageService.getAuthorization(),
           }
       }).then(function (response){ return response }).catch(function (error){ return error.response })
-  }
+    }
+
+    async function _editPublication(userid, publicationid, dataDTO) { //chequear si esta bien, nueva funcion
+      console.log("en edit")
+      return await axios({
+        method: 'patch',
+        url: `${USERS_PATH}/users/${userid}/publications/${publicationid}`,
+        data: dataDTO,
+        headers: {
+            authorization: LocalStorageService.getAuthorization(),
+            'Content-Type': ResourcesVersions.USER,
+        }
+    }).then(function (response){ return response }).catch(function (error){ return error.response })
+    }
 
     async function _sendMessage(dataDTO){
         return await axios({
@@ -206,6 +219,7 @@ const UserService = (function(){
         login : _login,
         postPublication : _postPublication,
         getPublication: _getPublication,
+        editPublication: _editPublication,
         sendMessage : _sendMessage,
         getMyPublications : _getMyPublications,
         getMyFavoritesPublications : _getMyFavoritesPublications,

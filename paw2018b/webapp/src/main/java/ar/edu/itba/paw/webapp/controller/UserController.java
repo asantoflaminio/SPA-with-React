@@ -242,6 +242,45 @@ public class UserController {
     	return Response.ok().entity(publication).build();
     }
     
+    // Mirar, nuevo !!
+    @PATCH
+    @Path("/users/{userid}/publications/{publicationid}")
+    @Consumes(value = { UserDTO.MediaType, })
+    public Response updatePublication (@Context HttpServletRequest request, @PathParam("userid") long userid, @PathParam("publicationid") long publicationid, final PublicationDTO publicationDTO) {
+    	System.out.println(userid + " " + publicationid);
+    	
+    	if(! vs.validateID(userid))
+    		return rs.badRequest("The user id is invalid");
+    	if(tas.getUserIdAuthentication(request) != userid)
+    		return rs.forbidden("The user has no authority to perform this action");
+    	PublicationDTO publication = ps.findById(publicationid);
+    	if(publication == null)
+    		return rs.notFound();
+    	
+    	if(! vs.validatePublication(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodid(),
+				publicationDTO.getCityid(), publicationDTO.getProvinceid(), publicationDTO.getOperation(), publicationDTO.getPrice(),
+				publicationDTO.getDescription(), publicationDTO.getPropertyType(), 
+    			publicationDTO.getBedrooms(), publicationDTO.getBathrooms(), publicationDTO.getDimention(), 
+    			publicationDTO.getParking(),
+    			publicationDTO.getCoveredFloorSize(), publicationDTO.getBalconies(),
+    			publicationDTO.getAmenities(), publicationDTO.getStorage(), publicationDTO.getExpenses(), tas.getUserIdAuthentication(request))) 
+			return rs.badRequest("The user parameters are invalid");
+    	
+    	if(tas.getUserIdAuthentication(request) != userid)
+    		return rs.forbidden("The user has no authority to perform this action");
+    	
+    	if(! ps.editData(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodid(), publicationDTO.getCityid(),
+    			publicationDTO.getProvinceid(), publicationDTO.getOperation(), publicationDTO.getPrice(), publicationDTO.getDescription(),
+    			publicationDTO.getPropertyType(), publicationDTO.getBedrooms(), publicationDTO.getBathrooms(), publicationDTO.getDimention(),
+    			publicationDTO.getParking(), publicationDTO.getCoveredFloorSize(), publicationDTO.getBalconies(), publicationDTO.getAmenities(),
+    			publicationDTO.getStorage(), publicationDTO.getExpenses(), tas.getUserIdAuthentication(request))) {
+    		return rs.badRequest(""); // ni idea si hay q poner esto
+    	}
+    	
+    	
+    	return rs.ok();
+    }
+    
     //Deberia mejorarse el errorDTO
     @POST
     @Path("/messages")

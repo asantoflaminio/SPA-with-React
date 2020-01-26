@@ -29,8 +29,10 @@ class EditPublication extends React.Component {
             title: '',
             provinceid: '',
             cityid: '',
+            propertyType: '',
             neighborhoodid:'',
             address: '',
+            operation: '',
             price: '',
             expenses: '',
             amenities: '',
@@ -40,12 +42,20 @@ class EditPublication extends React.Component {
             dimention: '',
             coveredFloorSize: '',
             parking: '',
-            balconies: ''
+            balconies: '',
+            storage: '',
+            selectedOperationOption: '',
+            selectedPropertyTypeOption: '',
+            selectedStorageOption: '',
 
         };
          this.onDrop = this.onDrop.bind(this);
          this.previousImage = this.previousImage.bind(this);
          this.nextImage = this.nextImage.bind(this);
+         this.handleOperationChange = this.handleOperationChange.bind(this);
+         this.handlePropertyTypeChange = this.handlePropertyTypeChange.bind(this);
+         this.handleStorageChange = this.handleStorageChange.bind(this);
+         this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
     componentDidMount(){
@@ -53,10 +63,10 @@ class EditPublication extends React.Component {
         document.getElementById("House").checked = true
         
         this.updateFormValues();
-        this.loadPovinces();  
+        this.loadProvinces();
     }
 
-    loadPovinces() {
+    loadProvinces() {
         let currentComponent = this
        
         LocationService.getProvinces().then(function (response){
@@ -68,8 +78,8 @@ class EditPublication extends React.Component {
                 provinces: response.data,
             })
         })
+       
     }
-
 
 
     updateFormValues() {
@@ -83,13 +93,15 @@ class EditPublication extends React.Component {
                 ErrorService.logError(currentComponent.props,response)
                 return;
             }
-        
+            
             currentComponent.setState({
                 title: response.data.title,
-                cityid: response.data.cityid,
-                provinceid: response.data.provinceid,
-                neighborhoodid: response.data.neighborhoodid,
+                // cityid: response.data.cityid,
+                // provinceid: response.data.provinceid,
+                // neighborhoodid: response.data.neighborhoodid,
                 address: response.data.address,
+                propertyType: response.data.propertyType,
+                operation: response.data.operation,
                 price: response.data.price,
                 expenses: response.data.expenses,
                 amenities: response.data.amenities,
@@ -99,7 +111,11 @@ class EditPublication extends React.Component {
                 dimention: response.data.dimention,
                 coveredFloorSize: response.data.coveredFloorSize,
                 parking: response.data.parking,
-                balconies: response.data.balconies
+                balconies: response.data.balconies,
+                storage: response.data.storage,
+                selectedOperationOption: response.data.operation,
+                selectedPropertyTypeOption: response.data.propertyType,
+                selectedStorageOption: response.data.storage,
             })
         })
 
@@ -172,15 +188,12 @@ class EditPublication extends React.Component {
         event.preventDefault();
         values.provinceid = event.target.value
         event.target.blur();
-       
         LocationService.getCities(values.provinceid).then(function (response){
             let cities = response.data
             let select = document.getElementById("city-Select")
             let selectNeighborhood = document.getElementById("neighborhood-Select")
             select.selectedIndex = 0;
             selectNeighborhood.selectedIndex = 0;
-
-            
             while (select.childNodes[1]) {
                 select.removeChild(select.childNodes[1]); 
             }
@@ -217,13 +230,19 @@ class EditPublication extends React.Component {
         let schema = {}
         
         schema.title = this.state.title;
-        schema.cityid = this.state.cityid;
-        schema.provinceid = this.state.provinceid;
-        schema.neighborhoodid = this.state.neighborhoodid;
+        // schema.cityid = this.state.cityid;
+        // schema.provinceid = this.state.provinceid;
+        // schema.neighborhoodid = this.state.neighborhoodid;
         schema.address = this.state.address;
+        schema.operation = this.state.operation;
         schema.price = this.state.price;
         schema.expenses = this.state.expenses;
-        schema.amenities = this.state.amenities;
+        
+        if(this.state.amenities == -1) {
+            schema.amenities = '';
+        } else {
+            schema.amenities = this.state.amenities;
+        }
         schema.description = this.state.description;
         schema.bedrooms = this.state.bedrooms;
         schema.bathrooms = this.state.bathrooms;
@@ -231,126 +250,147 @@ class EditPublication extends React.Component {
         schema.dimention = this.state.dimention;
         schema.parking = this.state.parking;
         schema.balconies = this.state.balconies;
+        schema.storage = this.state.storage;
 
         return schema;
     }
 
-    // loadCities(provinceid){
-    //     let currentComponent = this;
-    
-    //     if(provinceid !== undefined) {   
-    //         LocationService.getCities(provinceid).then(function (response){
-    //             if(response.status !== StatusCode.OK){
-    //                 ErrorService.logError(currentComponent.props,response)
-    //                 return;
-    //             }
+    loadCities(provinceid){
+        let currentComponent = this;
+        
+        if(provinceid !== undefined) {   
+            LocationService.getCities(provinceid).then(function (response){
+                if(response.status !== StatusCode.OK){
+                    ErrorService.logError(currentComponent.props,response)
+                    return;
+                }
                 
-    //             currentComponent.setState({
-    //                 cities: response.data,
-    //             })
-    //         })
-    //     }
-    // }
+                currentComponent.setState({
+                    cities: response.data,
+                })
+            })
+        }
+    }
 
 
-    // loadNeighborhood(cityid) {
-    //     let currentComponent = this;
+    loadNeighborhood(cityid) {
+        let currentComponent = this;
         
-    //     if(cityid !== undefined) {   
-    //         LocationService.getNeighborhoods(cityid).then(function (response){
-    //             if(response.status !== StatusCode.OK){
-    //                 ErrorService.logError(currentComponent.props,response)
-    //                 return;
-    //             }
+        if(cityid !== undefined) {   
+            LocationService.getNeighborhoods(cityid).then(function (response){
+                if(response.status !== StatusCode.OK){
+                    ErrorService.logError(currentComponent.props,response)
+                    return;
+                }
                 
-    //             currentComponent.setState({
-    //                 neighborhoods: response.data,
-    //             })
-    //         })
-    //     }
-        
-    // }
+                currentComponent.setState({
+                    neighborhoods: response.data,
+                })
+            })
+        }
+    }
+
+    handleOperationChange(changeEvent) {
+        this.setState({
+            selectedOperationOption: changeEvent.target.value,
+        })
+    }
+
+    handlePropertyTypeChange(changeEvent) {
+        this.setState({
+            selectedPropertyTypeOption: changeEvent.target.value,
+        })
+    }
+
+    handleStorageChange(changeEvent) {
+        this.setState({
+            selectedStorageOption: changeEvent.target.value,
+        })
+    }
 
     handleFormSubmit(event,errors) {
         let currentComponent = this
         let userid = LocalStorageService.getUserid();
+        let queryString = require('query-string');
+        let query = queryString.parse(this.props.location.search);
         let publicationDTO = JsonService.getJSONParsed(event.target)
+        
         event.preventDefault()
-        if(Object.keys(errors).length === 0){
-            UserService.postPublication(userid,publicationDTO).then(function (response){
+        console.table(publicationDTO)
+        console.log(userid)
+        console.log(query.publicationid)
+     
+            console.log("aca")
+            UserService.editPublication(userid,query.publicationid,publicationDTO).then(function (response){
+                console.log("aca")
                 if(response.status !== StatusCode.CREATED){
                     ErrorService.logError(currentComponent.props,response)
                     return;
                 }
-                let publicationid = response.data.publicationid
-                let formData = new FormData();
-                for(let i = 0; i < currentComponent.state.pictures.length; i++) {
-                    formData.append('files', currentComponent.state.pictures[i])
-                }
+                // let publicationid = response.data.publicationid
+                // let formData = new FormData();
+                // for(let i = 0; i < currentComponent.state.pictures.length; i++) {
+                //     formData.append('files', currentComponent.state.pictures[i])
+                // }
                 
-                if(currentComponent.state.pictures.length !== 0) { //TODO: Falta caso si no hay fotos que esta rompiendo
-                    PublicationService.postImages(publicationid,formData).then(function (response){
-                        if(response.status !== StatusCode.CREATED){
-                            ErrorService.logError(currentComponent.props,response)
-                            return;
-                        }
-                    })
-                }
+                // if(currentComponent.state.pictures.length !== 0) { //TODO: Falta caso si no hay fotos que esta rompiendo
+                //     PublicationService.postImages(publicationid,formData).then(function (response){
+                //         if(response.status !== StatusCode.CREATED){
+                //             ErrorService.logError(currentComponent.props,response)
+                //             return;
+                //         }
+                //     })
+                // }
 
-                currentComponent.props.history.push({
-                    pathname: '/publications',
-                    search: '?publicationid=' + publicationid,
-                });
+                // currentComponent.props.history.push({
+                //     pathname: '/publications',
+                //     search: '?publicationid=' + publicationid,
+                // });
                 
             })
-        }
+        
     }
 
 
 
     render() {
         const { t } = this.props;
-        // let provinceid, cityid;
-        let initialSchema = this.reInitializeForm()
+        let provinceid, cityid;
+        let initialSchema = this.reInitializeForm();
+
+    //     const provinces = this.state.provinces.map(function(item){ 
+    //         if(item.province == initialSchema.provinceid) {
+    //             provinceid = item.provinceid;
+    //             return <option defaultValue={item.provinceid} selected>  {item.province} </option>;
+    //         } else {
+    //             return <option value={item.provinceid}>  {item.province} </option>;
+    //         }
+    //     });
         
-
-        // const provinces = this.state.provinces.map(function(item){ 
-        //     if(item.province == initialSchema.provinceid) {
-        //         provinceid = item.provinceid;
-        //         return <option defaultValue={item.provinceid}>  {item.province} </option>;
-        //     } else {
-        //         return <option value={item.provinceid}>  {item.province} </option>;
-        //     }
-        // });
-
-        // provinces.push(<option /*disabled selected */value="">{t('publish.provinceHolder')}</option>)
+    //     this.loadCities(provinceid);
         
-        // this.loadCities(provinceid);
-        
-        // const cities = this.state.cities.map(function(item){ 
-        //     if(item.city == initialSchema.cityid) {
-        //         cityid = item.cityid;
-        //         return <option defaultValue={item.cityid}>  {item.city} </option>;
-        //     } else {
-        //         return <option value={item.cityid}>  {item.city} </option>;
-        //     }
-        // });
+    //     const cities = this.state.cities.map(function(item){ 
+    //         if(item.city == initialSchema.cityid) {
+    //             cityid = item.cityid;
+    //             return <option defaultValue={item.cityid} selected>  {item.city} </option>;
+    //         } else {
+    //             return <option value={item.cityid}>  {item.city} </option>;
+    //         }
+    //     });
 
-        // cities.push(<option /*disabled selected */ value="">{t('publish.cityHolder')}</option>)
+    //    this.loadNeighborhood(cityid);
 
-        // this.loadNeighborhood(cityid);
+    //     const neighborhood = this.state.neighborhoods.map(function(item){ 
+    //         if(item.neighborhood == initialSchema.neighborhoodid) {
+    //             return <option defaultValue={item.neighborhoodod} selected>  {item.neighborhood} </option>;
+    //         } else {
+    //             return <option value={item.neighborhoodod}>  {item.neighborhood} </option>;
+    //         }
+    //     });
 
-        // const neighborhood = this.state.neighborhoods.map(function(item){ 
-        //     if(item.neighborhood == initialSchema.neighborhoodid) {
-        //         return <option defaultValue={item.neighborhoodod}>  {item.neighborhood} </option>;
-        //     } else {
-        //         return <option value={item.neighborhoodod}>  {item.neighborhood} </option>;
-        //     }
-        // });
-
-        // neighborhood.push(<option/*disabled selected */ value="">{t('publish.neighborhoodHolder')}</option>)
-
-
+    const provinces = this.state.provinces.map(function(item){
+        return <option value={item.provinceid}>  {item.province} </option>;
+    });
         const publicationSchema = yup.object({
         title: yup.string().required( t('errors.requiredField') )
                             .matches(Constants.lettesNumersAndSpacesRegex, t('errors.lettesNumersAndSpacesRegex'))
@@ -403,6 +443,7 @@ class EditPublication extends React.Component {
                             .max(Constants.AMENITIES_MAX_LENGTH, t('errors.lengthMax')),
         });
 
+
         return (
             <div className="box_form">
                 <div>
@@ -416,7 +457,7 @@ class EditPublication extends React.Component {
                     setSubmitting(true);
                     resetForm();
                     setSubmitting(false);
-                                }}
+                }}
                 >
                 {({
                     values,
@@ -427,7 +468,7 @@ class EditPublication extends React.Component {
                     handleSubmit,
                     isSubmitting
                 }) => (
-                    <Form onSubmit={(event) => handleSubmit(event) || this.props.handleFormSubmit(event,this,errors)} >
+                    <Form onSubmit={(event) => handleSubmit(event) || this.handleFormSubmit(event,this,errors)} >
                         <div className="sub_box">
                             <Form.Group as={Col} md="12" controlId="validationFormik01">
                                 <Form.Label>{t('publish.title')}</Form.Label>
@@ -455,10 +496,8 @@ class EditPublication extends React.Component {
                                     value={values.provinceid}
                                     isInvalid={!!errors.provinceid && touched.provinceid}
                                 >   
-                                    
-                                
-                                  {/* {provinces} */}
-                                 
+                                <option disabled selected value="">{t('publish.provinceHolder')}</option>
+                                {provinces} 
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">
                                     {errors.provinceid}
@@ -472,9 +511,9 @@ class EditPublication extends React.Component {
                                     onChange={(event) => this.updateNeighborhood(event,values) && handleChange(event)}
                                     onBlur={handleBlur}
                                     value={values.cityid}
-                                    isInvalid={!!errors.cityid && touched.cityid}>
-                                    
-                                    {/* {cities} */}
+                                    isInvalid={!!errors.cityid && touched.cityid}
+                                    >
+                                    <option disabled selected value="">{t('publish.cityHolder')}</option>
                                     
                                     </Form.Control>  
                                     <Form.Control.Feedback type="invalid">
@@ -492,9 +531,8 @@ class EditPublication extends React.Component {
                                     onBlur={handleBlur}
                                     isInvalid={!!errors.neighborhoodid && touched.neighborhoodid}
                                 >
-                                {/* {neighborhood} */}
-                            
-                                    
+                                <option disabled selected value="">{t('publish.neighborhoodHolder')}</option>
+                               
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">
                                     {errors.neighborhoodid}
@@ -523,6 +561,8 @@ class EditPublication extends React.Component {
                                     name="operation"
                                     value="FSale"
                                     id="FSale"
+                                    checked={this.state.selectedOperationOption === 'FSale'}
+                                    onChange={this.handleOperationChange}
                                 />
                                 <Form.Check
                                     type="radio"
@@ -530,6 +570,8 @@ class EditPublication extends React.Component {
                                     name="operation"
                                     value="FRent"
                                     id="FRent"
+                                    checked={this.state.selectedOperationOption === 'FRent'}
+                                    onChange={this.handleOperationChange}
                                 />
                             </Form.Group>
                             <Form.Group as={Col} md="12" controlId="validationFormik07">
@@ -603,6 +645,8 @@ class EditPublication extends React.Component {
                                         name="propertyType"
                                         value="House"
                                         id="House"
+                                        checked={this.state.selectedPropertyTypeOption === 'House'}
+                                        onChange={this.handlePropertyTypeChange}
                                     />
                                     <Form.Check
                                         type="radio"
@@ -610,6 +654,8 @@ class EditPublication extends React.Component {
                                         name="propertyType"
                                         value="Apartment"
                                         id="Apartment"
+                                        checked={this.state.selectedPropertyTypeOption === 'Apartment'}
+                                        onChange={this.handlePropertyTypeChange}
                                     />
                             </Form.Group>
                             <Form.Group as={Col} md="12" controlId="validationFormik12">
@@ -709,19 +755,24 @@ class EditPublication extends React.Component {
                                         label={t('publish.Yes')}
                                         name="storage"
                                         value="yes"
-                                        checked
+                                        checked={this.state.selectedStorageOption === 'yes'}
+                                        onChange={this.handleStorageChange}
                                     />
                                     <Form.Check
                                         type="radio"
                                         label={t('publish.No')}
                                         name="storage"
                                         value="no"
+                                        checked={this.state.selectedStorageOption === 'no'}
+                                        onChange={this.handleStorageChange}
                                     />
                                     <Form.Check
                                         type="radio"
                                         label={t('publish.notCorresponding')}
                                         name="storage"
                                         value="notCorresponding"
+                                        checked={this.state.selectedStorageOption === 'notCorresponding'}
+                                        onChange={this.handleStorageChange}
                                     />
                             </Form.Group>
                         </div>
