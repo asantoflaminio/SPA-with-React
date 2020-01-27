@@ -4,7 +4,6 @@ import { withRouter } from "react-router";
 import ProfileAsideBar from '../components/ProfileAsideBar'
 import Publication from '../components/Publication';
 import UserService from '../services/UserService'
-import PublicationService from '../services/PublicationService'
 import ReactPaginate from 'react-paginate';
 import ToastNotification from '../components/ToastNotification'
 import * as Constants from '../util/Constants'
@@ -56,10 +55,10 @@ class MyPublications extends React.Component {
     updatePublications(page){
         let currentComponent = this; 
         let queryParameters = {}
-        let userid;
+        let userid = LocalStorageService.getUserid();
         queryParameters.page = parseInt(page);
         queryParameters.limit = Constants.PUBLICATIONS_PAGE_LIMIT
-        userid = LocalStorageService.getUserid();
+       
         this.setState({loadingPublications: true})
         LocalStorageService.deleteCounter();
         LocalStorageService.initializeCounter()
@@ -88,7 +87,9 @@ class MyPublications extends React.Component {
     erasePublication(publicationID){
         let currentComponent = this
         let data = {}
-        PublicationService.erasePublication(publicationID,this.props).then(function (response){
+        let userid = LocalStorageService.getUserid();
+
+        UserService.erasePublication(userid, publicationID).then(function (response){
             if(response.status !== StatusCode.NO_CONTENT){
                 ErrorService.logError(currentComponent.props,response)
                 return;
@@ -107,20 +108,23 @@ class MyPublications extends React.Component {
     }
 
 
-    initializePublications(t){
+    initializePublications(){
         let pubComponents = [];
-        
+        const { t } = this.props;
         for(let i = 0; i < this.state.myPublications.length; i++){
             pubComponents.push(
-                <Publication t={t} 
-                    publication={this.state.myPublications[i]}  
-                    page="MyPublications"
-                    favourites={false}
-                    editable={true}
-                    eraseFunction={this.showModalErasePublication}
-                    ready={this.setReady}
-                    index={i}
+                <div key={this.state.myPublications[i].publicationid}>
+                    <Publication 
+                        t={t} 
+                        publication={this.state.myPublications[i]}  
+                        page="MyPublications"
+                        favourites={false}
+                        editable={true}
+                        eraseFunction={this.showModalErasePublication}
+                        ready={this.setReady}
+                        index={i}
                     />
+                </div>
             )
         }
         
@@ -138,7 +142,7 @@ class MyPublications extends React.Component {
         let pubComponents = [];
         for(let i = 0; i < Constants.PUBLICATIONS_PAGE_LIMIT; i++){
             pubComponents.push(
-                <div className="loader-container"> 
+                <div className="loader-container" key={i + "-loader"}> 
                     <PublicationLoader/>
                 </div>
             )
@@ -150,8 +154,8 @@ class MyPublications extends React.Component {
 
     render(){
         const { t } = this.props;
-        let publications = this.initializePublications(t);  
-        let loadingPublications = this.loadingContainers()
+        let publications = this.initializePublications();  
+        let loadingPublications = this.loadingContainers();
         return(
             <div>
                 <ProfileAsideBar t={t} active="MyPublications"/>
@@ -176,7 +180,7 @@ class MyPublications extends React.Component {
                                 {publications}
                             </div>
                             {this.state.myPublications.length !== 0 ?
-                            (<div class="pubsPagination">
+                            (<div className="pubsPagination">
                                 <ReactPaginate
                                 previousLabel={'<'}
                                 nextLabel={'>'}

@@ -107,7 +107,7 @@ class MyFavorites extends React.Component {
         let pubComponents = [];
         for(let i = 0; i < Constants.PUBLICATIONS_PAGE_LIMIT; i++){
             pubComponents.push(
-                <div className="loader-container"> 
+                <div className="loader-container" key={i + "-loader"}> 
                     <PublicationLoader/>
                 </div>
             )

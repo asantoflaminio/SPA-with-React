@@ -280,6 +280,23 @@ public class UserController {
     	return rs.ok();
     }
     
+    // Mirar, nuevo!!
+    @DELETE
+    @Path("/users/{userid}/publications/{publicationid}")
+    public Response deletePublication(@Context HttpServletRequest request, @PathParam("userid") long userid, @PathParam("publicationid") long publicationid){
+    	if(! vs.validateID(userid))
+    		return rs.badRequest("The user id is invalid");
+    	if(! vs.validateID(publicationid))
+    		return rs.badRequest("The publication id es invalid");
+    	if(tas.getUserIdAuthentication(request) != userid)
+    		return rs.forbidden("The user has no authority to perform this action");
+    	if(! ps.deletePublication(publicationid))
+    		return rs.notFound("No publication found with the specified id");
+    	
+    	
+    	return rs.noContent();
+    }
+    
     //Deberia mejorarse el errorDTO
     @POST
     @Path("/messages")

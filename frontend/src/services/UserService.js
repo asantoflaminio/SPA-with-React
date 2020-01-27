@@ -111,7 +111,17 @@ const UserService = (function(){
             authorization: LocalStorageService.getAuthorization(),
             'Content-Type': ResourcesVersions.USER,
         }
-    }).then(function (response){ return response }).catch(function (error){ return error.response })
+      }).then(function (response){ return response }).catch(function (error){ return error.response })
+    }
+
+    async function _erasePublication(userid, publicationid){
+      return await axios({
+        method: 'delete',
+        url: `${USERS_PATH}/users/${userid}/publications/${publicationid}`,
+        headers: {
+          authorization: LocalStorageService.getAuthorization()
+      }
+      }).then(function (response){ return response }).catch(function (error){ return error.response }) 
     }
 
     async function _sendMessage(dataDTO){
@@ -220,6 +230,7 @@ const UserService = (function(){
         postPublication : _postPublication,
         getPublication: _getPublication,
         editPublication: _editPublication,
+        erasePublication: _erasePublication,
         sendMessage : _sendMessage,
         getMyPublications : _getMyPublications,
         getMyFavoritesPublications : _getMyFavoritesPublications,
