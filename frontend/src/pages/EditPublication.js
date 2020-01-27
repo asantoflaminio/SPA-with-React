@@ -21,8 +21,6 @@ class EditPublication extends React.Component {
     constructor(props) {
         super(props);
          this.state = { 
-            pictures: [],
-            actualImage: 0,
             provinces: [],
             cities: [],
             neighborhoods: [],
@@ -49,9 +47,6 @@ class EditPublication extends React.Component {
             selectedStorageOption: '',
 
         };
-         this.onDrop = this.onDrop.bind(this);
-         this.previousImage = this.previousImage.bind(this);
-         this.nextImage = this.nextImage.bind(this);
          this.handleOperationChange = this.handleOperationChange.bind(this);
          this.handlePropertyTypeChange = this.handlePropertyTypeChange.bind(this);
          this.handleStorageChange = this.handleStorageChange.bind(this);
@@ -119,69 +114,6 @@ class EditPublication extends React.Component {
             })
         })
 
-    }
-
-    onDrop(picture) {
-         this.setState({
-            pictures: picture,
-            actualImage: 0,
-            }, () => {
-                var file = new File([picture[0]], "", { type: "image/jpg",});
-                this.createPicture(file)
-                document.getElementById("imageText").classList.add("hidden");
-                let count = document.getElementById("countImage")
-                count.innerHTML = this.state.actualImage + 1 + "/" + this.state.pictures.length;
-                count.classList.remove("hidden");
-                count.classList.add("countImagesText");
-            });
-    }
-
-    createPicture(picture){
-        var reader = new FileReader();
-            reader.onload = function(){
-              var dataURL = reader.result;
-              var img = document.getElementById("image");
-              img.src = dataURL;
-              img.classList.remove("hidden")
-            };
-        reader.readAsDataURL(picture);
-    }
-
-    previousImage(){
-        let index = this.state.actualImage;
-        let newIndex;
-        if(this.state.pictures.length <= 1)
-            return;
-        if(index - 1 < 0)
-            newIndex = this.state.pictures.length - 1
-        else
-            newIndex = index - 1;
-        var file = new File([this.state.pictures[newIndex]], "", { type: "image/jpg",});
-        this.createPicture(file);
-        let count = document.getElementById("countImage")
-        count.innerHTML = newIndex + 1 + "/" + this.state.pictures.length;
-        this.setState({
-            actualImage: newIndex,
-        });
-        
-    }
-
-    nextImage(){
-        let index = this.state.actualImage;
-        let newIndex;
-        if(this.state.pictures.length <= 1)
-            return;
-        if(index + 1 === this.state.pictures.length)
-            newIndex = 0
-        else
-            newIndex = index + 1;
-        var file = new File([this.state.pictures[newIndex]], "", { type: "image/jpg",});
-        this.createPicture(file);
-        let count = document.getElementById("countImage")
-        count.innerHTML = newIndex + 1 + "/" + this.state.pictures.length;
-        this.setState({
-            actualImage: newIndex,
-        });
     }
 
     updateCity(event,values){
@@ -308,46 +240,55 @@ class EditPublication extends React.Component {
         })
     }
 
+    updateState(event) {
+
+        this.setState({
+            title: event.target[0].value,
+            cityid: event.target[1].value,
+            provinceid: event.target[2].value,
+            neighborhoodid: event.target[3].value,
+            address: event.target[4].value,
+            price: event.target[7].value,
+            expenses: event.target[8].value,
+            amenities: event.target[9].value,
+            description: event.target[10].value,
+            bedrooms: event.target[13].value,
+            bathrooms: event.target[14].value,
+            dimention: event.target[15].value,
+            coveredFloorSize: event.target[16].value,
+            parking: event.target[17].value,
+            balconies: event.target[18].value, 
+        })
+
+    }
+
     handleFormSubmit(event,errors) {
         let currentComponent = this
         let userid = LocalStorageService.getUserid();
         let queryString = require('query-string');
         let query = queryString.parse(this.props.location.search);
         let publicationDTO = JsonService.getJSONParsed(event.target)
+        let publicationid = query.publicationid;
+        event.preventDefault();
+
+        this.updateState(event);
         
-        event.preventDefault()
-        console.table(publicationDTO)
-        console.log(userid)
-        console.log(query.publicationid)
-     
-            console.log("aca")
+        console.table(Object.keys(errors));
+        
+        if(Object.keys(errors).length === 0){
             UserService.editPublication(userid,query.publicationid,publicationDTO).then(function (response){
-                console.log("aca")
-                if(response.status !== StatusCode.CREATED){
+                alert("entre");
+                if(response.status !== StatusCode.OK){
                     ErrorService.logError(currentComponent.props,response)
                     return;
                 }
-                // let publicationid = response.data.publicationid
-                // let formData = new FormData();
-                // for(let i = 0; i < currentComponent.state.pictures.length; i++) {
-                //     formData.append('files', currentComponent.state.pictures[i])
-                // }
-                
-                // if(currentComponent.state.pictures.length !== 0) { //TODO: Falta caso si no hay fotos que esta rompiendo
-                //     PublicationService.postImages(publicationid,formData).then(function (response){
-                //         if(response.status !== StatusCode.CREATED){
-                //             ErrorService.logError(currentComponent.props,response)
-                //             return;
-                //         }
-                //     })
-                // }
-
-                // currentComponent.props.history.push({
-                //     pathname: '/publications',
-                //     search: '?publicationid=' + publicationid,
-                // });
+                currentComponent.props.history.push({
+                    pathname: '/publications',
+                    search: '?publicationid=' + publicationid,
+                });
                 
             })
+        }
         
     }
 
@@ -468,7 +409,7 @@ class EditPublication extends React.Component {
                     handleSubmit,
                     isSubmitting
                 }) => (
-                    <Form onSubmit={(event) => handleSubmit(event) || this.handleFormSubmit(event,this,errors)} >
+                    <Form onSubmit={(event) => handleSubmit(event) || this.handleFormSubmit(event,errors)} >
                         <div className="sub_box">
                             <Form.Group as={Col} md="12" controlId="validationFormik01">
                                 <Form.Label>{t('publish.title')}</Form.Label>

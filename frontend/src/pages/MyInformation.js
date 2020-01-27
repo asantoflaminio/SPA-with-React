@@ -58,24 +58,29 @@ class MyInformation extends React.Component {
         return true;
     }
 
+    updateState(event) {
+        this.setState({
+            firstName: event.target[0].value,
+            lastName: event.target[1].value,
+            email: event.target[2].value,
+            phoneNumber: event.target[3].value,
+        })
+    }
+
     handleFormSubmit(event,errors) {
         event.preventDefault();
-        let currentComponent = this
-        let userDTO = JsonService.getJSONParsed(event.target)
-        let userid = LocalStorageService.getUserid()
+        let currentComponent = this;
+        let userDTO = JsonService.getJSONParsed(event.target);
+        let userid = LocalStorageService.getUserid();
+
+        this.updateState(event);
+
         if(Object.keys(errors).length === 0) {
             UserService.editUser(userid,userDTO).then(function(response){
                 if(response.status !== StatusCode.OK){
                     ErrorService.logError(currentComponent.props,response)
                 }
-                LocalStorageService.refreshToken(response.headers.authorization, userDTO.email)
-                currentComponent.setState({
-                    firstName: response.data.firstName,
-                    lastName: response.data.lastName,
-                    email: response.data.email,
-                    phoneNumber: response.data.phoneNumber
-                })
-                
+                LocalStorageService.refreshToken(response.headers.authorization, userDTO.email);
             })
         }
     }
@@ -107,7 +112,8 @@ class MyInformation extends React.Component {
 
     render(){
         const { t } = this.props;
-        let initialSchema = this.reInitializeForm()
+        let initialSchema = this.reInitializeForm();
+
         
         const personalInformationSchema = yup.object({
             firstName: yup.string().required( t('errors.requiredField') )
@@ -144,7 +150,6 @@ class MyInformation extends React.Component {
                 <ProfileAsideBar t={t} active="MyInformation"/>
                 <header>
                     <div className="Data">
-                        
                         <div className="data polaroid">
                             <h2 className="title_container">{t('profile.titlePersonalData')}: {this.state.myPublicationsCounter}</h2> 
                             <div className="form">
