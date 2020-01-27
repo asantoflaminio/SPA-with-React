@@ -138,7 +138,7 @@ class AdminPublications extends React.Component {
         let pubComponents = [];
         for(let i = 0; i < Constants.PUBLICATIONS_PAGE_LIMIT; i++){
             pubComponents.push(
-                <div className="loader-container-admin" key={i}> 
+                <div className="loader-container-admin" key={i + "-loader"}> 
                     <PublicationLoader/>
                 </div>
             )

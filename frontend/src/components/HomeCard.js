@@ -9,7 +9,7 @@ class HomeCard extends React.Component {
         const {t} = this.props
         return(
             <div>
-                <li class="polaroid">
+                <li className="polaroid">
                     <ImgVisualizer
                         publicationid={this.props.publication.publicationid}
                         price={this.props.publication.price}
@@ -24,13 +24,13 @@ class HomeCard extends React.Component {
                         previousClass="prev-image pointer"
                         
                     />                  
-                    <div class="line_separator"></div>
-                        <div class="description_box">
-                            <label class="price">U$S {this.props.publication.price}</label>
-                            <label  class="expenses">{this.props.publication.title}</label>
+                    <div className="line_separator"></div>
+                        <div className="description_box">
+                            <label className="price">U$S {this.props.publication.price}</label>
+                            <label  className="expenses">{this.props.publication.title}</label>
                             <label>{this.props.publication.address}</label>
                             <Link to={{pathname: "/publications", search: "?publicationid=" + this.props.publication.publicationid}}>
-                                <p class="more-info-home">{t('home.moreInfo')} ></p>
+                                <p className="more-info-home">{t('home.moreInfo')} ></p>
                             </Link>
                         </div>
                 </li>

@@ -130,7 +130,7 @@ class AdminUsers extends React.Component {
         let pubComponents = [];
         for(let i = 0; i < Constants.USERS_PAGE_LIMIT; i++){
             pubComponents.push(
-                <div className="loader-container-users" key={i}> 
+                <div className="loader-container-users" key={i + "-loader"}> 
                     <UserLoader/>
                 </div>
             )

@@ -1,17 +1,17 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import '../css/ForgottenPassword.css';
 import { withRouter } from "react-router";
 import { Form, Button, Col } from 'react-bootstrap';
 import { Formik } from 'formik';
+import ColoredLinearProgress from '../components/ColoredLinearProgress';
+import toast from 'toasted-notes'
+import ErrorService from '../services/ErrorService';
+import UserService from '../services/UserService';
 import * as yup from 'yup';
 import * as Constants from '../util/Constants';
-import UserService from '../services/UserService';
-import toast from 'toasted-notes' 
-import 'toasted-notes/src/styles.css';
 import * as StatusCode from '../util/StatusCode';
-import ColoredLinearProgress from '../components/ColoredLinearProgress';
-import ErrorService from '../services/ErrorService';
+import 'toasted-notes/src/styles.css';
+import '../css/ForgottenPassword.css';
 
 class ForgottenPassword extends React.Component {
 
@@ -94,7 +94,7 @@ class ForgottenPassword extends React.Component {
                                     <Form noValidate onSubmit={event => {
                                         handleSubmit(event) || this.handleFormSubmit(event,errors)
                                     }}>
-                                        <Form.Group as={Col} md="6" controlId="validationFormik01">
+                                        <Form.Group as={Col} md="6">
                                             <Form.Label>{t('navbar.mail')}</Form.Label>
                                             <Form.Control
                                                 type="text"
@@ -103,7 +103,6 @@ class ForgottenPassword extends React.Component {
                                                 value={values.email}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
-                                                id="email"
                                                 isInvalid={!!errors.email && touched.email}
                                             />
                                             <Form.Control.Feedback type="invalid">

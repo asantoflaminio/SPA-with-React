@@ -14,12 +14,6 @@ import '../css/list.css';
 import '../css/Pagination.css';
 import arrowDown from '../resources/arrow_down.png';
 
-
-
-
-
-
-
 class List extends React.Component {
     constructor(props) {
         super(props);
@@ -170,21 +164,24 @@ class List extends React.Component {
         const { t } = this.props 
         for(let i = 0; i < this.state.publications.length; i++){
             pubComponents.push(
-                <Publication
-                    t={t}
-                    publication={this.state.publications[i]}
-                    page="List"
-                    editable={false}
-                    faveable={true}
-                    ready={this.setReady}
-                    index={i}
-                />
-
+                <div key={this.state.publications[i].publicationid}>
+                    <Publication
+                        t={t}
+                        publication={this.state.publications[i]}
+                        page="List"
+                        editable={false}
+                        faveable={true}
+                        ready={this.setReady}
+                        index={i}
+                    />
+                </div>
             )
         }
         if(this.state.publications.length === 0){
             pubComponents.push(
-                <p>{t('list.noPublications')}</p>
+                <div key={t('list.noPublications')}>
+                    <p>{t('list.noPublications')}</p>
+                </div>
             )
         }
 
@@ -229,9 +226,9 @@ class List extends React.Component {
             return;
         }
         return(
-            <li class="applied-filters-list-item">
-                <input value="x" class="delete-btn" onClick={() => this.deleteFilter(stateName)}/>
-                <p class="applied-filter-text">{value} {utilFunction.decidePlural(t(singularInformation),t(pluralInformation),value)}</p>{additionalInformation}    
+            <li className="applied-filters-list-item">
+                <input value="x" className="delete-btn" onClick={() => this.deleteFilter(stateName)}/>
+                <p className="applied-filter-text">{value} {utilFunction.decidePlural(t(singularInformation),t(pluralInformation),value)}</p>{additionalInformation}    
             </li>
             
         )
@@ -242,8 +239,8 @@ class List extends React.Component {
             return;
         return(
             Object.entries(this.state.filters[field]).map( ([key, value]) =>
-            <div>
-                <button class="filters-item-name" onClick={() => this.handleFilter(stateName,key)}>{key} {utilFunction.decidePlural(t(singularInformation),t(pluralInformation),key)} ({value})</button>
+            <div key={key}>
+                <button className="filters-item-name" onClick={() => this.handleFilter(stateName,key)}>{key} {utilFunction.decidePlural(t(singularInformation),t(pluralInformation),key)} ({value})</button>
             </div>
             )
         )
@@ -378,7 +375,7 @@ class List extends React.Component {
         let pubComponents = [];
         for(let i = 0; i < Constants.PUBLICATIONS_PAGE_LIMIT; i++){
             pubComponents.push(
-                <div className="loader-container"> 
+                <div className="loader-container" key={i + "-loader"}> 
                     <PublicationLoader/>
                 </div>
             )
@@ -399,37 +396,37 @@ class List extends React.Component {
         return(
             <div>                
             <div>
-                <div class="wrap inlineBlock">
-                    <div class="search_list inlineBlock">
-                        <fieldset class="search_list-container rounded" id="operation-type" >
-                            <div class="search_list-item" id="buy" onClick={() => this.handleOperation("FSale")}>
-                                <p class="search_list-item-label">{t('list.buy')}</p>
+                <div className="wrap inlineBlock">
+                    <div className="search_list inlineBlock">
+                        <fieldset className="search_list-container rounded" id="operation-type" >
+                            <div className="search_list-item" id="buy" onClick={() => this.handleOperation("FSale")}>
+                                <p className="search_list-item-label">{t('list.buy')}</p>
                             </div>
-                            <div class="search_list-item" id="rent" onClick={() => this.handleOperation("FRent")}>
-                                <p class="search_list-item-label">{t('list.rent')}</p>
+                            <div className="search_list-item" id="rent" onClick={() => this.handleOperation("FRent")}>
+                                <p className="search_list-item-label">{t('list.rent')}</p>
                             </div>
                         </fieldset>
                     </div>
-                    <div class="search">
+                    <div className="search">
                         <form>
-                            <select class="type-home-select" id="select-type" onChange={(event) => this.handleSelect(event,"propertyType")}>
+                            <select className="type-home-select" id="select-type" onChange={(event) => this.handleSelect(event,"propertyType")}>
                                         <option value="House" id="House">{t('list.house')}</option>
                                         <option value="Apartment" id="Apartment">{t('list.apartment')}</option>
                             </select>
                         </form>
-                        <input type="text" class="searchTerm" id="search-holder" placeholder={t('list.searchPlaceholder')}/>
+                        <input type="text" className="searchTerm" id="search-holder" placeholder={t('list.searchPlaceholder')}/>
                         <input type="submit" id="search-btn" value={t('list.search')} onClick={() => this.handleSearch()} />
                     </div>
                 </div>
             
 
-                <div class="results-container inlineBlock">
-                    <div class="results" id="res">
+                <div className="results-container inlineBlock">
+                    <div className="results" id="res">
                         {this.getResults(t)}
                     </div>
-                    <div class="results" id="order" onChange={(event) => this.handleSelect(event,"order")}>
-                        <select id="order-select">
-                            <option disabled selected value={Constants.NO_ORDER}>{t('list.noOrder')}</option>
+                    <div className="results" id="order" onChange={(event) => this.handleSelect(event,"order")}>
+                        <select id="order-select" defaultValue={Constants.NO_ORDER}>
+                            <option disabled value={Constants.NO_ORDER}>{t('list.noOrder')}</option>
                             <option value={Constants.NEWEST_PUBLICATION}>{t('list.newest')}</option>
                             <option value={Constants.OLDEST_PUBLICATION}>{t('list.oldest')}</option>
                             <option value={Constants.ASCENDANT_ORDER}>{t('list.lowest')}</option>
@@ -439,7 +436,7 @@ class List extends React.Component {
                     </div>
                 </div>
 
-                <div class="filters">
+                <div className="filters">
                     <ul id="applied-filters-list">
                         {filters}
                         {cleanAll}
@@ -450,69 +447,69 @@ class List extends React.Component {
                 <div>
                     <div id="content-container">
                         <aside>
-                            <div class="filter-polaroid">
-                                <div class="container">
+                            <div className="filter-polaroid">
+                                <div className="container">
                                     <div id="filters-title">
                                         <h3>{t('list.filters')}</h3>
                                     </div>
                                     <div id="filters-list">
-                                        <div class="filters-list-item" id="filterLocationHeader">{t('list.location')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterLocation")} class="arrow-up-filters"></img>
+                                        <div className="filters-list-item" id="filterLocationHeader">{t('list.location')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterLocation")} className="arrow-up-filters"></img>
                                         
-                                            <div class="expandible filters-list-item-last" id="filterLocation">
-                                                            <ul class="list-group">
+                                            <div className="expandible filters-list-item-last" id="filterLocation">
+                                                            <ul className="list-group">
                                                                 {locationFilter}
                                                             </ul>
                                             </div>
                                         </div>
-                                        <div class="filters-list-item">{t('list.price')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterPrice")} class="arrow-up-filters"></img>
+                                        <div className="filters-list-item">{t('list.price')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterPrice")} className="arrow-up-filters"></img>
                                         </div>
-                                            <div class="expandible" id="filterPrice">
-                                                    <div class="slidecontainer">
-                                                        <p class="filter-subtitle">{t('list.dollarsMin')}</p>
+                                            <div className="expandible" id="filterPrice">
+                                                    <div className="slidecontainer">
+                                                        <p className="filter-subtitle">{t('list.dollarsMin')}</p>
                                                         <input type="text" id="minPrice"/>
-                                                        <p class="filter-subtitle filter-subtitle-not-first">{t('list.dollarsMax')}</p>
+                                                        <p className="filter-subtitle filter-subtitle-not-first">{t('list.dollarsMax')}</p>
                                                         <input type="text" id="maxPrice"/>
                                                     
-                                                        <div class="apply-container">
-                                                            <button type="button" class="apply-btn" onClick={() => this.handlePrice()}>{t('list.apply')}</button>
+                                                        <div className="apply-container">
+                                                            <button type="button" className="apply-btn" onClick={() => this.handlePrice()}>{t('list.apply')}</button>
                                                         </div>
                                                     </div>
                                             </div>
-                                        <div class="filters-list-item">{t('list.floorSizeTitle')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterFloorSize")} class="arrow-up-filters"></img>
+                                        <div className="filters-list-item">{t('list.floorSizeTitle')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterFloorSize")} className="arrow-up-filters"></img>
                                         </div>
-                                            <div class="expandible" id="filterFloorSize">
-                                                    <div class="slidecontainer">
-                                                        <p class="filter-subtitle">{t('list.sqmetersMin')}</p>
+                                            <div className="expandible" id="filterFloorSize">
+                                                    <div className="slidecontainer">
+                                                        <p className="filter-subtitle">{t('list.sqmetersMin')}</p>
                                                         <input type="text" id="minFloorSize" />
 
-                                                        <p class="filter-subtitle filter-subtitle-not-first">{t('list.sqmetersMax')}</p>
+                                                        <p className="filter-subtitle filter-subtitle-not-first">{t('list.sqmetersMax')}</p>
                                                         <input type="text" id="maxFloorSize" />
                                                     
-                                                        <div class="apply-container">
-                                                            <button type="button" class="apply-btn" onClick={() => this.handleFloorSize()}>{t('list.apply')}</button>
+                                                        <div className="apply-container">
+                                                            <button type="button" className="apply-btn" onClick={() => this.handleFloorSize()}>{t('list.apply')}</button>
                                                         </div>
                                                     </div>
                                             </div>
-                                        <div class="filters-list-item" id="filterBedroomsHeader">{t('list.bedrooms')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterBedrooms")} class="arrow-up-filters"></img>
+                                        <div className="filters-list-item" id="filterBedroomsHeader">{t('list.bedrooms')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterBedrooms")} className="arrow-up-filters"></img>
                                         
-                                            <div class="expandible filters-list-item-last" id="filterBedrooms">
-                                                    <div class="radioFlexOption">
+                                            <div className="expandible filters-list-item-last" id="filterBedrooms">
+                                                    <div className="radioFlexOption">
                                                         {bedroomFilter}
                                                     </div>	
                                             </div>
                                         </div>
-                                    <div class="filters-list-item" id="filterBathroomsHeader">{t('list.bathrooms')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterBathrooms")} class="arrow-up-filters"></img>
+                                    <div className="filters-list-item" id="filterBathroomsHeader">{t('list.bathrooms')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterBathrooms")} className="arrow-up-filters"></img>
                                     
-                                            <div class="expandible filters-list-item-last" id="filterBathrooms">
-                                                        <div class="radioFlexOption">
+                                            <div className="expandible filters-list-item-last" id="filterBathrooms">
+                                                        <div className="radioFlexOption">
                                                             {bathroomFilter}
                                                         </div>
                                             </div>
                                     </div>
-                                    <div class="filters-list-item" id="filterParkingHeader">{t('list.parking')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterParking")} class="arrow-up-filters"></img>
+                                    <div className="filters-list-item" id="filterParkingHeader">{t('list.parking')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterParking")} className="arrow-up-filters"></img>
                                     
-                                            <div class="expandible filters-list-item-last" id="filterParking">
-                                                        <div class="radioFlexOption">
+                                            <div className="expandible filters-list-item-last" id="filterParking">
+                                                        <div className="radioFlexOption">
                                                             {parkingFilter}
                                                         </div>	
                                             </div>
@@ -531,7 +528,7 @@ class List extends React.Component {
                                 {publications}
                             </div>
                             {this.state.publications.length !== 0 ?
-                                (<div class="pubsPagination">
+                                (<div className="pubsPagination">
                                     <ReactPaginate
                                     forcePage={this.state.page}
                                     previousLabel={'<'}

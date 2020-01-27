@@ -12,6 +12,7 @@ import ErrorService from '../services/ErrorService'
 import JsonService from '../services/JsonService'
 import * as StatusCode from '../util/StatusCode'
 import * as yup from 'yup';
+import * as Constants from '../util/Constants'
 import '../css/AdminGenerator.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -52,7 +53,7 @@ class AdminGenerator extends React.Component {
         let province = event.target[0].value
         let provinceDTO = JsonService.getJSONParsed(event.target)
         if(Object.keys(errors).length === 0){
-            this.setState({posting: true})
+            this.setState({posting: true, showModal:false})
             LocationService.postProvince(provinceDTO).then(function (response){
                 currentComponent.setState({posting: false})
                 if(response.status === StatusCode.CONFLICT)
@@ -80,7 +81,7 @@ class AdminGenerator extends React.Component {
         let provinceid = event.target[0].value
         let cityDTO = JsonService.getJSONParsed(event.target)
         if(Object.keys(errors).length === 0){
-            this.setState({posting: true})
+            this.setState({posting: true, showModal:false})
             LocationService.postCity(provinceid,cityDTO).then(function (response){
                 currentComponent.setState({posting: false})
                 if(response.status === StatusCode.CONFLICT)
@@ -101,7 +102,7 @@ class AdminGenerator extends React.Component {
         let cityid = event.target[1].value
         let neighborhoodDTO = JsonService.getJSONParsed(event.target)
         if(Object.keys(errors).length === 0){
-            this.setState({posting: true})
+            this.setState({posting: true, showModal:false})
             LocationService.postNeighborhood(cityid,neighborhoodDTO).then(function (response){
                 currentComponent.setState({posting: false})
                 if(response.status === StatusCode.CONFLICT)
@@ -178,15 +179,18 @@ class AdminGenerator extends React.Component {
           });
         const schemaProvince = yup.object({
             province: yup.string().required(t('errors.requiredField'))
+                                .matches(Constants.lettesNumersAndSpacesRegex, t('errors.lettesNumersAndSpacesRegex'))
         });
         const schemacity = yup.object({
             provinceid: yup.string().required(t('errors.requiredField')),
             city: yup.string().required(t('errors.requiredField'))
+                            .matches(Constants.lettesNumersAndSpacesRegex, t('errors.lettesNumersAndSpacesRegex'))
         });
         const schemaNeighborhood = yup.object({
             provinceid: yup.string().required(t('errors.requiredField')),
             cityid: yup.string().required(t('errors.requiredField')),
             neighborhood: yup.string().required(t('errors.requiredField'))
+                                    .matches(Constants.lettesNumersAndSpacesRegex, t('errors.lettesNumersAndSpacesRegex'))
         });
 
 
