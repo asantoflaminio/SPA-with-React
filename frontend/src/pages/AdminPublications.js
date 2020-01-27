@@ -12,6 +12,7 @@ import PublicationService from '../services/PublicationService'
 import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
 import '../css/AdminPublications.css';
+import NoPublication from '../components/NoPublications';
 
 class AdminPublications extends React.Component {
 
@@ -61,6 +62,8 @@ class AdminPublications extends React.Component {
                 page: queryParameters.page
             })
             currentComponent.pushPageParam(queryParameters.page + 1);
+            if(response.headers["x-total-count"] === "0")
+                currentComponent.setState({loadingPublications: false})
         })
     }
 
@@ -81,6 +84,16 @@ class AdminPublications extends React.Component {
                 </div>
             )
         }
+
+        if(this.state.publications.length === 0) {
+            pubComponents.push(
+                <NoPublication //TODO: AGREGAR KEYS
+                    t={t}
+                    page="AdminPublications"
+                    />
+            )
+        }
+
         return pubComponents;
     }
 
@@ -104,7 +117,8 @@ class AdminPublications extends React.Component {
                 publications: [],
                 showModal: false
             })
-            if(Math.ceil((currentComponent.state.resultsQuantity - 1) / Constants.PUBLICATIONS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
+            if(currentComponent.state.myPublicationsCounter === 1 &&
+                Math.ceil((currentComponent.state.resultsQuantity - 1) / Constants.PUBLICATIONS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
                 && currentComponent.state.page === currentComponent.state.pagesQuantity - 1)
                 data.selected = currentComponent.state.page - 1;
             else

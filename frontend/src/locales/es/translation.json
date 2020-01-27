@@ -145,7 +145,8 @@
       "neighborhood": "Barrio:",
       "unlocked": "NO BLOQUEADO",
       "locked": "BLOQUEADO",
-      "delete": "Borrar"
+      "delete": "Borrar",
+      "noPublications": "No se encontraron publicaciones"
     },
     "list": {
       "buy": "Comprar",
@@ -232,7 +233,8 @@
       "submit": "Enviar"
     },
     "mypublications": {
-        "title_section": "Mis publicaciones"
+        "title_section": "Mis publicaciones",
+        "noPublications": "No se encontraron publicaciones hechas"
     },
     "profileAsideBar": {
         "optionPublications": "MIS PUBLICACIONES",
@@ -240,7 +242,8 @@
         "optionFavorites": "MIS FAVORITOS"
     },
     "myfavorites": {
-        "title_section": "Mis favoritos"
+        "title_section": "Mis favoritos",
+        "noPublications": "No se encontraron publicaciones faveadas"
     },
     "profilepublication": {
       "edit": "EDITAR",

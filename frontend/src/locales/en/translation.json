@@ -144,7 +144,8 @@
       "neighborhood": "Neighborhood:",
       "unlocked": "NOT BLOCKED",
       "locked": "BLOCKED",
-      "delete": "Delete"
+      "delete": "Delete",
+      "noPublications": "No publications were found"
     },
     "list": {
       "buy": "Buy",
@@ -231,7 +232,8 @@
       "submit": "Submit"
     }, 
      "mypublications": {
-      "title_section": "My publications"
+      "title_section": "My publications",
+      "noPublications": "No publications were found"
     },
     "profileAsideBar": {
         "optionPublications": "MY PUBLICATIONS",
@@ -239,7 +241,8 @@
         "optionFavorites": "MY FAVORITES"
     }, 
     "myfavorites": {
-      "title_section": "My favorites"
+      "title_section": "My favorites",
+      "noPublications": "No favorite publications were found"
     },
     "profilepublication": {
       "edit": "EDIT",

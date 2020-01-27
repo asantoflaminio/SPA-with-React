@@ -10,7 +10,8 @@ import * as Constants from '../util/Constants'
 import LocalStorageService from '../services/LocalStorageService';
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
-import PublicationLoader from '../components/PublicationLoader'
+import PublicationLoader from '../components/PublicationLoader';
+import NoPublication from '../components/NoPublications';
 
 class MyPublications extends React.Component {
     constructor(props) {
@@ -61,7 +62,11 @@ class MyPublications extends React.Component {
                 myPublicationsCounter: response.headers["x-total-count"]
             })
             currentComponent.pushPageParam(queryParameters.page + 1);
+            if(response.headers["x-total-count"] === "0")
+                currentComponent.setState({loadingPublications: false})
         })
+
+        
     }
 
     initializePublications(){
@@ -81,6 +86,15 @@ class MyPublications extends React.Component {
                         index={i}
                     />
                 </div>
+            )
+        }
+
+        if(this.state.myPublications.length === 0) {
+            pubComponents.push(
+                <NoPublication  //TODO: AGREGAR KEYS
+                    t={t}
+                    page="MyPublications"
+                    />
             )
         }
         
@@ -108,12 +122,17 @@ class MyPublications extends React.Component {
                 myPublications: [],
                 showModal: false
             })
-            if(Math.ceil((currentComponent.state.resultsQuantity - 1) / Constants.PUBLICATIONS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
-                && currentComponent.state.page === currentComponent.state.pagesQuantity - 1)
+            
+            
+            if(currentComponent.state.myPublicationsCounter === 1 && 
+                Math.ceil((currentComponent.state.myPublicationsCounter - 1) / Constants.PUBLICATIONS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
+                && currentComponent.state.page === currentComponent.state.pagesQuantity - 1) {
                 data.selected = currentComponent.state.page - 1;
+                alert("aaa")}
             else
                 data.selected = currentComponent.state.page;
             currentComponent.handlePageClick(data)
+            
         })
     }
 
@@ -166,9 +185,10 @@ class MyPublications extends React.Component {
                     acceptFunction={this.erasePublication}
                     functionParameter={this.state.publicationIDToDelete}
                 />
+                {this.state.myPublications.length !== 0 ? 
                 <div className="Publications">
                     <h2 className="title_section">{t('mypublications.title_section')}: {this.state.myPublicationsCounter}</h2> 
-                </div>
+                </div> : null}
                 {this.state.loadingPublications === true ?
                                 <div className="loader-all-container">
                                     {loadingPublications}

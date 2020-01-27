@@ -13,6 +13,7 @@ import * as StatusCode from '../util/StatusCode'
 import '../css/list.css';
 import '../css/Pagination.css';
 import arrowDown from '../resources/arrow_down.png';
+import NoPublication from '../components/NoPublications';
 
 class List extends React.Component {
     constructor(props) {
@@ -177,13 +178,16 @@ class List extends React.Component {
                 </div>
             )
         }
-        if(this.state.publications.length === 0){
+
+        if(this.state.publications.length === 0) {
             pubComponents.push(
-                <div key={t('list.noPublications')}>
-                    <p>{t('list.noPublications')}</p>
-                </div>
+                <NoPublication //TODO: AGREGAR KEYS
+                    t={t}
+                    page="List"
+                    />
             )
         }
+        
 
         return pubComponents;
     }

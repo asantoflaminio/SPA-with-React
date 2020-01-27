@@ -196,7 +196,7 @@ public class UserController {
 
     }
     
-    //Deberia mejorarse el errorDTO
+    //TODO:Deberia mejorarse el errorDTO
     @POST
     @Path("/users/{userid}/publications")
     @Consumes(value = { PublicationDTO.MediaType })
@@ -242,7 +242,7 @@ public class UserController {
     	return Response.ok().entity(publication).build();
     }
     
-    // Mirar, nuevo !!
+    // TODO:Mirar, nuevo !!
     @PATCH
     @Path("/users/{userid}/publications/{publicationid}")
     @Consumes(value = { UserDTO.MediaType, })
@@ -280,7 +280,7 @@ public class UserController {
     	return rs.ok();
     }
     
-    // Mirar, nuevo!!
+    //TODO: Mirar, nuevo!!
     @DELETE
     @Path("/users/{userid}/publications/{publicationid}")
     public Response deletePublication(@Context HttpServletRequest request, @PathParam("userid") long userid, @PathParam("publicationid") long publicationid){
@@ -297,7 +297,7 @@ public class UserController {
     	return rs.noContent();
     }
     
-    //Deberia mejorarse el errorDTO
+    //TODO:Deberia mejorarse el errorDTO
     @POST
     @Path("/messages")
     @Consumes(value = { MessageDTO.MediaType })

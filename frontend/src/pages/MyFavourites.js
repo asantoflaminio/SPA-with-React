@@ -11,7 +11,7 @@ import ToastNotification from '../components/ToastNotification'
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
 import PublicationLoader from '../components/PublicationLoader'
-
+import NoPublication from '../components/NoPublications';
 
 
 class MyFavorites extends React.Component {
@@ -73,6 +73,8 @@ class MyFavorites extends React.Component {
                 myFavoritesCounter: response.headers["x-total-count"]
             })
             currentComponent.pushPageParam(queryParameters.page + 1);
+            if(response.headers["x-total-count"] === "0")
+                currentComponent.setState({loadingPublications: false})
         })
     }
 
@@ -89,6 +91,15 @@ class MyFavorites extends React.Component {
                     faveable={true}
                     editable={false}
                     ready={this.setReady}
+                    />
+            )
+        }
+
+        if(this.state.myFavorites.length === 0) {
+            pubComponents.push(
+                <NoPublication //TODO: AGREGAR KEYS
+                    t={t}
+                    page="MyFavorites"
                     />
             )
         }
@@ -130,9 +141,10 @@ class MyFavorites extends React.Component {
                     acceptFunction={this.erasePublication}
                     functionParameter={this.state.publicationIDToDelete}
                 />
+                {this.state.myFavorites.length !== 0 ? 
                 <div className="Favorites">
                     <h2 className="title_section">{t('myfavorites.title_section')}: {this.state.myFavoritesCounter}</h2> 
-                </div>
+                </div> : null}
                 {this.state.loadingPublications === true ?
                                 <div className="loader-all-container">
                                     {loadingPublications}
