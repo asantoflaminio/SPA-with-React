@@ -1,16 +1,17 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { withRouter } from "react-router";
-import '../css/home.css';
-import HomeCard from '../components/HomeCard'
 import {Link} from 'react-router-dom';
+import HomeCard from '../components/HomeCard'
+import HomeCardLoader from '../components/HomeCardLoader';
 import PublicationService from '../services/PublicationService'
-import * as Constants from '../util/Constants'
-import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
 import LocalStorageService from '../services/LocalStorageService'
-import HomeCardLoader from '../components/HomeCardLoader';
 import CancelTokenService from '../services/CancelRequestService';
+import * as Constants from '../util/Constants'
+import * as StatusCode from '../util/StatusCode'
+import '../css/home.css';
+
 
 class HomeReal extends React.Component {
    constructor(props) {
@@ -70,11 +71,13 @@ class HomeReal extends React.Component {
             for(let i = 0; i < loopEnd; i ++) {
                 let index = lastIndex + i
                 table.push(
-                    <HomeCard 
-                    publication={array[i]}
-                    ready={this.setReady}
-                    index={index}
-                    />
+                    <div key={array[i].publicationid}>
+                        <HomeCard 
+                        publication={array[i]}
+                        ready={this.setReady}
+                        index={index}
+                        />
+                    </div>
                 )
             }
         }   
@@ -121,7 +124,7 @@ class HomeReal extends React.Component {
         let pubComponents = [];
         for(let i = 0; i < Constants.HOME_MAX_PUBLICATIONS; i++){
             pubComponents.push(
-                <li class="polaroid minWidth">
+                <li className="polaroid minWidth" key={i}>
                     <HomeCardLoader/>
                 </li>
             )
@@ -130,7 +133,7 @@ class HomeReal extends React.Component {
     }
 
     componentWillUnmount(){
-        CancelTokenService.getSource().cancel();
+        CancelTokenService.getSource().cancel()
     }
 
     render(){
@@ -164,7 +167,7 @@ class HomeReal extends React.Component {
                         <div className="container">
                             <div className="row justify-content-center">
                                 <div className="col-12 col-md-10 col-lg-8">
-                                    <form id="card" className="card card-sm">
+                                    <div className="card card-sm">
                                         <div className="card-body row no-gutters">
                                             <div className="col-auto">
                                                 <i className="fas fa-search h4 text-body"></i>
@@ -183,7 +186,7 @@ class HomeReal extends React.Component {
                                                 </Link>
                                             </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -192,7 +195,7 @@ class HomeReal extends React.Component {
                 </div>
             </header>
             <div>
-            <section class="newest_homes">
+            <section className="newest_homes">
                     <div>
                         <h3>{t('home.newPropsOnSale')}</h3>
                     </div>
@@ -200,20 +203,20 @@ class HomeReal extends React.Component {
                         {this.state.loading === true ? 
                         (
                         <div>
-                            <ul id="newest-homes-fsale"  class="newest-homes-list">
+                            <ul id="newest-homes-fsale"  className="newest-homes-list">
                                 {tableLoader}
                             </ul>
                         </div>
                         )
                         : null}
                         <div>
-                            <ul id="newest-homes-fsale"  class={this.state.loading === true ? "hidden newest-homes-list" : "newest-homes-list"}>
+                            <ul id="newest-homes-fsale"  className={this.state.loading === true ? "hidden newest-homes-list" : "newest-homes-list"}>
                                 {tableSale}
                             </ul>
                         </div>
                     </div>
             </section>
-            <section class="newest_homes">
+            <section className="newest_homes">
                     <div>
                         <h3>{t('home.newPropsOnRent')}</h3>
                     </div>
@@ -221,14 +224,14 @@ class HomeReal extends React.Component {
                     {this.state.loading === true ? 
                         (
                         <div>
-                            <ul id="newest-homes-fsale"  class="newest-homes-list">
+                            <ul id="newest-homes-fsale"  className="newest-homes-list">
                                 {tableLoader}
                             </ul>
                         </div>
                         )
                         : null}
                         <div>
-                            <ul id="newest-homes-fsale" class={this.state.loading === true ? "hidden newest-homes-list" : "newest-homes-list"}>
+                            <ul id="newest-homes-fsale" className={this.state.loading === true ? "hidden newest-homes-list" : "newest-homes-list"}>
                                 {tableRent}
                             </ul>
                         </div>

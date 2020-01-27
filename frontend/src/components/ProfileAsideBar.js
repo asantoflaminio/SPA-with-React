@@ -7,21 +7,21 @@ const ProfileAsideBar = ({ t, active }) => (
     <aside>
       	<div className="leftcol">
 	       	<ul>
-				<li className={(active === "MyPublications") ? "current" : null} id="pub">
-					<Link to={{pathname: "/MyPublications"}}>
-						<a href="#">{t('profileAsideBar.optionPublications')}</a>
-					</Link> 
-				</li>
-				<li className={(active === "MyInformation") ? "current" : null} id="dat">
-					<Link to={{pathname: "/MyInformation"}}>
-						<a href="#">{t('profileAsideBar.optionData')}</a>
-					</Link>
-				</li>
-				<li className={(active === "MyFavourites") ? "current" : null} id="fav">
-					<Link to={{pathname: "/MyFavourites"}}>
-						<a href="#">{t('profileAsideBar.optionFavorites')}</a>
-					</Link>
-				</li>
+			   <Link to={{pathname: "/MyPublications"}}>
+					<li className={(active === "MyPublications") ? "current" : null} id="pub">
+						<p>{t('profileAsideBar.optionPublications')}</p>
+					</li>
+				</Link> 
+				<Link to={{pathname: "/MyInformation"}}>
+					<li className={(active === "MyInformation") ? "current" : null} id="dat">
+						<p>{t('profileAsideBar.optionData')}</p>
+					</li>
+				</Link>
+				<Link to={{pathname: "/MyFavourites"}}>
+					<li className={(active === "MyFavourites") ? "current" : null} id="fav">
+						<p>{t('profileAsideBar.optionFavorites')}</p>
+					</li>
+				</Link>
 			</ul>
       	</div>
 	</aside>

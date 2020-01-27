@@ -9,6 +9,7 @@
     "@material/react-linear-progress": "^0.15.0",
     "axios": "^0.19.0",
     "axios-mock-adapter": "^1.17.0",
+    "babel-jest": "^25.1.0",
     "bootstrap": "^4.4.1",
     "crypto-js": "^3.1.9-1",
     "enzyme": "^3.11.0",
@@ -16,6 +17,7 @@
     "i18next": "^17.3.1",
     "i18next-browser-languagedetector": "^3.1.1",
     "i18next-xhr-backend": "^3.2.2",
+    "jest": "^25.1.0",
     "mutex-promise": "^0.1.0",
     "query-string": "^6.9.0",
     "react": "^16.12.0",
@@ -44,7 +46,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -78,6 +80,18 @@
     "react-test-renderer": "^16.12.0",
     "reactotron-react-js": "^3.3.7",
     "sass": "^1.24.0"
+  },
+  "jest": {
+    "modulePaths": [
+      "node_modules"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
+    "moduleDirectories": [
+      "node_modules"
+    ]
   },
   "homepage": "http://pawserver.it.itba.edu.ar/paw-2018b-10",
   "proxy": "http://localhost:8080"

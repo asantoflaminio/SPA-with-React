@@ -4,7 +4,6 @@ import { withTranslation } from 'react-i18next';
 import StandarNavbar from './StandarNavbar';
 import UserNavbar from './UserNavbar';
 import UserService from '../services/UserService'
-import * as StatusCode from '../util/StatusCode'
 
 class Navbar extends React.Component {
 

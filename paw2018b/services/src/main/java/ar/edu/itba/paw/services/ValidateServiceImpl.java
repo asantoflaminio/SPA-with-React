@@ -221,8 +221,7 @@ public class ValidateServiceImpl implements ValidateService{
 	
 	@Override
 	public boolean validateLocationAdmin(String location, String field) {
-		final String lettersAndSpacesRegex = "[\\p{L} ]+";
-		return validateInputText(location, MIN_LOCATION_LENGTH, MAX_LOCATION_LENGTH, lettersAndSpacesRegex, field);
+		return validateInputText(location, MIN_LOCATION_LENGTH, MAX_LOCATION_LENGTH, lettesNumersAndSpacesRegex, field);
 	}
 	
 	@Override

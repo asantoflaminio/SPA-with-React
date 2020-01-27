@@ -8,13 +8,14 @@ const LocalStorageService = (function(){
     const COUNTER = "counter"
     const CryptoJS = require("crypto-js");
 
-    const KEY = "MIIBOQIBAAJAcrqH0L91/j8sglOeroGyuKr1ABvTkZj0ATLBcvsA91/C7fipAsOn\
-    RqRPZr4Ja+MCx0Qvdc6JKXa5tSb51bNwxwIDAQABAkBPzI5LE+DuRuKeg6sLlgrJ\
-    h5+Bw9kUnF6btsH3R78UUANOk0gGlu9yUkYKUkT0SC9c6HDEKpSqILAUsXdx6SOB\
-    AiEA1FbR++FJ56CEw1BiP7l1drM9Mr1UVvUp8W71IsoZb1MCIQCKUafDLg+vPj1s\
-    HiEdrPZ3pvzvteXLSuniH15AKHEuPQIhAIsgB519UysMpXBDbtxJ64jGj8Z6/pOr\
-    NrwV80/EEz45AiBlgTLZ2w2LjuNIWnv26R0eBZ+M0jHGlD06wcZK0uLsCQIgT1kC\
-    uNcDTERjwEbFKJpXC8zTLSPcaEOlbiriIKMnpNw"
+    const KEY = "MIIBOQIBAAJAcrqH0L91/j8sglOeroGyuKr1ABvTkZj0ATLBcvsA91/C7fipAsOn" +
+    "RqRPZr4Ja+MCx0Qvdc6JKXa5tSb51bNwxwIDAQABAkBPzI5LE+DuRuKeg6sLlgrJ" +
+    "h5+Bw9kUnF6btsH3R78UUANOk0gGlu9yUkYKUkT0SC9c6HDEKpSqILAUsXdx6SOB" +
+    "AiEA1FbR++FJ56CEw1BiP7l1drM9Mr1UVvUp8W71IsoZb1MCIQCKUafDLg+vPj1s" + 
+    "HiEdrPZ3pvzvteXLSuniH15AKHEuPQIhAIsgB519UysMpXBDbtxJ64jGj8Z6/pOr" +
+    "NrwV80/EEz45AiBlgTLZ2w2LjuNIWnv26R0eBZ+M0jHGlD06wcZK0uLsCQIgT1kC" +
+    "uNcDTERjwEbFKJpXC8zTLSPcaEOlbiriIKMnpNwawdaWdwadadawDAWDADawe3gr" +
+    "nkjsnfnsefFSFmo3n4nsfor3429401aondcoadwn4dmadlzWVRadawdAZDWEdaaw"
 
     function _getService() {
         if(!_service) {

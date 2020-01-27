@@ -1,19 +1,21 @@
 import React from 'react';
+import { withRouter } from "react-router";
 import { withTranslation } from 'react-i18next';
 import { Form, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import * as yup from 'yup';
 import { Formik } from 'formik';
-import '../css/AdminGenerator.css';
-import AdminManagment from '../components/AdminManagment';
 import {appendSelectElement} from '../util/function'
+import ToastNotification from '../components/ToastNotification'
+import AdminManagment from '../components/AdminManagment';
+import ColoredLinearProgress from '../components/ColoredLinearProgress';
 import LocationService from '../services/LocationService'
 import ErrorService from '../services/ErrorService'
 import JsonService from '../services/JsonService'
-import { withRouter } from "react-router";
-import ToastNotification from '../components/ToastNotification'
 import * as StatusCode from '../util/StatusCode'
-import UserService from '../services/UserService';
+import * as yup from 'yup';
+import * as Constants from '../util/Constants'
+import '../css/AdminGenerator.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 class AdminGenerator extends React.Component {
 
@@ -23,6 +25,7 @@ class AdminGenerator extends React.Component {
             provinces: [],
             cities: [],
             neighborhoods: [],
+            posting: false,
             showModal: false,
             titleModal: null,
             informationModal: null,
@@ -50,7 +53,9 @@ class AdminGenerator extends React.Component {
         let province = event.target[0].value
         let provinceDTO = JsonService.getJSONParsed(event.target)
         if(Object.keys(errors).length === 0){
+            this.setState({posting: true, showModal:false})
             LocationService.postProvince(provinceDTO).then(function (response){
+                currentComponent.setState({posting: false})
                 if(response.status === StatusCode.CONFLICT)
                     currentComponent.setModalError(province)
                 else if(response.status === StatusCode.CREATED){
@@ -76,7 +81,9 @@ class AdminGenerator extends React.Component {
         let provinceid = event.target[0].value
         let cityDTO = JsonService.getJSONParsed(event.target)
         if(Object.keys(errors).length === 0){
+            this.setState({posting: true, showModal:false})
             LocationService.postCity(provinceid,cityDTO).then(function (response){
+                currentComponent.setState({posting: false})
                 if(response.status === StatusCode.CONFLICT)
                     currentComponent.setModalError(city)
                 else if(response.status === StatusCode.CREATED)
@@ -95,7 +102,9 @@ class AdminGenerator extends React.Component {
         let cityid = event.target[1].value
         let neighborhoodDTO = JsonService.getJSONParsed(event.target)
         if(Object.keys(errors).length === 0){
+            this.setState({posting: true, showModal:false})
             LocationService.postNeighborhood(cityid,neighborhoodDTO).then(function (response){
+                currentComponent.setState({posting: false})
                 if(response.status === StatusCode.CONFLICT)
                     currentComponent.setModalError(neighborhood)
                 else if(response.status === StatusCode.CREATED)
@@ -166,19 +175,22 @@ class AdminGenerator extends React.Component {
     render(){
         const { t } = this.props;
         const provinces = this.state.provinces.map(function(item){
-            return <option value={item.provinceid} name="provinceid">  {item.province} </option>;
+            return <option value={item.provinceid} name="provinceid" key={item.provinceid}>  {item.province} </option>;
           });
         const schemaProvince = yup.object({
             province: yup.string().required(t('errors.requiredField'))
+                                .matches(Constants.lettesNumersAndSpacesRegex, t('errors.lettesNumersAndSpacesRegex'))
         });
         const schemacity = yup.object({
             provinceid: yup.string().required(t('errors.requiredField')),
             city: yup.string().required(t('errors.requiredField'))
+                            .matches(Constants.lettesNumersAndSpacesRegex, t('errors.lettesNumersAndSpacesRegex'))
         });
         const schemaNeighborhood = yup.object({
             provinceid: yup.string().required(t('errors.requiredField')),
             cityid: yup.string().required(t('errors.requiredField')),
             neighborhood: yup.string().required(t('errors.requiredField'))
+                                    .matches(Constants.lettesNumersAndSpacesRegex, t('errors.lettesNumersAndSpacesRegex'))
         });
 
 
@@ -192,6 +204,7 @@ class AdminGenerator extends React.Component {
                     type={this.state.typeModal}
                     checkModal={false}
                 />
+                {this.state.posting ? <ColoredLinearProgress /> : null}  
                 <div className="polaroid data">
                     <div className="title-container">       
                         <h3>{t('admin.locationTitle')}</h3>  
@@ -216,7 +229,7 @@ class AdminGenerator extends React.Component {
                             handleBlur
                             }) => (
                                 <Form noValidate className="form-inline" onSubmit={(event) => handleSubmit(event) || this.handleProvinceSubmit(event,errors)}>
-                                    <Form.Group controlId="validationFormik01">
+                                    <Form.Group>
                                         <div>
                                             <Form.Label className="location-label">{t('admin.province')}</Form.Label>
                                             <Form.Control
@@ -261,7 +274,7 @@ class AdminGenerator extends React.Component {
                             isSubmitting
                             }) => (
                                 <Form noValidate className="form-inline" onSubmit={(event) => handleSubmit(event) || this.handleCitySubmit(event,errors)}>
-                                    <Form.Group controlId="validationFormik02">
+                                    <Form.Group>
                                         <div>
                                         <Form.Label className="location-label">{t('admin.province')}</Form.Label>
                                         <Form.Control
@@ -273,7 +286,7 @@ class AdminGenerator extends React.Component {
                                             onBlur={handleBlur}
                                             isInvalid={!!errors.provinceid && touched.provinceid}
                                         >
-                                            <option disabled selected value="">{t('publish.provinceHolder')}</option>
+                                            <option disabled defaultValue="" value="">{t('publish.provinceHolder')}</option>
                                             {provinces}
                                         </Form.Control>
                                         <Form.Control.Feedback type="invalid">
@@ -281,7 +294,7 @@ class AdminGenerator extends React.Component {
                                         </Form.Control.Feedback>
                                         </div>
                                     </Form.Group>
-                                    <Form.Group controlId="validationFormik03">
+                                    <Form.Group>
                                         <div>
                                         <Form.Label className="location-label">{t('admin.city')}</Form.Label>
                                         <Form.Control
@@ -323,7 +336,7 @@ class AdminGenerator extends React.Component {
                             isSubmitting
                             }) => (
                                 <Form noValidate className="form-inline" onSubmit={(event) => handleSubmit(event) || this.handleNeighborhoodSubmit(event,errors)}>
-                                    <Form.Group controlId="validationFormik04">
+                                    <Form.Group>
                                         <div>
                                         <Form.Label className="location-label">{t('admin.province')}</Form.Label>
                                         <Form.Control
@@ -335,7 +348,7 @@ class AdminGenerator extends React.Component {
                                             onBlur={handleBlur}
                                             isInvalid={!!errors.provinceid && touched.provinceid}
                                         >
-                                            <option disabled selected value="">{t('publish.provinceHolder')}</option>
+                                            <option disabled defaultValue="" value="">{t('publish.provinceHolder')}</option>
                                             {provinces}
                                         </Form.Control>
                                         <Form.Control.Feedback type="invalid">
@@ -343,7 +356,7 @@ class AdminGenerator extends React.Component {
                                         </Form.Control.Feedback>
                                         </div>
                                     </Form.Group>
-                                    <Form.Group controlId="validationFormik05">
+                                    <Form.Group>
                                         <div>
                                         <Form.Label className="location-label">{t('admin.city')}</Form.Label>
                                         <Form.Control
@@ -357,14 +370,14 @@ class AdminGenerator extends React.Component {
                                             onChange={(event) => this.updateCityValue(event,values) && handleChange(event)}
                                             isInvalid={!!errors.cityid && touched.cityid}
                                         >
-                                            <option disabled selected value="">{t('publish.cityHolder')}</option>
+                                            <option disabled defaultValue="" value="">{t('publish.cityHolder')}</option>
                                         </Form.Control>
                                         <Form.Control.Feedback type="invalid">
                                             {errors.cityid}
                                         </Form.Control.Feedback>
                                         </div>
                                     </Form.Group>
-                                    <Form.Group controlId="validationFormik06">
+                                    <Form.Group>
                                         <div>
                                         <Form.Label className="location-label">{t('admin.neighborhood')}</Form.Label>
                                         <Form.Control

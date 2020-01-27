@@ -2,20 +2,21 @@ import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { Form, Button, Col, InputGroup } from 'react-bootstrap';
 import { Formik } from 'formik';
-import * as yup from 'yup';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../css/SignUp.css';
+import {Link} from 'react-router-dom';
 import {Redirect} from 'react-router-dom';
 import { withRouter } from "react-router";
+import ColoredLinearProgress from '../components/ColoredLinearProgress';
+import ToastNotification from '../components/ToastNotification'
 import UserService from '../services/UserService'
 import JsonService from '../services/JsonService'
 import LocalStorageService from '../services/LocalStorageService'
 import ErrorService from '../services/ErrorService'
 import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
-import {Link} from 'react-router-dom';
-import ColoredLinearProgress from '../components/ColoredLinearProgress';
-import ToastNotification from '../components/ToastNotification'
+import * as yup from 'yup';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../css/SignUp.css';
+
 
 
 
@@ -48,10 +49,8 @@ class SignUp extends React.Component {
         let loginDTO = {}
         loginDTO.email = signUpDTO.email;
         loginDTO.password = signUpDTO.password;
-        this.setState({
-            loading: true
-        })
         if(Object.keys(errors).length === 0 && emailError.getAttribute("hasError") === "false"){
+        this.setState({loading: true})
         UserService.signUp(signUpDTO).then(function (response){
             if(response.status !== StatusCode.CREATED){
                 ErrorService.logError(currentComponent.props,response)
@@ -66,12 +65,12 @@ class SignUp extends React.Component {
                 }
                 LocalStorageService.setToken(response.headers.authorization, response.headers.authorities,
                     response.headers.username, response.headers["user-id"])
-                currentComponent.props.history.push(currentPath)
-                currentComponent.setState({
-                    isLogged: true,
-                    loading: false
+                    currentComponent.setState({
+                        isLogged: true,
+                        loading: false
+                        })
                     })
-                })
+                currentComponent.props.history.push(currentPath)
             })
         }
     }
@@ -83,11 +82,10 @@ class SignUp extends React.Component {
         let loginDTO = {}
         loginDTO.email = event.target[0].value;
         loginDTO.password = event.target[1].value
-        this.setState({
-            loading: true
-        })
         if(Object.keys(errors).length === 0){
+            this.setState({loading: true})
             UserService.login(loginDTO).then(function(response){
+                currentComponent.setState({loading: false})
                 if(response.status === StatusCode.OK){
                     LocalStorageService.setToken(response.headers.authorization, response.headers.authorities,
                         response.headers.username, response.headers["user-id"])
@@ -98,9 +96,6 @@ class SignUp extends React.Component {
                 }else{
                     ErrorService.logError(this.props,response)
                 }
-                currentComponent.setState({
-                    loading: false
-                })
             })
         }
     }
@@ -193,7 +188,7 @@ class SignUp extends React.Component {
                     isSubmitting
                 }) => (
                     <Form noValidate onSubmit={(event) => handleSubmit(event) || this.handleSignUpForm(event,errors)}>
-                        <Form.Group as={Col} md="12" controlId="validationFormik01">
+                        <Form.Group as={Col} md="12">
                             <Form.Label>{t('signUp.firstName')}</Form.Label>
                             <Form.Control
                                 type="text"
@@ -209,7 +204,7 @@ class SignUp extends React.Component {
                                 {errors.firstName}
                             </Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group as={Col} md="12" controlId="validationFormik02">
+                        <Form.Group as={Col} md="12">
                             <Form.Label>{t('signUp.lastName')}</Form.Label>
                             <Form.Control
                                 type="text"
@@ -224,7 +219,7 @@ class SignUp extends React.Component {
                                 {errors.lastName}
                             </Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group as={Col} md="12" controlId="validationFormik03">
+                        <Form.Group as={Col} md="12">
                             <Form.Label>{t('signUp.email')}</Form.Label>
                             <InputGroup>
                                 <Form.Control
@@ -242,7 +237,7 @@ class SignUp extends React.Component {
                             </InputGroup>
                             <p id="emailTakenError" className="errorText">{t('errors.emailTaken')}</p>
                         </Form.Group>
-                        <Form.Group as={Col} md="12" controlId="validationFormik04">
+                        <Form.Group as={Col} md="12">
                             <Form.Label>{t('signUp.password')}</Form.Label>
                             <Form.Control
                                 type="password"
@@ -257,7 +252,7 @@ class SignUp extends React.Component {
                                 {errors.password}
                             </Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group as={Col} md="12" controlId="validationFormik05">
+                        <Form.Group as={Col} md="12">
                             <Form.Label>{t('signUp.repeatPassword')}</Form.Label>
                             <Form.Control
                                 type="password"
@@ -272,7 +267,7 @@ class SignUp extends React.Component {
                                 {errors.repeatPassword}
                             </Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group as={Col} md="12" controlId="validationFormik06">
+                        <Form.Group as={Col} md="12">
                             <Form.Label>{t('signUp.phoneNumber')}</Form.Label>
                             <Form.Control
                                 type="text"
@@ -316,7 +311,7 @@ class SignUp extends React.Component {
                     isSubmitting
                 }) => (
                     <Form noValidate onSubmit={(event) => handleSubmit(event) || this.handleLoginForm(event,errors)}>
-                        <Form.Group as={Col} md="12" controlId="validationFormik07">
+                        <Form.Group as={Col} md="12">
                             <Form.Label>{t('signUp.email')}</Form.Label>
                             <InputGroup>
                                 <Form.Control
@@ -333,7 +328,7 @@ class SignUp extends React.Component {
                                 </Form.Control.Feedback>
                             </InputGroup>
                         </Form.Group>
-                        <Form.Group as={Col} md="12" controlId="validationFormik08">
+                        <Form.Group as={Col} md="12">
                             <Form.Label>{t('signUp.password')}</Form.Label>
                             <Form.Control
                                 type="password"
@@ -354,7 +349,7 @@ class SignUp extends React.Component {
                 )}
                 </Formik>
                 <Link to={{pathname: "/ForgottenPassword"}}>
-                    <a id="recover_pass" href="./ForgottenPassword">{t('navbar.recoverPass')}</a>
+                    <p id="recover_pass">{t('navbar.recoverPass')}</p>
                 </Link>
             </div>
         </div>

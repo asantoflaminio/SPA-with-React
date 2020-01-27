@@ -10,8 +10,8 @@ import UserService from '../services/UserService';
 function isErasable(t, eraseFunction, publicationid){
     if(eraseFunction){
         return(
-            <div class="more-info">
-                <p class="more-info-title" onClick={() => eraseFunction(publicationid)}>{t('admin.delete')}</p>
+            <div className="more-info">
+                <p className="more-info-title" onClick={() => eraseFunction(publicationid)}>{t('admin.delete')}</p>
             </div>	
         )
     }
@@ -21,24 +21,24 @@ function isEditable(t, erasableComponent, eraseFunction, publicationid, editable
     if(editable) {
         return(	
             <div>
-            <div class="more-info">
+            <div className="more-info">
                 <Link to={{pathname: "/EditPublication", search: "?publicationid=" + publicationid}}>
-                    <img class="delete" src={pencil} alt="Edit" />
-                    <a class="more-info-title">{t('profilepublication.edit')} </a> 
+                    <img className="delete" src={pencil} alt="Edit" />
+                    <p className="more-info-title">{t('profilepublication.edit')} </p> 
                 </Link>
             </div>
-            <div class="more-info">
-                <img class="delete" src={trash} alt="Delete" />
-                <a class="more-info-title" onClick={() => eraseFunction(publicationid)}>{t('profilepublication.delete')}</a>
+            <div className="more-info">
+                <img className="delete" src={trash} alt="Delete" />
+                <p className="more-info-title" onClick={() => eraseFunction(publicationid)}>{t('profilepublication.delete')}</p>
             </div>
             </div>
         )
     } else {
         return (
             <div>
-            <div class="more-info">
+            <div className="more-info">
                 <Link to={{pathname: "/publications", search: "?publicationid=" + publicationid}}>
-                    <a class="more-info-title" href="">{t('list.moreInfo')} ></a>
+                    <p className="more-info-title">{t('list.moreInfo')} ></p>
                 </Link>
             {erasableComponent}
             </div>
@@ -51,7 +51,7 @@ const Publication = ({ t , publication, page, faveable, editable, eraseFunction,
     let erasableComponent = isErasable(t, eraseFunction, publication.publicationid);
     let editableComponent = isEditable(t, erasableComponent, eraseFunction, publication.publicationid, editable);
         return(
-            <div class="polaroid-property">
+            <div className="polaroid-property">
                 <ImgVisualizer
                     publicationid={publication.publicationid}
                     price={publication.price}
@@ -65,27 +65,27 @@ const Publication = ({ t , publication, page, faveable, editable, eraseFunction,
                     setReady={ready}
                     index={index}
                 />
-                <div class="property-container">
-                    <div class="first-column">								
-                        <div class="property-title-container">
-                            <h3 class="property-title">{publication.title}</h3>
-                            <h4 class="address" id="address"> {publication.address}, {publication.neighborhoodid}, {publication.cityid}, {publication.provinceid}</h4>
+                <div className="property-container">
+                    <div className="first-column">								
+                        <div className="property-title-container">
+                            <h3 className="property-title">{publication.title}</h3>
+                            <h4 className="address" id="address"> {publication.address}, {publication.neighborhoodid}, {publication.cityid}, {publication.provinceid}</h4>
                         </div>					
                     
-                        <div class="property-characteristics">
-                            <div class="column-1">
-                                <h4 class="littleCharacteristic"><strong>{publication.bedrooms}</strong> {utilFunction.decidePlural(t('list.bedroomSingular'),t('list.bedroomPlural'),publication.bedrooms)}</h4>
-                                <h4 class="littleCharacteristic"><strong>{publication.bathrooms}</strong> {utilFunction.decidePlural(t('list.bathroomSingular'),t('list.bathroomPlural'),publication.bedrooms)}</h4>
-                                <h4 class="littleCharacteristic"><strong>{publication.parking}</strong> {utilFunction.decidePlural(t('list.parkingSingular'),t('list.parkingPlural'),publication.bedrooms)}</h4>						
+                        <div className="property-characteristics">
+                            <div className="column-1">
+                                <h4 className="littleCharacteristic"><strong>{publication.bedrooms}</strong> {utilFunction.decidePlural(t('list.bedroomSingular'),t('list.bedroomPlural'),publication.bedrooms)}</h4>
+                                <h4 className="littleCharacteristic"><strong>{publication.bathrooms}</strong> {utilFunction.decidePlural(t('list.bathroomSingular'),t('list.bathroomPlural'),publication.bedrooms)}</h4>
+                                <h4 className="littleCharacteristic"><strong>{publication.parking}</strong> {utilFunction.decidePlural(t('list.parkingSingular'),t('list.parkingPlural'),publication.bedrooms)}</h4>						
                             </div>
-                            <div class="column-2">
-                                <h4 class="littleCharacteristic"><strong>{publication.dimention}</strong> {t('list.sqmeters')}</h4>
-                                <h3 class="bigCharacteristic">{utilFunction.decideOperation(t('list.buy'),t('list.rent'),publication.operation)}</h3>
+                            <div className="column-2">
+                                <h4 className="littleCharacteristic"><strong>{publication.dimention}</strong> {t('list.sqmeters')}</h4>
+                                <h3 className="bigCharacteristic">{utilFunction.decideOperation(t('list.buy'),t('list.rent'),publication.operation)}</h3>
                             </div>				
                         </div>
                     </div>
-                    <div class="second-column">
-                        <div class="pub-date">
+                    <div className="second-column">
+                        <div className="pub-date">
                             {publication.date}
                         </div>
                         {editableComponent}
