@@ -14,7 +14,6 @@ import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
 import JsonService from '../services/JsonService';
-import PublicationService from '../services/PublicationService';
 
 class EditPublication extends React.Component {
 
@@ -170,7 +169,7 @@ class EditPublication extends React.Component {
         schema.price = this.state.price;
         schema.expenses = this.state.expenses;
         
-        if(this.state.amenities == -1) {
+        if(this.state.amenities === -1) {
             schema.amenities = '';
         } else {
             schema.amenities = this.state.amenities;
@@ -296,7 +295,7 @@ class EditPublication extends React.Component {
 
     render() {
         const { t } = this.props;
-        let provinceid, cityid;
+        //let provinceid, cityid;
         let initialSchema = this.reInitializeForm();
 
     //     const provinces = this.state.provinces.map(function(item){ 
