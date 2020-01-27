@@ -114,7 +114,7 @@ const UserService = (function(){
       }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
-    async function _erasePublication(userid, publicationid){
+    async function _erasePublication(userid, publicationid){ //chequear si esta bien, nueva funcion
       return await axios({
         method: 'delete',
         url: `${USERS_PATH}/users/${userid}/publications/${publicationid}`,

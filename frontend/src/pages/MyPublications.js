@@ -35,19 +35,6 @@ class MyPublications extends React.Component {
         this.updatePublications(this.state.page);
     }
 
-    getInitialPage(){
-        const params = new URLSearchParams(this.props.location.search); 
-        const queryPageParam = params.get('page');
-        return parseInt(queryPageParam) - 1 || 0;
-    }
-
-    pushPageParam(page){
-        this.props.history.push({
-            path: '/MyPublications',
-            search: '?page=' + page
-        })
-    }
-
     handlePageClick = data => {
         this.updatePublications(data.selected)
     }
@@ -58,7 +45,7 @@ class MyPublications extends React.Component {
         let userid = LocalStorageService.getUserid();
         queryParameters.page = parseInt(page);
         queryParameters.limit = Constants.PUBLICATIONS_PAGE_LIMIT
-       
+        queryParameters.locked = true;
         this.setState({loadingPublications: true})
         LocalStorageService.deleteCounter();
         LocalStorageService.initializeCounter()
@@ -75,6 +62,29 @@ class MyPublications extends React.Component {
             })
             currentComponent.pushPageParam(queryParameters.page + 1);
         })
+    }
+
+    initializePublications(){
+        let pubComponents = [];
+        const { t } = this.props;
+        for(let i = 0; i < this.state.myPublications.length; i++){
+            pubComponents.push(
+                <div key={this.state.myPublications[i].publicationid}>
+                    <Publication 
+                        t={t} 
+                        publication={this.state.myPublications[i]}  
+                        page="MyPublications"
+                        favourites={false}
+                        editable={true}
+                        eraseFunction={this.showModalErasePublication}
+                        ready={this.setReady}
+                        index={i}
+                    />
+                </div>
+            )
+        }
+        
+        return pubComponents;
     }
 
     showModalErasePublication(publicationID){
@@ -107,28 +117,17 @@ class MyPublications extends React.Component {
         })
     }
 
+    getInitialPage(){
+        const params = new URLSearchParams(this.props.location.search); 
+        const queryPageParam = params.get('page');
+        return parseInt(queryPageParam) - 1 || 0;
+    }
 
-    initializePublications(){
-        let pubComponents = [];
-        const { t } = this.props;
-        for(let i = 0; i < this.state.myPublications.length; i++){
-            pubComponents.push(
-                <div key={this.state.myPublications[i].publicationid}>
-                    <Publication 
-                        t={t} 
-                        publication={this.state.myPublications[i]}  
-                        page="MyPublications"
-                        favourites={false}
-                        editable={true}
-                        eraseFunction={this.showModalErasePublication}
-                        ready={this.setReady}
-                        index={i}
-                    />
-                </div>
-            )
-        }
-        
-        return pubComponents;
+    pushPageParam(page){
+        this.props.history.push({
+            path: '/MyPublications',
+            search: '?page=' + page
+        })
     }
 
     setReady(){
