@@ -268,7 +268,7 @@ class Publish extends React.Component {
                     setSubmitting(true);
                     resetForm();
                     setSubmitting(false);
-                                }}
+                }}
                 >
                 {({
                     values,

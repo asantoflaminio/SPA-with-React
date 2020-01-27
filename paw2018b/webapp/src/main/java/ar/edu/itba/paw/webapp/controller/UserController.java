@@ -247,8 +247,6 @@ public class UserController {
     @Path("/users/{userid}/publications/{publicationid}")
     @Consumes(value = { UserDTO.MediaType, })
     public Response updatePublication (@Context HttpServletRequest request, @PathParam("userid") long userid, @PathParam("publicationid") long publicationid, final PublicationDTO publicationDTO) {
-    	System.out.println(userid + " " + publicationid);
-    	
     	if(! vs.validateID(userid))
     		return rs.badRequest("The user id is invalid");
     	if(tas.getUserIdAuthentication(request) != userid)
@@ -256,6 +254,7 @@ public class UserController {
     	PublicationDTO publication = ps.findById(publicationid);
     	if(publication == null)
     		return rs.notFound();
+
     	
     	if(! vs.validatePublication(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodid(),
 				publicationDTO.getCityid(), publicationDTO.getProvinceid(), publicationDTO.getOperation(), publicationDTO.getPrice(),
@@ -263,7 +262,7 @@ public class UserController {
     			publicationDTO.getBedrooms(), publicationDTO.getBathrooms(), publicationDTO.getDimention(), 
     			publicationDTO.getParking(),
     			publicationDTO.getCoveredFloorSize(), publicationDTO.getBalconies(),
-    			publicationDTO.getAmenities(), publicationDTO.getStorage(), publicationDTO.getExpenses(), tas.getUserIdAuthentication(request))) 
+    			publicationDTO.getAmenities(), publicationDTO.getStorage(), publicationDTO.getExpenses(), publicationid)) 
 			return rs.badRequest("The user parameters are invalid");
     	
     	if(tas.getUserIdAuthentication(request) != userid)
@@ -273,10 +272,10 @@ public class UserController {
     			publicationDTO.getProvinceid(), publicationDTO.getOperation(), publicationDTO.getPrice(), publicationDTO.getDescription(),
     			publicationDTO.getPropertyType(), publicationDTO.getBedrooms(), publicationDTO.getBathrooms(), publicationDTO.getDimention(),
     			publicationDTO.getParking(), publicationDTO.getCoveredFloorSize(), publicationDTO.getBalconies(), publicationDTO.getAmenities(),
-    			publicationDTO.getStorage(), publicationDTO.getExpenses(), tas.getUserIdAuthentication(request))) {
+    			publicationDTO.getStorage(), publicationDTO.getExpenses(), publicationid)) {
+    		System.out.println("1111");
     		return rs.badRequest(""); // ni idea si hay q poner esto
     	}
-    	
     	
     	return rs.ok();
     }
