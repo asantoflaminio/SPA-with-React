@@ -200,7 +200,7 @@ class List extends React.Component {
             this.checkFilterExistance(this.state.maxFloorSize) || this.checkFilterExistance(this.state.bedrooms) ||
             this.checkFilterExistance(this.state.bathrooms) || this.checkFilterExistance(this.state.parking)){
             return(               
-                    <div class="clean-all" onClick={() => this.deleteAllFilters(t)}> {t('list.cleanAll')} </div>
+                    <div className="clean-all" onClick={() => this.deleteAllFilters(t)}> {t('list.cleanAll')} </div>
                 )
             }
 
@@ -226,8 +226,8 @@ class List extends React.Component {
             return;
         }
         return(
-            <li className="applied-filters-list-item">
-                <input value="x" className="delete-btn" onClick={() => this.deleteFilter(stateName)}/>
+            <li className="applied-filters-list-item" key={stateName}>
+                <input readOnly value="x" className="delete-btn" onClick={() => this.deleteFilter(stateName)}/>
                 <p className="applied-filter-text">{value} {utilFunction.decidePlural(t(singularInformation),t(pluralInformation),value)}</p>{additionalInformation}    
             </li>
             
