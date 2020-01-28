@@ -221,7 +221,6 @@ class SignUp extends React.Component {
                         </Form.Group>
                         <Form.Group as={Col} md="12">
                             <Form.Label>{t('signUp.email')}</Form.Label>
-                            <InputGroup>
                                 <Form.Control
                                 type="text"
                                 placeholder={t('signUp.emailHolder')}
@@ -234,7 +233,6 @@ class SignUp extends React.Component {
                                 <Form.Control.Feedback type="invalid">
                                 {errors.email}
                                 </Form.Control.Feedback>
-                            </InputGroup>
                             <p id="emailTakenError" className="errorText">{t('errors.emailTaken')}</p>
                         </Form.Group>
                         <Form.Group as={Col} md="12">
@@ -287,7 +285,7 @@ class SignUp extends React.Component {
                 )}
                 </Formik>
             </div>
-            <div className="box_form_signUp">
+            <div className="box_form_signUp box_form_signUp-2">
                 <div>
                     <h3>{t('signUp.login')}</h3>
                 </div>
@@ -313,7 +311,6 @@ class SignUp extends React.Component {
                     <Form noValidate onSubmit={(event) => handleSubmit(event) || this.handleLoginForm(event,errors)}>
                         <Form.Group as={Col} md="12">
                             <Form.Label>{t('signUp.email')}</Form.Label>
-                            <InputGroup>
                                 <Form.Control
                                 type="text"
                                 placeholder={t('navbar.mail')}
@@ -326,7 +323,6 @@ class SignUp extends React.Component {
                                 <Form.Control.Feedback type="invalid">
                                 {errors.email}
                                 </Form.Control.Feedback>
-                            </InputGroup>
                         </Form.Group>
                         <Form.Group as={Col} md="12">
                             <Form.Label>{t('signUp.password')}</Form.Label>
