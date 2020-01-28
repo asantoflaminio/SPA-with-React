@@ -13,6 +13,7 @@ import * as StatusCode from '../util/StatusCode'
 import '../css/list.css';
 import '../css/Pagination.css';
 import arrowDown from '../resources/arrow_down.png';
+import arrowUp from '../resources/arrow_up.png';
 import NoPublication from '../components/NoPublications';
 
 class List extends React.Component {
@@ -364,7 +365,7 @@ class List extends React.Component {
         let filter = document.getElementById(id);
         if(filter.classList.contains("show"))
             filter.classList.remove("show")
-        else
+        else 
             filter.classList.add("show")
     }
 
@@ -458,13 +459,13 @@ class List extends React.Component {
                                     </div>
                                     <div id="filters-list">
                                         <div className="filters-list-item" id="filterLocationHeader">{t('list.location')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterLocation")} className="arrow-up-filters"></img>
-                                        
-                                            <div className="expandible filters-list-item-last" id="filterLocation">
+                                        </div>
+                                        <div className="expandible filters-list-item-last" id="filterLocation">
                                                             <ul className="list-group">
                                                                 {locationFilter}
                                                             </ul>
-                                            </div>
                                         </div>
+
                                         <div className="filters-list-item">{t('list.price')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterPrice")} className="arrow-up-filters"></img>
                                         </div>
                                             <div className="expandible" id="filterPrice">

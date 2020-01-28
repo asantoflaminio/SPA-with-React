@@ -15,25 +15,6 @@
 	position: relative;
 }
 
-.price-tag {
-	color: white !important;
-	font-family: 'Rubik', sans-serif;
-	font-size: 23px !important;
-	position: absolute;
-	bottom: 5px;
-	left: 15px;
-	text-shadow: 0.5px 1px 1px #666;
-}
-
-.favorite-icon {
-	position: absolute;
-	top: 12px;
-	right: 8px;
-	height: 30px;
-	width: 30px;
-	cursor: pointer;
-}
-
 .next-image {
 	height: 25px;
 	width: 25px;
@@ -157,4 +138,21 @@ h4 {
 	font-size: 13px !important;
 	color: #888 !important;
 	text-align: left !important;
+}
+
+.pub-date {
+	font-size: 13px;
+	color: #999;
+	font-style: italic;
+	float: right;
+	margin: 0 10px 0 0 !important;
+}
+
+.first-column {
+	width: 50% !important;
+	min-width: 290px !important;
+}
+
+.second-column {
+	width: 48% !important;
 }
