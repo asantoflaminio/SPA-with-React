@@ -11,7 +11,6 @@ import ToastNotification from '../components/ToastNotification'
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
 import PublicationLoader from '../components/PublicationLoader'
-import NoPublication from '../components/NoPublications';
 
 
 class MyFavorites extends React.Component {
@@ -96,12 +95,12 @@ class MyFavorites extends React.Component {
         }
 
         if(this.state.myFavorites.length === 0) {
+             //TODO: AGREGAR KEYS
             pubComponents.push(
-                <NoPublication //TODO: AGREGAR KEYS
-                    t={t}
-                    page="MyFavorites"
-                    />
-            )
+                <div>
+                    <p>{t('myfavorites.noPublications')}</p>
+                </div>
+                )
         }
         
         return pubComponents;

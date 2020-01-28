@@ -11,7 +11,6 @@ import LocalStorageService from '../services/LocalStorageService';
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
 import PublicationLoader from '../components/PublicationLoader';
-import NoPublication from '../components/NoPublications';
 
 class MyPublications extends React.Component {
     constructor(props) {
@@ -90,11 +89,11 @@ class MyPublications extends React.Component {
         }
 
         if(this.state.myPublications.length === 0) {
+            //TODO: AGREGAR KEYS
             pubComponents.push(
-                <NoPublication  //TODO: AGREGAR KEYS
-                    t={t}
-                    page="MyPublications"
-                    />
+                <div> 
+                    <p>{t('mypublications.noPublications')}</p>
+                </div>
             )
         }
         
