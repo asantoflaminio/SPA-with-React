@@ -1,88 +1,101 @@
-// import axios from 'axios';
-// import MockAdapter from 'axios-mock-adapter';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import PublicationService from '../services/PublicationService'
-import mockAxios from 'axios'
-// import * as StatusCode from '../util/StatusCode'
-// import * as Constants from '../util/Constants'
+import * as StatusCode from '../util/StatusCode'
 
 const PUBLICATIONS_PATH = process.env.PUBLIC_URL + '/meinHaus/publications-management'
 
-it('gets images', async() => {
-    //setup
-    mockAxios.get.mockImplementationOnce(() => Promise.resolve({
-        data: {
-            results: ['try.jpg']
+    it('gets publications', async() => {
+
+        let spy = jest.spyOn(axios, "get");
+        var mock = new MockAdapter(axios);
+        mock.onGet(PUBLICATIONS_PATH + '/publications').reply(200, 
+            {
+                answer: {
+                    publications: [ "pub1", "pub2", "pub3" ]
+                }
+            });
+
+        let queryParameters = {
+            operation: 'FSale'
         }
-    }));
 
-    let queryParameters = {
-        index: 0
-    }
+        const publications = await PublicationService.getPublications(queryParameters);
 
-    //work
-    const images = await PublicationService.getImage(1,queryParameters);
-    
-    //assertions
-   // expect(images).toEqual(['try.jpg']);
-    expect(mockAxios.get).toHaveBeenCalledTimes(1);
-    /*expect(mocks.get).toHaveBeenCalledWith(
-    url, {
-        params: {
+        expect(publications.data.answer.publications).toEqual([ "pub1", "pub2", "pub3" ]);
+        //expect(spy).toHaveBeenCalled();
+        let path = PUBLICATIONS_PATH + '/publications';
 
-        }
-    });*/
-})
+        // expect(spy).toHaveBeenCalledWith(
+        //     path, {answer: {
+        //         publications: [ "pub1", "pub2", "pub3" ]
+        //     }});
+    })
+
+    it('gets publication', async() => {
+
+        let spy = jest.spyOn(axios, "get");
+        var mock = new MockAdapter(axios);
+        mock.onGet(PUBLICATIONS_PATH + '/publications/5').reply(200, 
+            {
+                answer: {
+                    publication: [ "testPublication" ]
+                }
+            });
 
 
-// describe('getPublicationsTest', () => {
-//     it('returns OK STATUS', done => {
-//         var mock = new MockAdapter(axios);
-//         const data = { response: true };
-//         const query = {
-//             operation: "FSale",
-//             propertyType: "House",
-//             address: "Test 123",
-//             minPrice: "3000",
-//             maxPrice: "5000",
-//             minFloorSize: "240",
-//             maxFloorSize: "500",
-//             bedrooms: "4",
-//             bathrooms: "3",
-//             parking: "2",
-//             order: Constants.NEWEST_PUBLICATION,
-//             page: "0",
-//             limit: Constants.PUBLICATIONS_PAGE_LIMIT       
-//          }
-//         mock.onGet(PUBLICATIONS_PATH + '/publications').reply(200, data);
-//         PublicationService.getPublications(query).then(response => {
-//             expect(response.status).toEqual(StatusCode.OK);
-//             done();
-//         });
-//     });
-// });
+        const publication = await PublicationService.getPublication(5);
 
-// describe('getPublicationTest', () => {
-//     it('returns OK STATUS', done => {
-//         var mock = new MockAdapter(axios);
-//         const data = { response: true };
-//         let pubId = 4;
-//         mock.onGet(PUBLICATIONS_PATH + '/publications/' + pubId).reply(200, data);
-//         PublicationService.getPublication(pubId).then(response => {
-//             expect(response.status).toEqual(StatusCode.OK);
-//             done();
-//         });
-//     });
-// });
+        expect(publication.data.answer.publication).toEqual([ "testPublication" ]);
+        //expect(spy).toHaveBeenCalled();
+        let path = PUBLICATIONS_PATH + '/publication/5';
 
-// describe('erasePublicationTest', () => {
-//     it('returns OK STATUS', done => {
-//         var mock = new MockAdapter(axios);
-//         const data = { response: true };
-//         let pubId = 4;
-//         mock.onDelete(PUBLICATIONS_PATH + '/publications/' + pubId).reply(200, data);
-//         PublicationService.erasePublication(pubId).then(response => {
-//             expect(response.status).toEqual(StatusCode.OK);
-//             done();
-//         });
-//     });
-// });
+        // expect(spy).toHaveBeenCalledWith(
+        //     path, {answer: {
+        //         publications: [ "pub1", "pub2", "pub3" ]
+        //     }});
+    })
+
+    it('gets image', async() => {
+
+        let spy = jest.spyOn(axios, "get");
+        var mock = new MockAdapter(axios);
+        mock.onGet(PUBLICATIONS_PATH + '/publications/5/images').reply(200, 
+            {
+                answer: {
+                    results: ['try.jpg']
+                }
+            });
+
+
+        const image = await PublicationService.getImage(5, 0);
+
+        expect(image.data.answer.results).toEqual(['try.jpg']);
+        //expect(spy).toHaveBeenCalled();
+        let path = PUBLICATIONS_PATH + '/publication/5/images';
+
+        // expect(spy).toHaveBeenCalledWith(
+        //     path, {answer: {
+        //         publications: [ "pub1", "pub2", "pub3" ]
+        //     }});
+    })
+
+    it('posts image', async() => {
+
+        let spy = jest.spyOn(axios, "get");
+        var mock = new MockAdapter(axios);
+        mock.onPost(PUBLICATIONS_PATH + '/publications/5/images').reply(StatusCode.OK);
+        
+        const publication = await PublicationService.postImages(5, 0);
+
+        expect(publication.status).toEqual(StatusCode.OK);
+        //expect(spy).toHaveBeenCalled();
+        let path = PUBLICATIONS_PATH + '/publication/5/images';
+
+        // expect(spy).toHaveBeenCalledWith(
+        //     path, {answer: {
+        //         publications: [ "pub1", "pub2", "pub3" ]
+        //     }});
+    })
+
+
