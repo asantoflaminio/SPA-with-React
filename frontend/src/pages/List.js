@@ -182,7 +182,8 @@ class List extends React.Component {
             // TODO: AGREGAR KEYS
             pubComponents.push(
                 <div> 
-                    <p>{t('list.noPublications')}</p>
+                    <p id="no-results-title">{t('list.noPublications')}</p>
+                    <p id="no-results-info">{t('list.noPublicationsText')}</p>
                 </div>
             )
         }

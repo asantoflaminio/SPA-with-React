@@ -183,7 +183,8 @@
       "sqmeters": "square meters",
       "moreInfo": "More information ",
       "cleanAll": "Clean all",
-      "noPublications": "Could not find properties for the selected filters"
+      "noPublications": "Could not find properties for the selected filters",
+      "noPublicationsText": "Try eliminating some filters"
       },
       "details": {
         "overview": "Overview",

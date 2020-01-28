@@ -405,14 +405,11 @@ h3 {
 
 /* No results style */
 
-#no-results {
-	margin-left: 21%;
-}
-
 #no-results-title {
 	padding-top: 40px;
 	text-align: center;
 	color: #FD8907;
+	font-size: 20px;
 }
 
 #no-results-info {

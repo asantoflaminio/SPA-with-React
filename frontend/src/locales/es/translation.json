@@ -184,7 +184,8 @@
       "sqmeters": "metros cuadrados",
       "moreInfo": "Más información ",
       "cleanAll": "Borrar todo",
-      "noPublications": "No se encontraron publicaciones con los filtros pedidos"
+      "noPublications": "No se encontraron publicaciones con los filtros pedidos",
+      "noPublicationsText": "Probá eliminando algunos filtros"
     },
     "details": {
        "overview": "Resumen",
