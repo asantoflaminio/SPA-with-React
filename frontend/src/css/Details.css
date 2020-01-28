@@ -144,26 +144,12 @@ div.fillers {
   text-align: left;
   padding: 5px 10px;
   height: auto;
-  min-height: 350px;
+  min-height: 380px;
 }
  
 label {
     display: inline-block;
     margin-bottom: .0rem;
-}
-
-.fillers .button {
-  background-color: #FD8907;
-  border: none;
-  color: white;
-  width:100%;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
 }
 
 .w3-left, .w3-right, .w3-badge{
@@ -181,18 +167,18 @@ label {
  }
 
 .button-contact {
-	background-color: #FD8907;
+	  background-color: #FD8907;
     border: none;
     border-radius: 4px;
     color: white;
-    width:100%;
+    width:90% !important;
     height: 45px;
     padding: 5px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 0px 2px 7px 2px !important;
+    margin: 20px 15px 7px 2px !important;
     cursor: pointer;
 }
 

@@ -1,10 +1,10 @@
 {
     "signUp": {
-      "registry": "Registry",
+      "registry": "SIGN UP",
       "firstName": "NAME*",
       "firstNameHolder": "Name...",
-      "lastName": "LASTNAME*",
-      "lastNameHolder": "Lastname...",
+      "lastName": "LAST NAME*",
+      "lastNameHolder": "Last name...",
       "email": "E-MAIL*",
       "emailHolder": "example@domain.com",
       "password": "PASSWORD*",
@@ -13,7 +13,7 @@
       "phoneNumber": "CELLPHONE",
       "phoneNumberHolder": "Cellphone...",
       "submit": "Submit",
-      "login": "Log In",
+      "login": "SIGN IN",
       "expiredToken": "Expired session",
       "expiredTokenInformation": "Your session has expired. Please log in again."
     },
