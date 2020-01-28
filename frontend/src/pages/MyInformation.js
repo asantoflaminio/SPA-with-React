@@ -151,7 +151,7 @@ class MyInformation extends React.Component {
                 <header>
                     <div className="Data">
                         <div className="data polaroid">
-                            <h2 className="title_container">{t('profile.titlePersonalData')}: {this.state.myPublicationsCounter}</h2> 
+                            <h2 className="title_container">{t('profile.titlePersonalData')} {this.state.myPublicationsCounter}</h2> 
                             <div className="form">
                                 <hr/>
                                 <Formik
@@ -245,7 +245,7 @@ class MyInformation extends React.Component {
                         </div>
 
                         <div className="data polaroid last">
-                            <h2 className="title_container">{t('profile.titleNewPassword')}: {this.state.myPublicationsCounter}</h2> 
+                            <h2 className="title_container">{t('profile.titleNewPassword')} {this.state.myPublicationsCounter}</h2> 
                             <div className="form">
                                 <hr/>
                                 <Formik

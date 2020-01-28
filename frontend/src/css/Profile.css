@@ -138,10 +138,10 @@ label{
 
 /* "Mis Datos" menu style */
 
-.data h3{
+h2 {
 	margin-top: 5px !important;
 	text-align: center !important;
-	font-size: 18px !important;
+	font-size: 25px !important;
 	color: #666 !important;
 }
 
@@ -161,17 +161,6 @@ label{
 	height:80%;
 }
 
-div.polaroid {
-  	margin-top: 20px;
- 	margin-left: 250px;
-  	width: 55%;
-  	height: auto;
-  	background-color: white;
-  	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  	margin-bottom: 30px;
-  	padding-bottom:50px;
-  	min-width: 400px;
-}
 
 #editdata {
 	margin-left: 25%;
@@ -192,15 +181,6 @@ div.polaroid {
 	color: #777;
 	padding: 10px 10px 10px 10px;
 	padding-bottom: 15px;
-}
-
-.editdata-submit {
-	height: 35px !important;
-    width: 90px !important;
-    padding: 5px !important;
-    font-size: 15px !important;
-    margin-right: 10px !important;
-    margin-top: -1px !important;
 }
 
 .editdata-input {
@@ -709,13 +689,13 @@ h4 {
 
 div.polaroid {
   	margin-top: 20px;
- 	margin-left: 250px;
+ 	margin-left: 0 !important;
   	width: 55%;
   	height: auto;
   	background-color: white;
   	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   	margin-bottom: 30px;
-  	padding-bottom:50px;
+  	padding-bottom:20px;
   	min-width: 400px;
 }
 
@@ -740,13 +720,15 @@ div.polaroid {
 	padding-bottom: 15px;
 }
 
-.editdata-submit {
+#editdata-submit {
 	height: 35px !important;
     width: 90px !important;
     padding: 5px !important;
     font-size: 15px !important;
-    margin-right: 10px !important;
-    margin-top: -1px !important;
+    margin: 5px 20px 0 0 !important;
+	background-color: #db7504 !important;
+	border-color: #db7504;
+	float: right;
 }
 
 .editdata-input {
