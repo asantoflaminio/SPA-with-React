@@ -12,7 +12,6 @@ import PublicationService from '../services/PublicationService'
 import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
 import '../css/AdminPublications.css';
-import NoPublication from '../components/NoPublications';
 
 class AdminPublications extends React.Component {
 
@@ -86,11 +85,11 @@ class AdminPublications extends React.Component {
         }
 
         if(this.state.publications.length === 0) {
-            pubComponents.push(
-                <NoPublication //TODO: AGREGAR KEYS
-                    t={t}
-                    page="AdminPublications"
-                    />
+           //TODO: AGREGAR KEYS
+           pubComponents.push(
+            <div> 
+                <p>{t('admin.noPublications')}</p>
+            </div>
             )
         }
 
