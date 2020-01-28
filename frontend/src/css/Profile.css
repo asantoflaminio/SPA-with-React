@@ -152,16 +152,6 @@ h2 {
 	border-bottom: 1px solid #ccc;
 }
 
-.data {
-	text-decoration: none;
-	list-style: none;
-	padding:10px;
-	background-color: #db7504;
-	width:40%;
-	height:80%;
-}
-
-
 #editdata {
 	margin-left: 25%;
 	margin-bottom: 45px;
@@ -766,29 +756,6 @@ div.polaroid {
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	display: flex;
 	min-width: 650px;
-}
-
-.img-with-tag {
-	display: inline-block;
-	position: relative;
-}
-
-.price-tag {
-	color: white !important;
-	font-family: 'Rubik', sans-serif;
-	font-size: 23px !important;
-	position: absolute;
-	bottom: 5px;
-	left: 15px;
-	text-shadow: 0.5px 1px 1px #666;
-}
-
-.favorite-icon {
-	position: absolute;
-	top: 12px;
-	right: 8px;
-	height: 30px;
-	width: 30px;
 }
 
 .next-image {
