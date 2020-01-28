@@ -132,7 +132,7 @@ class Details extends React.Component {
                     <div>
                     <div id="cols">
                         <div id="left-col">   
-                            <div className="polaroid">
+                            <div className="polaroid-details">
                                 <ImageVisualizer 
                                     publicationid={query.publicationid}
                                     maxImages={this.state.publication.images}
