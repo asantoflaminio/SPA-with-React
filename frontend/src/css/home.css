@@ -37,14 +37,13 @@ h1 {
 
 /* List style */
 
-.search_list {
-	width: 20%;
-  	margin: 0 auto;
-  	margin-top: 70px;
+.search_list-home {
+	margin-top: 70px;
 }
 
-.search_list-container {
-	text-align: center;  
+.search_list-container-home {  
+	text-align: center;
+	float: center;
 	width: 25em !important;
 	border: 1px solid #7C7C7C;
 	list-style: none;

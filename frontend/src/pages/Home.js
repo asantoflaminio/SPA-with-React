@@ -153,8 +153,8 @@ class HomeReal extends React.Component {
                         <h1>{t('home.title')}</h1>
                     </div>
                     <form>
-                    <div className="search_list">
-                        <fieldset className="search_list-container rounded">
+                    <div className="search_list-home">
+                        <fieldset className="search_list-container-home rounded">
                                 <div className="search_list-item selected" id="buy" onClick={() => this.setOperation("FSale")}>
                                     <input value="FSale" type="radio" /><label id="buy-label" >{t('home.buy')}</label>
                                 </div>
