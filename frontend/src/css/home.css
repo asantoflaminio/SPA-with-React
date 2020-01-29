@@ -5,8 +5,14 @@ html {
 }
 
 body {
+	margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
     font-family: 'Rubik', sans-serif !important;
-    background-color: #eee !important;
+    margin-bottom:100px;
+    background-size:100% auto;
+    background-color: #eee !important;   
 }
 
 /* Header style */
@@ -393,7 +399,7 @@ div.card-body.row.no-gutters.align-items-center {
 
 /* End of style */
 
-.next-image {
+.next-image-home {
 	height: 25px !important;
 	width: 25px !important;
 	top: 65px;
@@ -402,7 +408,7 @@ div.card-body.row.no-gutters.align-items-center {
 	cursor: pointer;
 }
 
-.prev-image {
+.prev-image-home {
 	height: 25px !important;
 	width: 25px !important;
 	top: 65px;
@@ -410,7 +416,6 @@ div.card-body.row.no-gutters.align-items-center {
 	position: absolute;
 	cursor: pointer;
 }
-
 
 .minWidth{
 	min-width: 250px !important;

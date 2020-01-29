@@ -140,8 +140,8 @@ class Details extends React.Component {
                                     page="Details"
                                     imageClass="imageSize"
                                     containerClass="img-with-tag mySlides"
-                                    nextClass="next-image pointer centerArrow"
-                                    previousClass="prev-image pointer centerArrow"
+                                    nextClass="next-image-details pointer centerArrow"
+                                    previousClass="prev-image-details pointer centerArrow"
                                     setReady={this.setReady}
                                     index={0}
                                 />

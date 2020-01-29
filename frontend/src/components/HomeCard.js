@@ -20,8 +20,8 @@ class HomeCard extends React.Component {
                         page="Home"
                         imageClass="polaroid-property-img-home"
                         containerClass="arrows-div"
-                        nextClass="next-image pointer"
-                        previousClass="prev-image pointer"
+                        nextClass="next-image-home pointer"
+                        previousClass="prev-image-home pointer"
                         
                     />                  
                     <div className="line_separator"></div>
