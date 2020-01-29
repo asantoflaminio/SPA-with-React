@@ -12,14 +12,12 @@ it('gets provinces', async() => {
     var mock = new MockAdapter(axios);
     mock.onGet(LOCATIONS_PATH + '/provinces').reply(200, 
         {
-            answer: {
-                provinces: [ "prov1", "prov2", "prov3" ]
-            }
+            provinces: [ "prov1", "prov2", "prov3" ]
         });
 
     const provinces = await LocationService.getProvinces();
 
-    expect(provinces.data.answer.provinces).toEqual([ "prov1", "prov2", "prov3" ]);
+    expect(provinces.data.provinces).toEqual([ "prov1", "prov2", "prov3" ]);
     //expect(spy).toHaveBeenCalled();
 
 })
@@ -30,14 +28,12 @@ it('gets cites', async() => {
     var mock = new MockAdapter(axios);
     mock.onGet(LOCATIONS_PATH + '/provinces/5/cities').reply(200, 
         {
-            answer: {
-                cities: [ "city1", "city2", "city3" ]
-            }
+            cities: [ "city1", "city2", "city3" ]
         });
 
     const cities = await LocationService.getCities(5);
 
-    expect(cities.data.answer.cities).toEqual([ "city1", "city2", "city3" ]);
+    expect(cities.data.cities).toEqual([ "city1", "city2", "city3" ]);
     //expect(spy).toHaveBeenCalled();
 
 })
@@ -48,14 +44,12 @@ it('gets neighborhoods', async() => {
     var mock = new MockAdapter(axios);
     mock.onGet(LOCATIONS_PATH + '/cities/5/neighborhoods').reply(200, 
         {
-            answer: {
-                neighborhoods: [ "neigh1", "neigh2", "neigh3" ]
-            }
+            neighborhoods: [ "neigh1", "neigh2", "neigh3" ]
         });
 
     const neighborhoods = await LocationService.getNeighborhoods(5);
 
-    expect(neighborhoods.data.answer.neighborhoods).toEqual([ "neigh1", "neigh2", "neigh3" ]);
+    expect(neighborhoods.data.neighborhoods).toEqual([ "neigh1", "neigh2", "neigh3" ]);
     //expect(spy).toHaveBeenCalled();
 
 })
