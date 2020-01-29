@@ -107,10 +107,9 @@ class ImageVisualizer extends React.Component {
         if(this.state.isFavourite) {
             if(this.props.page !== "MyFavorites") 
                 favIcon = <img className="favorite-icon" src={heartFilled} onClick={this.removeFavourite} alt="Fave" />
-            else {
-                //console.table(this.props)
+            else 
                 favIcon = <img className="favorite-icon" src={heartFilled} onClick={() => this.props.showModal(this.props.publicationid)} alt="Fave" />
-        }} else if(this.state.isFavourite === false)
+        } else if(this.state.isFavourite === false)
             favIcon = <img className="favorite-icon" src={heartEmpty} onClick={this.addFavourite} alt="Fave" />
         return favIcon
     }

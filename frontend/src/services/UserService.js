@@ -102,7 +102,6 @@ const UserService = (function(){
     }
 
     async function _editPublication(userid, publicationid, dataDTO) { //TODO:chequear si esta bien, nueva funcion
-      console.log("en edit")
       return await axios({
         method: 'patch',
         url: `${USERS_PATH}/users/${userid}/publications/${publicationid}`,

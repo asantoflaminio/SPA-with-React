@@ -106,8 +106,6 @@ class MyFavorites extends React.Component {
     }
 
     removeFavoritePublication(publicationID){
-        console.log("aca");
-        console.log(publicationID);
         let currentComponent = this
         let data = {}
         let userid = LocalStorageService.getUserid();
@@ -123,7 +121,7 @@ class MyFavorites extends React.Component {
             })
             
             
-            if(currentComponent.state.myFavoritesCounter === 1 && 
+            if(currentComponent.state.myFavoritesCounter > 1 && 
                 Math.ceil((currentComponent.state.myFavoritesCounter - 1) / Constants.PUBLICATIONS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
                 && currentComponent.state.page === currentComponent.state.pagesQuantity - 1) 
                 data.selected = currentComponent.state.page - 1;
