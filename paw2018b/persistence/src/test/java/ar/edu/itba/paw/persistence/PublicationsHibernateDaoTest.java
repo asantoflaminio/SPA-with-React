@@ -158,23 +158,32 @@ public class PublicationsHibernateDaoTest {
 
 	}
 		
-	/*
-	 * Wait for Roxa for this to work
+	@Rollback
 	@Test
 	public void testEditData() {
+		
+		Query query = em.createQuery("SELECT COUNT(*) FROM Publication WHERE title = :title");
+		query.setParameter("title", TITLE);
 		
 		final Publication pub = publicationDao.create(TITLE, ADDRESS, String.valueOf(n.getNeighborhoodid()), String.valueOf(c.getCityid()), String.valueOf(p.getProvinceid()), OPERATION,
 				PRICE, DESCRIPTION, PROPERTYTYPE, BEDROOMS, BATHROOMS, FLOORSIZE, PARKING, COVEREDFLOORSIZE, 
 				BALCONIES, AMENITIES, STORAGE, EXPENSES, user_id);
 		em.persist(pub);
 		
-		publicationDao.editData(TITLE2, ADDRESS2, String.valueOf(n.getNeighborhoodid()), String.valueOf(c.getCityid()), String.valueOf(p.getProvinceid()), OPERATION2, PRICE2, DESCRIPTION2, PROPERTYTYPE2, BEDROOMS2, BATHROOMS2, FLOORSIZE2, PARKING2, pub.getPublicationid(), COVEREDFLOORSIZE2, BALCONIES2,
-				AMENITIES2, STORAGE2, EXPENSES2);
+		assertEquals(new Long(1), query.getSingleResult());
 		
-		assertNotEquals(TITLE, pub.getTitle());
+		publicationDao.editData(TITLE2, ADDRESS2, String.valueOf(n.getNeighborhoodid()), String.valueOf(c.getCityid()), String.valueOf(p.getProvinceid()), OPERATION2, PRICE2, DESCRIPTION2, PROPERTYTYPE2, BEDROOMS2, BATHROOMS2, FLOORSIZE2, PARKING2, COVEREDFLOORSIZE2, BALCONIES2,
+				AMENITIES2, STORAGE2, EXPENSES2,  pub.getPublicationid());
+		
+		Query query2 = em.createQuery("SELECT COUNT(*) FROM Publication WHERE title = :title");
+		query2.setParameter("title", TITLE2);
+		
+		assertEquals(new Long(0), query.getSingleResult());
+		assertEquals(new Long(1), query2.getSingleResult());
 			
-	}*/
+	}
 	
+	@Rollback
 	@Test
 	public void testLockUnlockPublication() {
         
@@ -192,6 +201,7 @@ public class PublicationsHibernateDaoTest {
 		
 	}
 	
+	@Rollback
 	@Test
 	public void testDelete() {
 		
@@ -212,6 +222,7 @@ public class PublicationsHibernateDaoTest {
 		
 	}
 	
+	@Rollback
 	@Test
 	public void testDeleteNonExistentPublication() {
 		
