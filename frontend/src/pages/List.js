@@ -495,29 +495,26 @@ class List extends React.Component {
                                                     </div>
                                             </div>
                                         <div className="filters-list-item" id="filterBedroomsHeader">{t('list.bedrooms')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterBedrooms")} className="arrow-up-filters"></img>
-                                        
-                                            <div className="expandible filters-list-item-last" id="filterBedrooms">
+                                        </div>
+                                        <div className="expandible filters-list-item-last" id="filterBedrooms">
                                                     <div className="radioFlexOption">
                                                         {bedroomFilter}
                                                     </div>	
                                             </div>
-                                        </div>
-                                    <div className="filters-list-item" id="filterBathroomsHeader">{t('list.bathrooms')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterBathrooms")} className="arrow-up-filters"></img>
-                                    
-                                            <div className="expandible filters-list-item-last" id="filterBathrooms">
+                                    <div className="filters-list-item" id="filterBathroomsHeader">{t('list.bathrooms')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterBathrooms")} className="arrow-up-filters"></img>                                
+                                    </div>
+                                    <div className="expandible filters-list-item-last" id="filterBathrooms">
                                                         <div className="radioFlexOption">
                                                             {bathroomFilter}
                                                         </div>
                                             </div>
-                                    </div>
                                     <div className="filters-list-item" id="filterParkingHeader">{t('list.parking')}<img src={arrowDown} alt="Arrow Up" onClick={() => this.expand("filterParking")} className="arrow-up-filters"></img>
-                                    
-                                            <div className="expandible filters-list-item-last" id="filterParking">
+                                    </div>
+                                    <div className="expandible filters-list-item-last" id="filterParking">
                                                         <div className="radioFlexOption">
                                                             {parkingFilter}
                                                         </div>	
                                             </div>
-                                    </div>
                                     </div>
                                 </div>
                             </div>
