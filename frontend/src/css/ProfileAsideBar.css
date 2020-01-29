@@ -1,6 +1,7 @@
 @charset "UTF-8";
 
 /* Aside bar style */
+
 .leftcol {
     background:#FD8907;
     text-align:left;
@@ -34,15 +35,13 @@
     text-align: center;
     vertical-align:middle;
 }
+
 .leftcol ul a {
     text-decoration: none;
     color:#eee;
     font-weight: 580;
-    padding: 8px;
     text-align: center;
-    vertical-align:middle;
    	font-size:17px;
-    
 }
 
 .leftcol ul li {
@@ -55,8 +54,9 @@
     background-color: #db7504;
 }
 
-.leftcol ul .subitem{
-	font-size: 18px;
+.aside-option {
+    margin-bottom: 0;
+    padding: 10px 0;;
 }
 
 /* Closing style */

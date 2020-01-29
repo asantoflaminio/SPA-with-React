@@ -233,7 +233,7 @@
       "submit": "Submit"
     }, 
      "mypublications": {
-      "title_section": "My publications",
+      "title_section": "MY PUBLICATIONS",
       "noPublications": "No publications were found"
     },
     "profileAsideBar": {
@@ -242,7 +242,7 @@
         "optionFavorites": "MY FAVORITES"
     }, 
     "myfavorites": {
-      "title_section": "My favorites",
+      "title_section": "MY FAVORITES",
       "noPublications": "No favorite publications were found"
     },
     "profilepublication": {

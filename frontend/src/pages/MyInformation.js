@@ -206,7 +206,6 @@ class MyInformation extends React.Component {
                                         </Form.Group>
                                         <Form.Group as={Col} md="8" controlId="validationFormikUsername">
                                             <Form.Label>{t('profile.email')}</Form.Label>
-                                            <InputGroup>
                                                 <Form.Control
                                                 type="text"
                                                 placeholder={t('profile.emailHolder')}
@@ -219,7 +218,6 @@ class MyInformation extends React.Component {
                                                 <Form.Control.Feedback type="invalid">
                                                 {errors.email}
                                                 </Form.Control.Feedback>
-                                            </InputGroup>
                                             <p id="emailTakenError" className="errorText">{t('errors.emailTaken')}</p>
                                         </Form.Group>
                                         <Form.Group as={Col} md="8" controlId="validationFormik05">

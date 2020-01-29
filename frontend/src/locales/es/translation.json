@@ -234,7 +234,7 @@
       "submit": "Enviar"
     },
     "mypublications": {
-        "title_section": "Mis publicaciones",
+        "title_section": "MIS PUBLICACIONES",
         "noPublications": "No se encontraron publicaciones hechas"
     },
     "profileAsideBar": {
@@ -243,7 +243,7 @@
         "optionFavorites": "MIS FAVORITOS"
     },
     "myfavorites": {
-        "title_section": "Mis favoritos",
+        "title_section": "MIS FAVORITOS",
         "noPublications": "No se encontraron publicaciones faveadas"
     },
     "profilepublication": {
