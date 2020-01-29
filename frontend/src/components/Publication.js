@@ -7,8 +7,8 @@ import ImgVisualizer from './ImageVisualizer';
 import {Link} from 'react-router-dom';
 import UserService from '../services/UserService';
 
-function isErasable(t, eraseFunction, publicationid){
-    if(eraseFunction){
+function isErasable(t, eraseFunction, publicationid, page){
+    if(eraseFunction && page !== "MyFavorites"){
         return(
             <div className="more-info">
                 <img className="delete" src={trash} alt="Delete" />
@@ -18,7 +18,7 @@ function isErasable(t, eraseFunction, publicationid){
     }
 }
 
-function isEditable(t, erasableComponent, eraseFunction, publicationid, editable) {
+function isEditable(t, editable, publicationid) {
     if(editable) {
         return(	
             <div className="more-info">
@@ -40,8 +40,8 @@ function isEditable(t, erasableComponent, eraseFunction, publicationid, editable
 }
 
 const Publication = ({ t , publication, page, faveable, editable, eraseFunction, ready, index }) => {
-    let erasableComponent = isErasable(t, eraseFunction, publication.publicationid);
-    let editableComponent = isEditable(t, erasableComponent, eraseFunction, publication.publicationid, editable);
+    let erasableComponent = isErasable(t, eraseFunction, publication.publicationid, page);
+    let editableComponent = isEditable(t, editable, publication.publicationid);
         return(
             <div className="polaroid-property">
                 <ImgVisualizer
@@ -50,6 +50,7 @@ const Publication = ({ t , publication, page, faveable, editable, eraseFunction,
                     maxImages={publication.images}
                     page={page}
                     isFavourite={faveable && UserService.isLogged() ? publication.favourite : null}
+                    showModal={eraseFunction}
                     imageClass="polaroid-property-img"
                     containerClass="img-with-tag"
                     nextClass="next-image pointer"

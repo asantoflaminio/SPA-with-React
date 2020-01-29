@@ -272,11 +272,10 @@ class EditPublication extends React.Component {
 
         this.updateState(event);
         
-        console.table(Object.keys(errors));
+      
         
         if(Object.keys(errors).length === 0){
             UserService.editPublication(userid,query.publicationid,publicationDTO).then(function (response){
-                alert("entre");
                 if(response.status !== StatusCode.OK){
                     ErrorService.logError(currentComponent.props,response)
                     return;

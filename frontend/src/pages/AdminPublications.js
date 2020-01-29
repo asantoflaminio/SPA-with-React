@@ -116,7 +116,7 @@ class AdminPublications extends React.Component {
                 publications: [],
                 showModal: false
             })
-            if(currentComponent.state.myPublicationsCounter === 1 &&
+            if(currentComponent.state.resultsQuantity > 1 &&
                 Math.ceil((currentComponent.state.resultsQuantity - 1) / Constants.PUBLICATIONS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
                 && currentComponent.state.page === currentComponent.state.pagesQuantity - 1)
                 data.selected = currentComponent.state.page - 1;

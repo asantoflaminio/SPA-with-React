@@ -177,13 +177,15 @@ class Publish extends React.Component {
                             ErrorService.logError(currentComponent.props,response)
                             return;
                         }
-                        currentComponent.props.history.push({
-                            pathname: '/publications',
-                            search: '?publicationid=' + publicationid,
-                        });
                     })
                 }
+                currentComponent.props.history.push({
+                    pathname: '/publications',
+                    search: '?publicationid=' + publicationid,
+                });
             })
+        }else{
+            window.scrollTo(0, 0);
         }
     }
 
@@ -197,7 +199,7 @@ class Publish extends React.Component {
     render() {
         const { t } = this.props;
         const provinces = this.state.provinces.map(function(item){
-            return <option value={item.provinceid}>  {item.province} </option>;
+            return <option value={item.provinceid} key={item.provinceid}>  {item.province} </option>;
         });
           
         const schema = yup.object({
@@ -281,7 +283,7 @@ class Publish extends React.Component {
                 }) => (
                     <Form onSubmit={(event) => handleSubmit(event) || this.handleFormSubmit(event,errors)} >
                         <div className="sub_box">
-                            <Form.Group as={Col} md="12" controlId="validationFormik01">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.title')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -297,7 +299,7 @@ class Publish extends React.Component {
                                     {errors.title}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik02"></Form.Group>
+                            <Form.Group as={Col} md="12"></Form.Group>
                                 <Form.Label>{t('publish.province')}</Form.Label>
                                 <Form.Control
                                     as="select"
@@ -307,13 +309,13 @@ class Publish extends React.Component {
                                     value={values.provinceid}
                                     isInvalid={!!errors.provinceid && touched.provinceid}
                                 >
-                                <option disabled selected value="">{t('publish.provinceHolder')}</option>
+                                    <option disabled defaultValue="" value="">{t('publish.provinceHolder')}</option>
                                 {provinces}
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">
                                     {errors.provinceid}
                                 </Form.Control.Feedback>
-                            <Form.Group as={Col} md="12" controlId="validationFormik03">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.city')}</Form.Label>
                                     <Form.Control
                                     as="select"
@@ -324,13 +326,13 @@ class Publish extends React.Component {
                                     value={values.cityid}
                                     isInvalid={!!errors.cityid && touched.cityid}
                                     >
-                                        <option disabled selected value="">{t('publish.cityHolder')}</option>
+                                        <option disabled defaultValue="" value="">{t('publish.cityHolder')}</option>
                                     </Form.Control>  
                                     <Form.Control.Feedback type="invalid">
                                     {errors.cityid}
                                     </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik04">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.neighborhood')}</Form.Label>
                                 <Form.Control
                                     as="select"
@@ -341,13 +343,13 @@ class Publish extends React.Component {
                                     onBlur={handleBlur}
                                     isInvalid={!!errors.neighborhoodid && touched.neighborhoodid}
                                 >
-                                    <option disabled selected value="">{t('publish.neighborhoodHolder')}</option>
+                                    <option disabled defaultValue="" value="">{t('publish.neighborhoodHolder')}</option>
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">
                                     {errors.neighborhoodid}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik05">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.address')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -362,7 +364,7 @@ class Publish extends React.Component {
                                     {errors.address}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik06">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.operation')}</Form.Label>
                                 <Form.Check
                                     type="radio"
@@ -379,7 +381,7 @@ class Publish extends React.Component {
                                     id="FRent"
                                 />
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik07">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.price')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -394,7 +396,7 @@ class Publish extends React.Component {
                                     {errors.price}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik08">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.expenses')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -409,7 +411,7 @@ class Publish extends React.Component {
                                     {errors.expenses}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik09">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.amenities')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -426,7 +428,7 @@ class Publish extends React.Component {
                             </Form.Group>
                             </div>
                             <div className="sub_box">
-                                <Form.Group as={Col} md="12" controlId="validationFormik10">
+                                <Form.Group as={Col} md="12">
                                         <Form.Label>{t('publish.description')}</Form.Label>
                                         <Form.Control
                                             type="text"
@@ -442,7 +444,7 @@ class Publish extends React.Component {
                                             {errors.description}
                                         </Form.Control.Feedback>
                                 </Form.Group>
-                                <Form.Group as={Col} md="12" controlId="validationFormik11">
+                                <Form.Group as={Col} md="12">
                                     <Form.Label>{t('publish.propertyType')}</Form.Label>
                                     <Form.Check
                                         type="radio"
@@ -459,7 +461,7 @@ class Publish extends React.Component {
                                         id="Apartment"
                                     />
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik12">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.bedrooms')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -474,7 +476,7 @@ class Publish extends React.Component {
                                     {errors.bedrooms}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik13">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.bathrooms')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -489,7 +491,7 @@ class Publish extends React.Component {
                                     {errors.bathrooms}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik14">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.dimention')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -504,7 +506,7 @@ class Publish extends React.Component {
                                     {errors.dimention}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik15">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.coveredFloorSize')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -519,7 +521,7 @@ class Publish extends React.Component {
                                     {errors.coveredFloorSize}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik16">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.parking')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -534,7 +536,7 @@ class Publish extends React.Component {
                                     {errors.parking}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik17">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.balconies')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -549,7 +551,7 @@ class Publish extends React.Component {
                                     {errors.balconies}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik18">
+                            <Form.Group as={Col} md="12">
                                     <Form.Label>{t('publish.storage')}</Form.Label>
                                     <Form.Check
                                         type="radio"
@@ -577,7 +579,7 @@ class Publish extends React.Component {
                                     />
                             </Form.Group>
                             </div>
-                            <div class="down_box">
+                            <div className="down_box">
                                 <h4>{t('publish.titleImages')}</h4>
                                 <div className="image_wrapper">
                                     <div className="wrapper_arrows">
@@ -586,7 +588,7 @@ class Publish extends React.Component {
                                     <div className="imageViewer" id="imageViewer">
                                         <p id="imageText">{t('publish.uploadImagesText')}</p>
                                         <img id="image" alt="img" className="imageStyle hidden"></img>
-                                        <p id="countImage" classList="countImagesText hidden"></p>
+                                        <p id="countImage" className="countImagesText hidden"></p>
                                     </div>
                                     <div className="wrapper_arrows">
                                         <span className="arrows" onClick={this.nextImage}>&#8658;</span>
