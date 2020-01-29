@@ -45,6 +45,32 @@
     margin-left: 5px;
 }
 
+.price-tag {
+	color: white !important;
+	font-family: 'Rubik', sans-serif;
+	font-size: 23px !important;
+	position: absolute;
+	bottom: 5px;
+	left: 15px;
+	text-shadow: 0.5px 1px 1px #666;
+}
+
+.favorite-icon {
+	position: absolute;
+	top: 12px;
+	right: 8px;
+	height: 30px;
+	width: 30px;
+}
+
+.property-date {
+	float: right !important;
+	color: #888;
+	font-size: 13px !important;
+	margin-top: 15px;
+	margin-right: 5px;
+}
+
 .property-title {
 	text-align: left !important;
 	color: #999;
@@ -69,7 +95,7 @@
 .property-characteristics {
 	margin-left: 30px;
 	height: 100px;
-	margin-top: 10px !important;
+	margin-top: 10px;
 	margin-right: 200px;
 	display: flex;	
 }
@@ -96,8 +122,8 @@
 .column-2 {
 	height: inherit;
 	width: 45%;
-	margin-left: 5px;
-	min-width: 130px;
+	margin-left: 20px;
+	min-width: 190px;
 }
 
 h4 {
@@ -108,14 +134,17 @@ h4 {
 
 .more-info {
 	height: 20px;
+	margin-top: 5px;
+	width: 102%;
 	padding-top: 40%;	
 }
 
 .more-info-title {
-	margin-right: -50px;
 	float: right;
 	font-size: 15px !important;
 	color: #FD8907 !important;
+	margin-right: 10px;
+	margin-top: 0;
 }
 
 .bigCharacteristic {
@@ -147,4 +176,5 @@ h4 {
 
 .second-column {
 	width: 48% !important;
+	margin-top: 10px;
 }

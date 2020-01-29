@@ -9,16 +9,16 @@
 }
 
 div.polaroid {
-    margin-top: 20px;
     float: left;
-    margin-left: 2%;
-    width: 65%;
-    height: auto;
-    min-width: 250px;
-    background-color: white;
+    width: 55%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     margin-bottom: 50px;
-  }
+    margin: 20px 0 30px 15px !important;
+  	height: auto;
+  	background-color: white;
+  	padding-bottom:20px;
+  	min-width: 400px;
+}
 
   .data {
 	text-decoration: none;
@@ -34,6 +34,20 @@ div.polaroid {
 	text-align: center !important;
 	font-size: 18px !important;
 	color: #666 !important;
+}
+
+.data h3 {
+	margin-top: 5px !important;
+	text-align: center !important;
+	font-size: 18px !important;
+	color: #666 !important;
+}
+
+.title-container {
+	margin-right: 10px;
+	margin-left: 10px;
+	height: auto;
+	border-bottom: 1px solid #ccc;
 }
 
 .legendTag{
