@@ -425,11 +425,12 @@ class EditPublication extends React.Component {
                                     {errors.title}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik02"></Form.Group>
+                            <Form.Group as={Col} md="12" controlId="validationFormik02">
                                 <Form.Label>{t('publish.province')}</Form.Label>
                                 <Form.Control
                                     as="select"
                                     name="provinceid"
+                                    id="province-Select"
                                     onChange={(event) => this.updateCity(event,values) && handleChange(event)}
                                     onBlur={handleBlur}
                                     value={values.provinceid}
@@ -441,6 +442,7 @@ class EditPublication extends React.Component {
                                 <Form.Control.Feedback type="invalid">
                                     {errors.provinceid}
                                 </Form.Control.Feedback>
+                            </Form.Group>
                             <Form.Group as={Col} md="12" controlId="validationFormik03">
                                 <Form.Label>{t('publish.city')}</Form.Label>
                                     <Form.Control
@@ -715,7 +717,7 @@ class EditPublication extends React.Component {
                                     />
                             </Form.Group>
                         </div>
-                        <Button type="submit" id="submitButton" disabled={isSubmitting} onClick={handleChange}>{t('editpublication.submit')}</Button>;  
+                        <Button type="submit" id="submitButton" disabled={isSubmitting} onClick={handleChange}>{t('editpublication.submit')}</Button>  
                     </Form>
                 )}
                 </Formik>

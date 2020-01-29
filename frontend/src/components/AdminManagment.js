@@ -1,5 +1,4 @@
 import React from 'react';
-import '../css/AdminManagment.css';
 import {Link} from 'react-router-dom';
 
 const AdminManagment = ({ t, active }) => (
