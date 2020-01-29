@@ -28,6 +28,7 @@ class MyFavorites extends React.Component {
         };
         this.setReady = this.setReady.bind(this);
         this.removeFavoritePublication = this.removeFavoritePublication.bind(this);
+        this.showModalErasePublication = this.showModalErasePublication.bind(this);
     }
 
     componentDidMount() {
@@ -78,7 +79,9 @@ class MyFavorites extends React.Component {
                     favourites={false}
                     faveable={true}
                     editable={false}
+                    eraseFunction={this.showModalErasePublication}
                     ready={this.setReady}
+                    index={i}
                     />
             )
         }
@@ -95,7 +98,16 @@ class MyFavorites extends React.Component {
         return pubComponents;
     }
 
+    showModalErasePublication(publicationID){
+        this.setState({
+            showModal: true,
+            publicationIDToDelete: publicationID
+        })
+    }
+
     removeFavoritePublication(publicationID){
+        console.log("aca");
+        console.log(publicationID);
         let currentComponent = this
         let data = {}
         let userid = LocalStorageService.getUserid();
@@ -166,7 +178,7 @@ class MyFavorites extends React.Component {
                     title={t('modal.unfavPublication')}
                     information={t('modal.unfavPublicationDetail')}
                     checkModal={true}
-                    acceptFunction={this.removeFavouritePublication}
+                    acceptFunction={this.removeFavoritePublication}
                     functionParameter={this.state.publicationIDToDelete}
                 />
                 {this.state.myFavorites.length !== 0 ? 

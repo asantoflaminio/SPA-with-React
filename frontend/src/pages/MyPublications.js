@@ -79,6 +79,7 @@ class MyPublications extends React.Component {
                         publication={this.state.myPublications[i]}  
                         page="MyPublications"
                         favourites={false}
+                        faveable={false}
                         editable={true}
                         eraseFunction={this.showModalErasePublication}
                         ready={this.setReady}

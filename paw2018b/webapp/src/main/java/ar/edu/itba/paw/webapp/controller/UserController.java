@@ -365,6 +365,9 @@ public class UserController {
     @DELETE
     @Path("/users/{userid}/favourite-publications/{publicationid}")
     public Response removeFavouritePublication (@Context HttpServletRequest request, @PathParam("userid") long userid, @PathParam("publicationid") long publicationid) {
+    	System.out.println(userid);
+    	System.out.println(publicationid);
+    	
     	if(! vs.validateID(userid))
     		return rs.badRequest("The user id is invalid\"");
     	if(! vs.validateID(publicationid))
