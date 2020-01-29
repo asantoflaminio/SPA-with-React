@@ -299,11 +299,12 @@ class Publish extends React.Component {
                                     {errors.title}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12"></Form.Group>
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.province')}</Form.Label>
                                 <Form.Control
                                     as="select"
                                     name="provinceid"
+                                    id="province-Select"
                                     onChange={(event) => this.updateCity(event,values) && handleChange(event)}
                                     onBlur={handleBlur}
                                     value={values.provinceid}
@@ -315,6 +316,7 @@ class Publish extends React.Component {
                                 <Form.Control.Feedback type="invalid">
                                     {errors.provinceid}
                                 </Form.Control.Feedback>
+                            </Form.Group>
                             <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.city')}</Form.Label>
                                     <Form.Control
@@ -583,7 +585,7 @@ class Publish extends React.Component {
                                 <h4>{t('publish.titleImages')}</h4>
                                 <div className="image_wrapper">
                                     <div className="wrapper_arrows">
-                                        <span className="arrows" onClick={this.previousImage}>&#8656;</span>
+                                        <span className="arrows arrow-left" onClick={this.previousImage}>&#60;</span>
                                     </div>
                                     <div className="imageViewer" id="imageViewer">
                                         <p id="imageText">{t('publish.uploadImagesText')}</p>
@@ -591,7 +593,7 @@ class Publish extends React.Component {
                                         <p id="countImage" className="countImagesText hidden"></p>
                                     </div>
                                     <div className="wrapper_arrows">
-                                        <span className="arrows" onClick={this.nextImage}>&#8658;</span>
+                                        <span className="arrows arrow-right" onClick={this.nextImage}>&#62;</span>
                                     </div>
                                 </div>
                                 <ImageUploader

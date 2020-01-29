@@ -80,7 +80,7 @@
       "passwordNotUpdated": "An error ocurred. Remember the link provided only lasts one hour."
     },
     "publish": {
-      "publish": "Publish",
+      "publish": "PUBLISH",
       "title": "Title",
       "titleHolder": "Title...",
       "province": "Province",
