@@ -93,7 +93,7 @@ class MyPublications extends React.Component {
             //TODO: AGREGAR KEYS
             pubComponents.push(
                 <div> 
-                    <p>{t('mypublications.noPublications')}</p>
+                    <p id="no-results-title">{t('mypublications.noPublications')}</p>
                 </div>
             )
         }

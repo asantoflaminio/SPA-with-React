@@ -90,7 +90,7 @@ class MyFavorites extends React.Component {
              //TODO: AGREGAR KEYS
             pubComponents.push(
                 <div>
-                    <p>{t('myfavorites.noPublications')}</p>
+                    <p id="no-results-title">{t('myfavorites.noPublications')}</p>
                 </div>
             )
         }

@@ -13,3 +13,8 @@ html{
 .all-publications {
     min-width: 965px !important;
 }
+
+.btn.btn-primary {
+    background-color: #FD8907;
+    border-color: #FD8907;
+}

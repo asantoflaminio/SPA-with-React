@@ -88,7 +88,7 @@ class AdminPublications extends React.Component {
            //TODO: AGREGAR KEYS
            pubComponents.push(
             <div> 
-                <p>{t('admin.noPublications')}</p>
+                <p id="no-results-title">{t('admin.noPublications')}</p>
             </div>
             )
         }
