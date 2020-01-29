@@ -64,7 +64,7 @@ input[type=password] {
     cursor: pointer;
     position: relative;
     float: right;
-    margin: 5px 25px 20px 0;
+    margin: 5px 7.5% 20px 0;
 }
 
 #submitButtonLogIn {
