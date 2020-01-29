@@ -386,7 +386,7 @@ class EditPublication extends React.Component {
         return (
             <div className="box_form">
                 <div>
-                    <h3>{t('editpublication.edit')}</h3>
+                    <h3 className="publish-title">{t('editpublication.edit')}</h3>
                 </div>
                 <Formik
                 validationSchema={publicationSchema}
