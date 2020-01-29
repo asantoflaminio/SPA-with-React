@@ -41,7 +41,7 @@ h1 {
     font: bold 2em 'Rubik', sans-serif !important;
 }
 
-/* List style */
+/* Search style */
 
 .search_list-home {
 	margin-top: 70px;
@@ -94,6 +94,10 @@ h1 {
 
 #buy {
 	border-right: 1px solid #7C7C7C;
+}
+
+.card-body.row.no-gutters {
+	height: 80px;
 }
 
 /* Closing style*/
@@ -225,8 +229,6 @@ div.card-body.row.no-gutters.align-items-center {
 	padding: 5px;
 	margin: 5px 3px 15px 3px;
 }
-
-
 
 .newest_homes ul {
  	overflow: auto;

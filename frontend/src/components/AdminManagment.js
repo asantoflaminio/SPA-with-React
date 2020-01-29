@@ -8,17 +8,17 @@ const AdminManagment = ({ t, active }) => (
 	       	<ul>
 			   <Link to={{pathname: "/AdminGenerator"}}>
 					<li className={(active === "AdminGenerator") ? "current" : null} id="adminLocations">
-						<p>{t('admin.locations')}</p>
+						<p className="aside-option">{t('admin.locations')}</p>
 					</li>
 				</Link>
 				<Link to={{pathname: "/AdminUsers"}}>
 					<li className={(active === "AdminUsers") ? "current" : null} id="adminUsers">
-						<p>{t('admin.users')}</p>
+						<p className="aside-option">{t('admin.users')}</p>
 					</li>
 				</Link>
 				<Link to={{pathname: "/AdminPublications"}}>
 					<li className={(active === "AdminPublications") ? "current" : null} id="adminPublications">
-						<p>{t('admin.publications')}</p>
+						<p className="aside-option">{t('admin.publications')}</p>
 					</li>
 				</Link>
 			</ul>

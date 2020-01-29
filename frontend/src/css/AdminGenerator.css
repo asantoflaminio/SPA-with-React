@@ -3,40 +3,36 @@
 	color: #777;
   padding: 20px 10px;
   border-style: solid;
-  border-color: #777;
-  border-width: 3px;
-  margin-top: 50px;
+  border-color: #ccc;
+  border-width: 2px;
+  margin-top: 20px;
 }
 
 div.polaroid {
-    float: left;
-    width: 55%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin-bottom: 50px;
-    margin: 20px 0 30px 15px !important;
-  	height: auto;
-  	background-color: white;
-  	padding-bottom:20px;
-  	min-width: 400px;
+  float: left;
+  width: 55%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 20px 0 30px 15px !important;
+  height: auto;
+  background-color: white;
+  padding-bottom:20px;
+  min-width: 400px;
 }
 
-  .data {
+.data {
 	text-decoration: none;
 	list-style: none;
 	padding:10px;
-	background-color: #db7504;
+	background-color: #FD8907;
 	width:40%;
 	height:80%;
 }
 
-.title-container h3{
-	margin-top: 5px !important;
-	text-align: center !important;
-	font-size: 18px !important;
-	color: #666 !important;
+.create-locations {
+  min-width: 940px !important;
 }
 
-.data h3 {
+.title-container h3 {
 	margin-top: 5px !important;
 	text-align: center !important;
 	font-size: 18px !important;
@@ -56,39 +52,51 @@ div.polaroid {
   padding-right: 4px;
   border: none;
   width: auto;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .location-label{
   margin: 5px 10px 5px 0;
+  font-size: 17px;
 }
 
 .location-input {
   vertical-align: middle;
   margin: 5px 10px 5px 0;
-  padding: 10px;
   background-color: #fff;
-  border: 1px solid #ddd;
+  border: 1px solid #888;
+  color: #888;
   width: 250px !important;
 }
 
 .location-select{
   vertical-align: middle;
   margin: 5px 10px 5px 0;
-  padding: 10px;
   width: 40%;
   background-color: #fff;
-  border: 1px solid #ddd;
+  color: #888;
+  border: 1px solid;
+  border-color:#aaa;
+  border-radius: 2px;
+  box-sizing: border-box;
   width: 250px !important;
 }
 
 .signup-submit {
   padding: 7px 25px;
-  background-color: dodgerblue;
+  background-color: #FD8907;
   border: 1px solid #ddd;
   color: white;
   cursor: pointer;
+  border: none;
+  margin-top: 25px;
 }
 
+.signup-submit:hover {
+  background-color: #FD8907;
+  border: none;
+}
 
-
+.form-inline {
+  margin-top: -15px;
+}

@@ -149,7 +149,7 @@ class AdminUsers extends React.Component {
                 <div>
                     <div className="polaroid data">
                         <div className="title-container">
-                            <h3>{t('admin.users')}</h3>
+                            <h2>{t('admin.users')}</h2>
                         </div>
                         {this.state.loading === true ?
                             <div className="loader-all-container">

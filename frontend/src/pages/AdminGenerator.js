@@ -205,9 +205,9 @@ class AdminGenerator extends React.Component {
                     checkModal={false}
                 />
                 {this.state.posting ? <ColoredLinearProgress /> : null}  
-                <div className="polaroid data">
+                <div className="polaroid data create-locations">
                     <div className="title-container">       
-                        <h3>{t('admin.locationTitle')}</h3>  
+                        <h2>{t('admin.locationTitle')}</h2>  
                     </div>
                     <fieldset className="signup-list-item">
                         <legend className="legendTag">{t('admin.provinceLegend')}</legend>

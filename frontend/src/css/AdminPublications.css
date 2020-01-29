@@ -5,8 +5,11 @@ html{
     min-height: 100%;
 }
 
-
 .loader-container-admin{
     min-width: 1050px !important;
     min-height: 250px !important;
+}
+
+.all-publications {
+    min-width: 965px !important;
 }

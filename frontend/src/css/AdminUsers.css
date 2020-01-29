@@ -5,30 +5,20 @@
   padding: 10px;
 }
 
-.user-status {
-	position: relative;
-	float: right;
-	margin-right: 10px;
-	color: #888;
-	font-style: italic;
-	margin-top: 12px;
-	margin-bottom: 10px;
-	font-size: 14px;
+#users-list {
+	margin-top: 15px;
 }
 
 .user-email {
 	position: relative;
 	float: left;
-	margin-right: 10px;
-	margin-top: 12px;
-	margin-bottom: 10px;
-	font-size: 20px;
+	margin: 2px 0 10px 20px;
+	font-size: 17px;
+	color: #666;
 }
 
-.user-email {
-	margin-top: 10px;
-	margin-bottom: 8px;
-	margin-left: 5px;
+.row {
+	height: 50px;
 }
 
 /* The switch - the box around the slider */
@@ -50,3 +40,7 @@
 	  min-height: 120px;
 	  min-width: 1040px;
   }
+
+  .MuiFormControlLabel-root.switch.MuiFormControlLabel-labelPlacementStart {
+	margin-top: -3px;
+}

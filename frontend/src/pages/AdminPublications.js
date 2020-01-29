@@ -173,9 +173,9 @@ class AdminPublications extends React.Component {
                     acceptFunction={this.erasePublication}
                     functionParameter={this.state.publicationidToDelete}
                 />
-                <div className="polaroid data">
+                <div className="polaroid data all-publications">
                     <div className="title-container">
-                        <h3>{t('admin.publications')}</h3>
+                        <h2>{t('admin.publications')}</h2>
                     </div>
                     {this.state.loadingPublications === true ?
                                 <div className="loader-all-container">
