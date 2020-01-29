@@ -218,7 +218,7 @@
     }, 
     "profile": {
      "titlePersonalData": "DATOS PERSONALES",
-     "profile.titleNewPassword": "CAMBIÁ TU CONTRASEÑA",
+     "titleNewPassword": "CAMBIÁ TU CONTRASEÑA",
      "firstName": "NOMBRE",
      "firstNameHolder": "Nombre",
      "lastName": "APELLIDO",
