@@ -99,12 +99,12 @@ class StandarNavbar extends React.Component {
                                             </Form.Control.Feedback>
                                         </Form.Group>
                                         <p id="errorLogin" className="errorText">{t('errors.errorLogin')}</p>
-                                    <Button type="submit">{t('signUp.submit')}</Button>
+                                    <Button type="submit" id="dropdown-submit-btn">{t('signUp.submit')}</Button>
                                     </Form>
                                 )}
                             </Formik>
                             <Link to={{pathname: "/ForgottenPassword"}}>
-                                <p id="recover_pass" onClick={this.showlogin}>{t('navbar.recoverPass')}</p>
+                                <p id="recover_pass" className="recover_pass_dropdown" onClick={this.showlogin}>{t('navbar.recoverPass')}</p>
                             </Link>
                         </div>
                     </div>
