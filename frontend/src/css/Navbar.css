@@ -49,9 +49,17 @@ nav {
     outline: 0;
 }
 
+.nav-link {
+    color: #666;
+}
+
+.nav-link:hover {
+    color: #FD8907;
+}
+
 /* End of Style */
 
-/* Dropdown Box Style */
+/* Dropdown Sign In Style */
 
 .dropdown {
     position: relative;
@@ -78,7 +86,7 @@ nav {
     background-color: #f1f1f1;
     min-width: 250px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    right: 0;
+    right: 5px;
     left: auto;
 }
 
@@ -98,68 +106,6 @@ nav {
     width: 300px;
 }
 
-.check_box{
-    padding: 0px 10px 0px 10px;
-    font-family: 'Rubik', sans-serif !important;
-    font-size: 13px;
-}   
-
-.check_box label {
-  	display: block;
-  	padding-left: 15px;
-  	text-indent: -15px;
-}
-
-.check_box input {
-  	width: 15px;
-  	height: 15px;
-  	padding: 0;
-  	margin: 0 5px 0 10px;
-  	vertical-align: bottom;
-  	position: relative;
-  	top: -1px;
-  	*overflow: hidden;
-}
-
-.sign_b {
-    margin: 15px 10px 5px 10px;
-    align-items: center;
-    display: flex;
-}
-
-.sign_b input {
-    width:60%;
-    height:40px;
-    background-color: #FD8907;
-    color: white;
-    font-family: 'Rubik', sans-serif !important;
-    font-size: 14px;
-    margin: 0 auto;
-    padding: 3px 15px 3px 15px;
-}
-
-.line_separator{
-    padding: 3px 0px 3px 0px;
-    border-bottom:1px solid #ADA59C;
-}
-
-.password_label{
-    align-items: center;
-    display: flex;
-    width:100%;
-}
-
-.password_label label{
-    position:relative;
-    font-family: 'Rubik', sans-serif !important;
-    font-size: 11px;
-    padding: 5px 10px 0px 10px;
-    text-align: center;
-    margin:0 auto;
-}
-
-/* Closing style */
-
 #dropdown-submit-btn {
     background-color: #FD8907;
     border-color: #FD8907;
@@ -175,4 +121,38 @@ nav {
 .recover_pass_dropdown {
     margin-top: 10px !important;
     font-size: 15px;
+}
+
+/* Closing style */
+
+/* Dropdown Menu Style */
+
+.dropdown-menu {
+    font-family: 'Rubik', sans-serif !important;
+    display: none;
+    position: absolute;
+    top:47px;
+    right: 5px !important;
+    left: auto;
+    background-color: #f1f1f1;
+    width: 70px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    font-size: 16px;
+}
+
+.dropdown-divider {
+    border-top: 1px solid #ccc;
+}
+
+.dropdown-item {
+    margin-bottom: 5px;    
+}
+
+.dropdown-item:hover {
+    color: #FD8907;
+    text-decoration: none !important;
+}
+
+.dropdown-item:active {
+    background-color: #f1f1f1;
 }

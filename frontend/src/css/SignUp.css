@@ -74,4 +74,5 @@ input[type=password] {
 #recover_pass {
     margin-left: 22px;
     color: #FD8907;
+    font-size: 15px;
 }

@@ -34,3 +34,8 @@
 	float: left;
 	text-align:right;
 }
+
+.line_separator{
+    padding: 3px 0px 3px 0px;
+    border-bottom:1px solid #ADA59C;
+}
