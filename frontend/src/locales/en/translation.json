@@ -264,7 +264,9 @@
       "postLocationDetail" : "The {{location}} has been added to the database",
       "postLocationDetailError" : "There was an error adding {{location}} to the database",
       "deletePublication": "Delete publication",
-      "deletePublicationDetail": "Are you sure you want to delete the post?"
+      "deletePublicationDetail": "Are you sure you want to delete the post?",
+      "unfavPublication": "Delete favorite publication",
+      "unfavPublicationDetail": "Are you sure you want to delete the post from your favorites list?"
     },"editpublication":{
       "edit": "Edit publication",
       "submit": "Edit"

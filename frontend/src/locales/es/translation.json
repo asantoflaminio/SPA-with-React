@@ -265,7 +265,9 @@
       "postLocationDetail" : "Se ha agregado {{location}} a la base de datos",
       "postLocationDetailError" : "Se ha producido un error al agregar {{location}} a la base de datos",
       "deletePublication": "Eliminar publicación",
-      "deletePublicationDetail": "¿Estás seguro que quiere eliminar la publicación?"
+      "deletePublicationDetail": "¿Estás seguro que quiere eliminar la publicación?",
+      "unfavPublication": "Eliminar publicación faveada",
+      "unfavPublicationDetail": "¿Estás seguro que quiere remover la publicación de su lista de favoritos?"
     },
     "editpublication":{
       "edit": "Editar publicación",

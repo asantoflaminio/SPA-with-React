@@ -125,9 +125,8 @@ class MyPublications extends React.Component {
             
             if(currentComponent.state.myPublicationsCounter === 1 && 
                 Math.ceil((currentComponent.state.myPublicationsCounter - 1) / Constants.PUBLICATIONS_PAGE_LIMIT) < currentComponent.state.pagesQuantity
-                && currentComponent.state.page === currentComponent.state.pagesQuantity - 1) {
+                && currentComponent.state.page === currentComponent.state.pagesQuantity - 1)
                 data.selected = currentComponent.state.page - 1;
-                alert("aaa")}
             else
                 data.selected = currentComponent.state.page;
             currentComponent.handlePageClick(data)
