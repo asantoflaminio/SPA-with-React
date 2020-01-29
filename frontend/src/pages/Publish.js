@@ -257,9 +257,8 @@ class Publish extends React.Component {
         return (
             <div className="box_form">
                 <div>
-                    <h3>{t('publish.publish')}</h3>
+                    <h3 className="publish-title">{t('publish.publish')}</h3>
                 </div>
-                <hr/>
                 <Formik
                 validationSchema={schema}
                 initialValues={{ title:"", provinceid:"", cityid:"", neighborhoodid:"",
@@ -582,7 +581,7 @@ class Publish extends React.Component {
                             </Form.Group>
                             </div>
                             <div className="down_box">
-                                <h4>{t('publish.titleImages')}</h4>
+                                <h4 className="down_box_title">{t('publish.titleImages')}</h4>
                                 <div className="image_wrapper">
                                     <div className="wrapper_arrows">
                                         <span className="arrows arrow-left" onClick={this.previousImage}>&#60;</span>
