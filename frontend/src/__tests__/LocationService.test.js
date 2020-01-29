@@ -1,97 +1,127 @@
-// import axios from 'axios';
-// import MockAdapter from 'axios-mock-adapter';
-// import LocationService from '../services/LocationService'
-// import * as StatusCode from '../util/StatusCode'
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import LocationService from '../services/LocationService'
+import * as StatusCode from '../util/StatusCode'
 
-//     describe('postProvinceTest', () => {
-//         it('returns created STATUS', done => {
-//             var mock = new MockAdapter(axios);
-//             const data = { response: true };
-//             mock.onPost('meinHaus/locations-management/provinces').replyOnce(201, data);
-//             mock.onPost('meinHaus/locations-management/provinces').reply(409, data);
-//             let provinceDTO = {
-//                 province: 'Salta',
-//                 provinceid: '4'
-//             }
-//             LocationService.postProvince(provinceDTO).then(response => {
-//                 expect(response.status).toEqual(StatusCode.CREATED);
-//                 done();
-//             });
-//             LocationService.postProvince(provinceDTO).then(response => {
-//                 expect(response.status).toEqual(StatusCode.CONFLICT);
-//                 done();
-//             });
-//         });
-//     });
+const LOCATIONS_PATH = 'meinHaus/locations-management'
 
-//     describe('postCityTest', () => {
-//         it('returns created STATUS', done => {
-//             var mock = new MockAdapter(axios);
-//             const data = { response: true };
-//             mock.onPost('meinHaus/locations-management/provinces/4/cities').replyOnce(201, data);
-//             let cityDTO = {
-//                 city: 'Salta',
-//                 cityid: '1',
-//                 provinceid: '4'
-//             }
-//             LocationService.postCity(4, cityDTO).then(response => {
-//                 expect(response.status).toEqual(StatusCode.CREATED);
-//                 done();
-//             });
-//         });
-//     });
 
-//     describe('postNeighborhoodTest', () => {
-//         it('returns created STATUS', done => {
-//             var mock = new MockAdapter(axios);
-//             const data = { response: true };
-//             mock.onPost('meinHaus/locations-management/cities/1/neighborhoods').reply(201, data);
-//             let neighborhoodDTO = {
-//                 neighborhood: 'TestNeighborhood',
-//                 neighborhoodid: '1',
-//                 cityid: '1',
-//                 provinceid: '4'
-//             }
-//             LocationService.postNeighborhood(1, neighborhoodDTO).then(response => {
-//                 expect(response.status).toEqual(StatusCode.CREATED);
-//                 done();
-//             });
-//         });
-//     });
+it('gets provinces', async() => {
 
-//     describe('getProvincesTest', () => {
-//         it('returns OK', done => {
-//             var mock = new MockAdapter(axios);
-//             const data = { response: true };
-//             mock.onGet('meinHaus/locations-management/provinces').reply(200, data);
-//             LocationService.getProvinces().then(response => {
-//                 expect(response.status).toEqual(StatusCode.OK);
-//                 done();
-//             });
-//         });
-//     });
+    let spy = jest.spyOn(axios, "get");
+    var mock = new MockAdapter(axios);
+    mock.onGet(LOCATIONS_PATH + '/provinces').reply(200, 
+        {
+            answer: {
+                provinces: [ "prov1", "prov2", "prov3" ]
+            }
+        });
 
-//     describe('getCitiesTest', () => {
-//         it('returns OK', done => {
-//             var mock = new MockAdapter(axios);
-//             const data = { response: true };
-//             mock.onGet('meinHaus/locations-management/provinces/4/cities').reply(200, data);
-//             LocationService.getCities(4).then(response => {
-//                 expect(response.status).toEqual(StatusCode.OK);
-//                 done();
-//             });
-//         });
-//     });
+    const provinces = await LocationService.getProvinces();
 
-//     describe('getNeighborhoodsTest', () => {
-//         it('returns OK', done => {
-//             var mock = new MockAdapter(axios);
-//             const data = { response: true };
-//             mock.onGet('meinHaus/locations-management/cities/1/neighborhoods').reply(200, data);
-//             LocationService.getNeighborhoods(1).then(response => {
-//                 expect(response.status).toEqual(StatusCode.OK);
-//                 done();
-                
-//             });
-//         });
-//     });
+    expect(provinces.data.answer.provinces).toEqual([ "prov1", "prov2", "prov3" ]);
+    //expect(spy).toHaveBeenCalled();
+
+})
+
+it('gets cites', async() => {
+
+    let spy = jest.spyOn(axios, "get");
+    var mock = new MockAdapter(axios);
+    mock.onGet(LOCATIONS_PATH + '/provinces/5/cities').reply(200, 
+        {
+            answer: {
+                cities: [ "city1", "city2", "city3" ]
+            }
+        });
+
+    const cities = await LocationService.getCities(5);
+
+    expect(cities.data.answer.cities).toEqual([ "city1", "city2", "city3" ]);
+    //expect(spy).toHaveBeenCalled();
+
+})
+
+it('gets neighborhoods', async() => {
+
+    let spy = jest.spyOn(axios, "get");
+    var mock = new MockAdapter(axios);
+    mock.onGet(LOCATIONS_PATH + '/cities/5/neighborhoods').reply(200, 
+        {
+            answer: {
+                neighborhoods: [ "neigh1", "neigh2", "neigh3" ]
+            }
+        });
+
+    const neighborhoods = await LocationService.getNeighborhoods(5);
+
+    expect(neighborhoods.data.answer.neighborhoods).toEqual([ "neigh1", "neigh2", "neigh3" ]);
+    //expect(spy).toHaveBeenCalled();
+
+})
+
+it('posts province', async() => {
+
+    let spy = jest.spyOn(axios, "post");
+    var mock = new MockAdapter(axios);
+    mock.onPost(LOCATIONS_PATH + '/provinces').reply(StatusCode.OK);
+
+    const provDTO = {
+        province: "test",
+        provinceId: "123"
+    }
+    const ans = await LocationService.postProvince(provDTO);
+
+    expect(ans.status).toEqual(StatusCode.OK);
+     // expect(spy).toHaveBeenCalledWith(
+        //     path, {answer: {
+        //         publications: [ "pub1", "pub2", "pub3" ]
+        //     }});
+    //expect(spy).toHaveBeenCalled();
+
+})
+
+it('posts city', async() => {
+
+    let spy = jest.spyOn(axios, "post");
+    var mock = new MockAdapter(axios);
+    mock.onPost(LOCATIONS_PATH + '/provinces/123/cities').reply(StatusCode.OK);
+
+    const cityDTO = {
+        city: "test",
+        cityId: "123",
+        provinceId: "123"
+    }
+    const ans = await LocationService.postCity(123, cityDTO);
+
+    expect(ans.status).toEqual(StatusCode.OK);
+     // expect(spy).toHaveBeenCalledWith(
+        //     path, {answer: {
+        //         publications: [ "pub1", "pub2", "pub3" ]
+        //     }});
+    //expect(spy).toHaveBeenCalled();
+
+})
+
+it('posts neighborhood', async() => {
+
+    let spy = jest.spyOn(axios, "post");
+    var mock = new MockAdapter(axios);
+    mock.onPost(LOCATIONS_PATH + '/cities/123/neighborhoods').reply(StatusCode.OK);
+
+    const neighDTO = {
+        neighborhood: "test",
+        neighborhoodId: "123",
+        cityId: "123",
+        provinceId: "123"
+    }
+    const ans = await LocationService.postNeighborhood(123, neighDTO);
+
+    expect(ans.status).toEqual(StatusCode.OK);
+     // expect(spy).toHaveBeenCalledWith(
+        //     path, {answer: {
+        //         publications: [ "pub1", "pub2", "pub3" ]
+        //     }});
+    //expect(spy).toHaveBeenCalled();
+
+})
