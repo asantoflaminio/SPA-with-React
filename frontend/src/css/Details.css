@@ -126,6 +126,8 @@ div.container3 {
   text-align: center;
   padding: 10px 20px;
   height: auto;
+  min-height: 550px;
+
 }
 
 textarea {

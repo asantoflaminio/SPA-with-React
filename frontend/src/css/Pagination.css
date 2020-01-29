@@ -25,7 +25,7 @@
 }
 
 .container-pagination li:hover{
-    background-color: #c99;
+    background-color: rgba(243, 175, 97, 0.699);
     -webkit-transition: background-color 250ms  linear;
     -ms-transition: background-color 250ms  linear;
     transition: background-color 250ms linear;
