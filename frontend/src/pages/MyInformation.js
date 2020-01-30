@@ -17,6 +17,7 @@ import ErrorService from '../services/ErrorService';
 import CancelTokenService from '../services/CancelRequestService';
 import toast from 'toasted-notes'
 import 'toasted-notes/src/styles.css';
+import ColoredLinearProgress from '../components/ColoredLinearProgress';
 
 class MyInformation extends React.Component {
     constructor(props) {
@@ -28,6 +29,7 @@ class MyInformation extends React.Component {
             email: '',
             phoneNumber: '',
             userEmailValid: false,
+            loading: false
         };
     }
 
@@ -88,6 +90,10 @@ class MyInformation extends React.Component {
         let userDTO = JsonService.getJSONParsed(event.target);
         let userid = LocalStorageService.getUserid();
 
+        this.setState({
+            loading: true
+        }); 
+
         this.updateState(event);
         
         if(Object.keys(errors).length === 0 && this.state.userEmailValid) {
@@ -95,6 +101,9 @@ class MyInformation extends React.Component {
                 if(response.status !== StatusCode.OK){
                     ErrorService.logError(currentComponent.props,response)
                 }
+                currentComponent.setState({
+                    loading: false
+                });
                 toast.notify(t('profile.succesfullSubmitInfo'));  
                 LocalStorageService.refreshToken(response.headers.authorization, userDTO.email);
             })
@@ -109,12 +118,18 @@ class MyInformation extends React.Component {
         userDTO.currentPassword = event.target[0].value
         userDTO.password = event.target[1].value
         let userid = LocalStorageService.getUserid()
+        this.setState({
+            loading: true
+        }); 
         
         if(Object.keys(errors).length === 0) {
             UserService.editUser(userid,userDTO).then(function(response){
                 if(response.status !== StatusCode.OK){
                     ErrorService.logError(currentComponent.props,response)
                 }
+                currentComponent.setState({
+                    loading: false
+                });
                 toast.notify(t('profile.succesfullSubmitPass'));  
             })
         }
@@ -171,6 +186,7 @@ class MyInformation extends React.Component {
         
         return(
             <div>
+                {this.state.loading ? <ColoredLinearProgress /> : null}  
                 <ProfileAsideBar t={t} active="MyInformation"/>
                 <header>
                     <div className="Data">

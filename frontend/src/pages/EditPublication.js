@@ -15,6 +15,7 @@ import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
 import JsonService from '../services/JsonService';
+import ColoredLinearProgress from '../components/ColoredLinearProgress';
 
 class EditPublication extends React.Component {
 
@@ -45,6 +46,7 @@ class EditPublication extends React.Component {
             selectedOperationOption: '',
             selectedPropertyTypeOption: '',
             selectedStorageOption: '',
+            loading: false
 
         };
          this.handleOperationChange = this.handleOperationChange.bind(this);
@@ -275,6 +277,7 @@ class EditPublication extends React.Component {
     }
 
     handleFormSubmit(event,errors) {
+        
         let currentComponent = this
         let userid = LocalStorageService.getUserid();
         let queryString = require('query-string');
@@ -285,7 +288,9 @@ class EditPublication extends React.Component {
 
         this.updateState(event);
         
-      
+        this.setState({
+            loading: true
+        }); 
         
         if(Object.keys(errors).length === 0){
             UserService.editPublication(userid,query.publicationid,publicationDTO).then(function (response){
@@ -293,6 +298,9 @@ class EditPublication extends React.Component {
                     ErrorService.logError(currentComponent.props,response)
                     return;
                 }
+                currentComponent.setState({
+                    loading: false
+                });
                 currentComponent.props.history.push({
                     pathname: '/publications',
                     search: '?publicationid=' + publicationid,
@@ -402,6 +410,8 @@ class EditPublication extends React.Component {
 
 
         return (
+            <div>
+            {this.state.loading ? <ColoredLinearProgress /> : null}  
             <div className="box_form">
                 <div>
                     <h3 className="publish-title">{t('editpublication.edit')}</h3>
@@ -739,6 +749,7 @@ class EditPublication extends React.Component {
                     </Form>
                 )}
                 </Formik>
+            </div>
             </div>
         );
         }
