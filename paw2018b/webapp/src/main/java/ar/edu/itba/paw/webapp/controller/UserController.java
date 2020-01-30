@@ -184,16 +184,15 @@ public class UserController {
         return rs.create();
     }
     
-    @PATCH
+    @POST
     @Path("/users/password-reset")
     @Consumes(value = { ResetPasswordDTO.MediaType })
     public Response changePassword (ResetPasswordDTO resetPasswordDTO) {
+
     	if(! vs.validateUserPassword(resetPasswordDTO.getNewPassword()))
     		return rs.badRequest("The password is invalid");
-    	
     	Integer token = resetPasswordDTO.getToken().hashCode();
     	Optional<ResetPassword> resetPassword =  rps.getRequest(token.toString());
-    	
     	if(rps.isTokenExpired(token,resetPassword))
     		return rs.unauthorized("The token for reset password has expired");
 

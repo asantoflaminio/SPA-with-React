@@ -71,7 +71,7 @@ const UserService = (function(){
 
     async function _resetPassword(dataDTO){
         return await axios({
-          method: 'patch',
+          method: 'post',
           url: `${USERS_PATH}/users/password-reset`,
           data: dataDTO,
           headers : {
