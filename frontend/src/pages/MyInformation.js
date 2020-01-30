@@ -28,7 +28,7 @@ class MyInformation extends React.Component {
             lastName: '',
             email: '',
             phoneNumber: '',
-            userEmailValid: false,
+            userEmailValid: true,
             loading: false
         };
     }
