@@ -21,6 +21,13 @@ class UserNavbar extends React.Component {
         this.setState({ username: LocalStorageService.getUsername()})
     }
 
+    componentDidUpdate(prevProps,prevState){ //todo
+        let username = LocalStorageService.getUsername();
+        if (this.state.username !== username ) {
+        this.setState({ username: username });
+        }
+    }
+
     logout(){
         let currentComponent = this;
         LocalStorageService.clearToken()

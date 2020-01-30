@@ -14,6 +14,8 @@ import * as StatusCode from '../util/StatusCode'
 import JsonService from '../services/JsonService'
 import LocalStorageService from '../services/LocalStorageService';
 import ErrorService from '../services/ErrorService';
+import toast from 'toasted-notes'
+import 'toasted-notes/src/styles.css';
 
 class MyInformation extends React.Component {
     constructor(props) {
@@ -23,7 +25,8 @@ class MyInformation extends React.Component {
             firstName: '',
             lastName: '',
             email: '',
-            phoneNumber: ''
+            phoneNumber: '',
+            userEmailValid: false,
         };
     }
 
@@ -45,16 +48,24 @@ class MyInformation extends React.Component {
     }
 
     checkEmail(event){
-        let email = event.target.value
-        UserService.checkEmail(email).then(function (response){
-            if(response.status === StatusCode.OK){
-                document.getElementById("emailTakenError").style.display = "block"
-            }else if(response.status === StatusCode.NOT_FOUND || response.status === StatusCode.BAD_REQUEST)
-                document.getElementById("emailTakenError").style.display = "none"
-            else{
-                ErrorService.logError(this.props,response)
-            }
-        })
+        let currentComponent = this;
+        let email = event.target.value;
+       
+        if(email === this.state.email) {
+            currentComponent.setState({userEmailValid: true});
+        } else {
+            UserService.checkEmail(email).then(function (response){
+                if(response.status === StatusCode.OK){
+                    currentComponent.setState({userEmailValid: false});
+                    document.getElementById("emailTakenError").style.display = "block"
+                } else if(response.status === StatusCode.NOT_FOUND || response.status === StatusCode.BAD_REQUEST) {
+                    currentComponent.setState({userEmailValid: true});
+                    document.getElementById("emailTakenError").style.display = "none"
+                } else {
+                    ErrorService.logError(this.props,response)
+                }
+            })
+        }
         return true;
     }
 
@@ -69,34 +80,38 @@ class MyInformation extends React.Component {
 
     handleFormSubmit(event,errors) {
         event.preventDefault();
+        const { t } = this.props;
         let currentComponent = this;
         let userDTO = JsonService.getJSONParsed(event.target);
         let userid = LocalStorageService.getUserid();
 
         this.updateState(event);
 
-        if(Object.keys(errors).length === 0) {
+        if(Object.keys(errors).length === 0 && this.state.userEmailValid) {
             UserService.editUser(userid,userDTO).then(function(response){
                 if(response.status !== StatusCode.OK){
                     ErrorService.logError(currentComponent.props,response)
                 }
+                toast.notify(t('profile.succesfullSubmitInfo'));  
                 LocalStorageService.refreshToken(response.headers.authorization, userDTO.email);
             })
-        }
+        } 
     }
 
     handlePasswordFormSubmit(event,errors) {
         event.preventDefault();
+        let { t } = this.props;
         let currentComponent = this
         let userDTO = {}
         userDTO.password = event.target[1].value
         let userid = LocalStorageService.getUserid()
-
+        
         if(Object.keys(errors).length === 0) {
             UserService.editUser(userid,userDTO).then(function(response){
                 if(response.status !== StatusCode.OK){
                     ErrorService.logError(currentComponent.props,response)
                 }
+                toast.notify(t('profile.succesfullSubmitPass'));  
             })
         }
     }

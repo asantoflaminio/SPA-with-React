@@ -231,7 +231,9 @@
       "passwordHolder": "Contraseña actual",
       "newpassword": "CONTRASEÑA NUEVA",
       "newpasswordHolder": "Contraseña nueva",
-      "submit": "Enviar"
+      "submit": "Enviar",
+      "succesfullSubmitInfo": "Su información personal ha sido cambiada exitosamente",
+      "succesfullSubmitPass": "Su contraseña ha sido cambiada exitosamente"
     },
     "mypublications": {
         "title_section": "MIS PUBLICACIONES",

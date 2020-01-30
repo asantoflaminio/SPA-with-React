@@ -230,7 +230,9 @@
       "passwordHolder": "Current password",
       "newpassword": "NEW PASSWORD",
       "newpasswordHolder": "New password",
-      "submit": "Submit"
+      "submit": "Submit",
+      "succesfullSubmitInfo": "Your personal information has been successfully changed",
+      "succesfullSubmitPass": "Your password has been successfully changed"
     }, 
      "mypublications": {
       "title_section": "MY PUBLICATIONS",
