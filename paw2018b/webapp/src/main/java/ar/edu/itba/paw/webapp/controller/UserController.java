@@ -21,6 +21,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import ar.edu.itba.paw.interfaces.FavPublicationsService;
@@ -70,6 +71,9 @@ public class UserController {
 	
 	@Autowired
 	private ResetPasswordServiceImpl rps;
+	
+	@Autowired
+	private PasswordEncoder ecd;
 	
 	
     @GET
@@ -128,12 +132,18 @@ public class UserController {
     	if(user == null)
     		return rs.notFound("No user found with the specified id");
     	
-    	if(userDTO.getPassword() != null) {
-    		if(! vs.validateUserPassword(userDTO.getPassword()))
-    			return rs.badGateway("An error ocurred while sending the mail");
-    		us.editPassword(userDTO.getPassword(), userid);
-    		return rs.ok();
-    	}else {
+    	if(userDTO.getPassword() != null) { //TODO: nuevo chequear
+    			if(ecd.matches(userDTO.getCurrentPassword(), us.findById(userid).getPassword())) {
+		    		if(! vs.validateUserPassword(userDTO.getPassword())) {
+		    			return rs.badRequest("The new password is invalid");
+		    		} else {
+		    			us.editPassword(userDTO.getPassword(), userid);
+		    			return rs.ok();
+		    		}
+    			} else {
+    				return rs.badRequest("The passwords do not match");
+    			}
+    	} else {
     		if(! vs.validateUserData(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPhoneNumber()))
     			return rs.badRequest("The user parameters are invalid");
         	us.editData(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPhoneNumber(),
@@ -273,8 +283,7 @@ public class UserController {
     			publicationDTO.getPropertyType(), publicationDTO.getBedrooms(), publicationDTO.getBathrooms(), publicationDTO.getDimention(),
     			publicationDTO.getParking(), publicationDTO.getCoveredFloorSize(), publicationDTO.getBalconies(), publicationDTO.getAmenities(),
     			publicationDTO.getStorage(), publicationDTO.getExpenses(), publicationid)) {
-    		System.out.println("1111");
-    		return rs.badRequest(""); // ni idea si hay q poner esto
+    		return rs.badRequest(""); //TODO ni idea si hay q poner esto
     	}
     	
     	return rs.ok();
