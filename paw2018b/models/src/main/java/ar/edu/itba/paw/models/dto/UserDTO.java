@@ -9,6 +9,7 @@ public class UserDTO {
 	private String lastName;
 	private String email;
 	private String password;
+	private String currentPassword;
 	private String phoneNumber;
 	private Boolean locked;
 	private long id;
@@ -50,6 +51,14 @@ public class UserDTO {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getCurrentPassword() {
+		return currentPassword;
+	}
+
+	public void setCurrentPassword(String currentPassword) {
+		this.currentPassword = currentPassword;
 	}
 
 	public String getEmail() {

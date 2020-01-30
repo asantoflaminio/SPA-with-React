@@ -103,6 +103,7 @@ class MyInformation extends React.Component {
         let { t } = this.props;
         let currentComponent = this
         let userDTO = {}
+        userDTO.currentPassword = event.target[0].value
         userDTO.password = event.target[1].value
         let userid = LocalStorageService.getUserid()
         
