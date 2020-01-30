@@ -78,7 +78,7 @@
       "message": "Por favor, completá el formulario con tu nueva contraseña.",
       "send": "Enviar",
       "passwordUpdated": "Contraseña actualizada.",
-      "passwordNotUpdated": "Ocurrió un error. Recordá que el vínculo tiene una duración de una hora."
+      "passwordNotUpdated": "Ocurrió un error. No se pudo modificar tu contraseña."
     },
     "publish": {
       "publish": "PUBLICAR",

@@ -77,7 +77,7 @@
       "message": "Please fill the form with your new password.",
       "send": "Send",
       "passwordUpdated": "Password updated.",
-      "passwordNotUpdated": "An error ocurred. Remember the link provided only lasts one hour."
+      "passwordNotUpdated": "An error ocurred. Your password couldn't be modified."
     },
     "publish": {
       "publish": "PUBLISH",
