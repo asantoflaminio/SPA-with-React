@@ -440,7 +440,7 @@ class List extends React.Component {
                         {this.getResults(t)}
                     </div>
                     <div className="results" id="order" onChange={(event) => this.handleSelect(event,"order")}>
-                        <select id="order-select" defaultValue={Constants.NO_ORDER}>
+                        <select id="order-select" defaultValue={Constants.NEWEST_PUBLICATION}>
                             <option disabled value={Constants.NO_ORDER}>{t('list.noOrder')}</option>
                             <option value={Constants.NEWEST_PUBLICATION}>{t('list.newest')}</option>
                             <option value={Constants.OLDEST_PUBLICATION}>{t('list.oldest')}</option>
