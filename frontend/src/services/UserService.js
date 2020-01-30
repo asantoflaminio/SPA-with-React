@@ -208,7 +208,7 @@ const UserService = (function(){
                 authorization: LocalStorageService.getAuthorization(),
                 'Content-Type': ResourcesVersions.USER,
             }
-        }).then(function (response){ return response }).catch(function (error){ return (axios.isCancel(error) ? error : error.status) })
+        }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
     async function _lockUser(userid,queryParameters){

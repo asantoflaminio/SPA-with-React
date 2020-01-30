@@ -113,7 +113,7 @@ class MyInformation extends React.Component {
     handlePasswordFormSubmit(event,errors) {
         event.preventDefault();
         let { t } = this.props;
-        let currentComponent = this
+        let currentComponent = this;
         let userDTO = {}
         userDTO.currentPassword = event.target[0].value
         userDTO.password = event.target[1].value
@@ -124,13 +124,16 @@ class MyInformation extends React.Component {
         
         if(Object.keys(errors).length === 0) {
             UserService.editUser(userid,userDTO).then(function(response){
+                console.log(response);
                 if(response.status !== StatusCode.OK){
                     ErrorService.logError(currentComponent.props,response)
                 }
                 currentComponent.setState({
                     loading: false
                 });
-                toast.notify(t('profile.succesfullSubmitPass'));  
+                if(response.status === StatusCode.OK){
+                    toast.notify(t('profile.succesfullSubmitPass'));  
+                }
             })
         }
     }
