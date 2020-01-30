@@ -1,5 +1,6 @@
 import LocalStorageService from './LocalStorageService'
 import * as ResourcesVersions from '../util/ResourcesVersions'
+import CancelTokenService from './CancelRequestService';
 import axios from 'axios';
 
 const UserService = (function(){
@@ -25,12 +26,13 @@ const UserService = (function(){
         return await axios({
             method: 'get',
             url: `${USERS_PATH}/users`,
+            cancelToken: CancelTokenService.getSource().token,
             params: queryParameters,
             headers: {
                 authorization: LocalStorageService.getAuthorization(),
                 'Accept': ResourcesVersions.USER
             }
-          }).then(function (response){ return response }).catch(function (error){ return error.response })
+          }).then(function (response){ return response }).catch(function (error){ return (axios.isCancel(error) ? error : error.response) })
     }
 
     async function _signUp(dataDTO){
@@ -95,10 +97,11 @@ const UserService = (function(){
       return await axios({
           method: 'get',
           url: `${USERS_PATH}/users/${userid}/publications/${publicationid}`,
+          cancelToken: CancelTokenService.getSource().token,
           headers: {
               authorization: LocalStorageService.getAuthorization(),
           }
-      }).then(function (response){ return response }).catch(function (error){ return error.response })
+      }).then(function (response){ return response }).catch(function (error){ return (axios.isCancel(error) ? error : error.response) })
     }
 
     async function _editPublication(userid, publicationid, dataDTO) { //TODO:chequear si esta bien, nueva funcion
@@ -120,7 +123,7 @@ const UserService = (function(){
         headers: {
           authorization: LocalStorageService.getAuthorization()
       }
-      }).then(function (response){ return response }).catch(function (error){ return error.response }) 
+      }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
     async function _sendMessage(dataDTO){
@@ -138,24 +141,26 @@ const UserService = (function(){
         return await axios({
             method: 'get',
             url: `${USERS_PATH}/users/${userid}/publications`,
+            cancelToken: CancelTokenService.getSource().token,
             params: queryParameters,
             headers: {
                 authorization: LocalStorageService.getAuthorization(),
                 'Accept': ResourcesVersions.PUBLICATION
             }
-          }).then(function (response){ return response }).catch(function (error){ return error.response })
+          }).then(function (response){ return response }).catch(function (error){ return (axios.isCancel(error) ? error : error.response) })
     }
 
     async function _getMyFavoritesPublications(userid, queryParameters){
         return await axios({
             method: 'get',
             url: `${USERS_PATH}/users/${userid}/favourite-publications`,
+            cancelToken: CancelTokenService.getSource().token,
             params: queryParameters,
             headers: {
                 authorization: LocalStorageService.getAuthorization(),
                 'Accept': ResourcesVersions.PUBLICATION
             }
-          }).then(function (response){ return response }).catch(function (error){ return error.response })
+          }).then(function (response){ return response }).catch(function (error){ return (axios.isCancel(error) ? error : error.response) })
     }
 
 
@@ -186,11 +191,12 @@ const UserService = (function(){
         return await axios({
             method: 'get',
             url: `${USERS_PATH}/users/${userid}`,
+            cancelToken: CancelTokenService.getSource().token,
             headers: {
                 authorization: LocalStorageService.getAuthorization(),
                 'Accept': ResourcesVersions.USER
             }
-          }).then(function (response){ return response }).catch(function (error){ return error.response })
+          }).then(function (response){ return response }).catch(function (error){ return (axios.isCancel(error) ? error : error.response) })
     }
 
     async function _editUser(userid,dataDTO) {
@@ -202,7 +208,7 @@ const UserService = (function(){
                 authorization: LocalStorageService.getAuthorization(),
                 'Content-Type': ResourcesVersions.USER,
             }
-        }).then(function (response){ return response }).catch(function (error){ return error.response })
+        }).then(function (response){ return response }).catch(function (error){ return (axios.isCancel(error) ? error : error.status) })
     }
 
     async function _lockUser(userid,queryParameters){
@@ -213,7 +219,7 @@ const UserService = (function(){
             headers: {
                 authorization: LocalStorageService.getAuthorization(),
             }
-          }).then(function (response){ return response }).catch(function (error){ return error.response })
+          }).then(function (response){ return response }).catch(function (error){ return (axios.isCancel(error) ? error : error.status) })
     }
 
    return {

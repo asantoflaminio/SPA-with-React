@@ -8,6 +8,7 @@ import ReactPaginate from 'react-paginate';
 import Switch from '@material-ui/core/Switch';
 import UserService from '../services/UserService';
 import ErrorService from '../services/ErrorService';
+import CancelTokenService from '../services/CancelRequestService';
 import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -40,6 +41,8 @@ class AdminUsers extends React.Component {
         queryParameters.limit = Constants.USERS_PAGE_LIMIT
         this.setState({ loading: true })
         UserService.getUsers(queryParameters).then(function (response){
+            if(CancelTokenService.isCancel(response))
+                return;
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return;
@@ -136,6 +139,11 @@ class AdminUsers extends React.Component {
             )
         }
         return pubComponents;
+    }
+
+    componentWillUnmount(){
+        CancelTokenService.getSource().cancel()
+        CancelTokenService.refreshToken()
     }
 
     render(){

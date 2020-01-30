@@ -2,20 +2,22 @@ import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { Form, Button, Col } from 'react-bootstrap';
 import { Formik } from 'formik';
-import * as yup from 'yup';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../css/Publish.css';
 import { withRouter } from "react-router";
 import {appendSelectElement} from '../util/function'
 import ImageUploader from 'react-images-upload';
 import UserService from '../services/UserService'
 import LocationService from '../services/LocationService'
 import LocalStorageService from '../services/LocalStorageService'
-import * as Constants from '../util/Constants'
-import * as StatusCode from '../util/StatusCode'
-import ErrorService from '../services/ErrorService';
 import JsonService from '../services/JsonService';
 import PublicationService from '../services/PublicationService';
+import CancelTokenService from '../services/CancelRequestService';
+import ErrorService from '../services/ErrorService';
+import * as Constants from '../util/Constants'
+import * as StatusCode from '../util/StatusCode'
+import * as yup from 'yup';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../css/Publish.css';
+
 
 class Publish extends React.Component {
 
@@ -39,6 +41,8 @@ class Publish extends React.Component {
         document.getElementById("FSale").checked = true
         document.getElementById("House").checked = true
         LocationService.getProvinces().then(function (response){
+            if(CancelTokenService.isCancel(response))
+                return;
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return;
@@ -117,6 +121,8 @@ class Publish extends React.Component {
         values.provinceid = event.target.value
         event.target.blur();
         LocationService.getCities(values.provinceid).then(function (response){
+            if(CancelTokenService.isCancel(response))
+                return;
             let cities = response.data
             let select = document.getElementById("city-Select")
             let selectNeighborhood = document.getElementById("neighborhood-Select")
@@ -136,6 +142,8 @@ class Publish extends React.Component {
         values.cityid = event.target.value
         event.target.blur();
         LocationService.getNeighborhoods(values.cityid).then(function (response){
+            if(CancelTokenService.isCancel(response))
+                return;
             let neighborhoods = response.data
             let select = document.getElementById("neighborhood-Select")
             select.selectedIndex = 0;
@@ -193,6 +201,11 @@ class Publish extends React.Component {
         this.setState({
             selectedOption: changeEvent.target.value,
         })
+    }
+
+    componentWillUnmount(){
+        CancelTokenService.getSource().cancel()
+        CancelTokenService.refreshToken()
     }
 
 

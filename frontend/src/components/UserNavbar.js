@@ -10,28 +10,19 @@ class UserNavbar extends React.Component {
     constructor(props) {
          super(props);
          this.state = {
-             username: "",
-             redirect: false
+             username: ""
          }
 
          this.logout = this.logout.bind(this);
        }
 
     componentDidMount(){
-        this.setState({ username: LocalStorageService.getUsername()})
-    }
-
-    componentDidUpdate(prevProps,prevState){ //todo
-        let username = LocalStorageService.getUsername();
-        if (this.state.username !== username ) {
-        this.setState({ username: username });
-        }
+        this.setState({ username: LocalStorageService.getUsername() })
     }
 
     logout(){
-        let currentComponent = this;
         LocalStorageService.clearToken()
-        currentComponent.props.history.push("/SignUp")
+        this.props.history.push("/SignUp")
     }
 
     isAdmin(t){
@@ -44,7 +35,6 @@ class UserNavbar extends React.Component {
         else
             return
     }
-
 
     render(){
         const { t } = this.props;

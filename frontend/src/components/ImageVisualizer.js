@@ -12,6 +12,7 @@ import defaultImage from '../resources/default.jpg'
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
 import LocalStorageService from '../services/LocalStorageService';
+import CancelTokenService from '../services/CancelRequestService';
 
 class ImageVisualizer extends React.Component {
     constructor(props) {
@@ -66,6 +67,8 @@ class ImageVisualizer extends React.Component {
         let queryParameters = {};
         queryParameters.index = newIndex
         PublicationService.getImage(this.props.publicationid,queryParameters, this.props).then(function (response){
+            if(CancelTokenService.isCancel(response))
+                return;
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return;
@@ -151,6 +154,11 @@ class ImageVisualizer extends React.Component {
             LocalStorageService.incrementCounter()
             currentComponent.props.setReady()
     }, this.props.index)
+    }
+
+    componentWillUnmount(){
+        CancelTokenService.getSource().cancel()
+        CancelTokenService.refreshToken()
     }
 
     render(){

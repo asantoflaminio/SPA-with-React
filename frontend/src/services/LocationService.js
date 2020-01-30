@@ -51,27 +51,29 @@ const LocationService = (function(){
             headers: {
                 'Accept': ResourcesVersions.PROVINCE
             }
-          }).then(function (response){ return response }).catch(function (error){ return error.response })
+          }).then(function (response){ return response }).catch(function (error){ return (axios.isCancel(error) ? error : error.response) })
     }
 
     async function _getCities(provinceid){
         return await axios({
             method: 'get',
             url: `${LOCATIONS_PATH}/provinces/${provinceid}/cities`,
+            cancelToken: CancelTokenService.getSource().token,
             headers: {
                 'Accept': ResourcesVersions.CITY
             }
-          }).then(function (response){ return response }).catch(function (error){ return error.response })
+          }).then(function (response){ return response }).catch(function (error){ return (axios.isCancel(error) ? error : error.response) })
       }
 
     async function _getNeighborhoods(cityid){
         return await axios({
             method: 'get',
             url: `${LOCATIONS_PATH}/cities/${cityid}/neighborhoods`,
+            cancelToken: CancelTokenService.getSource().token,
             headers: {
                 'Accept': ResourcesVersions.NEIGHBORHOOD
             }
-          }).then(function (response){ return response }).catch(function (error){ return error.response })
+          }).then(function (response){ return response }).catch(function (error){ return (axios.isCancel(error) ? error : error.response) })
     }
     
 

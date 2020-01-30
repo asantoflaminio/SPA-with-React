@@ -10,6 +10,7 @@ import {appendSelectElement} from '../util/function'
 import UserService from '../services/UserService'
 import LocationService from '../services/LocationService'
 import LocalStorageService from '../services/LocalStorageService'
+import CancelTokenService from '../services/CancelRequestService';
 import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
@@ -64,6 +65,8 @@ class EditPublication extends React.Component {
         let currentComponent = this
        
         LocationService.getProvinces().then(function (response){
+            if(CancelTokenService.isCancel(response))
+                return;
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return;
@@ -83,6 +86,8 @@ class EditPublication extends React.Component {
         let userid = LocalStorageService.getUserid();
         
         UserService.getPublication(userid,query.publicationid).then(function (response){
+            if(CancelTokenService.isCancel(response))
+                return;    
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return;
@@ -120,6 +125,8 @@ class EditPublication extends React.Component {
         values.provinceid = event.target.value
         event.target.blur();
         LocationService.getCities(values.provinceid).then(function (response){
+            if(CancelTokenService.isCancel(response))
+                return;
             let cities = response.data
             let select = document.getElementById("city-Select")
             let selectNeighborhood = document.getElementById("neighborhood-Select")
@@ -139,6 +146,8 @@ class EditPublication extends React.Component {
         values.cityid = event.target.value
         event.target.blur();
         LocationService.getNeighborhoods(values.cityid).then(function (response){
+            if(CancelTokenService.isCancel(response))
+                return;
             let neighborhoods = response.data
             let select = document.getElementById("neighborhood-Select")
             select.selectedIndex = 0;
@@ -191,6 +200,8 @@ class EditPublication extends React.Component {
         
         if(provinceid !== undefined) {   
             LocationService.getCities(provinceid).then(function (response){
+                if(CancelTokenService.isCancel(response))
+                    return;
                 if(response.status !== StatusCode.OK){
                     ErrorService.logError(currentComponent.props,response)
                     return;
@@ -209,6 +220,8 @@ class EditPublication extends React.Component {
         
         if(cityid !== undefined) {   
             LocationService.getNeighborhoods(cityid).then(function (response){
+                if(CancelTokenService.isCancel(response))
+                    return;
                 if(response.status !== StatusCode.OK){
                     ErrorService.logError(currentComponent.props,response)
                     return;
@@ -288,6 +301,11 @@ class EditPublication extends React.Component {
             })
         }
         
+    }
+
+    componentWillUnmount(){
+        CancelTokenService.getSource().cancel()
+        CancelTokenService.refreshToken()
     }
 
 

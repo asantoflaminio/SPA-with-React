@@ -6,17 +6,21 @@ const CancelTokenService = (function(){
     let source = CancelToken.source();
 
     function _getSource(){
-        let cancelToken = source;
-        source = createNewToken()
-        return cancelToken;
+        return source;
     }
 
-    function createNewToken(){
-        return CancelToken.source();
+    function _refreshToken(){
+        source = CancelToken.source()
+    }
+
+    function _isCancel(thrown){
+        return axios.isCancel(thrown)
     }
 
     return {
-        getSource : _getSource
+        getSource : _getSource,
+        refreshToken : _refreshToken,
+        isCancel: _isCancel
       }
      })();
   

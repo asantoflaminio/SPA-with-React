@@ -17,37 +17,40 @@ const PublicationService = (function(){
             authorization: LocalStorageService.getAuthorization(),
             'Accept': ResourcesVersions.PUBLICATION
           }
-      }).then(function (response){ return response }).catch(function (error){ return error.response })
+      }).then(function (response){ return response }).catch(function (error){ return (axios.isCancel(error) ? error : error.response) })
   }
 
     async function _getPublication(publicationid){
         return await axios({
             method: 'get',
             url: `${PUBLICATIONS_PATH}/publications/${publicationid}`,
+            cancelToken: CancelTokenService.getSource().token,
             headers: {
               authorization: LocalStorageService.getAuthorization(),
               'Accept': ResourcesVersions.PUBLICATION
             }
-        }).then(function (response){ return response }).catch(function (error){ return error.response })
+        }).then(function (response){ return response }).catch(function (error){ return (axios.isCancel(error) ? error : error.response) })
     }
 
     async function _getFilters(queryParameters){
         return await axios({
             method: 'get',
             url: `${PUBLICATIONS_PATH}/publications/filters`,
+            cancelToken: CancelTokenService.getSource().token,
             params:queryParameters,
             headers: {
               'Accept': ResourcesVersions.FILTERS
             }
-          }).then(function (response){ return response }).catch(function (error){ return error.response })
+          }).then(function (response){ return response }).catch(function (error){ return (axios.isCancel(error) ? error : error.response) })
     }
 
     async function _getImage(publicationid,queryParameters){
         return await axios({
             method: 'get',
             url: `${PUBLICATIONS_PATH}/publications/${publicationid}/images`,
+            cancelToken: CancelTokenService.getSource().token,
             params: queryParameters
-          }).then(function (response){ return response }).catch(function (error){ return error.response })     
+          }).then(function (response){ return response }).catch(function (error){ return (axios.isCancel(error) ? error : error.response) })   
     }
 
     async function _postImages(publicationid,dataDTO){
@@ -59,7 +62,7 @@ const PublicationService = (function(){
               contentType:'multipart/form-data',
               authorization: LocalStorageService.getAuthorization()
             }
-        }).then(function (response){ return response }).catch(function (error){ return error.response })     
+        }).then(function (response){ return response }).catch(function (error){ return error.response })  
   }
 
     async function _erasePublication(publicationID){
@@ -69,7 +72,7 @@ const PublicationService = (function(){
         headers: {
           authorization: LocalStorageService.getAuthorization()
       }
-      }).then(function (response){ return response }).catch(function (error){ return error.response }) 
+      }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
     

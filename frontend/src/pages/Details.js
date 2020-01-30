@@ -14,11 +14,13 @@ import UserService from '../services/UserService'
 import JsonService from '../services/JsonService'
 import ErrorService from '../services/ErrorService';
 import LocalStorageService from '../services/LocalStorageService'
+import CancelTokenService from '../services/CancelRequestService';
 import * as yup from 'yup';
 import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
 import 'toasted-notes/src/styles.css';
 import '../css/Details.css';
+
 
 const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credentials.mapsKey}` ;
 
@@ -51,15 +53,17 @@ class Details extends React.Component {
         LocalStorageService.deleteCounter();
         LocalStorageService.initializeCounter()
         PublicationService.getPublication(query.publicationid).then(function (response){
-                if(response.status !== StatusCode.OK){
-                    ErrorService.logError(currentComponent.props,response)
-                    return;
-                }
-                currentComponent.setState({
-                    publication: response.data,
-                    circleloading: false
-                })
+            if(CancelTokenService.isCancel(response))
+                return;
+            if(response.status !== StatusCode.OK){
+                ErrorService.logError(currentComponent.props,response)
+                return;
+            }
+            currentComponent.setState({
+                publication: response.data,
+                circleloading: false
             })
+        })
     }
 
     handleSendMessage(event, errors){
@@ -93,6 +97,12 @@ class Details extends React.Component {
     setReady(){
         this.setState({circleloading: false})
         LocalStorageService.deleteCounter();
+    }
+
+    componentWillUnmount(){
+        CancelTokenService.getSource().cancel()
+        CancelTokenService.refreshToken()
+        LocalStorageService.deleteCounter()
     }
 
     render(){

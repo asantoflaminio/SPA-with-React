@@ -10,6 +10,7 @@ import LocalStorageService from '../services/LocalStorageService';
 import ToastNotification from '../components/ToastNotification'
 import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
+import CancelTokenService from '../services/CancelRequestService';
 import PublicationLoader from '../components/PublicationLoader'
 
 
@@ -50,6 +51,8 @@ class MyFavorites extends React.Component {
         LocalStorageService.deleteCounter();
         LocalStorageService.initializeCounter()
         UserService.getMyFavoritesPublications(userid,queryParameters).then(function(response) {
+            if(CancelTokenService.isCancel(response))
+                return;
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return;
@@ -162,6 +165,12 @@ class MyFavorites extends React.Component {
             )
         }
         return pubComponents;
+    }
+
+    componentWillUnmount(){
+        CancelTokenService.getSource().cancel()
+        CancelTokenService.refreshToken()
+        LocalStorageService.deleteCounter()
     }
 
     render(){

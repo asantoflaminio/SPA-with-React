@@ -10,6 +10,7 @@ import ColoredLinearProgress from '../components/ColoredLinearProgress';
 import LocationService from '../services/LocationService'
 import ErrorService from '../services/ErrorService'
 import JsonService from '../services/JsonService'
+import CancelTokenService from '../services/CancelRequestService'
 import * as StatusCode from '../util/StatusCode'
 import * as yup from 'yup';
 import * as Constants from '../util/Constants'
@@ -37,6 +38,8 @@ class AdminGenerator extends React.Component {
     componentDidMount(){
         let currentComponent = this
         LocationService.getProvinces().then(function (response){
+            if(CancelTokenService.isCancel(response))
+                return;
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return;
@@ -61,10 +64,12 @@ class AdminGenerator extends React.Component {
                 else if(response.status === StatusCode.CREATED){
                     currentComponent.setModalInformation(province)
                     LocationService.getProvinces(currentComponent.props).then(function (response){
-                    currentComponent.setState({
-                        provinces: response.data
+                        if(CancelTokenService.isCancel(response))
+                            return;
+                        currentComponent.setState({
+                            provinces: response.data
+                            })
                         })
-                    })
                 }
                 else{
                     ErrorService.logError(currentComponent.props,response)
@@ -122,6 +127,8 @@ class AdminGenerator extends React.Component {
         event.target.blur();
         let provinceid = event.target[0].parentElement.value
         LocationService.getCities(provinceid).then(function (response){
+            if(CancelTokenService.isCancel(response))
+                return;
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return;
@@ -170,7 +177,10 @@ class AdminGenerator extends React.Component {
         })
     }
 
-
+    componentWillUnmount(){
+        CancelTokenService.getSource().cancel()
+        CancelTokenService.refreshToken()
+    }
 
     render(){
         const { t } = this.props;

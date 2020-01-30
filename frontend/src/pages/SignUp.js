@@ -1,6 +1,6 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import { Form, Button, Col, InputGroup } from 'react-bootstrap';
+import { Form, Button, Col } from 'react-bootstrap';
 import { Formik } from 'formik';
 import {Link} from 'react-router-dom';
 import {Redirect} from 'react-router-dom';

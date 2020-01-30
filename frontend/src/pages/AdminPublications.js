@@ -9,6 +9,7 @@ import PublicationLoader from '../components/PublicationLoader'
 import ErrorService from '../services/ErrorService';
 import LocalStorageService from '../services/LocalStorageService';
 import PublicationService from '../services/PublicationService'
+import CancelTokenService from '../services/CancelRequestService';
 import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
 import '../css/AdminPublications.css';
@@ -50,6 +51,8 @@ class AdminPublications extends React.Component {
         LocalStorageService.deleteCounter();
         LocalStorageService.initializeCounter()
         PublicationService.getPublications(queryParameters).then(function (response){
+            if(CancelTokenService.isCancel(response))
+                return;
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return
@@ -157,6 +160,11 @@ class AdminPublications extends React.Component {
             )
         }
         return pubComponents;
+    }
+
+    componentWillUnmount(){
+        CancelTokenService.getSource().cancel()
+        CancelTokenService.refreshToken()
     }
 
     render(){

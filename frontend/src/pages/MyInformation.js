@@ -3,7 +3,7 @@ import { withTranslation } from 'react-i18next';
 import ProfileAsideBar from '../components/ProfileAsideBar'
 import '../css/Profile.css';
 import { withRouter } from "react-router";
-import { Form, Button, Col, InputGroup } from 'react-bootstrap';
+import { Form, Button, Col } from 'react-bootstrap';
 import { Formik } from 'formik';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/SignUp.css';
@@ -14,6 +14,7 @@ import * as StatusCode from '../util/StatusCode'
 import JsonService from '../services/JsonService'
 import LocalStorageService from '../services/LocalStorageService';
 import ErrorService from '../services/ErrorService';
+import CancelTokenService from '../services/CancelRequestService';
 import toast from 'toasted-notes'
 import 'toasted-notes/src/styles.css';
 
@@ -34,6 +35,8 @@ class MyInformation extends React.Component {
         let currentComponent = this;
         let userid = LocalStorageService.getUserid();
         UserService.getUser(userid).then(function (response) {
+            if(CancelTokenService.isCancel(response))
+                return;
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return;
@@ -86,7 +89,7 @@ class MyInformation extends React.Component {
         let userid = LocalStorageService.getUserid();
 
         this.updateState(event);
-
+        
         if(Object.keys(errors).length === 0 && this.state.userEmailValid) {
             UserService.editUser(userid,userDTO).then(function(response){
                 if(response.status !== StatusCode.OK){
@@ -124,6 +127,11 @@ class MyInformation extends React.Component {
         schema.email = this.state.email;
         schema.phoneNumber = this.state.phoneNumber
         return schema;
+    }
+
+    componentWillUnmount(){
+        CancelTokenService.getSource().cancel()
+        CancelTokenService.refreshToken()
     }
 
     render(){
@@ -190,7 +198,7 @@ class MyInformation extends React.Component {
                                     isSubmitting
                                 }) => (
                                     <Form noValidate onSubmit={(event) => handleSubmit(event) || this.handleFormSubmit(event,errors)}>
-                                        <Form.Group as={Col} md="8" controlId="validationFormik01">
+                                        <Form.Group as={Col} md="8">
                                             <Form.Label>{t('profile.firstName')}</Form.Label>
                                             <Form.Control
                                                 type="text"
@@ -205,7 +213,7 @@ class MyInformation extends React.Component {
                                                 {errors.firstName}
                                             </Form.Control.Feedback>
                                         </Form.Group>
-                                        <Form.Group as={Col} md="8" controlId="validationFormik02">
+                                        <Form.Group as={Col} md="8">
                                             <Form.Label>{t('profile.lastName')}</Form.Label>
                                             <Form.Control
                                                 type="text"
@@ -220,7 +228,7 @@ class MyInformation extends React.Component {
                                                 {errors.lastName}
                                             </Form.Control.Feedback>
                                         </Form.Group>
-                                        <Form.Group as={Col} md="8" controlId="validationFormikUsername">
+                                        <Form.Group as={Col} md="8">
                                             <Form.Label>{t('profile.email')}</Form.Label>
                                                 <Form.Control
                                                 type="text"
@@ -236,7 +244,7 @@ class MyInformation extends React.Component {
                                                 </Form.Control.Feedback>
                                             <p id="emailTakenError" className="errorText">{t('errors.emailTaken')}</p>
                                         </Form.Group>
-                                        <Form.Group as={Col} md="8" controlId="validationFormik05">
+                                        <Form.Group as={Col} md="8">
                                             <Form.Label>{t('profile.phoneNumber')}</Form.Label>
                                             <Form.Control
                                                 type="text"

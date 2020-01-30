@@ -73,8 +73,11 @@ const LocalStorageService = (function(){
 
     function _getUsername(){
       let cypherUsername = localStorage.getItem(USERNAME_TOKEN)
-      let username = CryptoJS.AES.decrypt(cypherUsername,KEY)
-      return username.toString(CryptoJS.enc.Utf8)
+      if(cypherUsername !== null){
+        let username = CryptoJS.AES.decrypt(cypherUsername,KEY)
+        return username.toString(CryptoJS.enc.Utf8)
+      }
+
     }
 
     function _getUserid(){
@@ -100,9 +103,9 @@ const LocalStorageService = (function(){
     }
 
     function _clearToken() {
-      localStorage.removeItem(AUTH_TOKEN);
-      localStorage.removeItem(USERNAME_TOKEN)
+      localStorage.removeItem(AUTH_TOKEN)
       localStorage.removeItem(USERID_TOKEN)
+      localStorage.removeItem(USERNAME_TOKEN)
       localStorage.removeItem(ACCESS_TOKEN)
     }
 

@@ -39,6 +39,8 @@ class HomeReal extends React.Component {
         LocalStorageService.deleteCounter();
         LocalStorageService.initializeCounter()
         PublicationService.getPublications(queryParameters_1).then(function (response){
+            if(CancelTokenService.isCancel(response))
+                return;
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return;
@@ -48,6 +50,8 @@ class HomeReal extends React.Component {
         queryParameters_2.operation = Constants.FRENT
         queryParameters_2.order = Constants.NEWEST_PUBLICATION
         PublicationService.getPublications(queryParameters_2).then(function (response){
+            if(CancelTokenService.isCancel(response))
+                return;
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return;
@@ -134,7 +138,10 @@ class HomeReal extends React.Component {
 
     componentWillUnmount(){
         CancelTokenService.getSource().cancel()
+        CancelTokenService.refreshToken()
+        LocalStorageService.deleteCounter()
     }
+    
 
     render(){
         const { t } = this.props;

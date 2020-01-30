@@ -2,17 +2,18 @@ import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { withRouter } from "react-router";
 import ReactPaginate from 'react-paginate';
+import Publication from '../components/Publication';
+import PublicationLoader from '../components/PublicationLoader'
+import arrowDown from '../resources/arrow_down.png';
 import PublicationService from '../services/PublicationService';
 import ErrorService from '../services/ErrorService';
 import LocalStorageService from '../services/LocalStorageService';
-import Publication from '../components/Publication';
-import PublicationLoader from '../components/PublicationLoader'
+import CancelTokenService from '../services/CancelRequestService';
 import * as utilFunction from '../util/function';
 import * as Constants from '../util/Constants'
 import * as StatusCode from '../util/StatusCode'
 import '../css/list.css';
 import '../css/Pagination.css';
-import arrowDown from '../resources/arrow_down.png';
 
 class List extends React.Component {
     constructor(props) {
@@ -59,6 +60,8 @@ class List extends React.Component {
         LocalStorageService.deleteCounter();
         LocalStorageService.initializeCounter()
         PublicationService.getPublications(queryParameters).then(function (response){
+            if(CancelTokenService.isCancel(response))
+                return;
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return;
@@ -92,6 +95,8 @@ class List extends React.Component {
     updateFilters(queryParameters){
         let currentComponent = this
         PublicationService.getFilters(queryParameters).then(function (response){
+            if(CancelTokenService.isCancel(response))
+                return;
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return;
@@ -181,7 +186,7 @@ class List extends React.Component {
         if(this.state.publications.length === 0) {
             // TODO: AGREGAR KEYS
             pubComponents.push(
-                <div> 
+                <div key={"No-Pubs"}> 
                     <p id="no-results-title">{t('list.noPublications')}</p>
                     <p id="no-results-info">{t('list.noPublicationsText')}</p>
                 </div>
@@ -385,6 +390,12 @@ class List extends React.Component {
             )
         }
         return pubComponents;
+    }
+
+    componentWillUnmount(){
+        CancelTokenService.getSource().cancel()
+        CancelTokenService.refreshToken()
+        LocalStorageService.deleteCounter()
     }
 
     render(){
