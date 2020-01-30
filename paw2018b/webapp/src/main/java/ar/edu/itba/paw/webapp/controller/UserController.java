@@ -131,7 +131,7 @@ public class UserController {
     	User user = us.findById(userid);
     	if(user == null)
     		return rs.notFound("No user found with the specified id");
-    	
+  
     	if(userDTO.getPassword() != null) { //TODO: nuevo chequear
     			if(ecd.matches(userDTO.getCurrentPassword(), us.findById(userid).getPassword())) {
 		    		if(! vs.validateUserPassword(userDTO.getPassword())) {
