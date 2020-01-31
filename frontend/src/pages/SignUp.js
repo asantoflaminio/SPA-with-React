@@ -69,6 +69,8 @@ class SignUp extends React.Component {
                         isLogged: true,
                         loading: false
                 })
+
+                currentComponent.props.updateUsername(signUpDTO.email);
             })
                 currentComponent.props.history.push(currentPath)
             })
@@ -91,6 +93,7 @@ class SignUp extends React.Component {
                         response.headers.username, response.headers["user-id"])
                     document.getElementById("errorLoginSignUp").style.display = "none"                   
                     currentComponent.props.history.push(currentPath)
+                    currentComponent.props.updateUsername(loginDTO.email);
                 }else if(response.status === StatusCode.UNAUTHORIZED){
                     document.getElementById("errorLoginSignUp").style.display = "block"
                 }else{

@@ -18,6 +18,7 @@ import MyInformation from './pages/MyInformation'
 import EditPublication from './pages/EditPublication'
 import UserService from './services/UserService'
 import Navbar from './components/Navbar'
+import LocalStorageService from './services/LocalStorageService'
 
 
 const PrivateRoute = ({component: Component, componentProps, ...rest}) => {
@@ -41,15 +42,24 @@ const PrivateRoute = ({component: Component, componentProps, ...rest}) => {
 
 const AdminRoute = ({component: Component, ...rest}) => {
   return (
-      <Route {...rest} render={props => (
-        UserService.isAdmin() ?
-              <Component {...props} />
-          : <Redirect to="/" />
-      )} />
-  );
+        <Route {...rest} render={props => (
+          UserService.isAdmin() ?
+                <Component {...props} />
+            : <Redirect to="/" />
+        )} />
+    );
 };
 
 const OnlyPublicRoute =  ({component: Component, componentProps, ...rest}) => {
+  if(componentProps) {
+    return (
+      <Route {...rest} render={props => (
+          !UserService.isLogged() ?
+                <Component {...props} updateUsername={componentProps} />
+            : <Redirect to="/" />
+        )} />
+    );
+  } else {
     return (
         <Route {...rest} render={props => (
           !UserService.isLogged() ?
@@ -57,6 +67,7 @@ const OnlyPublicRoute =  ({component: Component, componentProps, ...rest}) => {
             : <Redirect to="/" />
         )} />
     );
+  }
 };
 
 
@@ -66,6 +77,10 @@ class App extends Component {
     this.state = {
       username: null
     }
+  }
+
+  componentDidMount(){
+    this.setState({ username: LocalStorageService.getUsername() })
   }
 
   updateUsername = username => {
@@ -80,7 +95,7 @@ class App extends Component {
             <Navbar updatedUsername={this.state.username}/>
             <Switch>
               <Route exact path="/" component={Home} />
-              <OnlyPublicRoute exact path="/SignUp" component={SignUp}/>
+              <OnlyPublicRoute exact path="/SignUp" component={SignUp} componentProps={this.updateUsername}/>
               <Route exact path="/List" component={List} />
               <Route exact path="/publications" component={Details} />
               <Route exact path="/error" component={ErrorBoundary} />
