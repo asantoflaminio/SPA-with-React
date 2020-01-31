@@ -382,6 +382,11 @@ h3 {
   margin-bottom: 15px;
 }
 
+.filter-polaroid-loader{
+	width: 100%;
+	height: 100%;
+}
+
 /* End of style */
 
 /* Properties polaroid list style */

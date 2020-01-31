@@ -56,7 +56,6 @@ public class StatelessLoginFilter extends AbstractAuthenticationProcessingFilter
         final User user = userService.findByUsername(authentication.getName());
 
         tokenAuthenticationService.addAuthentication(response, userDetails);
-
         if(user != null) {
         	response.addHeader(USER_ID_HEADER, Long.toString(user.getUserid()));
         }

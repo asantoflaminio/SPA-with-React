@@ -1,7 +1,8 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import '../css/ErrorBoundary.css';
 import { withRouter } from "react-router";
+import {Link} from 'react-router-dom';
+import '../css/ErrorBoundary.css';
 
 class ErrorBoundary extends React.Component {
 
@@ -26,10 +27,12 @@ class ErrorBoundary extends React.Component {
                     <div id="error-container">
                          <h1 id="error-title">{t('errors.errorTitle')}</h1>			
                          <p id="error-status">{codeMsg}</p>		
-                          <p id="error-message">{t('errors.errorMessage')}</p>
+                         <p id="error-message">{t('errors.errorMessage')}</p>
                       </div>
                     <div id="link2-container">
-                    <a href="/" id="error-link1">{t('errors.errorBackHome')}</a>
+                        <Link to={{pathname: "/"}}>
+                            <p id="error-link1">{t('errors.errorBackHome')}</p>
+                        </Link>
                     </div>  
                 </div>
             );     

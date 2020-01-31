@@ -9,7 +9,6 @@ import java.util.Date;
 
 public class JWTTokenHandler implements TokenHandler {
 
-	//El video muestra esta key, nose si habra que cambiarla o algo, o si podemos poner cualquier cosa que tenga ese length
     private static final String KEY = "B/1+wzD9jv8UwBZke9EZHfAclHDYre9msPR54UfhXmhx8OBQXrQb0URl9mBwGPBK\n"
             + "ZExc4gxayeTxEPT3DIwMCZfCdMBVh4yjhzJ46AzummsrpyHeo2TgRtWRW+KCTtwo\n"
             + "19kyrxbMpc8dEY9YO2ghNT0ZOcwtvEu13kzngevUsPV9pWsKdRXGgt5HV3rpuvJ7\n"

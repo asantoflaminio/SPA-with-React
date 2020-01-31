@@ -4,6 +4,7 @@ import { withRouter } from "react-router";
 import ReactPaginate from 'react-paginate';
 import Publication from '../components/Publication';
 import PublicationLoader from '../components/PublicationLoader'
+import FilterLoader from '../components/FilterLoader';
 import arrowDown from '../resources/arrow_down.png';
 import PublicationService from '../services/PublicationService';
 import ErrorService from '../services/ErrorService';
@@ -15,12 +16,14 @@ import * as StatusCode from '../util/StatusCode'
 import '../css/list.css';
 import '../css/Pagination.css';
 
+
 class List extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             resultsQuantity: 0,
             loadingPublications: false,
+            loadingFilters: false,
             publications: [],
             operation:"",
             propertyType:"",
@@ -56,7 +59,10 @@ class List extends React.Component {
         let queryParameters = this.generateQueryParametersPackage();
         this.updateQueryParameters(queryParameters,names,values)
         let currentComponent = this
-        this.setState({loadingPublications: true})
+        if(updateFilters === true)
+            this.setState({loadingPublications: true, loadingFilters: true})
+        else
+            this.setState({loadingPublications: true})
         LocalStorageService.deleteCounter();
         LocalStorageService.initializeCounter()
         PublicationService.getPublications(queryParameters).then(function (response){
@@ -86,8 +92,10 @@ class List extends React.Component {
             })
             if(response.headers["x-total-count"] === "0")
                 currentComponent.setState({loadingPublications: false})
-            if(updateFilters === true)
+            if(updateFilters === true){
                 currentComponent.updateFilters(queryParameters)
+            }
+                
             currentComponent.pushParameters(names,values);
         })
     }
@@ -104,10 +112,12 @@ class List extends React.Component {
             currentComponent.setState({
                 filters: response.data
             })
+            currentComponent.closeFilters()
             currentComponent.hideEmptyFilters(response.data,"locations","filterLocationHeader");
             currentComponent.hideEmptyFilters(response.data,"bedrooms","filterBedroomsHeader");
             currentComponent.hideEmptyFilters(response.data,"bathrooms","filterBathroomsHeader");
             currentComponent.hideEmptyFilters(response.data,"parking","filterParkingHeader");
+            currentComponent.setState({loadingFilters: false})
         })
     }
 
@@ -147,6 +157,21 @@ class List extends React.Component {
         }
         if(equals === newPublications.length)
             this.setReady()
+    }
+
+    closeFilters(){
+        let filterLocation = document.getElementById("filterLocation")
+        let filterPrice = document.getElementById("filterPrice")
+        let filterFloorSize = document.getElementById("filterFloorSize")
+        let filterBedrooms = document.getElementById("filterBedrooms")
+        let filterBathrooms = document.getElementById("filterBathrooms")
+        let filterParking = document.getElementById("filterParking")
+        filterLocation.classList.remove("show")
+        filterPrice.classList.remove("show")
+        filterFloorSize.classList.remove("show")
+        filterBedrooms.classList.remove("show")
+        filterBathrooms.classList.remove("show")
+        filterParking.classList.remove("show")
     }
 
 
@@ -462,7 +487,14 @@ class List extends React.Component {
                 <div>
                     <div id="content-container">
                         <aside>
-                            <div className="filter-polaroid">
+                            {this.state.loadingFilters === true ?
+                                    <div className="filter-polaroid">
+                                        <div className="filter-polaroid-loader">
+                                            <FilterLoader/>
+                                        </div>
+                                    </div>
+                            : null}
+                            <div className={this.state.loadingFilters === true ? "hidden":"filter-polaroid"}>
                                 <div className="container">
                                     <div id="filters-title">
                                         <h3>{t('list.filters')}</h3>

@@ -98,20 +98,17 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Override
 	public boolean isTokenExpired(Integer token, Optional<ResetPassword> resetPassword) {
-    	
     	if(resetPassword.isPresent()) {
-    		
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();           
-        LocalDateTime tokenDate = LocalDateTime.parse(resetPassword.get().getDate(), dtf);       
-        long minutes = ChronoUnit.MINUTES.between(tokenDate, now);
-        
-	        if(minutes <= 60) {
-	        	return false;
-	        } else {
-	        	resetPasswordDao.deleteRequest(resetPassword.get().getRequestId());
-	        }
-    	}
+	        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	        LocalDateTime now = LocalDateTime.now();           
+	        LocalDateTime tokenDate = LocalDateTime.parse(resetPassword.get().getDate(), dtf);       
+	        long minutes = ChronoUnit.MINUTES.between(tokenDate, now);
+		        if(minutes <= 60) {
+		        	return false;
+		        } else {
+		        	resetPasswordDao.deleteRequest(resetPassword.get().getRequestId());
+		        }
+	    }
         
         return true;
 	}

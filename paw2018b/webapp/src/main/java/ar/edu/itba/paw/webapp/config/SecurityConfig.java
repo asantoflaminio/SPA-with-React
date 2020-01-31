@@ -76,7 +76,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     		.antMatchers(HttpMethod.PATCH, "/meinHaus/users-management/users/{userid}/lock").hasRole(Constants.Role.ADMIN.getRole())
     		.antMatchers(HttpMethod.HEAD, "/meinHaus/users-management/users/{email}").permitAll()
     		.antMatchers(HttpMethod.POST, "/meinHaus/users-management/users/{email}/password-reset").permitAll()
-    		.antMatchers(HttpMethod.PATCH, "/meinHaus/users-management/users/password-reset").permitAll()
     		.antMatchers(HttpMethod.POST, "/meinHaus/users-management/users/{userid}/publications").access("! hasRole('ROLE_LOCKED')")
     		.antMatchers(HttpMethod.POST, "/meinHaus/users-management/users/messages").permitAll()
     		.antMatchers(HttpMethod.GET, "/meinHaus/users-management/users/{userid}/publications").authenticated()
@@ -98,7 +97,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(final WebSecurity http) throws Exception {
      http.ignoring()
-     .antMatchers("/**.js", "/**.css", "/**.jpg", "/**.png", "/**.gif", "/**.ico");
+     .antMatchers("/**.js", "/**.css", "/**.jpg", "/**.png", "/**.gif", "/**.ico")
+     .antMatchers(HttpMethod.PATCH, "/meinHaus/users-management/users/password-reset");
     }
     
     @Bean

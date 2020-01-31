@@ -95,7 +95,7 @@ public class UserController {
     public Response createUser (@Context HttpServletRequest request, final UserDTO userDTO) {
     	if(! vs.validateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), 
     			userDTO.getPassword(), userDTO.getPhoneNumber()))
-    		rs.badRequest("The user parameters are invalid");
+    		return rs.badRequest("The user parameters are invalid");
     	if(us.findByUsername(userDTO.getEmail()) != null) 
     		return rs.conflict("The email is already taken");
     	
@@ -119,7 +119,6 @@ public class UserController {
     	return Response.ok().entity(userDTO).build();
     }
     
-    //Mejorar el errorDTO
     @PATCH
     @Path("/users/{userid}")
     @Consumes(value = { UserDTO.MediaType, })
@@ -184,11 +183,10 @@ public class UserController {
         return rs.create();
     }
     
-    @POST
+    @PATCH
     @Path("/users/password-reset")
     @Consumes(value = { ResetPasswordDTO.MediaType })
     public Response changePassword (ResetPasswordDTO resetPasswordDTO) {
-
     	if(! vs.validateUserPassword(resetPasswordDTO.getNewPassword()))
     		return rs.badRequest("The password is invalid");
     	Integer token = resetPasswordDTO.getToken().hashCode();
@@ -205,7 +203,6 @@ public class UserController {
 
     }
     
-    //TODO:Deberia mejorarse el errorDTO
     @POST
     @Path("/users/{userid}/publications")
     @Consumes(value = { PublicationDTO.MediaType })
@@ -305,7 +302,6 @@ public class UserController {
     	return rs.noContent();
     }
     
-    //TODO:Deberia mejorarse el errorDTO
     @POST
     @Path("/messages")
     @Consumes(value = { MessageDTO.MediaType })

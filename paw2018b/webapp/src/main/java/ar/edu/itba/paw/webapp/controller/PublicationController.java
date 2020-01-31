@@ -107,7 +107,7 @@ public class PublicationController {
     @Produces(value = { PublicationDTO.MediaType })
     public Response getPublicationById (@Context HttpServletRequest request, @PathParam("publicationid") long publicationid) {
     	if(! vs.validateID(publicationid))
-    		rs.badRequest("The publication id es invalid");
+    		return rs.badRequest("The publication id es invalid");
     	
     	PublicationDTO publicationDTO = ps.findById(publicationid);
     	if(publicationDTO == null)
@@ -123,9 +123,9 @@ public class PublicationController {
     @Produces(value = { MediaType.APPLICATION_OCTET_STREAM })
     public Response getImg (@PathParam("publicationid") long publicationid, @DefaultValue("0") @QueryParam("index") Integer index) {
     	if(! vs.validateID(publicationid))
-    		rs.badRequest("The publication id es invalid");
+    		return rs.badRequest("The publication id es invalid");
     	if(! vs.validateIndex(index))
-    		rs.badRequest("The image index is invalid");
+    		return rs.badRequest("The image index is invalid");
     	UploadFile uploadFile = is.findByIndexAndId(publicationid,index);
     	if(uploadFile == null)
     		return rs.notFound("No image found with the specified publication id or index");

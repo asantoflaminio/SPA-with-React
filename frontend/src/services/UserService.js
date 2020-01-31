@@ -71,7 +71,7 @@ const UserService = (function(){
 
     async function _resetPassword(dataDTO){
         return await axios({
-          method: 'post',
+          method: 'patch',
           url: `${USERS_PATH}/users/password-reset`,
           data: dataDTO,
           headers : {
@@ -219,7 +219,7 @@ const UserService = (function(){
             headers: {
                 authorization: LocalStorageService.getAuthorization(),
             }
-          }).then(function (response){ return response }).catch(function (error){ return (axios.isCancel(error) ? error : error.status) })
+          }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
    return {
