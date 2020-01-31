@@ -1,16 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from '../App'
+import App from '../../App'
 import renderer from 'react-test-renderer'
-import Navbar from '../components/Navbar'
-import HomeCard from '../components/HomeCard'
+import Navbar from '../../components/Navbar'
+import HomeCard from '../../components/HomeCard'
 import { withTranslation } from 'react-i18next';
 import { BrowserRouter as Router } from 'react-router-dom';
-import ImageVisualizer from '../components/ImageVisualizer'
-import ToastNotification from '../components/ToastNotification'
-import MapContainer from '../components/MapContainer'
-import credentials from '../components/credentials'
-import Publication from '../components/Publication'
+import ImageVisualizer from '../../components/ImageVisualizer'
+import ToastNotification from '../../components/ToastNotification'
+import MapContainer from '../../components/MapContainer'
+import credentials from '../../components/credentials'
+import Publication from '../../components/Publication'
 
 const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credentials.mapsKey}` ;
 
