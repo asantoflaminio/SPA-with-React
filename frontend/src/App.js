@@ -92,7 +92,7 @@ class App extends Component {
       <div className="App">
         <BrowserRouter basename={process.env.PUBLIC_URL}>
           <Suspense fallback={(<div>Loading</div>)}>
-            <Navbar updatedUsername={this.state.username}/>
+            <Navbar updateUsername={this.updateUsername} username={this.state.username}/>
             <Switch>
               <Route exact path="/" component={Home} />
               <OnlyPublicRoute exact path="/SignUp" component={SignUp} componentProps={this.updateUsername}/>

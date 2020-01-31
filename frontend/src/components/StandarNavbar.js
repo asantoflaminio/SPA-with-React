@@ -37,6 +37,7 @@ class StandarNavbar extends React.Component {
 
                 currentComponent.props.history.push("/SignUp")
                 currentComponent.props.history.push(currentPath)
+                currentComponent.props.updateUsername(loginDTO.email);
             }else if(response.status === StatusCode.UNAUTHORIZED){
                 document.getElementById("errorLogin").style.display = "block"
             }else{

@@ -43,9 +43,9 @@ class Navbar extends React.Component {
 
     render(){
         if(this.state.isLogged){
-            return <UserNavbar username={this.props.updatedUsername} isAdmin={this.state.isAdmin}/>
+            return <UserNavbar username={this.props.username} isAdmin={this.state.isAdmin}/>
         }else{
-            return <StandarNavbar/>
+            return <StandarNavbar updateUsername={this.props.updateUsername}/>
         }
     }
 
