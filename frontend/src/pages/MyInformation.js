@@ -29,7 +29,8 @@ class MyInformation extends React.Component {
             email: '',
             phoneNumber: '',
             userEmailValid: true,
-            loading: false
+            loading: false,
+            firstUserEmail: ''
         };
     }
 
@@ -48,29 +49,33 @@ class MyInformation extends React.Component {
                 lastName: response.data.lastName,
                 email: response.data.email,
                 phoneNumber: response.data.phoneNumber,
+                firstUserEmail: response.data.email
             })    
         })
     }
 
     checkEmail(event){
         let currentComponent = this;
-        let email = event.target.value;
-       
-        if(email === this.state.email) {
+        let email = event.target.value
+          
+        if(email === this.state.firstUserEmail) {
             currentComponent.setState({userEmailValid: true});
         } else {
             UserService.checkEmail(email).then(function (response){
                 if(response.status === StatusCode.OK){
                     currentComponent.setState({userEmailValid: false});
+                    console.log(currentComponent.state.userEmailValid)
                     document.getElementById("emailTakenError").style.display = "block"
                 } else if(response.status === StatusCode.NOT_FOUND || response.status === StatusCode.BAD_REQUEST) {
                     currentComponent.setState({userEmailValid: true});
                     document.getElementById("emailTakenError").style.display = "none"
                 } else {
-                    ErrorService.logError(this.props,response)
+                    currentComponent.setState({userEmailValid: false});
+                    ErrorService.logError(this.props,response);
                 }
             })
         }
+
         return true;
     }
 
@@ -89,11 +94,10 @@ class MyInformation extends React.Component {
         let currentComponent = this;
         let userDTO = JsonService.getJSONParsed(event.target);
         let userid = LocalStorageService.getUserid();
-
+       
         this.setState({
             loading: true
         }); 
-
         this.updateState(event);
         
         if(Object.keys(errors).length === 0 && this.state.userEmailValid) {
@@ -102,13 +106,18 @@ class MyInformation extends React.Component {
                     ErrorService.logError(currentComponent.props,response)
                 }
                 currentComponent.setState({
-                    loading: false
+                    loading: false,
+                    firstUserEmail: userDTO.email
                 });
                 toast.notify(t('profile.succesfullSubmitInfo'));  
                 LocalStorageService.refreshToken(response.headers.authorization, userDTO.email);
                 currentComponent.props.updateUsername(userDTO.email);
             })
-        } 
+        } else {
+            currentComponent.setState({
+                loading: false
+            });
+        }
     }
 
     handlePasswordFormSubmit(event,errors) {
@@ -254,7 +263,7 @@ class MyInformation extends React.Component {
                                                 placeholder={t('profile.emailHolder')}
                                                 name="email"
                                                 value={values.email}
-                                                onChange={handleChange}
+                                                onChange={(event) => this.checkEmail(event,errors) && handleChange(event)}
                                                 onBlur={(event) => this.checkEmail(event,errors) && handleBlur(event)}
                                                 isInvalid={!!errors.email && touched.email}
                                                 />
