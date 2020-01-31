@@ -97,9 +97,9 @@ class EditPublication extends React.Component {
             
             currentComponent.setState({
                 title: response.data.title,
-                // cityid: response.data.cityid,
-                // provinceid: response.data.provinceid,
-                // neighborhoodid: response.data.neighborhoodid,
+                provinceid: response.data.provinceid,
+                cityid: response.data.cityid,
+                neighborhoodid: response.data.neighborhoodid,
                 address: response.data.address,
                 propertyType: response.data.propertyType,
                 operation: response.data.operation,
@@ -131,7 +131,7 @@ class EditPublication extends React.Component {
                 return;
             let cities = response.data
             let select = document.getElementById("city-Select")
-            let selectNeighborhood = document.getElementById("neighborhood-Select")
+            let selectNeighborhood = document.getElementById("neighborhood-Select");
             select.selectedIndex = 0;
             selectNeighborhood.selectedIndex = 0;
             while (select.childNodes[1]) {
@@ -172,19 +172,14 @@ class EditPublication extends React.Component {
         let schema = {}
         
         schema.title = this.state.title;
-        // schema.cityid = this.state.cityid;
-        // schema.provinceid = this.state.provinceid;
-        // schema.neighborhoodid = this.state.neighborhoodid;
+        schema.provinceid = this.state.provinceid;
+        schema.cityid = this.state.cityid;
+        schema.neighborhoodid = this.state.neighborhoodid;
         schema.address = this.state.address;
         schema.operation = this.state.operation;
         schema.price = this.state.price;
         schema.expenses = this.state.expenses;
-        
-        if(this.state.amenities === -1) {
-            schema.amenities = '';
-        } else {
-            schema.amenities = this.state.amenities;
-        }
+        (this.state.amenities === '-1') ? schema.amenities = '' : schema.amenities = this.state.amenities;
         schema.description = this.state.description;
         schema.bedrooms = this.state.bedrooms;
         schema.bathrooms = this.state.bathrooms;
@@ -320,42 +315,41 @@ class EditPublication extends React.Component {
 
     render() {
         const { t } = this.props;
-        //let provinceid, cityid;
+        let provinceid, cityid;
         let initialSchema = this.reInitializeForm();
-
-    //     const provinces = this.state.provinces.map(function(item){ 
-    //         if(item.province == initialSchema.provinceid) {
-    //             provinceid = item.provinceid;
-    //             return <option defaultValue={item.provinceid} selected>  {item.province} </option>;
-    //         } else {
-    //             return <option value={item.provinceid}>  {item.province} </option>;
-    //         }
-    //     });
         
-    //     this.loadCities(provinceid);
+
+        const provinces = this.state.provinces.map(function(item){ 
+            if(item.province == initialSchema.provinceid) {
+                provinceid = item.provinceid;
+                return <option defaultValue={item.provinceid} selected>  {item.province} </option>;
+            } else {
+                return <option value={item.provinceid}>  {item.province} </option>;
+            }
+        });
         
-    //     const cities = this.state.cities.map(function(item){ 
-    //         if(item.city == initialSchema.cityid) {
-    //             cityid = item.cityid;
-    //             return <option defaultValue={item.cityid} selected>  {item.city} </option>;
-    //         } else {
-    //             return <option value={item.cityid}>  {item.city} </option>;
-    //         }
-    //     });
+        this.loadCities(provinceid);
+        
+        const cities = this.state.cities.map(function(item){ 
+            if(item.city == initialSchema.cityid) {
+                cityid = item.cityid;
+                return <option value={item.cityid} selected>  {item.city} </option>;
+            } else {
+                return <option value={item.cityid}>  {item.city} </option>;
+            }
+        });
 
-    //    this.loadNeighborhood(cityid);
+       this.loadNeighborhood(cityid);
 
-    //     const neighborhood = this.state.neighborhoods.map(function(item){ 
-    //         if(item.neighborhood == initialSchema.neighborhoodid) {
-    //             return <option defaultValue={item.neighborhoodod} selected>  {item.neighborhood} </option>;
-    //         } else {
-    //             return <option value={item.neighborhoodod}>  {item.neighborhood} </option>;
-    //         }
-    //     });
+        const neighborhood = this.state.neighborhoods.map(function(item){ 
+            if(item.neighborhood == initialSchema.neighborhoodid) {
+                return <option value={item.neighborhoodod} selected>  {item.neighborhood} </option>;
+            } else {
+                return <option value={item.neighborhoodod}>  {item.neighborhood} </option>;
+            }
+        });
 
-    const provinces = this.state.provinces.map(function(item){
-        return <option value={item.provinceid}>  {item.province} </option>;
-    });
+   
         const publicationSchema = yup.object({
         title: yup.string().required( t('errors.requiredField') )
                             .matches(Constants.lettesNumersAndSpacesRegex, t('errors.lettesNumersAndSpacesRegex'))
@@ -464,7 +458,7 @@ class EditPublication extends React.Component {
                                     value={values.provinceid}
                                     isInvalid={!!errors.provinceid && touched.provinceid}
                                 >   
-                                <option disabled selected value="">{t('publish.provinceHolder')}</option>
+                                <option disabled selected value="" >{t('publish.provinceHolder')}</option>
                                 {provinces} 
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">
@@ -483,7 +477,7 @@ class EditPublication extends React.Component {
                                     isInvalid={!!errors.cityid && touched.cityid}
                                     >
                                     <option disabled selected value="">{t('publish.cityHolder')}</option>
-                                    
+                                    {cities}
                                     </Form.Control>  
                                     <Form.Control.Feedback type="invalid">
                                     {errors.cityid}
@@ -501,7 +495,7 @@ class EditPublication extends React.Component {
                                     isInvalid={!!errors.neighborhoodid && touched.neighborhoodid}
                                 >
                                 <option disabled selected value="">{t('publish.neighborhoodHolder')}</option>
-                               
+                                {neighborhood} 
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">
                                     {errors.neighborhoodid}
@@ -758,4 +752,3 @@ class EditPublication extends React.Component {
 
 export default withRouter(withTranslation()(EditPublication));
 
-// export default withRouter(withTranslation()(EditPublication));
