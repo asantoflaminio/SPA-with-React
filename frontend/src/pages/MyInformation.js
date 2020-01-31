@@ -55,27 +55,26 @@ class MyInformation extends React.Component {
     }
 
     checkEmail(event){
-        let currentComponent = this;
         let email = event.target.value
-          
-        if(email === this.state.firstUserEmail) {
-            currentComponent.setState({userEmailValid: true});
+        let currentComponent = this
+        let emailError = document.getElementById("emailTakenError")
+        
+        if(this.state.firstUserEmail === email){
+            emailError.setAttribute("hasError",false)
         } else {
             UserService.checkEmail(email).then(function (response){
                 if(response.status === StatusCode.OK){
-                    currentComponent.setState({userEmailValid: false});
-                    console.log(currentComponent.state.userEmailValid)
-                    document.getElementById("emailTakenError").style.display = "block"
-                } else if(response.status === StatusCode.NOT_FOUND || response.status === StatusCode.BAD_REQUEST) {
-                    currentComponent.setState({userEmailValid: true});
-                    document.getElementById("emailTakenError").style.display = "none"
-                } else {
-                    currentComponent.setState({userEmailValid: false});
-                    ErrorService.logError(this.props,response);
+                    emailError.style.display = "block"
+                    emailError.setAttribute("hasError",true)
+                }else if(response.status === StatusCode.NOT_FOUND || response.status === StatusCode.BAD_REQUEST){
+                    emailError.style.display = "none"
+                    emailError.setAttribute("hasError",false)
+                }
+                else{
+                    currentComponent.logError(this.props,response)
                 }
             })
         }
-
         return true;
     }
 
@@ -94,13 +93,12 @@ class MyInformation extends React.Component {
         let currentComponent = this;
         let userDTO = JsonService.getJSONParsed(event.target);
         let userid = LocalStorageService.getUserid();
-       
-        this.setState({
-            loading: true
-        }); 
+        let emailError = document.getElementById("emailTakenError")
         this.updateState(event);
+
         
-        if(Object.keys(errors).length === 0 && this.state.userEmailValid) {
+        if(Object.keys(errors).length === 0 && emailError.getAttribute("hasError") === "false" ) {
+            this.setState({loading: true}); 
             UserService.editUser(userid,userDTO).then(function(response){
                 if(response.status !== StatusCode.OK){
                     ErrorService.logError(currentComponent.props,response)
@@ -263,7 +261,7 @@ class MyInformation extends React.Component {
                                                 placeholder={t('profile.emailHolder')}
                                                 name="email"
                                                 value={values.email}
-                                                onChange={(event) => this.checkEmail(event,errors) && handleChange(event)}
+                                                onChange={handleChange}
                                                 onBlur={(event) => this.checkEmail(event,errors) && handleBlur(event)}
                                                 isInvalid={!!errors.email && touched.email}
                                                 />

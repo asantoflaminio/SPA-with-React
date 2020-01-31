@@ -165,9 +165,7 @@ public class UserController {
     @HEAD
     @Path("/users/{email}")
     public Response checkEmail (@PathParam("email") String email) {
-    	
     	if(us.findByUsername(email) == null) {
-    		System.out.println("a");
     		return rs.notFound();
     	}else
     		return rs.ok();
