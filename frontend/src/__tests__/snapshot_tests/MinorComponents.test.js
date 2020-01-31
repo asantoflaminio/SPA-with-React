@@ -1,18 +1,16 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import App from '../../App'
-import renderer from 'react-test-renderer'
+import Adapter from 'enzyme-adapter-react-16';
+import {shallow, configure} from 'enzyme';
 import Navbar from '../../components/Navbar'
-import HomeCard from '../../components/HomeCard'
-import { withTranslation } from 'react-i18next';
-import { BrowserRouter as Router } from 'react-router-dom';
-import ImageVisualizer from '../../components/ImageVisualizer'
-import ToastNotification from '../../components/ToastNotification'
-import MapContainer from '../../components/MapContainer'
-import credentials from '../../components/credentials'
-import Publication from '../../components/Publication'
+import HomeCard from '../../components/HomeCard';
+import ToastNotification from '../../components/ToastNotification';
+import MapContainer from '../../components/MapContainer';
+import credentials from '../../components/credentials';
+import Publication from '../../components/Publication';
 
 const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credentials.mapsKey}` ;
+
+configure({adapter: new Adapter()});
 
 describe('homecardTest', () => {
 
@@ -26,7 +24,7 @@ describe('homecardTest', () => {
       };
     
     it('matches the snapshot', () => {
-        const tree = renderer.create(<Router><HomeCard publication={testPublication} ready={null} index= {0}/></Router>).toJSON;
+        const tree = shallow(<HomeCard publication={testPublication} ready={null} index= {0}/>)
         expect(tree).toMatchSnapshot();
     })
 });
@@ -35,7 +33,7 @@ describe('homecardTest', () => {
 describe('navbarTest', () => {
     
     it('matches the snapshot', () => {
-        const tree = renderer.create(<Router><Navbar /></Router>).toJSON;
+        const tree = shallow(<Navbar />);
         expect(tree).toMatchSnapshot();
     })
 });
@@ -43,7 +41,7 @@ describe('navbarTest', () => {
 describe('toastTest', () => {
     
     it('matches the snapshot', () => {
-        const tree = renderer.create(<Router><ToastNotification title={'Test'} information={'Test'} checkModal={true}/></Router>).toJSON;
+        const tree = shallow(<ToastNotification title={'Test'} information={'Test'} checkModal={true}/>);
         expect(tree).toMatchSnapshot();
     })
 });
@@ -51,12 +49,12 @@ describe('toastTest', () => {
 describe('mapContainerTest', () => {
     
     it('matches the snapshot', () => {
-        const tree = renderer.create(<Router><MapContainer address={'Av. Eduardo Madero 399'} 
+        const tree = shallow(<MapContainer address={'Av. Eduardo Madero 399'} 
         neighborhood={'Puerto Madero'} city={'CABA'} province={'CABA'}
         googleMapURL= {mapURL}
         containerElement= {<div style={{height: '300px'}}/>}
         mapElement= {<div style={{height:'100%'}} />}
-        loadingElement= {<p></p>}/></Router>).toJSON;
+        loadingElement= {<p></p>}/>);
         expect(tree).toMatchSnapshot();
     })
 });
@@ -80,7 +78,7 @@ describe('publicationTest', () => {
 
     
     it('matches the snapshot', () => {
-        const tree = renderer.create(<Router><Publication publication={testPublication} t={myMock} ready={null} index= {0}/></Router>).toJSON;
+        const tree = shallow(<Publication publication={testPublication} t={myMock} ready={null} index= {0}/>);
         expect(tree).toMatchSnapshot();
     })
 });
