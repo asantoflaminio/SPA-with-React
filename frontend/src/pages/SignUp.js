@@ -68,8 +68,8 @@ class SignUp extends React.Component {
                     currentComponent.setState({
                         isLogged: true,
                         loading: false
-                        })
-                    })
+                })
+            })
                 currentComponent.props.history.push(currentPath)
             })
         }
@@ -120,6 +120,7 @@ class SignUp extends React.Component {
     }
 
     render() {
+    
     if (this.state.isLogged === true || UserService.isLogged()) {
         return <Redirect to='/' />
     }

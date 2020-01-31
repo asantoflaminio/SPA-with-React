@@ -106,6 +106,7 @@ class MyInformation extends React.Component {
                 });
                 toast.notify(t('profile.succesfullSubmitInfo'));  
                 LocalStorageService.refreshToken(response.headers.authorization, userDTO.email);
+                currentComponent.props.updateUsername(userDTO.email);
             })
         } 
     }
@@ -124,7 +125,6 @@ class MyInformation extends React.Component {
         
         if(Object.keys(errors).length === 0) {
             UserService.editUser(userid,userDTO).then(function(response){
-                console.log(response);
                 if(response.status !== StatusCode.OK){
                     ErrorService.logError(currentComponent.props,response)
                 }
@@ -155,7 +155,7 @@ class MyInformation extends React.Component {
     render(){
         const { t } = this.props;
         let initialSchema = this.reInitializeForm();
-
+        
         
         const personalInformationSchema = yup.object({
             firstName: yup.string().required( t('errors.requiredField') )

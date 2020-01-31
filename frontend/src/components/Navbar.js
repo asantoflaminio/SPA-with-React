@@ -16,7 +16,6 @@ class Navbar extends React.Component {
        }
 
     componentDidMount(){
-        
         let currentComponent = this
         if(UserService.isLogged()){
             if(UserService.isAdmin())
@@ -44,7 +43,7 @@ class Navbar extends React.Component {
 
     render(){
         if(this.state.isLogged){
-            return <UserNavbar isAdmin={this.state.isAdmin}/>
+            return <UserNavbar username={this.props.updatedUsername} isAdmin={this.state.isAdmin}/>
         }else{
             return <StandarNavbar/>
         }

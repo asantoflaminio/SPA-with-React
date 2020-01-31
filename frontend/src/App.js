@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Component, Suspense } from 'react';
 import {Switch, BrowserRouter} from 'react-router-dom';
 import {Route, Redirect} from 'react-router-dom';
 import SignUp from './pages/SignUp';
@@ -20,14 +20,23 @@ import UserService from './services/UserService'
 import Navbar from './components/Navbar'
 
 
-const PrivateRoute = ({component: Component, ...rest}) => {
-  return (
-      <Route {...rest} render={props => (
-        UserService.isLogged() ?
-              <Component {...props} />
-          : <Redirect to="/SignUp" />
+const PrivateRoute = ({component: Component, componentProps, ...rest}) => {
+  if(componentProps) {
+    return (<Route {...rest} render={props => (
+      UserService.isLogged() ?
+            <Component {...props} updateUsername={componentProps} />
+        : <Redirect to="/SignUp" />
       )} />
-  );
+    );
+  } else {
+    return (
+        <Route {...rest} render={props => (
+          UserService.isLogged() ?
+                <Component {...props} />
+            : <Redirect to="/SignUp" />
+        )} />
+    );
+  }
 };
 
 const AdminRoute = ({component: Component, ...rest}) => {
@@ -40,47 +49,58 @@ const AdminRoute = ({component: Component, ...rest}) => {
   );
 };
 
-const OnlyPublicRoute = ({component: Component, ...rest}) => {
-
-  return (
-      <Route {...rest} render={props => (
-        !UserService.isLogged() ?
-              <Component {...props} />
-          : <Redirect to="/" />
-      )} />
-  );
+const OnlyPublicRoute =  ({component: Component, componentProps, ...rest}) => {
+    return (
+        <Route {...rest} render={props => (
+          !UserService.isLogged() ?
+                <Component {...props} />
+            : <Redirect to="/" />
+        )} />
+    );
 };
 
 
-function App() {
-  return (
-    <div className="App">
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <Suspense fallback={(<div>Loading</div>)}>
-          <Navbar />
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <OnlyPublicRoute exact path="/SignUp" component={SignUp} />
-            <Route exact path="/List" component={List} />
-            <Route exact path="/publications" component={Details} />
-            <Route exact path="/error" component={ErrorBoundary} />
-            <PrivateRoute exact path="/Publish" component={Publish} />
-            <AdminRoute exact path="/AdminGenerator" component={AdminGenerator} />
-            <AdminRoute exact path="/AdminUsers" component={AdminUsers} />
-            <AdminRoute exact path="/AdminPublications" component={AdminPublications} />
-            <PrivateRoute exact path="/MyPublications" component={MyPublications} />
-            <PrivateRoute exact path="/MyFavourites" component={MyFavourites} />
-            <PrivateRoute exact path="/MyInformation" component={MyInformation} />
-            <PrivateRoute exact path="/EditPublication" component={EditPublication} />
-            <OnlyPublicRoute exact path="/ForgottenPassword" component={ForgottenPassword} />
-            <Route exact path="/newPassword/token=:token" component={NewPassword} />
-            <Route exact path="*" component={Home} />
-          </Switch>
-        </Suspense>
-     </BrowserRouter>
-    </div>
-    
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: null
+    }
+  }
+
+  updateUsername = username => {
+    this.setState({ username: username });
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
+          <Suspense fallback={(<div>Loading</div>)}>
+            <Navbar updatedUsername={this.state.username}/>
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <OnlyPublicRoute exact path="/SignUp" component={SignUp}/>
+              <Route exact path="/List" component={List} />
+              <Route exact path="/publications" component={Details} />
+              <Route exact path="/error" component={ErrorBoundary} />
+              <PrivateRoute exact path="/Publish" component={Publish} />
+              <AdminRoute exact path="/AdminGenerator" component={AdminGenerator} />
+              <AdminRoute exact path="/AdminUsers" component={AdminUsers} />
+              <AdminRoute exact path="/AdminPublications" component={AdminPublications} />
+              <PrivateRoute exact path="/MyPublications" component={MyPublications} />
+              <PrivateRoute exact path="/MyFavourites" component={MyFavourites} />
+              <PrivateRoute exact path="/MyInformation"  component={MyInformation} componentProps={this.updateUsername} />
+              <PrivateRoute exact path="/EditPublication" component={EditPublication} />
+              <OnlyPublicRoute exact path="/ForgottenPassword" component={ForgottenPassword} />
+              <Route exact path="/newPassword/token=:token" component={NewPassword} />
+              <Route exact path="*" component={Home} />
+            </Switch>
+          </Suspense>
+        </BrowserRouter>
+      </div>    
+    );
+  }
 }
            
 export default App;
