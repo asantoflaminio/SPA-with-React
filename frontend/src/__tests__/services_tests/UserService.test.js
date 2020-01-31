@@ -1,7 +1,7 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import UserService from '../services/UserService'
-import * as StatusCode from '../util/StatusCode'
+import UserService from '../../services/UserService'
+import * as StatusCode from '../../util/StatusCode'
 
 const USERS_PATH = process.env.PUBLIC_URL + '/meinHaus/users-management';
 
@@ -139,7 +139,7 @@ it('remove favourite', async() => {
 
 it('get my publications', async() => {
 
-    let spy = jest.spyOn(axios, "get");
+    let spy = jest.spyOn(axios, 'default');
     var mock = new MockAdapter(axios);
 
     
@@ -158,7 +158,7 @@ it('get my publications', async() => {
     const publications = await UserService.getMyPublications(123, queryParameters);
 
     expect(publications.data.publications).toEqual(['pub1', 'pub2']);
-    //expect(spy).toHaveBeenCalledTimes(1);
+   // expect(spy).toHaveBeenCalledTimes(1);
 
     // expect to have been called with
 

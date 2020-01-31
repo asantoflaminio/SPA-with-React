@@ -1,7 +1,7 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import PublicationService from '../services/PublicationService'
-import * as StatusCode from '../util/StatusCode'
+import PublicationService from '../../services/PublicationService'
+import * as StatusCode from '../../util/StatusCode'
 
 const PUBLICATIONS_PATH = process.env.PUBLIC_URL + '/meinHaus/publications-management'
 

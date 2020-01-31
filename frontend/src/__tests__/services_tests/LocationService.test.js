@@ -1,7 +1,7 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import LocationService from '../services/LocationService'
-import * as StatusCode from '../util/StatusCode'
+import LocationService from '../../services/LocationService'
+import * as StatusCode from '../../util/StatusCode'
 
 const LOCATIONS_PATH = 'meinHaus/locations-management'
 
