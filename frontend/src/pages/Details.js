@@ -124,8 +124,6 @@ class Details extends React.Component {
                                     .max(Constants.SECOND_FORM_MAX_LENGTH, t('errors.lengthMax'))
                 });
 
-                if(this.state.publication === null)
-                    return(null)
             return(   
                     <div>
                     <ToastNotification 
@@ -136,7 +134,7 @@ class Details extends React.Component {
                     checkModal={false}
                      />
                     {this.state.loading ? <ColoredLinearProgress /> : null}  
-                    {this.state.circleloading ? 
+                    {(this.state.circleloading || this.state.publication===null) ? 
                      ( <ColoredCircularProgress /> )
                     : (        
                     <div>
