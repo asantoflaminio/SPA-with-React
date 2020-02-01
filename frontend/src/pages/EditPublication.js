@@ -64,12 +64,11 @@ class EditPublication extends React.Component {
             circleloading: true
         })
         this.updateFormValues();
-        this.loadProvinces();
     }
 
-    loadProvinces() {
+    loadProvinces(province,city) {
         let currentComponent = this
-       
+        let provinceid;
         LocationService.getProvinces().then(function (response){
             if(CancelTokenService.isCancel(response))
                 return;
@@ -80,8 +79,62 @@ class EditPublication extends React.Component {
             currentComponent.setState({
                 provinces: response.data,
             })
+
+            for(let i = 0; i < response.data.length; i++){
+                if(response.data[i].province === province)
+                    provinceid = response.data[i].provinceid
+            }
+
+            currentComponent.loadCities(provinceid,city)
+
         })
        
+    }
+
+    loadCities(provinceid,city){
+        let currentComponent = this;
+        let cityid;
+
+        if(provinceid !== undefined) {   
+            LocationService.getCities(provinceid).then(function (response){
+                if(CancelTokenService.isCancel(response))
+                    return;
+                if(response.status !== StatusCode.OK){
+                    ErrorService.logError(currentComponent.props,response)
+                    return;
+                }
+                
+                currentComponent.setState({
+                    cities: response.data,
+                })
+                for(let i = 0; i < response.data.length; i++){
+                    if(response.data[i].city === city)
+                        cityid = response.data[i].cityid
+                }
+
+                currentComponent.loadNeighborhood(cityid)
+            })
+        }
+    }
+
+
+    loadNeighborhood(cityid) {
+        let currentComponent = this;
+        
+        if(cityid !== undefined) {   
+            LocationService.getNeighborhoods(cityid).then(function (response){
+                if(CancelTokenService.isCancel(response))
+                    return;
+                if(response.status !== StatusCode.OK){
+                    ErrorService.logError(currentComponent.props,response)
+                    return;
+                }
+                
+                currentComponent.setState({
+                    neighborhoods: response.data,
+                })
+            })
+        }
     }
 
 
@@ -123,6 +176,7 @@ class EditPublication extends React.Component {
                 selectedStorageOption: response.data.storage,
                 circleloading: false
             })
+            currentComponent.loadProvinces(response.data.provinceid,response.data.cityid)
         })
 
     }
@@ -197,44 +251,7 @@ class EditPublication extends React.Component {
         return schema;
     }
 
-    loadCities(provinceid){
-        let currentComponent = this;
-        
-        if(provinceid !== undefined) {   
-            LocationService.getCities(provinceid).then(function (response){
-                if(CancelTokenService.isCancel(response))
-                    return;
-                if(response.status !== StatusCode.OK){
-                    ErrorService.logError(currentComponent.props,response)
-                    return;
-                }
-                
-                currentComponent.setState({
-                    cities: response.data,
-                })
-            })
-        }
-    }
 
-
-    loadNeighborhood(cityid) {
-        let currentComponent = this;
-        
-        if(cityid !== undefined) {   
-            LocationService.getNeighborhoods(cityid).then(function (response){
-                if(CancelTokenService.isCancel(response))
-                    return;
-                if(response.status !== StatusCode.OK){
-                    ErrorService.logError(currentComponent.props,response)
-                    return;
-                }
-                
-                currentComponent.setState({
-                    neighborhoods: response.data,
-                })
-            })
-        }
-    }
 
     handleOperationChange(changeEvent) {
         this.setState({
@@ -320,37 +337,30 @@ class EditPublication extends React.Component {
 
     render() {
         const { t } = this.props;
-        let provinceid, cityid;
         let initialSchema = this.reInitializeForm();
         
 
         const provinces = this.state.provinces.map(function(item){ 
-            if(item.province == initialSchema.provinceid) {
-                provinceid = item.provinceid;
-                return <option defaultValue={item.provinceid} selected>  {item.province} </option>;
+            if(item.province === initialSchema.provinceid) {
+                return <option defaultValue={item.provinceid} value={item.provinceid} key={item.provinceid}>  {item.province} </option>;
             } else {
-                return <option value={item.provinceid}>  {item.province} </option>;
+                return <option value={item.provinceid} key={item.provinceid}>  {item.province} </option>;
             }
         });
-        
-        this.loadCities(provinceid);
         
         const cities = this.state.cities.map(function(item){ 
-            if(item.city == initialSchema.cityid) {
-                cityid = item.cityid;
-                return <option value={item.cityid} selected>  {item.city} </option>;
+            if(item.city === initialSchema.cityid) {
+                return <option value={item.cityid} key={item.cityid}>  {item.city} </option>;
             } else {
-                return <option value={item.cityid}>  {item.city} </option>;
+                return <option value={item.cityid} key={item.cityid}>  {item.city} </option>;
             }
         });
 
-       this.loadNeighborhood(cityid);
-
-        const neighborhood = this.state.neighborhoods.map(function(item){ 
-            if(item.neighborhood == initialSchema.neighborhoodid) {
-                return <option value={item.neighborhoodod} selected>  {item.neighborhood} </option>;
+        const neighborhood = this.state.neighborhoods.map(function(item){
+            if(item.neighborhood === initialSchema.neighborhoodid) {
+                return <option value={item.neighborhoododid} key={item.neighborhoododid + item.neighborhood}>  {item.neighborhood} </option>;
             } else {
-                return <option value={item.neighborhoodod}>  {item.neighborhood} </option>;
+                return <option value={item.neighborhoododid} key={item.neighborhoododid + item.neighborhood}>  {item.neighborhood} </option>;
             }
         });
 
@@ -439,7 +449,7 @@ class EditPublication extends React.Component {
                 }) => (
                     <Form onSubmit={(event) => handleSubmit(event) || this.handleFormSubmit(event,errors)} >
                         <div className="sub_box">
-                            <Form.Group as={Col} md="12" controlId="validationFormik01">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.title')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -455,7 +465,7 @@ class EditPublication extends React.Component {
                                     {errors.title}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik02">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.province')}</Form.Label>
                                 <Form.Control
                                     as="select"
@@ -465,15 +475,15 @@ class EditPublication extends React.Component {
                                     onBlur={handleBlur}
                                     value={values.provinceid}
                                     isInvalid={!!errors.provinceid && touched.provinceid}
-                                >   
-                                <option disabled selected value="" >{t('publish.provinceHolder')}</option>
+                                >
+                                    <option disabled value="">{t('publish.provinceHolder')}</option>
                                 {provinces} 
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">
                                     {errors.provinceid}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik03">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.city')}</Form.Label>
                                     <Form.Control
                                     as="select"
@@ -484,14 +494,14 @@ class EditPublication extends React.Component {
                                     value={values.cityid}
                                     isInvalid={!!errors.cityid && touched.cityid}
                                     >
-                                    <option disabled selected value="">{t('publish.cityHolder')}</option>
+                                        <option disabled value="">{t('publish.cityHolder')}</option>
                                     {cities}
                                     </Form.Control>  
                                     <Form.Control.Feedback type="invalid">
                                     {errors.cityid}
                                     </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik04">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.neighborhood')}</Form.Label>
                                 <Form.Control
                                     as="select"
@@ -502,14 +512,14 @@ class EditPublication extends React.Component {
                                     onBlur={handleBlur}
                                     isInvalid={!!errors.neighborhoodid && touched.neighborhoodid}
                                 >
-                                <option disabled selected value="">{t('publish.neighborhoodHolder')}</option>
+                                    <option disabled value="">{t('publish.neighborhoodHolder')}</option>
                                 {neighborhood} 
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">
                                     {errors.neighborhoodid}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik05">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.address')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -524,7 +534,7 @@ class EditPublication extends React.Component {
                                     {errors.address}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik06">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.operation')}</Form.Label>
                                 <Form.Check
                                     type="radio"
@@ -545,7 +555,7 @@ class EditPublication extends React.Component {
                                     onChange={this.handleOperationChange}
                                 />
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik07">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.price')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -560,7 +570,7 @@ class EditPublication extends React.Component {
                                     {errors.price}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik08">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.expenses')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -575,7 +585,7 @@ class EditPublication extends React.Component {
                                     {errors.expenses}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik09">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.amenities')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -592,7 +602,7 @@ class EditPublication extends React.Component {
                             </Form.Group>
                             </div>
                             <div className="sub_box">
-                                <Form.Group as={Col} md="12" controlId="validationFormik10">
+                                <Form.Group as={Col} md="12">
                                         <Form.Label>{t('publish.description')}</Form.Label>
                                         <Form.Control
                                             type="text"
@@ -608,7 +618,7 @@ class EditPublication extends React.Component {
                                             {errors.description}
                                         </Form.Control.Feedback>
                                 </Form.Group>
-                                <Form.Group as={Col} md="12" controlId="validationFormik11">
+                                <Form.Group as={Col} md="12">
                                     <Form.Label>{t('publish.propertyType')}</Form.Label>
                                     <Form.Check
                                         type="radio"
@@ -629,7 +639,7 @@ class EditPublication extends React.Component {
                                         onChange={this.handlePropertyTypeChange}
                                     />
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik12">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.bedrooms')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -644,7 +654,7 @@ class EditPublication extends React.Component {
                                     {errors.bedrooms}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik13">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.bathrooms')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -659,7 +669,7 @@ class EditPublication extends React.Component {
                                     {errors.bathrooms}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik14">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.dimention')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -674,7 +684,7 @@ class EditPublication extends React.Component {
                                     {errors.dimention}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik15">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.coveredFloorSize')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -689,7 +699,7 @@ class EditPublication extends React.Component {
                                     {errors.coveredFloorSize}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik16">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.parking')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -704,7 +714,7 @@ class EditPublication extends React.Component {
                                     {errors.parking}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik17">
+                            <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.balconies')}</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -719,7 +729,7 @@ class EditPublication extends React.Component {
                                     {errors.balconies}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group as={Col} md="12" controlId="validationFormik18">
+                            <Form.Group as={Col} md="12">
                                     <Form.Label>{t('publish.storage')}</Form.Label>
                                     <Form.Check
                                         type="radio"

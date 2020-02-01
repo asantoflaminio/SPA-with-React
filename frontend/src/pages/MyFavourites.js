@@ -76,23 +76,24 @@ class MyFavorites extends React.Component {
 
         for(let i = 0; i < this.state.myFavorites.length; i++){
             pubComponents.push(
-                <Publication t={t} 
-                    publication={this.state.myFavorites[i]}  
-                    page="MyFavorites"
-                    favourites={false}
-                    faveable={true}
-                    editable={false}
-                    eraseFunction={this.showModalErasePublication}
-                    ready={this.setReady}
-                    index={i}
-                    />
+                <div key={this.state.myFavorites[i].publicationid}>
+                    <Publication t={t} 
+                        publication={this.state.myFavorites[i]}  
+                        page="MyFavorites"
+                        favourites={false}
+                        faveable={true}
+                        editable={false}
+                        eraseFunction={this.showModalErasePublication}
+                        ready={this.setReady}
+                        index={i}
+                        />
+                </div>
             )
         }
 
         if(this.state.myFavorites.length === 0) {
-             //TODO: AGREGAR KEYS
             pubComponents.push(
-                <div>
+                <div key={"NoPublication"}>
                     <p id="no-results-title">{t('myfavorites.noPublications')}</p>
                 </div>
             )

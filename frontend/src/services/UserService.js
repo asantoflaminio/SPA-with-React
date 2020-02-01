@@ -104,9 +104,9 @@ const UserService = (function(){
       }).then(function (response){ return response }).catch(function (error){ return (axios.isCancel(error) ? error : error.response) })
     }
 
-    async function _editPublication(userid, publicationid, dataDTO) { //TODO:chequear si esta bien, nueva funcion
+    async function _editPublication(userid, publicationid, dataDTO) {
       return await axios({
-        method: 'patch',
+        method: 'put',
         url: `${USERS_PATH}/users/${userid}/publications/${publicationid}`,
         data: dataDTO,
         headers: {
@@ -116,7 +116,7 @@ const UserService = (function(){
       }).then(function (response){ return response }).catch(function (error){ return error.response })
     }
 
-    async function _erasePublication(userid, publicationid){ //TODO:chequear si esta bien, nueva funcion
+    async function _erasePublication(userid, publicationid){
       return await axios({
         method: 'delete',
         url: `${USERS_PATH}/users/${userid}/publications/${publicationid}`,

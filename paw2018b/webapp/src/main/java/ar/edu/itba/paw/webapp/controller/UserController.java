@@ -13,6 +13,7 @@ import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.HEAD;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -131,7 +132,7 @@ public class UserController {
     	if(user == null)
     		return rs.notFound("No user found with the specified id");
   
-    	if(userDTO.getPassword() != null) { //TODO: nuevo chequear
+    	if(userDTO.getPassword() != null) {
     			if(ecd.matches(userDTO.getCurrentPassword(), us.findById(userid).getPassword())) {
 		    		if(! vs.validateUserPassword(userDTO.getPassword())) {
 		    			return rs.badRequest("The new password is invalid");
@@ -248,20 +249,20 @@ public class UserController {
     	return Response.ok().entity(publication).build();
     }
     
-    // TODO:Mirar, nuevo !!
-    @PATCH
+    @PUT
     @Path("/users/{userid}/publications/{publicationid}")
     @Consumes(value = { UserDTO.MediaType, })
     public Response updatePublication (@Context HttpServletRequest request, @PathParam("userid") long userid, @PathParam("publicationid") long publicationid, final PublicationDTO publicationDTO) {
     	if(! vs.validateID(userid))
     		return rs.badRequest("The user id is invalid");
+    	if(! vs.validateID(publicationid))
+    		return rs.badRequest("The publication id es invalid");
     	if(tas.getUserIdAuthentication(request) != userid)
     		return rs.forbidden("The user has no authority to perform this action");
     	PublicationDTO publication = ps.findById(publicationid);
     	if(publication == null)
     		return rs.notFound();
 
-    	
     	if(! vs.validatePublication(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodid(),
 				publicationDTO.getCityid(), publicationDTO.getProvinceid(), publicationDTO.getOperation(), publicationDTO.getPrice(),
 				publicationDTO.getDescription(), publicationDTO.getPropertyType(), 
@@ -271,21 +272,15 @@ public class UserController {
     			publicationDTO.getAmenities(), publicationDTO.getStorage(), publicationDTO.getExpenses(), publicationid)) 
 			return rs.badRequest("The user parameters are invalid");
     	
-    	if(tas.getUserIdAuthentication(request) != userid)
-    		return rs.forbidden("The user has no authority to perform this action");
-    	
-    	if(! ps.editData(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodid(), publicationDTO.getCityid(),
+    	ps.editData(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodid(), publicationDTO.getCityid(),
     			publicationDTO.getProvinceid(), publicationDTO.getOperation(), publicationDTO.getPrice(), publicationDTO.getDescription(),
     			publicationDTO.getPropertyType(), publicationDTO.getBedrooms(), publicationDTO.getBathrooms(), publicationDTO.getDimention(),
     			publicationDTO.getParking(), publicationDTO.getCoveredFloorSize(), publicationDTO.getBalconies(), publicationDTO.getAmenities(),
-    			publicationDTO.getStorage(), publicationDTO.getExpenses(), publicationid)) {
-    		return rs.badRequest(""); //TODO ni idea si hay q poner esto
-    	}
+    			publicationDTO.getStorage(), publicationDTO.getExpenses(), publicationid);
     	
     	return rs.ok();
     }
     
-    //TODO: Mirar, nuevo!!
     @DELETE
     @Path("/users/{userid}/publications/{publicationid}")
     public Response deletePublication(@Context HttpServletRequest request, @PathParam("userid") long userid, @PathParam("publicationid") long publicationid){
@@ -297,7 +292,6 @@ public class UserController {
     		return rs.forbidden("The user has no authority to perform this action");
     	if(! ps.deletePublication(publicationid))
     		return rs.notFound("No publication found with the specified id");
-    	
     	
     	return rs.noContent();
     }

@@ -324,7 +324,7 @@ class MyInformation extends React.Component {
                                     isSubmitting
                                 }) => (
                                     <Form noValidate onSubmit={(event) => handleSubmit(event) || this.handlePasswordFormSubmit(event,errors)}>
-                                        <Form.Group as={Col} md="8" controlId="validationFormik01">
+                                        <Form.Group as={Col} md="8">
                                             <Form.Label>{t('profile.password')}</Form.Label>
                                             <Form.Control
                                                 type="password"
@@ -340,7 +340,7 @@ class MyInformation extends React.Component {
                                                 {errors.password}
                                             </Form.Control.Feedback>
                                         </Form.Group>
-                                        <Form.Group as={Col} md="8" controlId="validationFormik02">
+                                        <Form.Group as={Col} md="8">
                                             <Form.Label>{t('profile.newpassword')}</Form.Label>
                                             <Form.Control
                                                 type="password"
@@ -355,7 +355,7 @@ class MyInformation extends React.Component {
                                                 {errors.newpassword}
                                             </Form.Control.Feedback>
                                         </Form.Group>
-                                        <Button type="submit" id="editdata-submit" disabled={isSubmitting} onClick={handleChange}>{t('profile.submit')}</Button>
+                                        <Button type="submit" id="editPassword-submit" disabled={isSubmitting} onClick={handleChange}>{t('profile.submit')}</Button>
                                     </Form>
                                 )}
                                 </Formik>

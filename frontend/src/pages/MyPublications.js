@@ -93,9 +93,8 @@ class MyPublications extends React.Component {
         }
 
         if(this.state.myPublications.length === 0) {
-            //TODO: AGREGAR KEYS
             pubComponents.push(
-                <div> 
+                <div key={"noPublication"}> 
                     <p id="no-results-title">{t('mypublications.noPublications')}</p>
                 </div>
             )
