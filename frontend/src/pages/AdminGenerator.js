@@ -190,17 +190,23 @@ class AdminGenerator extends React.Component {
         const schemaProvince = yup.object({
             province: yup.string().required(t('errors.requiredField'))
                                 .matches(Constants.lettesNumersAndSpacesRegex, t('errors.lettesNumersAndSpacesRegex'))
+                                .min(Constants.MIN_LOCATION_LENGTH, t('errors.lengthMin'))
+                                .max(Constants.MAX_LOCATION_LENGTH, t('errors.lengthMax')),
         });
         const schemacity = yup.object({
             provinceid: yup.string().required(t('errors.requiredField')),
             city: yup.string().required(t('errors.requiredField'))
                             .matches(Constants.lettesNumersAndSpacesRegex, t('errors.lettesNumersAndSpacesRegex'))
+                            .min(Constants.MIN_LOCATION_LENGTH, t('errors.lengthMin'))
+                            .max(Constants.MAX_LOCATION_LENGTH, t('errors.lengthMax')),
         });
         const schemaNeighborhood = yup.object({
             provinceid: yup.string().required(t('errors.requiredField')),
             cityid: yup.string().required(t('errors.requiredField')),
             neighborhood: yup.string().required(t('errors.requiredField'))
                                     .matches(Constants.lettesNumersAndSpacesRegex, t('errors.lettesNumersAndSpacesRegex'))
+                                    .min(Constants.MIN_LOCATION_LENGTH, t('errors.lengthMin'))
+                                    .max(Constants.MAX_LOCATION_LENGTH, t('errors.lengthMax')),
         });
 
 

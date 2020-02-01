@@ -25,6 +25,11 @@ export const THIRD_FORM_MAX_LENGTH = 3;
 export const DIMENSION_MAX_LENGTH = 99999;
 export const AMENITIES_MAX_LENGTH = 140;
 
+//Location constants
+
+export const MIN_LOCATION_LENGTH = 3;
+export const MAX_LOCATION_LENGTH = 40;
+
 //Patterns
 
 export const numbersRegex = new RegExp("^[0-9]*$");
