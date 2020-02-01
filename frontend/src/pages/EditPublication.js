@@ -16,6 +16,7 @@ import * as StatusCode from '../util/StatusCode'
 import ErrorService from '../services/ErrorService';
 import JsonService from '../services/JsonService';
 import ColoredLinearProgress from '../components/ColoredLinearProgress';
+import ColoredCircularProgress from '../components/ColoredCircularProgress';
 
 class EditPublication extends React.Component {
 
@@ -46,7 +47,8 @@ class EditPublication extends React.Component {
             selectedOperationOption: '',
             selectedPropertyTypeOption: '',
             selectedStorageOption: '',
-            loading: false
+            loading: false,
+            circleloading: false
 
         };
          this.handleOperationChange = this.handleOperationChange.bind(this);
@@ -58,7 +60,9 @@ class EditPublication extends React.Component {
     componentDidMount(){
         document.getElementById("FSale").checked = true
         document.getElementById("House").checked = true
-        
+        this.setState({
+            circleloading: true
+        })
         this.updateFormValues();
         this.loadProvinces();
     }
@@ -117,6 +121,7 @@ class EditPublication extends React.Component {
                 selectedOperationOption: response.data.operation,
                 selectedPropertyTypeOption: response.data.propertyType,
                 selectedStorageOption: response.data.storage,
+                circleloading: false
             })
         })
 
@@ -406,6 +411,9 @@ class EditPublication extends React.Component {
         return (
             <div>
             {this.state.loading ? <ColoredLinearProgress /> : null}  
+            {(this.state.circleloading) ? 
+            ( <ColoredCircularProgress /> )
+            : ( 
             <div className="box_form">
                 <div>
                     <h3 className="publish-title">{t('editpublication.edit')}</h3>
@@ -744,6 +752,7 @@ class EditPublication extends React.Component {
                 )}
                 </Formik>
             </div>
+            )}
             </div>
         );
         }

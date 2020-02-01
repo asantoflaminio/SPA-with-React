@@ -18,6 +18,7 @@ import CancelTokenService from '../services/CancelRequestService';
 import toast from 'toasted-notes'
 import 'toasted-notes/src/styles.css';
 import ColoredLinearProgress from '../components/ColoredLinearProgress';
+import ColoredCircularProgress from '../components/ColoredCircularProgress';
 
 class MyInformation extends React.Component {
     constructor(props) {
@@ -30,13 +31,17 @@ class MyInformation extends React.Component {
             phoneNumber: '',
             userEmailValid: true,
             loading: false,
-            firstUserEmail: ''
+            firstUserEmail: '',
+            circleloading: false
         };
     }
 
     componentDidMount() {
         let currentComponent = this;
         let userid = LocalStorageService.getUserid();
+        this.setState({
+            circleloading: true
+        })
         UserService.getUser(userid).then(function (response) {
             if(CancelTokenService.isCancel(response))
                 return;
@@ -49,7 +54,8 @@ class MyInformation extends React.Component {
                 lastName: response.data.lastName,
                 email: response.data.email,
                 phoneNumber: response.data.phoneNumber,
-                firstUserEmail: response.data.email
+                firstUserEmail: response.data.email,
+                circleloading: false
             })    
         })
     }
@@ -199,6 +205,9 @@ class MyInformation extends React.Component {
                 {this.state.loading ? <ColoredLinearProgress /> : null}  
                 <ProfileAsideBar t={t} active="MyInformation"/>
                 <header>
+                    {(this.state.circleloading) ? 
+                    ( <ColoredCircularProgress /> )
+                    : (    
                     <div className="Data">
                         <div className="data polaroid">
                             <h2 className="title_container">{t('profile.titlePersonalData')} {this.state.myPublicationsCounter}</h2> 
@@ -354,6 +363,7 @@ class MyInformation extends React.Component {
                         </div>                
 
                     </div>
+                    )}
                 </header>
             </div>
         );
