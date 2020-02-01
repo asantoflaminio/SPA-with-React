@@ -18,7 +18,6 @@ const PUBLICATIONS_PATH = process.env.PUBLIC_URL + '/meinHaus/publications-manag
         }
 
         const publications = await PublicationService.getPublications(queryParameters);
-
         expect(publications.data.publications).toEqual([ "pub1", "pub2", "pub3" ]);
     })
 
@@ -32,7 +31,6 @@ const PUBLICATIONS_PATH = process.env.PUBLIC_URL + '/meinHaus/publications-manag
 
 
         const publication = await PublicationService.getPublication(5);
-
         expect(publication.data.publication).toEqual([ "testPublication" ]);
     })
 
@@ -46,7 +44,6 @@ const PUBLICATIONS_PATH = process.env.PUBLIC_URL + '/meinHaus/publications-manag
 
 
         const image = await PublicationService.getImage(5, 0);
-
         expect(image.data.results).toEqual(['try.jpg']);
     })
 
@@ -56,7 +53,6 @@ const PUBLICATIONS_PATH = process.env.PUBLIC_URL + '/meinHaus/publications-manag
         mock.onPost(PUBLICATIONS_PATH + '/publications/5/images').reply(StatusCode.OK);
         
         const publication = await PublicationService.postImages(5, 0);
-
         expect(publication.status).toEqual(StatusCode.OK);
     })
 

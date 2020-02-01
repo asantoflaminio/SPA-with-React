@@ -15,7 +15,6 @@ it('gets provinces', async() => {
         });
 
     const provinces = await LocationService.getProvinces();
-
     expect(provinces.data.provinces).toEqual([ "prov1", "prov2", "prov3" ]);
 
 })
@@ -29,7 +28,6 @@ it('gets cites', async() => {
         });
 
     const cities = await LocationService.getCities(5);
-
     expect(cities.data.cities).toEqual([ "city1", "city2", "city3" ]);
 
 })
@@ -43,7 +41,6 @@ it('gets neighborhoods', async() => {
         });
 
     const neighborhoods = await LocationService.getNeighborhoods(5);
-
     expect(neighborhoods.data.neighborhoods).toEqual([ "neigh1", "neigh2", "neigh3" ]);
 
 })
@@ -57,8 +54,8 @@ it('posts province', async() => {
         province: "test",
         provinceId: "123"
     }
-    const ans = await LocationService.postProvince(provDTO);
 
+    const ans = await LocationService.postProvince(provDTO);
     expect(ans.status).toEqual(StatusCode.OK);
 
 })
@@ -73,8 +70,8 @@ it('posts city', async() => {
         cityId: "123",
         provinceId: "123"
     }
-    const ans = await LocationService.postCity(123, cityDTO);
 
+    const ans = await LocationService.postCity(123, cityDTO);
     expect(ans.status).toEqual(StatusCode.OK);
 
 })
@@ -90,8 +87,8 @@ it('posts neighborhood', async() => {
         cityId: "123",
         provinceId: "123"
     }
-    const ans = await LocationService.postNeighborhood(123, neighDTO);
 
+    const ans = await LocationService.postNeighborhood(123, neighDTO);
     expect(ans.status).toEqual(StatusCode.OK);
 
 })
