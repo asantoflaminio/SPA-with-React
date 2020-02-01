@@ -7,7 +7,6 @@ const PUBLICATIONS_PATH = process.env.PUBLIC_URL + '/meinHaus/publications-manag
 
     it('gets publications', async() => {
 
-        let spy = jest.spyOn(axios, "get");
         var mock = new MockAdapter(axios);
         mock.onGet(PUBLICATIONS_PATH + '/publications').reply(200, 
             {
@@ -21,18 +20,10 @@ const PUBLICATIONS_PATH = process.env.PUBLIC_URL + '/meinHaus/publications-manag
         const publications = await PublicationService.getPublications(queryParameters);
 
         expect(publications.data.publications).toEqual([ "pub1", "pub2", "pub3" ]);
-        //expect(spy).toHaveBeenCalled();
-        let path = PUBLICATIONS_PATH + '/publications';
-
-        // expect(spy).toHaveBeenCalledWith(
-        //     path, {answer: {
-        //         publications: [ "pub1", "pub2", "pub3" ]
-        //     }});
     })
 
     it('gets publication', async() => {
 
-        let spy = jest.spyOn(axios, "get");
         var mock = new MockAdapter(axios);
         mock.onGet(PUBLICATIONS_PATH + '/publications/5').reply(200, 
             {
@@ -43,18 +34,10 @@ const PUBLICATIONS_PATH = process.env.PUBLIC_URL + '/meinHaus/publications-manag
         const publication = await PublicationService.getPublication(5);
 
         expect(publication.data.publication).toEqual([ "testPublication" ]);
-        //expect(spy).toHaveBeenCalled();
-        let path = PUBLICATIONS_PATH + '/publication/5';
-
-        // expect(spy).toHaveBeenCalledWith(
-        //     path, {answer: {
-        //         publications: [ "pub1", "pub2", "pub3" ]
-        //     }});
     })
 
     it('gets image', async() => {
 
-        let spy = jest.spyOn(axios, "get");
         var mock = new MockAdapter(axios);
         mock.onGet(PUBLICATIONS_PATH + '/publications/5/images').reply(200, 
             {
@@ -65,31 +48,16 @@ const PUBLICATIONS_PATH = process.env.PUBLIC_URL + '/meinHaus/publications-manag
         const image = await PublicationService.getImage(5, 0);
 
         expect(image.data.results).toEqual(['try.jpg']);
-        //expect(spy).toHaveBeenCalled();
-        let path = PUBLICATIONS_PATH + '/publication/5/images';
-
-        // expect(spy).toHaveBeenCalledWith(
-        //     path, {answer: {
-        //         publications: [ "pub1", "pub2", "pub3" ]
-        //     }});
     })
 
     it('posts image', async() => {
 
-        let spy = jest.spyOn(axios, "get");
         var mock = new MockAdapter(axios);
         mock.onPost(PUBLICATIONS_PATH + '/publications/5/images').reply(StatusCode.OK);
         
         const publication = await PublicationService.postImages(5, 0);
 
         expect(publication.status).toEqual(StatusCode.OK);
-        //expect(spy).toHaveBeenCalled();
-        let path = PUBLICATIONS_PATH + '/publication/5/images';
-
-        // expect(spy).toHaveBeenCalledWith(
-        //     path, {answer: {
-        //         publications: [ "pub1", "pub2", "pub3" ]
-        //     }});
     })
 
 

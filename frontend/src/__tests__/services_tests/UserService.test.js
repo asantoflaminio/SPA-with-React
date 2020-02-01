@@ -7,7 +7,6 @@ const USERS_PATH = process.env.PUBLIC_URL + '/meinHaus/users-management';
 
 it('gets users', async() => {
 
-    let spy = jest.spyOn(axios, "get");
     var mock = new MockAdapter(axios);
     mock.onGet(USERS_PATH + '/users').reply(200, 
         {
@@ -22,17 +21,11 @@ it('gets users', async() => {
 
     expect(users.status).toEqual(StatusCode.OK);
     expect(users.data.answer.results).toEqual([ "us1", "us2", "us3" ]);
-    //expect(spy).toHaveBeenCalled();
 
-    // expect(spy).toHaveBeenCalledWith(
-    //     path, {answer: {
-    //         publications: [ "pub1", "pub2", "pub3" ]
-    //     }});
 })
 
 it('checks mail', async() => {
 
-    let spy = jest.spyOn(axios, "get");
     var mock = new MockAdapter(axios);
     mock.onHead(USERS_PATH + '/users/test@mail.com').replyOnce(StatusCode.OK);
     mock.onHead(USERS_PATH + '/users/test@mail.com').reply(StatusCode.NOT_FOUND);
@@ -43,14 +36,11 @@ it('checks mail', async() => {
     const check2 = await UserService.checkEmail('test@mail.com');
     expect(check2.status).toEqual(StatusCode.NOT_FOUND);
 
-    //expect(spy).toHaveBeenCalledTimes(2);
-
 })
 
 
 it('get user', async() => {
 
-    let spy = jest.spyOn(axios, "get");
     var mock = new MockAdapter(axios);
 
     mock.onGet(USERS_PATH + '/users/123').reply(StatusCode.OK, 
@@ -69,15 +59,10 @@ it('get user', async() => {
     expect(user.data.phoneNumber).toEqual("1500000000");
     expect(user.data.password).toEqual("testPassword");
 
-    //expect(spy).toHaveBeenCalledTimes(1);
-
-    // expect to have been called with 123
-
 })
 
 it('get my favourite publications', async() => {
 
-    let spy = jest.spyOn(axios, "get");
     var mock = new MockAdapter(axios);
 
     mock.onGet(USERS_PATH + '/users/123/favourite-publications').reply(StatusCode.OK, 
@@ -94,14 +79,10 @@ it('get my favourite publications', async() => {
     const faves = await UserService.getMyFavoritesPublications(123, queryParameters);
 
     expect(faves.data.favourites).toEqual(['fav1', 'fav2']);
-    //expect(spy).toHaveBeenCalledTimes(2);
-
-    // expect to have been called with
 })
 
 it('add favourite', async() => {
 
-    let spy = jest.spyOn(axios, "post");
     var mock = new MockAdapter(axios);
 
     mock.onPost(USERS_PATH + '/users/123/favourite-publications').reply(StatusCode.OK);
@@ -113,16 +94,11 @@ it('add favourite', async() => {
 
     expect(ans.status).toEqual(StatusCode.OK);
 
-    //expect(spy).toHaveBeenCalledTimes(1);
-
-    //expect to have been called with
-
 })
 
 
 it('remove favourite', async() => {
 
-    let spy = jest.spyOn(axios, "delete");
     var mock = new MockAdapter(axios);
 
     mock.onDelete(USERS_PATH + '/users/123/favourite-publications/123').reply(StatusCode.OK);
@@ -131,18 +107,11 @@ it('remove favourite', async() => {
 
     expect(ans.status).toEqual(StatusCode.OK);
 
-    //expect(spy).toHaveBeenCalledTimes(1);
-    
-    //expect to have been called with
-
 })
 
 it('get my publications', async() => {
 
-    let spy = jest.spyOn(axios, 'default');
     var mock = new MockAdapter(axios);
-
-    
 
     mock.onGet(USERS_PATH + '/users/123/publications').reply(StatusCode.OK, 
         {
@@ -158,15 +127,11 @@ it('get my publications', async() => {
     const publications = await UserService.getMyPublications(123, queryParameters);
 
     expect(publications.data.publications).toEqual(['pub1', 'pub2']);
-   // expect(spy).toHaveBeenCalledTimes(1);
-
-    // expect to have been called with
 
 })
 
 it('get publication', async() => {
 
-    let spy = jest.spyOn(axios, "get");
     var mock = new MockAdapter(axios); 
 
     mock.onGet(USERS_PATH + '/users/123/publications/123').reply(StatusCode.OK, 
@@ -178,15 +143,11 @@ it('get publication', async() => {
     const publication = await UserService.getPublication(123, 123);
 
     expect(publication.data.publication).toEqual("test");
-    //expect(spy).toHaveBeenCalledTimes(1);
-
-    // expect to have been called with
 
 })
 
 it('post publication', async() => {
 
-    let spy = jest.spyOn(axios, "post");
     var mock = new MockAdapter(axios); 
 
     mock.onPost(USERS_PATH + '/users/123/publications').reply(StatusCode.OK);
@@ -197,15 +158,11 @@ it('post publication', async() => {
     const ans = await UserService.postPublication(123, pubDTO);
 
     expect(ans.status).toEqual(StatusCode.OK);
-    //expect(spy).toHaveBeenCalledTimes(1);
-
-    // expect to have been called with
 
 })
 
 it('login', async() => {
 
-    let spy = jest.spyOn(axios, "post");
     var mock = new MockAdapter(axios); 
 
     mock.onPost(USERS_PATH + '/login').reply(StatusCode.OK);
@@ -217,9 +174,6 @@ it('login', async() => {
     const ans = await UserService.login(loginDTO);
 
     expect(ans.status).toEqual(StatusCode.OK);
-    //expect(spy).toHaveBeenCalledTimes(1);
-
-    // expect to have been called with
 
 })
 
