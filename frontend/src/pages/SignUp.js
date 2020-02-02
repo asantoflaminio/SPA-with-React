@@ -166,6 +166,7 @@ class SignUp extends React.Component {
             type="Information"
             checkModal={false}
             oneTimeShow={true}
+            specialCloseModal={false}
         />
         {this.state.loading ? <ColoredLinearProgress /> : null} 
         <div className="flex">

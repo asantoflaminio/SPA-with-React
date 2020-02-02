@@ -18,11 +18,10 @@ class MyFavorites extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            initialPage: this.getInitialPage(),
+            page: this.getInitialPage(),
             myFavoritesCounter: 0,
             myFavorites: [],
             publicationIDToDelete: 0,
-            page: 0,
             pagesQuantity: 0,
             showModal: false,
             loadingPublications: false,
@@ -30,6 +29,7 @@ class MyFavorites extends React.Component {
         this.setReady = this.setReady.bind(this);
         this.removeFavoritePublication = this.removeFavoritePublication.bind(this);
         this.showModalErasePublication = this.showModalErasePublication.bind(this);
+        this.closeFunction = this.closeFunction.bind(this);
     }
 
     componentDidMount() {
@@ -100,6 +100,12 @@ class MyFavorites extends React.Component {
         }
         
         return pubComponents;
+    }
+
+    closeFunction(){
+        this.setState({
+            showModal: false,
+        })
     }
 
     showModalErasePublication(publicationID){
@@ -187,7 +193,9 @@ class MyFavorites extends React.Component {
                     information={t('modal.unfavPublicationDetail')}
                     checkModal={true}
                     acceptFunction={this.removeFavoritePublication}
+                    closeFunction={this.closeFunction}
                     functionParameter={this.state.publicationIDToDelete}
+                    specialCloseModal={true}
                 />
                 {this.state.myFavorites.length !== 0 ? 
                 <div className="Favorites">

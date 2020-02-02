@@ -219,6 +219,7 @@ class AdminGenerator extends React.Component {
                     information={this.state.informationModal}
                     type={this.state.typeModal}
                     checkModal={false}
+                    specialCloseModal={false}
                 />
                 {this.state.posting ? <ColoredLinearProgress /> : null}  
                 <div className="polaroid data create-locations">

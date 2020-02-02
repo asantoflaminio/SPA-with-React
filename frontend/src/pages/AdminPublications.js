@@ -30,7 +30,8 @@ class AdminPublications extends React.Component {
 
         this.showModalErasePublication = this.showModalErasePublication.bind(this);
         this.erasePublication = this.erasePublication.bind(this);
-        this.setReady = this.setReady.bind(this)
+        this.setReady = this.setReady.bind(this);
+        this.closeFunction = this.closeFunction.bind(this);
     }
 
     componentDidMount(){
@@ -129,6 +130,12 @@ class AdminPublications extends React.Component {
         })
     }
 
+    closeFunction(){
+        this.setState({
+            showModal: false,
+        })
+    }
+
     getInitialPage(){
         const params = new URLSearchParams(this.props.location.search); 
         const queryPageParam = params.get('page');
@@ -164,6 +171,7 @@ class AdminPublications extends React.Component {
     componentWillUnmount(){
         CancelTokenService.getSource().cancel()
         CancelTokenService.refreshToken()
+        LocalStorageService.deleteCounter()
     }
 
     render(){
@@ -178,7 +186,9 @@ class AdminPublications extends React.Component {
                     information={t('modal.deletePublicationDetail')}
                     checkModal={true}
                     acceptFunction={this.erasePublication}
+                    closeFunction={this.closeFunction}
                     functionParameter={this.state.publicationidToDelete}
+                    specialCloseModal={true}
                 />
                 <div className="polaroid data all-publications">
                     <div className="title-container">

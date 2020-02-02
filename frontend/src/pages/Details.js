@@ -132,6 +132,7 @@ class Details extends React.Component {
                     information={t('details.messageDetail')}
                     type="Information"
                     checkModal={false}
+                    specialCloseModal={false}
                      />
                     {this.state.loading ? <ColoredLinearProgress /> : null}  
                     {(this.state.circleloading || this.state.publication===null) ? 

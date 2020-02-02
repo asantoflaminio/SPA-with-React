@@ -17,11 +17,10 @@ class MyPublications extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            initialPage: this.getInitialPage(),
+            page: this.getInitialPage(),
             myPublicationsCounter: 0,
             myPublications: [],
             publicationIDToDelete: 0,
-            page: 0,
             pagesQuantity: 0,
             showModal: false,
             loadingPublications: false,
@@ -29,7 +28,8 @@ class MyPublications extends React.Component {
 
         this.showModalErasePublication = this.showModalErasePublication.bind(this);
         this.erasePublication = this.erasePublication.bind(this);
-        this.setReady = this.setReady.bind(this)
+        this.setReady = this.setReady.bind(this);
+        this.closeFunction = this.closeFunction.bind(this);
     }
 
     componentDidMount() {
@@ -66,9 +66,7 @@ class MyPublications extends React.Component {
             currentComponent.pushPageParam(queryParameters.page + 1);
             if(response.headers["x-total-count"] === "0")
                 currentComponent.setState({loadingPublications: false})
-        })
-
-        
+        })   
     }
 
     initializePublications(){
@@ -137,6 +135,12 @@ class MyPublications extends React.Component {
         })
     }
 
+    closeFunction(){
+        this.setState({
+            showModal: false,
+        })
+    }
+
     getInitialPage(){
         const params = new URLSearchParams(this.props.location.search); 
         const queryPageParam = params.get('page');
@@ -188,7 +192,9 @@ class MyPublications extends React.Component {
                     information={t('modal.deletePublicationDetail')}
                     checkModal={true}
                     acceptFunction={this.erasePublication}
+                    closeFunction={this.closeFunction}
                     functionParameter={this.state.publicationIDToDelete}
+                    specialCloseModal={true}
                 />
                 {this.state.myPublications.length !== 0 ? 
                 <div className="Publications">

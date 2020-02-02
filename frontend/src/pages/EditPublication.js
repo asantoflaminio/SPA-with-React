@@ -305,11 +305,9 @@ class EditPublication extends React.Component {
 
         this.updateState(event);
         
-        this.setState({
-            loading: true
-        }); 
         
         if(Object.keys(errors).length === 0){
+            this.setState({ loading: true }); 
             UserService.editPublication(userid,query.publicationid,publicationDTO).then(function (response){
                 if(response.status !== StatusCode.OK){
                     ErrorService.logError(currentComponent.props,response)

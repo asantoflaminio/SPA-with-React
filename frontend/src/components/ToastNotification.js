@@ -28,7 +28,9 @@ class ToastNotification extends React.Component{
     if(this.props.oneTimeShow !== undefined)
       showAgain = false;
 
-
+    if(this.props.specialCloseModal === true)
+    this.props.closeFunction();
+    
     clearTimeout(this.state.timerid);
     this.setState({
       show: false,

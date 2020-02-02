@@ -60,27 +60,27 @@ class MyInformation extends React.Component {
         })
     }
 
-    checkEmail(event){
-        let email = event.target.value
-        let currentComponent = this
+    checkEmail(email){
         let emailError = document.getElementById("emailTakenError")
+        let currentComponent = this
         
         if(this.state.firstUserEmail === email){
+            emailError.style.display = "none"
             emailError.setAttribute("hasError",false)
         } else {
             UserService.checkEmail(email).then(function (response){
                 if(response.status === StatusCode.OK){
-                    emailError.style.display = "block"
                     emailError.setAttribute("hasError",true)
+                    emailError.style.display = "block"
                 }else if(response.status === StatusCode.NOT_FOUND || response.status === StatusCode.BAD_REQUEST){
                     emailError.style.display = "none"
                     emailError.setAttribute("hasError",false)
-                }
-                else{
+                }else{
                     currentComponent.logError(this.props,response)
                 }
             })
         }
+        
         return true;
     }
 
@@ -93,16 +93,18 @@ class MyInformation extends React.Component {
         })
     }
 
-    handleFormSubmit(event,errors) {
+    handleFormSubmit(event, errors) {
         event.preventDefault();
         const { t } = this.props;
         let currentComponent = this;
+        let emailError;
         let userDTO = JsonService.getJSONParsed(event.target);
         let userid = LocalStorageService.getUserid();
-        let emailError = document.getElementById("emailTakenError")
         this.updateState(event);
+       
+        emailError = document.getElementById("emailTakenError")
+        this.checkEmail(event.target[2].value)
 
-        
         if(Object.keys(errors).length === 0 && emailError.getAttribute("hasError") === "false" ) {
             this.setState({loading: true}); 
             UserService.editUser(userid,userDTO).then(function(response){
@@ -117,10 +119,6 @@ class MyInformation extends React.Component {
                 LocalStorageService.refreshToken(response.headers.authorization, userDTO.email);
                 currentComponent.props.updateUsername(userDTO.email);
             })
-        } else {
-            currentComponent.setState({
-                loading: false
-            });
         }
     }
 
@@ -131,12 +129,10 @@ class MyInformation extends React.Component {
         let userDTO = {}
         userDTO.currentPassword = event.target[0].value
         userDTO.password = event.target[1].value
-        let userid = LocalStorageService.getUserid()
-        this.setState({
-            loading: true
-        }); 
+        let userid = LocalStorageService.getUserid() 
         
         if(Object.keys(errors).length === 0) {
+            this.setState({ loading: true }); 
             UserService.editUser(userid,userDTO).then(function(response){
                 if(response.status !== StatusCode.OK){
                     ErrorService.logError(currentComponent.props,response)
@@ -271,13 +267,13 @@ class MyInformation extends React.Component {
                                                 name="email"
                                                 value={values.email}
                                                 onChange={handleChange}
-                                                onBlur={(event) => this.checkEmail(event,errors) && handleBlur(event)}
+                                                onBlur={(event) => this.checkEmail(event.target.value,errors) && handleBlur(event)}
                                                 isInvalid={!!errors.email && touched.email}
                                                 />
                                                 <Form.Control.Feedback type="invalid">
                                                 {errors.email}
                                                 </Form.Control.Feedback>
-                                            <p id="emailTakenError" className="errorText">{t('errors.emailTaken')}</p>
+                                            <p id="emailTakenError" hasError="false" className="errorText">{t('errors.emailTaken')}</p>
                                         </Form.Group>
                                         <Form.Group as={Col} md="8">
                                             <Form.Label>{t('profile.phoneNumber')}</Form.Label>
