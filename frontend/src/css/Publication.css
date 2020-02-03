@@ -61,6 +61,7 @@
 	right: 8px;
 	height: 30px;
 	width: 30px;
+	cursor: pointer;
 }
 
 .property-date {
