@@ -150,6 +150,8 @@
     "list": {
       "buy": "Buy",
       "rent": "Rent",
+      "forsale": "For sale",
+      "forrent": "For rent",
       "search": "Search",
       "searchPlaceholder": "Search...",
       "house": "House",

@@ -73,7 +73,8 @@ const Publication = ({ t , publication, page, faveable, editable, eraseFunction,
                             </div>
                             <div className="column-2">
                                 <h4 className="littleCharacteristic"><strong>{publication.dimention}</strong> {t('list.sqmeters')}</h4>
-                                <h3 className="bigCharacteristic">{utilFunction.decideOperation(t('list.buy'),t('list.rent'),publication.operation)}</h3>
+                                {(publication.expenses === '-1') ? (null) : (<h4 className="littleCharacteristic">{t('details.expenses')} <strong>U$S {publication.expenses}</strong> </h4> )}
+                                <h4 className="littleCharacteristic"><strong>{utilFunction.decideOperation(t('list.forsale'),t('list.forrent'),publication.operation)}</strong></h4>
                             </div>				
                         </div>
                     </div>
