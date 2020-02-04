@@ -7,21 +7,24 @@ import ImgVisualizer from './ImageVisualizer';
 import {Link} from 'react-router-dom';
 import UserService from '../services/UserService';
 
-function isErasable(t, eraseFunction, publicationid, page){
-    if(eraseFunction && page !== "MyFavorites"){
+function isEditableErasable(t, editable, eraseFunction, page, publicationid) {
+
+    if(eraseFunction && page !== "MyFavorites" && editable){
         return(
-            <div className="more-info">
+            <div className="more-info2">
                 <img className="delete" src={trash} alt="Delete" />
                 <p className="more-info-title" onClick={() => eraseFunction(publicationid)}>{t('admin.delete')}</p>
+                <Link to={{pathname: "/EditPublication", search: "?publicationid=" + publicationid}}>
+                    <img className="delete" src={pencil} alt="Edit" />
+                    <p className="more-info-title">{t('profilepublication.edit')} </p> 
+                </Link>
             </div>	
         )
     }
-}
 
-function isEditable(t, editable, publicationid) {
     if(editable) {
         return(	
-            <div className="more-info">
+            <div className="more-info2">
                 <Link to={{pathname: "/EditPublication", search: "?publicationid=" + publicationid}}>
                     <img className="delete" src={pencil} alt="Edit" />
                     <p className="more-info-title">{t('profilepublication.edit')} </p> 
@@ -40,8 +43,8 @@ function isEditable(t, editable, publicationid) {
 }
 
 const Publication = ({ t , publication, page, faveable, editable, eraseFunction, ready, index }) => {
-    let erasableComponent = isErasable(t, eraseFunction, publication.publicationid, page);
-    let editableComponent = isEditable(t, editable, publication.publicationid);
+    //let erasableComponent = isErasable(t, eraseFunction, publication.publicationid, page);
+    let editableErasableComponent = isEditableErasable(t, editable, eraseFunction, page, publication.publicationid);
     var res = publication.date.split(":");
     var pubDate = res[0] + ":" + res[1];
         return(
@@ -84,8 +87,7 @@ const Publication = ({ t , publication, page, faveable, editable, eraseFunction,
                         <div className="pub-date">
                             {pubDate}
                         </div>
-                        {editableComponent}
-                        {erasableComponent}
+                        {editableErasableComponent}
                     </div>
                 </div>
             </div>
