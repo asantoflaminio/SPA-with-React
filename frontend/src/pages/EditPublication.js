@@ -107,6 +107,7 @@ class EditPublication extends React.Component {
                 currentComponent.setState({
                     cities: response.data,
                 })
+
                 for(let i = 0; i < response.data.length; i++){
                     if(response.data[i].city === city)
                         cityid = response.data[i].cityid
@@ -151,7 +152,7 @@ class EditPublication extends React.Component {
                 ErrorService.logError(currentComponent.props,response)
                 return;
             }
-            
+           
             currentComponent.setState({
                 title: response.data.title,
                 provinceid: response.data.provinceid,
@@ -181,11 +182,27 @@ class EditPublication extends React.Component {
 
     }
 
+
+    updateProvince() {
+        let selectprovinces = document.getElementById("province-Select");
+
+        while (selectprovinces.childNodes[1]) {
+            selectprovinces.removeChild(selectprovinces.childNodes[1]); 
+        }
+
+        for(let i = 0; i < this.state.provinces.length; i++){
+            appendSelectElement(selectprovinces,this.state.provinces[i].province,this.state.provinces[i].provinceid)
+        }
+
+    }
+
     updateCity(event,values){
         event.preventDefault();
         values.provinceid = event.target.value
         event.target.blur();
+
         LocationService.getCities(values.provinceid).then(function (response){
+            
             if(CancelTokenService.isCancel(response))
                 return;
             let cities = response.data
@@ -196,9 +213,11 @@ class EditPublication extends React.Component {
             while (select.childNodes[1]) {
                 select.removeChild(select.childNodes[1]); 
             }
+
             for(let i = 0; i < cities.length; i++){
                 appendSelectElement(select,cities[i].city,cities[i].cityid)
             }
+            
         })
     }
 
@@ -304,8 +323,7 @@ class EditPublication extends React.Component {
         event.preventDefault();
 
         this.updateState(event);
-        
-        
+      
         if(Object.keys(errors).length === 0){
             this.setState({ loading: true }); 
             UserService.editPublication(userid,query.publicationid,publicationDTO).then(function (response){
@@ -322,6 +340,8 @@ class EditPublication extends React.Component {
                 });
                 
             })
+        } else{
+            window.scrollTo(0, 0);
         }
         
     }
@@ -331,20 +351,24 @@ class EditPublication extends React.Component {
         CancelTokenService.refreshToken()
     }
 
+    addProvincesToSelect(provinceid) {
+        const provinces = this.state.provinces.map(function(item){ 
+            if(item.province === provinceid) {
+                return <option defaultValue={item.provinceid} key={item.provinceid}>  {item.province} </option>;
+            } else {
+                return <option value={item.provinceid} key={item.provinceid}>  {item.province} </option>;
+            }
+        });
+
+        return provinces
+    }
 
 
     render() {
         const { t } = this.props;
         let initialSchema = this.reInitializeForm();
         
-
-        const provinces = this.state.provinces.map(function(item){ 
-            if(item.province === initialSchema.provinceid) {
-                return <option defaultValue={item.provinceid} value={item.provinceid} key={item.provinceid}>  {item.province} </option>;
-            } else {
-                return <option value={item.provinceid} key={item.provinceid}>  {item.province} </option>;
-            }
-        });
+        const provinces = this.addProvincesToSelect(initialSchema.provinceid);
         
         const cities = this.state.cities.map(function(item){ 
             if(item.city === initialSchema.cityid) {
@@ -454,7 +478,7 @@ class EditPublication extends React.Component {
                                     name="title"
                                     placeholder={t('publish.titleHolder')}
                                     value={values.title}
-                                    onChange={handleChange}
+                                    onChange={(event) => this.updateProvince(event,values) && handleChange(event)}
                                     onBlur={handleBlur}
                                     id="title"
                                     isInvalid={!!errors.title && touched.title}
