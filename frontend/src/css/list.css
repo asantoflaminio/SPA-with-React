@@ -196,6 +196,8 @@ input#search-btn {
 	width: 40%;	
 	float: right;
 	margin-right: 15px;
+	height: fit-content;
+	width: fit-content;
 
 }
 
