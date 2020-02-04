@@ -27,10 +27,10 @@ class EditPublication extends React.Component {
             cities: [],
             neighborhoods: [],
             title: '',
-            provinceid: '',
-            cityid: '',
+            province: '',
+            city: '',
+            neighborhood:'',
             propertyType: '',
-            neighborhoodid:'',
             address: '',
             operation: '',
             price: '',
@@ -47,6 +47,9 @@ class EditPublication extends React.Component {
             selectedOperationOption: '',
             selectedPropertyTypeOption: '',
             selectedStorageOption: '',
+            provinceid:'',
+            cityid:'',
+            neighborhoodid: '',
             loading: false,
             circleloading: false
 
@@ -85,6 +88,10 @@ class EditPublication extends React.Component {
                     provinceid = response.data[i].provinceid
             }
 
+            currentComponent.setState({
+                provinceid: provinceid
+            })
+
             currentComponent.loadCities(provinceid,city)
 
         })
@@ -113,6 +120,10 @@ class EditPublication extends React.Component {
                         cityid = response.data[i].cityid
                 }
 
+                currentComponent.setState({
+                    cityid: cityid
+                })
+
                 currentComponent.loadNeighborhood(cityid)
             })
         }
@@ -121,7 +132,7 @@ class EditPublication extends React.Component {
 
     loadNeighborhood(cityid) {
         let currentComponent = this;
-        
+       
         if(cityid !== undefined) {   
             LocationService.getNeighborhoods(cityid).then(function (response){
                 if(CancelTokenService.isCancel(response))
@@ -134,6 +145,14 @@ class EditPublication extends React.Component {
                 currentComponent.setState({
                     neighborhoods: response.data,
                 })
+
+                for(let i = 0; i < response.data.length; i++){
+                    if(response.data[i].neighborhood === currentComponent.state.neighborhood)
+                        currentComponent.setState({
+                            neighborhoodid: response.data[i].neighborhoodid
+                        })
+                }
+
             })
         }
     }
@@ -152,12 +171,12 @@ class EditPublication extends React.Component {
                 ErrorService.logError(currentComponent.props,response)
                 return;
             }
-           
+            // /console.table(response.data);
             currentComponent.setState({
                 title: response.data.title,
-                provinceid: response.data.provinceid,
-                cityid: response.data.cityid,
-                neighborhoodid: response.data.neighborhoodid,
+                province: response.data.provinceid,
+                city: response.data.cityid,
+                neighborhood: response.data.neighborhoodid,
                 address: response.data.address,
                 propertyType: response.data.propertyType,
                 operation: response.data.operation,
@@ -183,18 +202,6 @@ class EditPublication extends React.Component {
     }
 
 
-    updateProvince() {
-        let selectprovinces = document.getElementById("province-Select");
-
-        while (selectprovinces.childNodes[1]) {
-            selectprovinces.removeChild(selectprovinces.childNodes[1]); 
-        }
-
-        for(let i = 0; i < this.state.provinces.length; i++){
-            appendSelectElement(selectprovinces,this.state.provinces[i].province,this.state.provinces[i].provinceid)
-        }
-
-    }
 
     updateCity(event,values){
         event.preventDefault();
@@ -202,7 +209,7 @@ class EditPublication extends React.Component {
         event.target.blur();
 
         LocationService.getCities(values.provinceid).then(function (response){
-            
+        
             if(CancelTokenService.isCancel(response))
                 return;
             let cities = response.data
@@ -250,9 +257,9 @@ class EditPublication extends React.Component {
         let schema = {}
         
         schema.title = this.state.title;
-        schema.provinceid = this.state.provinceid;
-        schema.cityid = this.state.cityid;
-        schema.neighborhoodid = this.state.neighborhoodid;
+        schema.province = this.state.province;
+        schema.city = this.state.city;
+        schema.neighborhood = this.state.neighborhood;
         schema.address = this.state.address;
         schema.operation = this.state.operation;
         schema.price = this.state.price;
@@ -266,6 +273,9 @@ class EditPublication extends React.Component {
         schema.parking = this.state.parking;
         schema.balconies = this.state.balconies;
         schema.storage = this.state.storage;
+        schema.provinceid = this.state.provinceid;
+        schema.cityid = this.state.cityid;
+        schema.neighborhoodid = this.state.neighborhoodid;
 
         return schema;
     }
@@ -291,12 +301,12 @@ class EditPublication extends React.Component {
     }
 
     updateState(event) {
-
+        
         this.setState({
             title: event.target[0].value,
-            cityid: event.target[1].value,
-            provinceid: event.target[2].value,
-            neighborhoodid: event.target[3].value,
+            province: event.target[1].value, //chequear
+            city: event.target[2].value,
+            neighborhood: event.target[3].value,
             address: event.target[4].value,
             price: event.target[7].value,
             expenses: event.target[8].value,
@@ -313,7 +323,6 @@ class EditPublication extends React.Component {
     }
 
     handleFormSubmit(event,errors) {
-        
         let currentComponent = this
         let userid = LocalStorageService.getUserid();
         let queryString = require('query-string');
@@ -323,26 +332,26 @@ class EditPublication extends React.Component {
         event.preventDefault();
 
         this.updateState(event);
-      
-        if(Object.keys(errors).length === 0){
-            this.setState({ loading: true }); 
-            UserService.editPublication(userid,query.publicationid,publicationDTO).then(function (response){
-                if(response.status !== StatusCode.OK){
-                    ErrorService.logError(currentComponent.props,response)
-                    return;
-                }
-                currentComponent.setState({
-                    loading: false
-                });
-                currentComponent.props.history.push({
-                    pathname: '/publications',
-                    search: '?publicationid=' + publicationid,
-                });
+        console.table(publicationDTO)
+        // if(Object.keys(errors).length === 0){
+        //     this.setState({ loading: true }); 
+        //     UserService.editPublication(userid,query.publicationid,publicationDTO).then(function (response){
+        //         if(response.status !== StatusCode.OK){
+        //             ErrorService.logError(currentComponent.props,response)
+        //             return;
+        //         }
+        //         currentComponent.setState({
+        //             loading: false
+        //         });
+        //         currentComponent.props.history.push({
+        //             pathname: '/publications',
+        //             search: '?publicationid=' + publicationid,
+        //         });
                 
-            })
-        } else{
-            window.scrollTo(0, 0);
-        }
+        //     })
+        // } else{
+        //     window.scrollTo(0, 0);
+        // }
         
     }
 
@@ -351,41 +360,22 @@ class EditPublication extends React.Component {
         CancelTokenService.refreshToken()
     }
 
-    addProvincesToSelect(provinceid) {
-        const provinces = this.state.provinces.map(function(item){ 
-            if(item.province === provinceid) {
-                return <option defaultValue={item.provinceid} key={item.provinceid}>  {item.province} </option>;
-            } else {
-                return <option value={item.provinceid} key={item.provinceid}>  {item.province} </option>;
-            }
-        });
-
-        return provinces
-    }
-
 
     render() {
         const { t } = this.props;
         let initialSchema = this.reInitializeForm();
         
-        const provinces = this.addProvincesToSelect(initialSchema.provinceid);
-        
+        const provinces = this.state.provinces.map(function(item){ 
+            return <option value={item.provinceid} key={item.provinceid}>  {item.province} </option>;
+        });
+
         const cities = this.state.cities.map(function(item){ 
-            if(item.city === initialSchema.cityid) {
-                return <option value={item.cityid} key={item.cityid}>  {item.city} </option>;
-            } else {
-                return <option value={item.cityid} key={item.cityid}>  {item.city} </option>;
-            }
+            return <option value={item.cityid} key={item.cityid}>  {item.city} </option>;
         });
 
         const neighborhood = this.state.neighborhoods.map(function(item){
-            if(item.neighborhood === initialSchema.neighborhoodid) {
-                return <option value={item.neighborhoododid} key={item.neighborhoododid + item.neighborhood}>  {item.neighborhood} </option>;
-            } else {
-                return <option value={item.neighborhoododid} key={item.neighborhoododid + item.neighborhood}>  {item.neighborhood} </option>;
-            }
+            return <option value={item.neighborhoododid} key={item.neighborhoododid + item.neighborhood}>  {item.neighborhood} </option>;
         });
-
    
         const publicationSchema = yup.object({
         title: yup.string().required( t('errors.requiredField') )
@@ -439,7 +429,6 @@ class EditPublication extends React.Component {
                             .max(Constants.AMENITIES_MAX_LENGTH, t('errors.lengthMax')),
         });
 
-
         return (
             <div>
             {this.state.loading ? <ColoredLinearProgress /> : null}  
@@ -478,7 +467,7 @@ class EditPublication extends React.Component {
                                     name="title"
                                     placeholder={t('publish.titleHolder')}
                                     value={values.title}
-                                    onChange={(event) => this.updateProvince(event,values) && handleChange(event)}
+                                    onChange={handleChange}
                                     onBlur={handleBlur}
                                     id="title"
                                     isInvalid={!!errors.title && touched.title}
@@ -492,13 +481,13 @@ class EditPublication extends React.Component {
                                 <Form.Control
                                     as="select"
                                     name="provinceid"
-                                    id="province-Select"
+                                    id="province-Select" 
                                     onChange={(event) => this.updateCity(event,values) && handleChange(event)}
                                     onBlur={handleBlur}
                                     value={values.provinceid}
                                     isInvalid={!!errors.provinceid && touched.provinceid}
                                 >
-                                    <option disabled value="">{t('publish.provinceHolder')}</option>
+                                <option disabled value="">{t('publish.provinceHolder')}</option>
                                 {provinces} 
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">
@@ -529,9 +518,9 @@ class EditPublication extends React.Component {
                                     as="select"
                                     name="neighborhoodid"
                                     id="neighborhood-Select"
-                                    value={values.neighborhoodid}
                                     onChange={(event) => this.updateNeighborhoodValue(event,values) && handleChange(event)}
                                     onBlur={handleBlur}
+                                    value={values.neighborhoodid}
                                     isInvalid={!!errors.neighborhoodid && touched.neighborhoodid}
                                 >
                                     <option disabled value="">{t('publish.neighborhoodHolder')}</option>
