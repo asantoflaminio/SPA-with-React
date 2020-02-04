@@ -36,6 +36,7 @@
       "lengthMax" : "Field must have at most ${max} characters",
       "minValue" : "Field value must be at least ${min}",
       "maxValue" : "Field value must be at most ${max}",
+      "lettersAndNumbersRegex" : "Field only accepts letters or numbers",
       "lettersAndSpacesRegex" : "Field only accepts letters or spaces",
       "lettesNumersAndSpacesRegex" : "Field only accepts letters, numbers or spaces",
       "lettesNumersAndSpacesRegexComma" : "Field only accepts letters, numbers, spaces or commas",
@@ -271,7 +272,8 @@
       "deletePublicationDetail": "Are you sure you want to delete the post?",
       "unfavPublication": "Delete favorite publication",
       "unfavPublicationDetail": "Are you sure you want to remove the post from your favorites list?"
-    },"editpublication":{
+    },
+    "editpublication":{
       "edit": "EDIT PUBLICATION",
       "submit": "Edit"
     }
