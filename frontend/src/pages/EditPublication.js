@@ -17,6 +17,8 @@ import ErrorService from '../services/ErrorService';
 import JsonService from '../services/JsonService';
 import ColoredLinearProgress from '../components/ColoredLinearProgress';
 import ColoredCircularProgress from '../components/ColoredCircularProgress';
+import toast from 'toasted-notes'
+import 'toasted-notes/src/styles.css';
 
 class EditPublication extends React.Component {
 
@@ -304,7 +306,7 @@ class EditPublication extends React.Component {
         
         this.setState({
             title: event.target[0].value,
-            province: event.target[1].value, //chequear
+            province: event.target[1].value, 
             city: event.target[2].value,
             neighborhood: event.target[3].value,
             address: event.target[4].value,
@@ -326,13 +328,14 @@ class EditPublication extends React.Component {
         let currentComponent = this
         let userid = LocalStorageService.getUserid();
         let queryString = require('query-string');
+        let { t } = this.props;
         let query = queryString.parse(this.props.location.search);
         let publicationDTO = JsonService.getJSONParsed(event.target)
         let publicationid = query.publicationid;
         event.preventDefault();
 
         this.updateState(event);
-    
+        console.table(publicationDTO)
         if(Object.keys(errors).length === 0){
             this.setState({ loading: true }); 
             UserService.editPublication(userid,query.publicationid,publicationDTO).then(function (response){
@@ -350,6 +353,7 @@ class EditPublication extends React.Component {
                 
             })
         } else{
+            toast.notify(t('editpublication.unsuccesfullSubmit'));  
             window.scrollTo(0, 0);
         }
         

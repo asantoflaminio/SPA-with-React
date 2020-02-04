@@ -17,6 +17,8 @@ import * as StatusCode from '../util/StatusCode'
 import * as yup from 'yup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/Publish.css';
+import toast from 'toasted-notes'
+import 'toasted-notes/src/styles.css';
 
 
 class Publish extends React.Component {
@@ -164,6 +166,7 @@ class Publish extends React.Component {
 
     handleFormSubmit(event,errors) {
         let currentComponent = this
+        let { t } = this.props;
         let userid = LocalStorageService.getUserid();
         let publicationDTO = JsonService.getJSONParsed(event.target)
         event.preventDefault()
@@ -193,6 +196,7 @@ class Publish extends React.Component {
                 });
             })
         }else{
+            toast.notify(t('publish.unsuccesfullSubmit')); 
             window.scrollTo(0, 0);
         }
     }

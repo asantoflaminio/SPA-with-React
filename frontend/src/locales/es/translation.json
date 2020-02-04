@@ -126,7 +126,8 @@
       "balconiesHolder": "Cantidad de balcones...",
       "notCorresponding": "No corresponde",
       "Yes": "Sí",
-      "No": "No"
+      "No": "No",
+      "unsuccesfullSubmit": "No se pudo publicar la propiedad ya que existen errores en el formulario"
     },
     "admin": {
       "locations": "UBICACIONES",
@@ -275,6 +276,7 @@
     },
     "editpublication":{
       "edit": "EDITAR PUBLICACIÓN",
-      "submit": "Editar"
+      "submit": "Editar",
+      "unsuccesfullSubmit": "No se pudo editar la publicación ya que existen errores en el formulario"
     }
   }

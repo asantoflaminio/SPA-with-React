@@ -126,7 +126,8 @@
       "balconiesHolder": "Balconies quantity...",
       "notCorresponding": "Not corresponding",
       "Yes": "Yes",
-      "No": "No"
+      "No": "No",
+      "unsuccesfullSubmit": "The property couldn't be published as there are errors in the form"
     },
     "admin": {
       "locations": "LOCATIONS",
@@ -275,6 +276,7 @@
     },
     "editpublication":{
       "edit": "EDIT PUBLICATION",
-      "submit": "Edit"
+      "submit": "Edit",
+      "unsuccesfullSubmit": "The publication couldn't be edited as there are errors in the form"
     }
   }
