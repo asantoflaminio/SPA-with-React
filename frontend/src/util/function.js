@@ -1,12 +1,11 @@
 import defaultImage from '../resources/default.jpg'
 
 
-export const appendSelectElement = (selectCity,text,value) => {
+export const appendSelectElement = (select,text,value) => {
     let option = document.createElement("option");
     option.value = value;
     option.innerHTML = text;
-    selectCity.appendChild(option)
-
+    select.appendChild(option)
 }
 
 export const decidePlural = (informationSingular,informationPlural,value) => {

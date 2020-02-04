@@ -150,7 +150,7 @@ class EditPublication extends React.Component {
                     if(response.data[i].neighborhood === currentComponent.state.neighborhood)
                         currentComponent.setState({
                             neighborhoodid: response.data[i].neighborhoodid
-                        })
+                    })
                 }
 
             })
@@ -171,7 +171,7 @@ class EditPublication extends React.Component {
                 ErrorService.logError(currentComponent.props,response)
                 return;
             }
-            // /console.table(response.data);
+            
             currentComponent.setState({
                 title: response.data.title,
                 province: response.data.provinceid,
@@ -330,28 +330,29 @@ class EditPublication extends React.Component {
         let publicationDTO = JsonService.getJSONParsed(event.target)
         let publicationid = query.publicationid;
         event.preventDefault();
+        //publicationDTO.neighborhoodid = "" + this.state.neighborhoodid; //villerada para sacar
 
         this.updateState(event);
-        console.table(publicationDTO)
-        // if(Object.keys(errors).length === 0){
-        //     this.setState({ loading: true }); 
-        //     UserService.editPublication(userid,query.publicationid,publicationDTO).then(function (response){
-        //         if(response.status !== StatusCode.OK){
-        //             ErrorService.logError(currentComponent.props,response)
-        //             return;
-        //         }
-        //         currentComponent.setState({
-        //             loading: false
-        //         });
-        //         currentComponent.props.history.push({
-        //             pathname: '/publications',
-        //             search: '?publicationid=' + publicationid,
-        //         });
+    
+        if(Object.keys(errors).length === 0){
+            this.setState({ loading: true }); 
+            UserService.editPublication(userid,query.publicationid,publicationDTO).then(function (response){
+                if(response.status !== StatusCode.OK){
+                    ErrorService.logError(currentComponent.props,response)
+                    return;
+                }
+                currentComponent.setState({
+                    loading: false
+                });
+                currentComponent.props.history.push({
+                    pathname: '/publications',
+                    search: '?publicationid=' + publicationid,
+                });
                 
-        //     })
-        // } else{
-        //     window.scrollTo(0, 0);
-        // }
+            })
+        } else{
+            window.scrollTo(0, 0);
+        }
         
     }
 
@@ -374,7 +375,7 @@ class EditPublication extends React.Component {
         });
 
         const neighborhood = this.state.neighborhoods.map(function(item){
-            return <option value={item.neighborhoododid} key={item.neighborhoododid + item.neighborhood}>  {item.neighborhood} </option>;
+            return <option value={item.neighborhoododid} key={item.neighborhoodid}>  {item.neighborhood} </option>;
         });
    
         const publicationSchema = yup.object({
@@ -428,7 +429,7 @@ class EditPublication extends React.Component {
                             .matches(Constants.lettesNumersAndSpacesRegexComma, t('errors.lettesNumersAndSpacesRegexComma'))
                             .max(Constants.AMENITIES_MAX_LENGTH, t('errors.lengthMax')),
         });
-
+      
         return (
             <div>
             {this.state.loading ? <ColoredLinearProgress /> : null}  
@@ -488,7 +489,7 @@ class EditPublication extends React.Component {
                                     isInvalid={!!errors.provinceid && touched.provinceid}
                                 >
                                 <option disabled value="">{t('publish.provinceHolder')}</option>
-                                {provinces} 
+                               {provinces}
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">
                                     {errors.provinceid}
@@ -506,7 +507,7 @@ class EditPublication extends React.Component {
                                     isInvalid={!!errors.cityid && touched.cityid}
                                     >
                                         <option disabled value="">{t('publish.cityHolder')}</option>
-                                    {cities}
+                                   {cities}
                                     </Form.Control>  
                                     <Form.Control.Feedback type="invalid">
                                     {errors.cityid}
