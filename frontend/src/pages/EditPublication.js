@@ -330,7 +330,6 @@ class EditPublication extends React.Component {
         let publicationDTO = JsonService.getJSONParsed(event.target)
         let publicationid = query.publicationid;
         event.preventDefault();
-        //publicationDTO.neighborhoodid = "" + this.state.neighborhoodid; //villerada para sacar
 
         this.updateState(event);
     
@@ -375,7 +374,7 @@ class EditPublication extends React.Component {
         });
 
         const neighborhood = this.state.neighborhoods.map(function(item){
-            return <option value={item.neighborhoododid} key={item.neighborhoodid}>  {item.neighborhood} </option>;
+            return <option value={item.neighborhoodid} key={item.neighborhood + item.neighborhoodid}>  {item.neighborhood} </option>;
         });
    
         const publicationSchema = yup.object({
