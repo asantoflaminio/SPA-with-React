@@ -263,15 +263,15 @@ class EditPublication extends React.Component {
         schema.address = this.state.address;
         schema.operation = this.state.operation;
         schema.price = this.state.price;
-        schema.expenses = this.state.expenses;
+        (this.state.expenses === '-1') ? schema.expenses = '' : schema.expenses = this.state.expenses;
         (this.state.amenities === '-1') ? schema.amenities = '' : schema.amenities = this.state.amenities;
         schema.description = this.state.description;
         schema.bedrooms = this.state.bedrooms;
         schema.bathrooms = this.state.bathrooms;
-        schema.coveredFloorSize = this.state.coveredFloorSize;
+        (this.state.coveredFloorSize === '-1') ? schema.coveredFloorSize = '' : schema.coveredFloorSize = this.state.coveredFloorSize;
         schema.dimention = this.state.dimention;
         schema.parking = this.state.parking;
-        schema.balconies = this.state.balconies;
+        (this.state.balconies === '-1') ? schema.balconies = '' : schema.balconies = this.state.balconies;
         schema.storage = this.state.storage;
         schema.provinceid = this.state.provinceid;
         schema.cityid = this.state.cityid;
