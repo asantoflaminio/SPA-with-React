@@ -110,9 +110,9 @@ class StandarNavbar extends React.Component {
                         </div>
                     </div>
                 <div>
-                    <Link to={{pathname: "/SignUp"}}>
-                        <p className="navbar_item" id="sign_up" onClick={() => this.showlogin(true)}>{t('navbar.signUp')}</p>
-                    </Link>
+                <Link to={{pathname: "/SignUp"}}>
+                    <button className="navbar_item" id="sign_up" onClick={() => this.showlogin(true)}>{t('navbar.signUp')}</button>
+                </Link>
                 </div>
             </nav>
         )
