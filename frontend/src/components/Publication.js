@@ -42,6 +42,8 @@ function isEditable(t, editable, publicationid) {
 const Publication = ({ t , publication, page, faveable, editable, eraseFunction, ready, index }) => {
     let erasableComponent = isErasable(t, eraseFunction, publication.publicationid, page);
     let editableComponent = isEditable(t, editable, publication.publicationid);
+    var res = publication.date.split(":");
+    var pubDate = res[0] + ":" + res[1];
         return(
             <div className="polaroid-property">
                 <ImgVisualizer
@@ -80,7 +82,7 @@ const Publication = ({ t , publication, page, faveable, editable, eraseFunction,
                     </div>
                     <div className="second-column">
                         <div className="pub-date">
-                            {publication.date}
+                            {pubDate}
                         </div>
                         {editableComponent}
                         {erasableComponent}
