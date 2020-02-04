@@ -146,6 +146,8 @@ h4 {
     border-radius: 2px;
     box-sizing: border-box;
     color: #aaa;
+    height: fit-content;
+	width: fit-content;
 }
 
 .form-check {
