@@ -12,12 +12,16 @@ function isEditableErasable(t, editable, eraseFunction, page, publicationid) {
     if(eraseFunction && page !== "MyFavorites" && editable){
         return(
             <div className="more-info2">
-                <img className="delete" src={trash} alt="Delete" />
-                <p className="more-info-title" onClick={() => eraseFunction(publicationid)}>{t('admin.delete')}</p>
+                <div>
+                    <img className="delete delete-icon" src={trash} alt="Delete" />
+                    <p className="more-info-title delete-title" onClick={() => eraseFunction(publicationid)}>{t('admin.delete')}</p>
+                </div>
+                <div>
                 <Link to={{pathname: "/EditPublication", search: "?publicationid=" + publicationid}}>
-                    <img className="delete" src={pencil} alt="Edit" />
-                    <p className="more-info-title">{t('profilepublication.edit')} </p> 
+                    <img className="delete edit-icon" src={pencil} alt="Edit" />
+                    <p className="more-info-title edit-title">{t('profilepublication.edit')} </p> 
                 </Link>
+                </div>
             </div>	
         )
     }

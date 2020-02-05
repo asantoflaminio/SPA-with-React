@@ -40,14 +40,13 @@ h2 {
 }
 
 #editdata-submit {
-	height: 35px !important;
-    width: 90px !important;
-    padding: 5px !important;
-    font-size: 15px !important;
     margin: 5px 20px 0 0 !important;
-	background-color: #db7504 !important;
-	border-color: #db7504;
 	float: right;
+}
+
+#editPassword-submit {
+	float: right;
+	margin-right: 20px;
 }
 
 /* End of Style */
@@ -60,16 +59,6 @@ h2 {
 	color:dimgrey;
 	font-size:23px;
 	margin-top: 0 !important;
-}
-
-/* End of style */
-
-/* My Publications Style */
-
-.delete {
-	width:12px;
-	height:12px;
-	margin-top:-5px;
 }
 
 /* End of style */
