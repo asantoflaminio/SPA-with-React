@@ -43,7 +43,6 @@ const JsonService = (function(){
                 result += ",";
         }
         result += "}"
-        //alert(result)
         return result;
     }
 

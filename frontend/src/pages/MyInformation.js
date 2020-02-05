@@ -42,6 +42,9 @@ class MyInformation extends React.Component {
         this.setState({
             circleloading: true
         })
+
+        document.getElementById("emailTakenError").setAttribute("hasError",false)
+
         UserService.getUser(userid).then(function (response) {
             if(CancelTokenService.isCancel(response))
                 return;
@@ -62,7 +65,8 @@ class MyInformation extends React.Component {
 
     checkEmail(email){
         let emailError = document.getElementById("emailTakenError")
-        let currentComponent = this
+        let currentComponent = this;
+        // emailError.setAttribute("hasError",false)
         
         if(this.state.firstUserEmail === email){
             emailError.style.display = "none"
@@ -104,7 +108,7 @@ class MyInformation extends React.Component {
        
         emailError = document.getElementById("emailTakenError")
         this.checkEmail(event.target[2].value)
-
+      
         if(Object.keys(errors).length === 0 && emailError.getAttribute("hasError") === "false" ) {
             this.setState({loading: true}); 
             UserService.editUser(userid,userDTO).then(function(response){
@@ -134,6 +138,8 @@ class MyInformation extends React.Component {
         if(Object.keys(errors).length === 0) {
             this.setState({ loading: true }); 
             UserService.editUser(userid,userDTO).then(function(response){
+                console.log(response)
+                console.table(response)
                 if(response.status !== StatusCode.OK){
                     ErrorService.logError(currentComponent.props,response)
                 }
@@ -273,7 +279,7 @@ class MyInformation extends React.Component {
                                                 <Form.Control.Feedback type="invalid">
                                                 {errors.email}
                                                 </Form.Control.Feedback>
-                                            <p id="emailTakenError" hasError="false" className="errorText">{t('errors.emailTaken')}</p>
+                                            <p id="emailTakenError" className="errorText">{t('errors.emailTaken')}</p>
                                         </Form.Group>
                                         <Form.Group as={Col} md="8">
                                             <Form.Label>{t('profile.phoneNumber')}</Form.Label>

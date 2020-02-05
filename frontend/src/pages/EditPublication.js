@@ -335,7 +335,7 @@ class EditPublication extends React.Component {
         event.preventDefault();
 
         this.updateState(event);
-        console.table(publicationDTO)
+     
         if(Object.keys(errors).length === 0){
             this.setState({ loading: true }); 
             UserService.editPublication(userid,query.publicationid,publicationDTO).then(function (response){
