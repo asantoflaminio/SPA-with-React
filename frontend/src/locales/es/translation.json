@@ -54,7 +54,8 @@
       "errorBack": "Volver a la página anterior",
       "errorBackHome": "Volver al inicio",
       "serverError": "Error interno del servidor",
-      "clientError": "Error al procesar la solicitud"
+      "clientError": "Error al procesar la solicitud",
+      "passwordDoNotMatch": "La contraseña no es correcta"
     },
     "navbar": {
       "remember": "Recordarme",

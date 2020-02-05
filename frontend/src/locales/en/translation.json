@@ -54,7 +54,8 @@
       "errorBack": "Back to previous page",
       "errorBackHome": "Back to home",
       "serverError": "Internal server error",
-      "clientError": "Error processing request"
+      "clientError": "Error processing request",
+      "passwordDoNotMatch": "The password is not correct"
     },
     "navbar": {
       "remember": "Remember me",

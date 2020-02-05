@@ -66,7 +66,6 @@ class MyInformation extends React.Component {
     checkEmail(email){
         let emailError = document.getElementById("emailTakenError")
         let currentComponent = this;
-        // emailError.setAttribute("hasError",false)
         
         if(this.state.firstUserEmail === email){
             emailError.style.display = "none"
@@ -138,10 +137,13 @@ class MyInformation extends React.Component {
         if(Object.keys(errors).length === 0) {
             this.setState({ loading: true }); 
             UserService.editUser(userid,userDTO).then(function(response){
-                console.log(response)
-                console.table(response)
+                console.log(response.data.details)
                 if(response.status !== StatusCode.OK){
-                    ErrorService.logError(currentComponent.props,response)
+                    if(response.data.details === "The passwords do not match") {
+                        document.getElementById("passwordDoNotMatch").style.display = "block";
+                    } else {
+                        ErrorService.logError(currentComponent.props,response)
+                    }
                 }
                 currentComponent.setState({
                     loading: false
@@ -151,6 +153,10 @@ class MyInformation extends React.Component {
                 }
             })
         }
+    }
+
+    passwordCheck() {
+        document.getElementById("passwordDoNotMatch").style.display = "none";
     }
 
     reInitializeForm(){
@@ -334,13 +340,14 @@ class MyInformation extends React.Component {
                                                 placeholder={t('profile.passwordHolder')}
                                                 value={values.password}
                                                 onChange={handleChange}
-                                                onBlur={handleBlur}
+                                                onBlur={(event) => this.passwordCheck(event.target.value,errors) && handleBlur(event)}
                                                 id="password"
                                                 isInvalid={!!errors.password && touched.password}
                                             />
                                             <Form.Control.Feedback type="invalid">
                                                 {errors.password}
                                             </Form.Control.Feedback>
+                                            <p id="passwordDoNotMatch" className="errorText">{t('errors.passwordDoNotMatch')}</p>
                                         </Form.Group>
                                         <Form.Group as={Col} md="8">
                                             <Form.Label>{t('profile.newpassword')}</Form.Label>
