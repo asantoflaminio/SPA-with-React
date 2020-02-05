@@ -173,7 +173,7 @@ class EditPublication extends React.Component {
                 ErrorService.logError(currentComponent.props,response)
                 return;
             }
-            
+           
             currentComponent.setState({
                 title: response.data.title,
                 province: response.data.provinceid,
@@ -766,8 +766,8 @@ class EditPublication extends React.Component {
                                         type="radio"
                                         label={t('publish.notCorresponding')}
                                         name="storage"
-                                        value="notCorresponding"
-                                        checked={this.state.selectedStorageOption === 'notCorresponding'}
+                                        value="-1"
+                                        checked={this.state.selectedStorageOption === '-1'}
                                         onChange={this.handleStorageChange}
                                     />
                             </Form.Group>
