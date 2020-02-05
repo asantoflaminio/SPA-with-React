@@ -137,17 +137,17 @@ h4 {
 #province-Select, #city-Select, #neighborhood-Select {
     width: 95%;
     height: 35px;
-    padding: 12px 20px;
-    margin-top: 2px;
-	margin-left: 5px;
+    padding: 0 !important;
+    margin: 2px 0 0 5px;
     display: inline-block;
     border: 1px solid;
     border-color:#aaa;
-    border-radius: 2px;
+    border-radius: 0;
     box-sizing: border-box;
     color: #aaa;
-    height: fit-content;
+ /*   height: fit-content;
 	width: fit-content;
+*/
 }
 
 .form-check {

@@ -185,8 +185,7 @@ input#search-btn {
 }
 
 #order-select {
-	margin-left: 8px;
-	margin-top: 23px;
+	margin: 30px 15px 0 8px;
   	border: 1px solid #FD8907;
   	border-radius: 5px;
   	color: #555;
@@ -195,10 +194,11 @@ input#search-btn {
     box-shadow: none;
 	width: 40%;	
 	float: right;
-	margin-right: 15px;
-	height: fit-content;
+	padding: 0 !important;
+	height: 30px;
+/*	height: fit-content;
 	width: fit-content;
-
+*/
 }
 
 #order-select option {
