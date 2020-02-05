@@ -240,6 +240,10 @@ div.polaroid_des {
   margin-top: 5px;
 }
 
+.agency_text {
+  overflow-wrap: break-word;
+}
+
 /* End of style */
 
 /* Overview Style */
