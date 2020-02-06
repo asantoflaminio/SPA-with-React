@@ -63,11 +63,6 @@
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/meinHaus/*</url-pattern>
     </filter-mapping>
-	
-	<error-page>
-        <error-code>404</error-code>
-        <location>/index.html</location>
-    </error-page>
 
     <filter>
 		<display-name>CacheControlFilter</display-name>
@@ -102,5 +97,14 @@
 		<filter-name>CacheControlFilter</filter-name>
 		<url-pattern>*.ico</url-pattern>
 	</filter-mapping>
+
+	<welcome-file-list>
+        <welcome-file>/index.html</welcome-file>
+    </welcome-file-list>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/index.html</location>
+    </error-page>
     
 </web-app>
