@@ -123,10 +123,10 @@ public class PublicationServiceImpl implements PublicationService {
 	}
 	
 	@Override
-	public List<PublicationDTO> findByUserId(long userid, Integer page, Integer limit, String order){
+	public List<PublicationDTO> findByUserId(long userid, Integer page, Integer limit){
 		LOGGER.debug("Looking for publications of user with id {}", userid);
 		List<PublicationDTO> publicationsDTO = new LinkedList<PublicationDTO>();
-		for(Publication publication: publicationDao.findByUserId(userid, page,limit, order)) {
+		for(Publication publication: publicationDao.findByUserId(userid, page,limit)) {
 			publicationsDTO.add(transform(publication));
 		}
 		return publicationsDTO;
