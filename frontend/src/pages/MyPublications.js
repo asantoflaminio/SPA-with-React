@@ -47,6 +47,7 @@ class MyPublications extends React.Component {
         queryParameters.page = parseInt(page);
         queryParameters.limit = Constants.PUBLICATIONS_PAGE_LIMIT
         queryParameters.locked = true;
+        queryParameters.order = Constants.NEWEST_PUBLICATION;
         this.setState({loadingPublications: true})
         LocalStorageService.deleteCounter();
         LocalStorageService.initializeCounter()
