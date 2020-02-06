@@ -766,7 +766,7 @@ class EditPublication extends React.Component {
                                         type="radio"
                                         label={t('publish.notCorresponding')}
                                         name="storage"
-                                        value="-1"
+                                        value="notCorresponding"
                                         checked={this.state.selectedStorageOption === '-1'}
                                         onChange={this.handleStorageChange}
                                     />

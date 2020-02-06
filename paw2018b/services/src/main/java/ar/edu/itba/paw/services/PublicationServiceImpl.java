@@ -104,13 +104,16 @@ public class PublicationServiceImpl implements PublicationService {
 			   String bathrooms, String floorSize, String parking,
 			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses, long publicationid) {
 		
-		if(! vs.validatePublication(title, address, neighborhood,
-				   city, province, operation, price,
-				   description, propertyType, bedrooms,
-				   bathrooms, floorSize, parking,
-				   coveredFloorSize, balconies, amenities, storage, expenses, publicationid))
-			return false;
-		
+		if(expenses.length() == 0) {
+			expenses = "-1";
+		}
+		if(storage.equals("notCorresponding")) {
+			storage = "-1";
+		}
+		if(amenities.length() == 0) {
+			amenities = "-1";
+		}
+
 		LOGGER.debug("Editing data of publication with title {}", title);
 		return publicationDao.editData(title, address, neighborhood, city, province, operation, price,
 				   description, propertyType, bedrooms,
