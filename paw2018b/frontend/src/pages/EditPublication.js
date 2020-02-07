@@ -74,6 +74,9 @@ class EditPublication extends React.Component {
     loadProvinces(province,city) {
         let currentComponent = this
         let provinceid;
+        this.setState({
+            circleloading: true
+        })
         LocationService.getProvinces().then(function (response){
             if(CancelTokenService.isCancel(response))
                 return;
@@ -151,7 +154,8 @@ class EditPublication extends React.Component {
                 for(let i = 0; i < response.data.length; i++){
                     if(response.data[i].neighborhood === currentComponent.state.neighborhood)
                         currentComponent.setState({
-                            neighborhoodid: response.data[i].neighborhoodid
+                            neighborhoodid: response.data[i].neighborhoodid,
+                            circleloading: false
                     })
                 }
 
@@ -195,8 +199,7 @@ class EditPublication extends React.Component {
                 storage: response.data.storage,
                 selectedOperationOption: response.data.operation,
                 selectedPropertyTypeOption: response.data.propertyType,
-                selectedStorageOption: response.data.storage,
-                circleloading: false
+                selectedStorageOption: response.data.storage
             })
             currentComponent.loadProvinces(response.data.provinceid,response.data.cityid)
         })
