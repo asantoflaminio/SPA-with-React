@@ -771,7 +771,7 @@ class EditPublication extends React.Component {
                                         label={t('publish.notCorresponding')}
                                         name="storage"
                                         value="notCorresponding"
-                                        checked={this.state.selectedStorageOption === '-1'}
+                                        checked={this.state.selectedStorageOption === 'notCorresponding'}
                                         onChange={this.handleStorageChange}
                                     />
                             </Form.Group>
