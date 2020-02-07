@@ -20,6 +20,7 @@ import 'toasted-notes/src/styles.css';
 import ColoredLinearProgress from '../components/ColoredLinearProgress';
 import ColoredCircularProgress from '../components/ColoredCircularProgress';
 
+
 class MyInformation extends React.Component {
     constructor(props) {
         super(props);
@@ -66,7 +67,7 @@ class MyInformation extends React.Component {
     checkEmail(email){
         let emailError = document.getElementById("emailTakenError")
         let currentComponent = this;
-        
+      
         if(this.state.firstUserEmail === email){
             emailError.style.display = "none"
             emailError.setAttribute("hasError",false)
@@ -100,15 +101,15 @@ class MyInformation extends React.Component {
         event.preventDefault();
         const { t } = this.props;
         let currentComponent = this;
-        let emailError;
+        let emailError = document.getElementById("emailTakenError")
+        this.checkEmail(event.target[2].value)
         let userDTO = JsonService.getJSONParsed(event.target);
         let userid = LocalStorageService.getUserid();
         this.updateState(event);
        
-        emailError = document.getElementById("emailTakenError")
-        this.checkEmail(event.target[2].value)
       
-        if(Object.keys(errors).length === 0 && emailError.getAttribute("hasError") === "false" ) {
+        if(emailError.getAttribute("hasError") != null) {
+            if(Object.keys(errors).length === 0 && emailError.getAttribute("hasError") === "false" ) {
             this.setState({loading: true}); 
             UserService.editUser(userid,userDTO).then(function(response){
                 if(response.status !== StatusCode.OK){
@@ -122,6 +123,7 @@ class MyInformation extends React.Component {
                 LocalStorageService.refreshToken(response.headers.authorization, userDTO.email);
                 currentComponent.props.updateUsername(userDTO.email);
             })
+            }
         }
     }
 
@@ -137,7 +139,6 @@ class MyInformation extends React.Component {
         if(Object.keys(errors).length === 0) {
             this.setState({ loading: true }); 
             UserService.editUser(userid,userDTO).then(function(response){
-                console.log(response.data.details)
                 if(response.status !== StatusCode.OK){
                     if(response.data.details === "The passwords do not match") {
                         document.getElementById("passwordDoNotMatch").style.display = "block";
@@ -157,6 +158,9 @@ class MyInformation extends React.Component {
 
     passwordCheck() {
         document.getElementById("passwordDoNotMatch").style.display = "none";
+    }
+
+    blurInput(){
     }
 
     reInitializeForm(){
@@ -354,11 +358,11 @@ class MyInformation extends React.Component {
                                             <Form.Control
                                                 type="password"
                                                 placeholder={t('profile.newpasswordHolder')}
-                                                name="newpassword"
+                                                name="newpassword" 
                                                 value={values.newpassword}
                                                 onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                isInvalid={!!errors.newpassword && touched.newpassword}
+                                                onBlur={(event) => this.blurInput(event,errors) && handleBlur(event)}
+                                                isInvalid={!!errors.newpassword && touched.newpassword} 
                                             />
                                             <Form.Control.Feedback type="invalid">
                                                 {errors.newpassword}

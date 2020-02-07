@@ -173,7 +173,7 @@ class EditPublication extends React.Component {
                 ErrorService.logError(currentComponent.props,response)
                 return;
             }
-           
+            
             currentComponent.setState({
                 title: response.data.title,
                 province: response.data.provinceid,
@@ -209,6 +209,8 @@ class EditPublication extends React.Component {
         event.preventDefault();
         values.provinceid = event.target.value
         event.target.blur();
+        values.cityid = ""
+        values.neighborhoodid = ""
 
         LocationService.getCities(values.provinceid).then(function (response){
         
@@ -234,6 +236,8 @@ class EditPublication extends React.Component {
         event.preventDefault();
         values.cityid = event.target.value
         event.target.blur();
+        values.neighborhoodid = ""
+
         LocationService.getNeighborhoods(values.cityid).then(function (response){
             if(CancelTokenService.isCancel(response))
                 return;
@@ -259,9 +263,6 @@ class EditPublication extends React.Component {
         let schema = {}
         
         schema.title = this.state.title;
-        schema.province = this.state.province;
-        schema.city = this.state.city;
-        schema.neighborhood = this.state.neighborhood;
         schema.address = this.state.address;
         schema.operation = this.state.operation;
         schema.price = this.state.price;
@@ -335,7 +336,7 @@ class EditPublication extends React.Component {
         event.preventDefault();
 
         this.updateState(event);
-     
+       
         if(Object.keys(errors).length === 0){
             this.setState({ loading: true }); 
             UserService.editPublication(userid,query.publicationid,publicationDTO).then(function (response){
@@ -367,7 +368,11 @@ class EditPublication extends React.Component {
 
     render() {
         const { t } = this.props;
-        let initialSchema = this.reInitializeForm();
+        let initialSchema;
+        // if(this.state.provinceid !== '') {
+        //     initialSchema = this.reInitializeForm();
+        //     console.table(initialSchema)
+        // }
         
         const provinces = this.state.provinces.map(function(item){ 
             return <option value={item.provinceid} key={item.provinceid}>  {item.province} </option>;
@@ -445,7 +450,7 @@ class EditPublication extends React.Component {
                 </div>
                 <Formik
                 validationSchema={publicationSchema}
-                enableReinitialize={true}
+               // enableReinitialize={true}
                 initialValues={initialSchema}
                 onSubmit={(values, {setSubmitting, resetForm}) => {
                     setSubmitting(true);
@@ -462,7 +467,7 @@ class EditPublication extends React.Component {
                     handleSubmit,
                     isSubmitting
                 }) => (
-                    <Form onSubmit={(event) => handleSubmit(event) || this.handleFormSubmit(event,errors)} >
+                    <Form onSubmit={(event) => handleSubmit(event) || this.handleFormSubmit(event,errors) } >
                         <div className="sub_box">
                             <Form.Group as={Col} md="12">
                                 <Form.Label>{t('publish.title')}</Form.Label>
