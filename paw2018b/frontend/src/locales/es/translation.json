@@ -55,7 +55,8 @@
       "errorBackHome": "Volver al inicio",
       "serverError": "Error interno del servidor",
       "clientError": "Error al procesar la solicitud",
-      "passwordDoNotMatch": "La contraseña no es correcta"
+      "passwordDoNotMatch": "La contraseña no es correcta",
+      "smallerThanFloorSize": "El valor debe ser menor o igual a la superficie total"
     },
     "navbar": {
       "remember": "Recordarme",

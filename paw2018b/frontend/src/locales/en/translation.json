@@ -55,7 +55,8 @@
       "errorBackHome": "Back to home",
       "serverError": "Internal server error",
       "clientError": "Error processing request",
-      "passwordDoNotMatch": "The password is not correct"
+      "passwordDoNotMatch": "The password is not correct",
+      "smallerThanFloorSize": "Value must be smaller or equal than floorsize"
     },
     "navbar": {
       "remember": "Remember me",

@@ -212,13 +212,31 @@ class Publish extends React.Component {
         CancelTokenService.refreshToken()
     }
 
+    
+
 
     render() {
         const { t } = this.props;
         const provinces = this.state.provinces.map(function(item){
             return <option value={item.provinceid} key={item.provinceid}>  {item.province} </option>;
         });
-          
+
+        function smallerThan(ref, msg) {
+            return this.test({
+                name: 'smallerThan',
+                exclusive: false,
+            message: msg || t('errors.smallerThanFloorSize'),
+                params: {
+                    reference: ref.path
+                },
+                test: function(value) {
+              return value <= this.resolve(ref) 
+                }
+            })
+        };
+
+        yup.addMethod(yup.number, 'smallerThan', smallerThan);
+        
         const schema = yup.object({
         title: yup.string().required( t('errors.requiredField') )
                             .matches(Constants.lettesNumersAndSpacesRegex, t('errors.lettesNumersAndSpacesRegex'))
@@ -254,7 +272,8 @@ class Publish extends React.Component {
         coveredFloorSize: yup.number().required(t('errors.requiredField'))
                             .typeError(t('errors.numbersRegex')) 
                             .min(Constants.LOW_MIN_NUMBER, t('errors.minValue'))
-                            .max(Constants.DIMENSION_MAX_LENGTH, t('errors.maxValue')),
+                            .max(Constants.DIMENSION_MAX_LENGTH, t('errors.maxValue'))
+                            .smallerThan(yup.ref('dimention')),
         parking: yup.number().required(t('errors.requiredField'))
                             .typeError(t('errors.numbersRegex')) 
                             .min(Constants.LOW_MIN_NUMBER, t('errors.minValue'))
