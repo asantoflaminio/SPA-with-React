@@ -167,6 +167,12 @@ h4 {
 
 .delete-icon {
 	margin-right: -75%;
+	cursor: pointer;
+}
+
+.delete-icon2 {
+	margin-left: 80%;
+	cursor: pointer;
 }
 
 .bigCharacteristic {

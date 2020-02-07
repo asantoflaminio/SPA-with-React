@@ -13,7 +13,7 @@ function isEditableErasable(t, editable, eraseFunction, page, publicationid) {
         return(
             <div className="more-info2">
                 <div>
-                    <img className="delete delete-icon" src={trash} alt="Delete" />
+                    <img className="delete delete-icon" src={trash} alt="Delete" onClick={() => eraseFunction(publicationid)}/>
                     <p className="more-info-title delete-title" onClick={() => eraseFunction(publicationid)}>{t('admin.delete')}</p>
                 </div>
                 <div>
@@ -25,6 +25,22 @@ function isEditableErasable(t, editable, eraseFunction, page, publicationid) {
             </div>	
         )
     }
+    
+    if(eraseFunction && page !== "MyFavorites" ) {
+        return(
+            <div className="more-info2">
+                <div>
+                    <img className="delete delete-icon2" src={trash} alt="Delete" onClick={() => eraseFunction(publicationid)}/>
+                    <p className="more-info-title delete-title" onClick={() => eraseFunction(publicationid)}>{t('admin.delete')}</p>
+                </div>
+                <div>
+                <Link to={{pathname: "/publications", search: "?publicationid=" + publicationid}}>
+                    <p className="more-info-title edit-title">{t('list.moreInfo')} </p> 
+                </Link>
+                </div>
+            </div>
+        )
+    } 
 
     if(editable) {
         return(	
@@ -47,7 +63,6 @@ function isEditableErasable(t, editable, eraseFunction, page, publicationid) {
 }
 
 const Publication = ({ t , publication, page, faveable, editable, eraseFunction, ready, index }) => {
-    //let erasableComponent = isErasable(t, eraseFunction, publication.publicationid, page);
     let editableErasableComponent = isEditableErasable(t, editable, eraseFunction, page, publication.publicationid);
     var res = publication.date.split(":");
     var pubDate = res[0] + ":" + res[1];
