@@ -371,11 +371,7 @@ class EditPublication extends React.Component {
 
     render() {
         const { t } = this.props;
-        let initialSchema;
-        // if(this.state.provinceid !== '') {
-        //     initialSchema = this.reInitializeForm();
-        //     console.table(initialSchema)
-        // }
+        let initialSchema = this.reInitializeForm();
         
         const provinces = this.state.provinces.map(function(item){ 
             return <option value={item.provinceid} key={item.provinceid}>  {item.province} </option>;
@@ -453,7 +449,7 @@ class EditPublication extends React.Component {
                 </div>
                 <Formik
                 validationSchema={publicationSchema}
-               // enableReinitialize={true}
+                enableReinitialize={true}
                 initialValues={initialSchema}
                 onSubmit={(values, {setSubmitting, resetForm}) => {
                     setSubmitting(true);
