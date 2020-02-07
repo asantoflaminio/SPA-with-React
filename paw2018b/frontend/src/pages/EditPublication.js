@@ -201,6 +201,9 @@ class EditPublication extends React.Component {
                 selectedPropertyTypeOption: response.data.propertyType,
                 selectedStorageOption: response.data.storage
             })
+            if(currentComponent.state.selectedStorageOption === '-1') {
+                currentComponent.state.selectedStorageOption = 'notCorresponding';
+            }
             currentComponent.loadProvinces(response.data.provinceid,response.data.cityid)
         })
 
