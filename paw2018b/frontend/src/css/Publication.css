@@ -158,18 +158,15 @@ h4 {
 }
 
 .edit-title {
-	margin-right: -45px;
-}
-
-.delete-title {
+	margin: 0 -45px 0 20px;
 }
 
 .edit-icon {
-	margin-right: -300px;
+	margin-right: -80%;
 }
 
 .delete-icon {
-	margin-right: -300px;
+	margin-right: -75%;
 }
 
 .bigCharacteristic {
