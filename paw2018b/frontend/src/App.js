@@ -43,7 +43,7 @@ const PrivateRoute = ({component: Component, componentProps, ...rest}) => {
 const AdminRoute = ({component: Component, ...rest}) => {
   return (
         <Route {...rest} render={props => (
-          UserService.isAdmin() ?
+          UserService.isLogged() && UserService.isAdmin() ?
                 <Component {...props} />
             : <Redirect to="/" />
         )} />
