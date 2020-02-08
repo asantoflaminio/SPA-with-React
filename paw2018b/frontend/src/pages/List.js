@@ -283,9 +283,9 @@ class List extends React.Component {
     }
 
     deleteAllFilters(){
+        let addressValue = document.getElementById("search-holder").value
         let names = ["address","minPrice","maxPrice","minFloorSize","maxFloorSize","bedrooms","bathrooms","parking","page"]
-        let values = ["","","","","","","","",0]
-        document.getElementById("search-holder").value = "";
+        let values = [addressValue,"","","","","","","",0]
         this.updatePublications(names,values,true)
     }
 
