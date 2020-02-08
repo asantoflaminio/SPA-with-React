@@ -387,6 +387,22 @@ class EditPublication extends React.Component {
         const neighborhood = this.state.neighborhoods.map(function(item){
             return <option value={item.neighborhoodid} key={item.neighborhood + item.neighborhoodid}>  {item.neighborhood} </option>;
         });
+
+        function smallerThan(ref, msg) {
+            return this.test({
+                name: 'smallerThan',
+                exclusive: false,
+            message: msg || t('errors.smallerThanFloorSize'),
+                params: {
+                    reference: ref.path
+                },
+                test: function(value) {
+              return value <= this.resolve(ref) 
+                }
+            })
+        };
+
+        yup.addMethod(yup.number, 'smallerThan', smallerThan);
    
         const publicationSchema = yup.object({
         title: yup.string().required( t('errors.requiredField') )
@@ -423,7 +439,8 @@ class EditPublication extends React.Component {
         coveredFloorSize: yup.number().required(t('errors.requiredField'))
                             .typeError(t('errors.numbersRegex')) 
                             .min(Constants.LOW_MIN_NUMBER, t('errors.minValue'))
-                            .max(Constants.DIMENSION_MAX_LENGTH, t('errors.maxValue')),
+                            .max(Constants.DIMENSION_MAX_LENGTH, t('errors.maxValue'))
+                            .smallerThan(yup.ref('dimention')),
         parking: yup.number().required(t('errors.requiredField'))
                             .typeError(t('errors.numbersRegex')) 
                             .min(Constants.LOW_MIN_NUMBER, t('errors.minValue'))
