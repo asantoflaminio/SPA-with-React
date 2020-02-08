@@ -50,9 +50,11 @@ class List extends React.Component {
         let values = [query.address,query.operation,query.propertyType,query.minPrice,query.maxPrice,query.minFloorSize,query.maxFloorSize,
                         query.bedrooms,query.bathrooms,query.parking,this.setInitialPage()]
         
-        this.updatePublications(names,values,true)      
+        this.updatePublications(names,values,true)   
         this.selectOperation(query.operation)
         this.selectPropertyType(query.propertyType)
+        document.addEventListener("keydown", this.onKeyPressed.bind(this));
+
       }
 
       updatePublications(names,values,updateFilters){
@@ -209,7 +211,6 @@ class List extends React.Component {
         }
 
         if(this.state.publications.length === 0) {
-            // TODO: AGREGAR KEYS
             pubComponents.push(
                 <div key={"No-Pubs"}> 
                     <p id="no-results-title">{t('list.noPublications')}</p>
@@ -284,6 +285,7 @@ class List extends React.Component {
     deleteAllFilters(){
         let names = ["address","minPrice","maxPrice","minFloorSize","maxFloorSize","bedrooms","bathrooms","parking","page"]
         let values = ["","","","","","","","",0]
+        document.getElementById("search-holder").value = "";
         this.updatePublications(names,values,true)
     }
 
@@ -421,6 +423,13 @@ class List extends React.Component {
         CancelTokenService.getSource().cancel()
         CancelTokenService.refreshToken()
         LocalStorageService.deleteCounter()
+        document.removeEventListener("keydown", this.onKeyPressed.bind(this));
+    }
+
+    onKeyPressed(e) {
+        if (e.keyCode === 13) {
+            this.handleSearch();
+        } 
     }
 
     render(){
@@ -433,6 +442,7 @@ class List extends React.Component {
         let bedroomFilter = this.createFilterFields("bedrooms","list.bedroomSingular","list.bedroomPlural",t,"bedrooms")
         let bathroomFilter = this.createFilterFields("bathrooms","list.bathroomSingular","list.bathroomPlural",t,"bathrooms")
         let parkingFilter = this.createFilterFields("parking","list.parkingSingular","list.parkingPlural",t,"parking")
+        
         return(
             <div>                
             <div>
