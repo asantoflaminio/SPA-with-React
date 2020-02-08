@@ -165,7 +165,9 @@ class Details extends React.Component {
                                     <p className="agency_text">{t('details.bedrooms')} {this.state.publication.bedrooms}</p>
                                     <p className="agency_text">{t('details.bathrooms')} {this.state.publication.bathrooms}</p>
                                     <p className="agency_text">{t('details.floorSize')} {this.state.publication.dimention} m2</p>
-                                    <p className="agency_text">{t('details.coveredFloorSize')} {this.state.publication.coveredFloorSize === "-1" ? t('details.notAvailable') : this.state.publication.coveredFloorSize + " m2"}</p>
+                                    {this.state.publication.coveredFloorSize === "-1" ? null : (
+                                        <p className="agency_text">{t('details.coveredFloorSize')} {this.state.publication.coveredFloorSize + " m2"}</p>
+                                    )}
                                     <p className="agency_text">{t('details.parking')} {this.state.publication.parking}</p>
                                     {this.state.publication.balconies === "-1" ? null : (
                                         <p className="agency_text">{t('details.balconies')} {this.state.publication.balconies}</p>
