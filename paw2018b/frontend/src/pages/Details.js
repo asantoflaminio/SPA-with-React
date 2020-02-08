@@ -167,10 +167,18 @@ class Details extends React.Component {
                                     <p className="agency_text">{t('details.floorSize')} {this.state.publication.dimention} m2</p>
                                     <p className="agency_text">{t('details.coveredFloorSize')} {this.state.publication.coveredFloorSize === "-1" ? t('details.notAvailable') : this.state.publication.coveredFloorSize + " m2"}</p>
                                     <p className="agency_text">{t('details.parking')} {this.state.publication.parking}</p>
-                                    <p className="agency_text">{t('details.balconies')} {this.state.publication.balconies === "-1" ? t('details.notAvailable') : this.state.publication.balconies}</p>
-                                    <p className="agency_text">{t('details.amenities')} {this.state.publication.amenities === "-1" ? t('details.notAvailable') : this.state.publication.amenities}</p>
-                                    <p className="agency_text">{t('details.storage')} {this.state.publication.storage === "-1" ? t('details.notAvailable'): this.state.publication.storage === "yes" ? t('details.Yes'): t('details.No')}</p>
-                                    <p className="agency_text">{t('details.expenses')} {this.state.publication.expenses === "-1" ? t('details.notAvailable'): this.state.publication.expenses + " U$S"}</p>
+                                    {this.state.publication.balconies === "-1" ? null : (
+                                        <p className="agency_text">{t('details.balconies')} {this.state.publication.balconies}</p>
+                                    )}
+                                    {this.state.publication.amenities === "-1" ? null : (
+                                        <p className="agency_text">{t('details.amenities')} {this.state.publication.amenities}</p>
+                                    )}
+                                    {this.state.publication.storage === "-1" ? null : (
+                                        <p className="agency_text">{t('details.storage')} {this.state.publication.storage === "yes" ? t('details.Yes'): t('details.No')}</p>
+                                    )}
+                                    {this.state.publication.expenses === "-1" ? null : (
+                                        <p className="agency_text">{t('details.expenses')} {this.state.publication.expenses + " U$S"}</p>
+                                    )}
                                 </div>
                             </div>
                         </div>

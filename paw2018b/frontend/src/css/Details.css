@@ -33,6 +33,7 @@ div.polaroid_price {
 div.container-list {
   text-align: center;
   padding: 10px 20px;
+  
 }
 
 .imageSize{
@@ -227,6 +228,7 @@ label {
 div.polaroid_des {
   width: 64%;
   margin: 0 auto;
+  margin-left: 22vw; 
   max-width: 900px;
   background-color: white;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
