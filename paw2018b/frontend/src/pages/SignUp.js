@@ -328,7 +328,7 @@ class SignUp extends React.Component {
 										<Form.Label>{t('signUp.password')}</Form.Label>
 										<Form.Control
 											type='password'
-											placeholder={t('navbar.mail')}
+											placeholder={t('navbar.password')}
 											name='password'
 											value={values.password}
 											onChange={handleChange}
