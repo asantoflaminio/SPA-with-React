@@ -93,3 +93,7 @@ div.polaroid {
 .form-inline {
   margin-top: -15px;
 }
+
+#submitCityButton, #submitProvinceButton, #submitNeighborhoodButton {
+  margin: 32px 0 0 10px;
+}

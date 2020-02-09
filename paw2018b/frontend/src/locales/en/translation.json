@@ -27,7 +27,7 @@
       "searhBtn": "Search",
       "newPropsOnRent": "New properties for rent",
       "newPropsOnSale": "New properties on sale",
-      "moreInfo": "More information"
+      "moreInfo": "More information "
     },
     "errors": {
       "requiredField": "The field is required",
