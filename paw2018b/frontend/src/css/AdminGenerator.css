@@ -12,7 +12,7 @@ div.polaroid {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   margin: 20px 0 30px 15px !important;
   height: auto;
-  background-color: white;
+  background-color: #fff;
   padding-bottom:20px;
   min-width: 400px;
 }
@@ -79,7 +79,7 @@ div.polaroid {
 .signup-submit {
   padding: 7px 25px;
   background-color: #FD8907;
-  color: white;
+  color: #fff;
   cursor: pointer;
   border: none;
   margin-top: 25px;

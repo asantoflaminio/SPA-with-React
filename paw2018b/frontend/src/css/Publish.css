@@ -5,15 +5,13 @@
 }
 
 .box_form {
-    margin-top: 20px;
+    margin: 20px 0 50px 17%;
     float: left;
-    margin-left: 17%;
     width: 70%;
     height: auto;
     min-width: 250px;
-    background-color: white;
+    background-color: #fff;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin-bottom: 50px;
 }
 
 h3 {
@@ -79,9 +77,7 @@ h4 {
     border:1px solid #666;
     width: 500px;
     height: 500px;
-    margin: auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin: 20px auto;
     display: flex;
     justify-content: center;
     position: relative;
@@ -140,18 +136,18 @@ h4 {
     padding: 0 !important;
     margin: 2px 0 0 5px;
     display: inline-block;
-    border: 1px solid;
-    border-color:#aaa;
+    border: 1px solid #aaa;
     border-radius: 0;
     box-sizing: border-box;
     color: #aaa;
- /*   height: fit-content;
-	width: fit-content;
-*/
 }
 
 .form-check {
     margin-left: 5px;
+}
+
+.form-check-label {
+    color: #999;
 }
 
 .fileContainer {

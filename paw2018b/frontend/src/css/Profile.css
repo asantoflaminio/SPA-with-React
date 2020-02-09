@@ -10,11 +10,9 @@ input[type=text], select {
     width: 95%;
     height: 35px;
     padding: 12px 20px;
-    margin-top: 2px;
-	margin-left: 5px;
+    margin: 2px 0 0 5px;
     display: inline-block;
-    border: 1px solid;
-    border-color:#aaa;
+    border: 1px solid #aaa;
     border-radius: 2px;
     box-sizing: border-box;
     color: #888;

@@ -1,10 +1,9 @@
 .polaroid-property {
-	margin-top: 7px;
+	margin: 7px 0 0 1%;
 	float: left;
-	margin-left: 1%;
 	width: 98%;
 	height: auto;
-	background-color: white;
+	background-color: #fff;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	display: flex;
 	min-width: 930px;
@@ -15,7 +14,7 @@
 	position: relative;
 }
 
-.next-image {
+.next-image, .prev-image {
 	height: 25px;
 	width: 25px;
 	top: 95px;
@@ -25,28 +24,19 @@
 }
 
 .prev-image {
-	height: 25px;
-	width: 25px;
-	top: 95px;
-	left: 5px;
-	position: absolute;
-	cursor: pointer;
+	left: 5px !important;
 }
 
 .polaroid-property-img{
 	display: block;
-    margin-left: auto;
-    margin-right: auto;
     height: 200px; 
     width: 260px; 
     float: left;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    margin-left: 5px;
+    margin: 5px auto 5px 5px;
 }
 
 .price-tag {
-	color: white !important;
+	color: #fff !important;
 	font-family: 'Rubik', sans-serif;
 	font-size: 23px !important;
 	position: absolute;
@@ -64,14 +54,6 @@
 	cursor: pointer;
 }
 
-.property-date {
-	float: right !important;
-	color: #888;
-	font-size: 13px !important;
-	margin-top: 15px;
-	margin-right: 5px;
-}
-
 .property-title {
 	text-align: left !important;
 	color: #999;
@@ -85,8 +67,7 @@
 }
 
 .property-container {
-	margin-right: 10px;
-	margin-left: 15px;
+	margin: 0 10px 0 15px;
 	height: 180px;
 	width: 80%;
 	display: flex;
@@ -94,10 +75,8 @@
 }
 
 .property-characteristics {
-	margin-left: 30px;
+	margin: 10px 200px 0 30px;
 	height: 100px;
-	margin-top: 10px;
-	margin-right: 200px;
 	display: flex;	
 }
 
@@ -148,8 +127,6 @@ h4 {
 	float: right;
 	font-size: 15px !important;
 	color: #FD8907 !important;
-	margin-right: 3px;
-	margin-top: 0;
 }
 
 .delete {
@@ -194,7 +171,7 @@ h4 {
 	color: #999;
 	font-style: italic;
 	float: right;
-	margin: 0 !important;
+	margin: 0 -5px 0 0 !important;
 }
 
 .first-column {

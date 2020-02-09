@@ -35,7 +35,7 @@ function isEditableErasable(t, editable, eraseFunction, page, publicationid) {
                 </div>
                 <div>
                 <Link to={{pathname: "/publications", search: "?publicationid=" + publicationid}}>
-                    <p className="more-info-title edit-title">{t('list.moreInfo')} </p> 
+                    <p className="more-info-title edit-title">{t('list.moreInfo')} ></p> 
                 </Link>
                 </div>
             </div>
