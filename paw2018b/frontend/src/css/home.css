@@ -5,12 +5,11 @@ html {
 }
 
 body {
-	margin: 0;
+	margin: 0 0 100px 0;
     padding: 0;
     width: 100%;
     height: 100%;
     font-family: 'Rubik', sans-serif !important;
-    margin-bottom:100px;
     background-size:100% auto;
     background-color: #eee !important;   
 }
@@ -18,7 +17,7 @@ body {
 /* Header style */
 .header {
     width: 100%;
-    height: 580px;
+    height: 650px;
 	background-size:cover;
 	background-image: url('../resources/background5.png');
 }
@@ -61,10 +60,11 @@ h1 {
 .search_list-item {
 	float: left;
 	width: 50%;
-	color: white; 
+	color: #fff; 
 	font-weight: 550;
-	background-color: rgb(200, 200, 200);
+	background-color: #c8c8c8;
 	cursor: pointer;
+	height: 35px;
 }
 
 .search_list-item:hover {
@@ -72,8 +72,7 @@ h1 {
 }
 
 .search_list-item label {
-	margin-top: 5px;
-	margin-bottom: 5px;
+	margin: 5px 0;
 	cursor: pointer;
 }
 
@@ -84,7 +83,7 @@ h1 {
  }
 
  .selected{
-	background-color: orange !important
+	background-color: #FD8907 !important
 }
 
 .search_list-item input:hover {
@@ -114,16 +113,14 @@ h1 {
 	width:100%;
 	color:red;
 	font-size:12px;
-	padding-top:5px;
-	padding-left:10px;
+	padding: 5px 0 0 10px;
 	display: none;
 }
 
 #searchbutton {
     background-color: #FD8907;
 	border-color: #FD8907;
-	margin: 0;
-    margin-left: 10px;
+	margin: 0 0 0 10px;
     font-size: 17px !important;
 	color:#fff;
 	height: calc(1.5em + 1rem + 2px);
@@ -132,7 +129,7 @@ h1 {
 }
 
 #searchbutton a{
-	color: white;
+	color: #fff;
 	text-decoration: none;
 }
 
@@ -161,8 +158,6 @@ h1 {
 #card{
     width: 110%;
     display: table;
-  	margin-right: auto;
-  	margin-left: -5%;
 }
 
 #icons {    
@@ -196,9 +191,8 @@ div.card-body.row.no-gutters.align-items-center {
 /* Newest_homes style */
 
 .newest_homes {
-	margin: 0;
+	margin: 10px 0 0 0;
 	padding: 0;
-	margin-top: 10px;
 	background-color: #eee;
 }
 
@@ -206,8 +200,7 @@ div.card-body.row.no-gutters.align-items-center {
     font-family: 'Rubik', sans-serif !important;
     color: #666;
 	font-size: 22px;
-	padding: 30px;
-	padding-bottom: 10px;
+	padding: 30px 30px 10px 30px;
 	text-align: left;
 	margin-left: 20px;
 	text-shadow: 2px 2px 2px #fff;
@@ -233,9 +226,8 @@ div.card-body.row.no-gutters.align-items-center {
 .newest_homes ul {
  	overflow: auto;
  	white-space: nowrap;
-  	margin-right: 35px;
- 	margin-left: 35px;
- 	padding-left: 10px;
+  	margin: 0 35px;
+	padding-left: 10px;
 }
 
 .polaroid-property-img {
@@ -247,7 +239,6 @@ div.card-body.row.no-gutters.align-items-center {
 .newest_homes .description_box{
 	width:100%;
 	height:120px;	
-	margin-bottom:5px;
 	padding: 0px;
 	margin: 10px;
 }
@@ -295,111 +286,11 @@ div.card-body.row.no-gutters.align-items-center {
 	padding-top:0;
 }
 
-.color-fondo {
-	padding-top: 25px;
-	background-color: #fff;
-	padding-bottom: 1px;
-}
-
 .more-info-home {
 	padding:10px 0 20px 50px;
 }
 
 /* Closing style */
-
-/* Footer style */
-.footer{
-	margin: 0;
-	padding: 0;
-	height:100px;
-	background-color: #999999;
-}
-/* Closing style */
-
-
-/* Contact info style */
-
-.contact-info {
-	margin: 0;
-	padding: 0;
-	margin-top: 10px;
-	height: 180px;
-	background-color: #fff;
-	display: flex;
-	display: none;
-}
-
-.contact-info-column {
-	margin-top: 25px;
-	width: 33%;
-	min-width: 290px;
-}
-
-.contact-info-column h4 {
-	font-size: 15px;
-	color: #666;
-	text-align: left;
-	margin-left: 30%;
-}
-
-.contact-info-column ul {
-	list-style: none;
-	padding: 0;
-}
-
-.contact-info-column li {
-	color: #888;
-	font-size: 13px;
-	text-align: left;
-	margin-left: 30%;
-}
-
-
-.error{
-  color: red;
-  font-size: 14px;
-  margin-left: 7px;
-  margin-top: 1px;
-}
-
-
-/* Closing style */
-
-/* Notice style */
-
-.notice{
-	text-align:center;
-	padding-top: 4%;
-}
-
-.msg-sent-container {
-    padding: 1px 5px 1px 5px;
-    background-color: black;
-    border-radius:8px;
-    -moz-border-radius:8px; 
-    -webkit-border-radius:8px;
-    opacity: 0.7;
-    display:inline-block;
-    margin-bottom: 10px;
-}
-
-#msg-sent {
-    color: white;
-    font-size: 12px;
-    margin-left: 4px;
-    margin-right: 4px;
-    margin-top: 6px;
-    margin-bottom: 6px;
-}
-
-.lockedDiv{
-	background-color: #f98268;
-	color: #ff2d00;
-	text-align: center;
-	height: 5%;
-}
-
-/* End of style */
 
 .next-image-home {
 	height: 25px !important;

@@ -7,8 +7,7 @@ html{
 
 #error-container {
 	width: 90%;
-	margin-left: 40px;
-	margin-top: 40px;
+	margin: 40px 0 0 40px;
 }
 
 #error-title {
@@ -36,11 +35,9 @@ html{
 }
 
 #link1-container {
-	margin-left: 40px;
-	margin-top: 40px;
+	margin: 40px 0 0 40px;
 }
 
 #link2-container {
-	margin-left: 40px;
-	margin-top: 10px;
+	margin: 10px 0 0 40px;
 }

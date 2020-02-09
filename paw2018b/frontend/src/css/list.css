@@ -6,16 +6,6 @@
 	margin: 30px 0 15px 5px;	
 }
 
-.search_list-item {
-	float: left;
-	width: 50%;
-	color: white; 
-	font-weight: 550;
-	background-color: rgb(200, 200, 200);
-	cursor: pointer;
-	height: 35px;
-}
-
 .search_list-item-label {
 	padding-top: 5px;
 }
@@ -24,9 +14,6 @@
 	background-color: orange !important;
 }
 
-.search_list-item:hover {
-	background-color: #fecc94;
-}
 
 #buy {
 	border-right: 1px solid #7C7C7C;
