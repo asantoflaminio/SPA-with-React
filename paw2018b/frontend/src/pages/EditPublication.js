@@ -469,7 +469,6 @@ class EditPublication extends React.Component {
                 </div>
                 <Formik
                 validationSchema={publicationSchema}
-                enableReinitialize={true}
                 initialValues={initialSchema}
                 onSubmit={(values, {setSubmitting, resetForm}) => {
                     setSubmitting(true);
