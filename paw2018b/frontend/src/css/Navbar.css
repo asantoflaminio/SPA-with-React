@@ -10,7 +10,7 @@ nav {
     height: 45px;
     width: 100%;
     min-width: 100%;
-    background-color: white;
+    background-color: #fff;
     font-family: 'Rubik', sans-serif !important;
 }
 
@@ -24,7 +24,7 @@ nav {
 .navbar_item {
     float: right;
     display: block;
-    color: black;
+    color: #111;
     text-align: center;
     padding: 12.1px 10px;
     text-decoration: none;
@@ -41,7 +41,7 @@ nav {
     background-color: #4d4d4d;
     border-color: #4d4d4d;
     outline: none;
-    color: white;
+    color: #fff;
     text-decoration: none;
 }
 

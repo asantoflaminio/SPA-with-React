@@ -11,9 +11,8 @@
 }
 
 .search_list-item-active{
-	background-color: orange !important;
+	background-color: #FD8907 !important;
 }
-
 
 #buy {
 	border-right: 1px solid #7C7C7C;
@@ -24,10 +23,9 @@
 /* Search Style */
 
 .wrap {
-	margin-left: 15px;
+	margin: 0 0 15px 15px;
 	width: 600px;
 	height: 85px;
-	margin-bottom: 15px;
 }
 
 .search {
@@ -41,7 +39,6 @@
   width: 100%;
   border: 1px solid #ced4da !important;
   border-left-width: 0px !important;
-  padding-top: 0px;
   padding: 5px;
   font-size: 15px !important;
   border-radius: 5px !important;
@@ -53,9 +50,8 @@
 
 input#search-holder {
 	height: calc(1.5em + 1rem + 2px);
-	margin-top: 0;
+	margin: 0 0 0 1px;
 	width: 170%;
-	margin-left: 1px;
 }
 
 .type-home-select {
@@ -66,8 +62,7 @@ input#search-holder {
 	border-top-right-radius: 0;
 	font-size: 15px;
 	color: #555;
-	padding-top: 8px;
-	padding-left: 5px;
+	padding: 8px 0 0 5px;
 }
 
 .inlineBlock{
@@ -81,7 +76,6 @@ input#search-holder {
 
 .search_list-container {
 	text-align: center;  
-	width:100%;
 	border: 1px solid #7C7C7C;
 	list-style: none;
 	margin: 0 auto;
@@ -102,15 +96,14 @@ option {
   
 input#search-btn {
 	border: 0;
-	color: white;
+	color: #fff;
 	height: calc(1.5em + 1rem + 2px);
 	width: 25%;
 	background-color: #FD8907;
 	cursor: pointer;
 	border-radius: 5px;
 	outline: 0;
-	margin-left: 8px;
-	margin-top: 0px;
+	margin: 0 0 0 8px;
 	padding: 10px 12px;
 }
   
@@ -133,9 +126,7 @@ input#search-btn {
 	border-radius: 5px;
 	outline: 0;
 	margin-left: 8px;
-	padding-left: 12px;
-	padding-right: 12px;
-	padding-top: 5px;
+	padding: 5px 12px 0 12px;
 }
 
 .results {
@@ -159,15 +150,13 @@ input#search-btn {
 
 #order-title {
 	float: left;
-	margin-left: 20px;
+	margin: 25px 0 0 20px !important;
 	font-size: 25px !important;
-	margin-top: 25px !important;
 }
 
 #order-title-select {
-	margin-left: 20px;
+	margin: 35px 0 0 20px !important;
 	font-size: 16px !important;
-	margin-top: 35px !important;
 	float: right;
 }
 
@@ -183,9 +172,6 @@ input#search-btn {
 	float: right;
 	padding: 0 !important;
 	height: 30px;
-/*	height: fit-content;
-	width: fit-content;
-*/
 }
 
 #order-select option {
@@ -197,8 +183,7 @@ input#search-btn {
 /* Applied filters style */
 
 #applied-filters-list {
-	margin-top: 5px;
-	margin-bottom: 5px;
+	margin: 5px 0;
 	padding-left: 5px;
 	display: flex;
 }
@@ -208,21 +193,15 @@ input#search-btn {
 	border-radius: 20px;
 	background-color: #ccc;
 	opacity: 0.8;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-top: 2px;
-	padding-bottom: 1px;
-	margin-right: 7px;
-	margin-bottom: 7px;
-	margin-top: 5px;
+	padding: 2px 10px 1px 10px;
+	margin: 5px 7px 0 7px;
 	display: flex;
 	height: 25px;
 }
 
 .filters {
 	width: 98%;
-	margin-left: 1%;
-	margin-right: 1%;
+	margin: 0 1%;
 	border-top: 1px solid #ccc;
 	border-bottom: 1px solid #ccc;
 	min-height: 40.9px;
@@ -235,10 +214,8 @@ input#search-btn {
 	border-radius: 9px;
 	border:none;
 	background-color: #888;
-	color: white;
+	color: #fff;
 	padding: 0;
-	margin: 0;
-	margin-right: 2px;
 	font-size: 11px;
 	display: inline;
 	cursor: pointer;
@@ -259,10 +236,9 @@ input#search-btn {
 	min-width: 70px;
 	background-color: #a5a5a5;
 	border: none;
-	color: white;
+	color: #fff;
 	font-size: 15px;
 	margin-top: 15px;
-	float: center;
 }
 
 .applied-filter-text {
@@ -360,15 +336,13 @@ h3 {
 }
 
 .filter-polaroid {
-  margin-top: 7px;
+  margin: 7px 0 15px 1%;
   float: left;
-  margin-left: 1%;
   width: 19%;
   height: auto;
   min-width: 170px;
-  background-color: white;
+  background-color: #fff;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  margin-bottom: 15px;
 }
 
 .filter-polaroid-loader{
@@ -415,7 +389,7 @@ h3 {
 /* Loader Style */
 
 .loader-container{
-	background-color: white;
+	background-color: #fff;
 	float: left;
 	width: 100%;
 	height: 200px;
