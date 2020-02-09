@@ -166,7 +166,6 @@ class Publish extends React.Component {
 
     handleFormSubmit(event,errors) {
         let currentComponent = this
-        let { t } = this.props;
         let userid = LocalStorageService.getUserid();
         let publicationDTO = JsonService.getJSONParsed(event.target)
         event.preventDefault()
