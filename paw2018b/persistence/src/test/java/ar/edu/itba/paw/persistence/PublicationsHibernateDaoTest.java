@@ -192,13 +192,12 @@ public class PublicationsHibernateDaoTest {
 				BALCONIES, AMENITIES, STORAGE, EXPENSES, user_id);
 		em.persist(pub);
 		
-		//Lo comente xq no me dejaba deployar
-		//publicationDao.updateLockUserPublications(false, pub.getPublicationid(), //falta el userid aca);
+		publicationDao.updateLockUserPublications(true, pub.getPublicationid(), user_id);
 		
-		//Query query = em.createQuery("SELECT COUNT(*) FROM Publication WHERE locked = :locked");
-		//query.setParameter("locked", true);
+		Query query = em.createQuery("SELECT COUNT(*) FROM Publication WHERE locked = :locked");
+		query.setParameter("locked", true);
 		
-		//assertEquals(new Long(1), query.getSingleResult());
+		assertEquals(new Long(1), query.getSingleResult());
 		
 	}
 	
