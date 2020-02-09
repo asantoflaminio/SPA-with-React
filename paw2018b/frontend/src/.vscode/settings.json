@@ -1,0 +1,14 @@
+{
+    "prettier.arrowParens": "always",
+    "prettier.htmlWhitespaceSensitivity": "css",
+    "prettier.singleQuote": true,
+    "prettier.tabWidth": 4,
+    "prettier.trailingComma": "all",
+    "prettier.useTabs": true,
+    "prettier.jsxBracketSameLine": true,
+    "prettier.semi": true,
+    "prettier.quoteProps": "as-needed",
+    "prettier.endOfLine": "auto",
+    "prettier.jsxSingleQuote": true,
+    "prettier.bracketSpacing": false,
+}
