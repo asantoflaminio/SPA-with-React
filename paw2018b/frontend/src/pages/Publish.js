@@ -196,10 +196,21 @@ class Publish extends React.Component {
                 });
             })
         }else{
-            toast.notify(t('publish.unsuccesfullSubmit')); 
+            this.showErrorInForm(Object.keys(errors).length);
             window.scrollTo(0, 0);
         }
     }
+
+
+    showErrorInForm(quantityErrors) {
+        let { t } = this.props;
+        if(quantityErrors > 1) {
+            toast.notify(t('publish.unsuccesfullSubmitMore', {n: quantityErrors})); 
+        } else { 
+            toast.notify(t('publish.unsuccesfullSubmitOne')); 
+        }
+    }
+
 
     handleRadioChange(changeEvent) {
         this.setState({

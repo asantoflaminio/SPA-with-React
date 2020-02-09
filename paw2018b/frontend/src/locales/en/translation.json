@@ -129,7 +129,8 @@
       "notCorresponding": "Not corresponding",
       "Yes": "Yes",
       "No": "No",
-      "unsuccesfullSubmit": "The property couldn't be published as there are errors in the form"
+      "unsuccesfullSubmitMore": "The property couldn't be published as there are {{n}} errors in the form",
+      "unsuccesfullSubmitOne": "The property couldn't be published as there is an error in the form"
     },
     "admin": {
       "locations": "LOCATIONS",
@@ -279,6 +280,9 @@
     "editpublication":{
       "edit": "EDIT PUBLICATION",
       "submit": "Edit",
-      "unsuccesfullSubmit": "The publication couldn't be edited as there are errors in the form"
+      "unsuccesfullSubmitMore": "The publication couldn't be edited as there are {{n}} errors in the form",
+      "unsuccesfullSubmitOne": "The publication couldn't be edited as there is an error in the form"
     }
   }
+
+ 

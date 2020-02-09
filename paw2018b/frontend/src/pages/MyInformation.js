@@ -44,8 +44,6 @@ class MyInformation extends React.Component {
             circleloading: true
         })
 
-        document.getElementById("emailTakenError").setAttribute("hasError",false)
-
         UserService.getUser(userid).then(function (response) {
             if(CancelTokenService.isCancel(response))
                 return;
@@ -105,10 +103,13 @@ class MyInformation extends React.Component {
         let userDTO = JsonService.getJSONParsed(event.target);
         let userid = LocalStorageService.getUserid();
         this.updateState(event);
+
+        if(emailError.getAttribute("hasError") == null) {
+            emailError.setAttribute("hasError", false);
+        }
        
-      
-        if(emailError.getAttribute("hasError") != null) {
-            if(Object.keys(errors).length === 0 && emailError.getAttribute("hasError") === "false" ) {
+        
+        if(Object.keys(errors).length === 0 && emailError.getAttribute("hasError") === "false" ) {
             this.setState({loading: true}); 
             UserService.editUser(userid,userDTO).then(function(response){
                 if(response.status !== StatusCode.OK){
@@ -122,7 +123,6 @@ class MyInformation extends React.Component {
                 LocalStorageService.refreshToken(response.headers.authorization, userDTO.email);
                 currentComponent.props.updateUsername(userDTO.email);
             })
-            }
         }
     }
 

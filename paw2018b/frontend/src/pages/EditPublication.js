@@ -335,7 +335,6 @@ class EditPublication extends React.Component {
         let currentComponent = this
         let userid = LocalStorageService.getUserid();
         let queryString = require('query-string');
-        let { t } = this.props;
         let query = queryString.parse(this.props.location.search);
         let publicationDTO = JsonService.getJSONParsed(event.target)
         let publicationid = query.publicationid;
@@ -360,10 +359,18 @@ class EditPublication extends React.Component {
                 
             })
         } else{
-            toast.notify(t('editpublication.unsuccesfullSubmit'));  
+            this.showErrorInForm(Object.keys(errors).length); 
             window.scrollTo(0, 0);
+        }   
+    }
+
+    showErrorInForm(quantityErrors) {
+        let { t } = this.props;
+        if(quantityErrors > 1) {
+            toast.notify(t('editpublication.unsuccesfullSubmitMore', {n: quantityErrors})); 
+        } else { 
+            toast.notify(t('editpublication.unsuccesfullSubmitOne')); 
         }
-        
     }
 
     componentWillUnmount(){

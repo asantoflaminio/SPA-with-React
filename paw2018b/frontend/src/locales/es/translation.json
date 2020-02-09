@@ -129,7 +129,8 @@
       "notCorresponding": "No corresponde",
       "Yes": "Sí",
       "No": "No",
-      "unsuccesfullSubmit": "No se pudo publicar la propiedad ya que existen errores en el formulario"
+      "unsuccesfullSubmitMore": "No se pudo publicar la propiedad ya que existen {{n}} errores en el formulario",
+      "unsuccesfullSubmitOne": "No se pudo publicar la propiedad ya que existe un error en el formulario"
     },
     "admin": {
       "locations": "UBICACIONES",
@@ -279,6 +280,7 @@
     "editpublication":{
       "edit": "EDITAR PUBLICACIÓN",
       "submit": "Editar",
-      "unsuccesfullSubmit": "No se pudo editar la publicación ya que existen errores en el formulario"
+      "unsuccesfullSubmitMore": "No se pudo editar la publicación ya que existen {{n}} errores en el formulario",
+      "unsuccesfullSubmitOne": "No se pudo editar la publicación ya que existe un error en el formulario"
     }
   }
