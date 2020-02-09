@@ -73,7 +73,8 @@ describe('publicationTest', () => {
         bathrooms: '2',
         parking: '0',
         bedrooms: '2',
-        dimention: '200'
+        dimention: '200',
+        date: '2020-02-08 00:38:33.777'
       };
 
     
