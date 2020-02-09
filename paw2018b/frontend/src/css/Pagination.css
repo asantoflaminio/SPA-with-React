@@ -1,45 +1,44 @@
-.active{
-    background-color: #FD8907;
+.active {
+	background-color: #fd8907;
 }
 
-.container-pagination{
-    display: flex;
-    width: 100%;
-    height: 20%;
-    margin: 50px auto 0 auto;
-    justify-content: center;
-    align-items: center;
+.container-pagination {
+	display: flex;
+	width: 100%;
+	height: 20%;
+	margin: 50px auto 0 auto;
+	justify-content: center;
+	align-items: center;
 }
 
-.container-pagination li{
-    list-style-type: none;
-    margin-left: 20px;
-    width: 5%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-
+.container-pagination li {
+	list-style-type: none;
+	margin-left: 20px;
+	width: 5%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
 }
 
-.container-pagination li:hover{
-    background-color: rgba(243, 175, 97, 0.699);
-    -webkit-transition: background-color 250ms  linear;
-    -ms-transition: background-color 250ms  linear;
-    transition: background-color 250ms linear;
+.container-pagination li:hover {
+	background-color: rgba(243, 175, 97, 0.699);
+	-webkit-transition: background-color 250ms linear;
+	-ms-transition: background-color 250ms linear;
+	transition: background-color 250ms linear;
 }
 
-li a{
-    color: #555;
-    padding: 20px;
-    outline: 0;
+li a {
+	color: #555;
+	padding: 20px;
+	outline: 0;
 }
 
-li a:hover{
-    text-decoration: none;
-    color: #555;
+li a:hover {
+	text-decoration: none;
+	color: #555;
 }
 
-.separation{
-    padding: 20px;
+.separation {
+	padding: 20px;
 }

@@ -1,9 +1,9 @@
 @charset "UTF-8";
 
-.alertModal{
-    background-color: red;
+.alertModal {
+	background-color: red;
 }
 
-.backdrop{
-    background-color: transparent !important;
+.backdrop {
+	background-color: transparent !important;
 }

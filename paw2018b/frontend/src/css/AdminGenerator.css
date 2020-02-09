@@ -1,33 +1,33 @@
 .signup-list-item {
 	font-size: 20px;
 	color: #777;
-  padding: 20px 10px;
-  border: 2px solid #ccc;
-  margin-top: 20px;
+	padding: 20px 10px;
+	border: 2px solid #ccc;
+	margin-top: 20px;
 }
 
 div.polaroid {
-  float: left;
-  width: 55%;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  margin: 20px 0 30px 15px !important;
-  height: auto;
-  background-color: #fff;
-  padding-bottom:20px;
-  min-width: 400px;
+	float: left;
+	width: 55%;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	margin: 20px 0 30px 15px !important;
+	height: auto;
+	background-color: #fff;
+	padding-bottom: 20px;
+	min-width: 400px;
 }
 
 .data {
 	text-decoration: none;
 	list-style: none;
-	padding:10px;
-	background-color: #FD8907;
-	width:40%;
-	height:80%;
+	padding: 10px;
+	background-color: #fd8907;
+	width: 40%;
+	height: 80%;
 }
 
 .create-locations {
-  min-width: 940px !important;
+	min-width: 940px !important;
 }
 
 .title-container h3 {
@@ -43,57 +43,59 @@ div.polaroid {
 	border-bottom: 1px solid #ccc;
 }
 
-.legendTag{
-  display: block;
-  padding: 0 4px;
-  border: none;
-  width: auto;
-  font-size: 18px;
+.legendTag {
+	display: block;
+	padding: 0 4px;
+	border: none;
+	width: auto;
+	font-size: 18px;
 }
 
-.location-label{
-  margin: 5px 10px 5px 0;
-  font-size: 17px;
+.location-label {
+	margin: 5px 10px 5px 0;
+	font-size: 17px;
 }
 
 .location-input {
-  vertical-align: middle;
-  margin: 5px 10px 5px 0;
-  background-color: #fff;
-  border: 1px solid #888;
-  color: #888;
-  width: 250px !important;
+	vertical-align: middle;
+	margin: 5px 10px 5px 0;
+	background-color: #fff;
+	border: 1px solid #888;
+	color: #888;
+	width: 250px !important;
 }
 
-.location-select{
-  vertical-align: middle;
-  margin: 5px 10px 5px 0;
-  background-color: #fff;
-  color: #888;
-  border: 1px solid #aaa;
-  border-radius: 2px;
-  box-sizing: border-box;
-  width: 250px !important;
+.location-select {
+	vertical-align: middle;
+	margin: 5px 10px 5px 0;
+	background-color: #fff;
+	color: #888;
+	border: 1px solid #aaa;
+	border-radius: 2px;
+	box-sizing: border-box;
+	width: 250px !important;
 }
 
 .signup-submit {
-  padding: 7px 25px;
-  background-color: #FD8907;
-  color: #fff;
-  cursor: pointer;
-  border: none;
-  margin-top: 25px;
+	padding: 7px 25px;
+	background-color: #fd8907;
+	color: #fff;
+	cursor: pointer;
+	border: none;
+	margin-top: 25px;
 }
 
 .signup-submit:hover {
-  background-color: #FD8907;
-  border: none;
+	background-color: #fd8907;
+	border: none;
 }
 
 .form-inline {
-  margin-top: -15px;
+	margin-top: -15px;
 }
 
-#submitCityButton, #submitProvinceButton, #submitNeighborhoodButton {
-  margin: 32px 0 0 10px;
+#submitCityButton,
+#submitProvinceButton,
+#submitNeighborhoodButton {
+	margin: 32px 0 0 10px;
 }

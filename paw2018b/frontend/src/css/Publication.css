@@ -14,7 +14,8 @@
 	position: relative;
 }
 
-.next-image, .prev-image {
+.next-image,
+.prev-image {
 	height: 25px;
 	width: 25px;
 	top: 95px;
@@ -27,12 +28,12 @@
 	left: 5px !important;
 }
 
-.polaroid-property-img{
+.polaroid-property-img {
 	display: block;
-    height: 200px; 
-    width: 260px; 
-    float: left;
-    margin: 5px auto 5px 5px;
+	height: 200px;
+	width: 260px;
+	float: left;
+	margin: 5px auto 5px 5px;
 }
 
 .price-tag {
@@ -62,7 +63,7 @@
 	float: left;
 	max-width: 95%;
 	white-space: nowrap;
-    overflow: hidden;
+	overflow: hidden;
 	text-overflow: ellipsis !important;
 	margin: 3px 0 8px 20px !important;
 }
@@ -78,7 +79,7 @@
 .property-characteristics {
 	margin: 10px 200px 0 30px;
 	height: 100px;
-	display: flex;	
+	display: flex;
 }
 
 .address {
@@ -113,31 +114,32 @@ h4 {
 	color: #888 !important;
 }
 
-.more-info, .more-info2 {
+.more-info,
+.more-info2 {
 	height: 20px;
 	margin-top: 5px;
 	width: 102%;
-	padding-top: 160px;	
+	padding-top: 160px;
 }
 
 .more-info2 {
-	padding-top: 130px !important;	
+	padding-top: 130px !important;
 }
 
 .more-info-title {
 	float: right;
 	font-size: 15px !important;
-	color: #FD8907 !important;
+	color: #fd8907 !important;
 }
 
-.delete  {
-	width:12px;
-	height:12px;
-	cursor: pointer
+.delete {
+	width: 12px;
+	height: 12px;
+	cursor: pointer;
 }
 
 .delete-title {
-	cursor:pointer
+	cursor: pointer;
 }
 
 .edit-title {

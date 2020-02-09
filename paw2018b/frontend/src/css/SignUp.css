@@ -1,16 +1,16 @@
 .box_form_signUp {
-    margin: 15px 0 50px 18%;
-    float: left;
-    width: 35%;
-    height: auto;
-    min-width: 250px;
-    background-color: #fff;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	margin: 15px 0 50px 18%;
+	float: left;
+	width: 35%;
+	height: auto;
+	min-width: 250px;
+	background-color: #fff;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .box_form_signUp-2 {
-    max-height: 380px !important;
-    margin-left: 7%;
+	max-height: 380px !important;
+	margin-left: 7%;
 }
 
 h3 {
@@ -20,55 +20,56 @@ h3 {
 	color: #666 !important;
 }
 
-.errorText{
-    color:red;
-    display: none;
-    font-size: 14px;
-    margin: 2px 0 0 5px;
+.errorText {
+	color: red;
+	display: none;
+	font-size: 14px;
+	margin: 2px 0 0 5px;
 }
 
-.flex{
-    display: flex;
+.flex {
+	display: flex;
 }
 
 .form-label {
-    color: #666;
+	color: #666;
 }
 
-input[type=password] {
-    width: 95%;
-    height: 35px;
-    padding: 12px 20px;
-    margin: 2px 0 0 5px;
-    display: inline-block;
-    border: 1px solid #aaa;
-    border-radius: 2px;
-    box-sizing: border-box;
-    color: #888;
+input[type='password'] {
+	width: 95%;
+	height: 35px;
+	padding: 12px 20px;
+	margin: 2px 0 0 5px;
+	display: inline-block;
+	border: 1px solid #aaa;
+	border-radius: 2px;
+	box-sizing: border-box;
+	color: #888;
 }
 
-#submitButtonLogIn, #submitButtonSignUp {
-    background-color: #FD8907;
-    border: none;
-    border-radius: 4px;
-    color: #fff;
-    width: 88% !important;
-    height: 45px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    cursor: pointer;
-    position: relative;
-    float: right;
-    margin: 5px 7.5% 20px 0;
+#submitButtonLogIn,
+#submitButtonSignUp {
+	background-color: #fd8907;
+	border: none;
+	border-radius: 4px;
+	color: #fff;
+	width: 88% !important;
+	height: 45px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 16px;
+	cursor: pointer;
+	position: relative;
+	float: right;
+	margin: 5px 7.5% 20px 0;
 }
 
 #submitButtonLogIn {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 #recover_pass {
-    margin-left: 22px;
-    color: #FD8907;
-    font-size: 15px;
+	margin-left: 22px;
+	color: #fd8907;
+	font-size: 15px;
 }

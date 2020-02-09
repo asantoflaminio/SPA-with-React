@@ -2,31 +2,26 @@ import React from 'react';
 import '../css/Navbar.css';
 import logo from '../resources/Logo4.png';
 import {Link} from 'react-router-dom';
-import { withRouter } from "react-router";
-import { withTranslation } from 'react-i18next';
+import {withRouter} from 'react-router';
+import {withTranslation} from 'react-i18next';
 
 class AdminNavbar extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {};
+	}
 
-    constructor(props) {
-         super(props);
-         this.state = {
-
-         };
-       }
-
-
-    render(){
-        return(
-            <nav>
-                <Link to={{pathname: "/"}}>
-                    <a href="">
-                        <img src={logo} alt="Home" id="logo"/>
-                    </a>
-                </Link>
-            </nav>
-        )
-    }
-
+	render() {
+		return (
+			<nav>
+				<Link to={{pathname: '/'}}>
+					<a href=''>
+						<img src={logo} alt='Home' id='logo' />
+					</a>
+				</Link>
+			</nav>
+		);
+	}
 }
 
 export default withRouter(withTranslation()(AdminNavbar));

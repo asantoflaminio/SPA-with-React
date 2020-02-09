@@ -3,19 +3,19 @@
 /* Buy Rent Style */
 
 .search_list {
-	margin: 30px 0 15px 5px;	
+	margin: 30px 0 15px 5px;
 }
 
 .search_list-item-label {
 	padding-top: 5px;
 }
 
-.search_list-item-active{
-	background-color: #FD8907 !important;
+.search_list-item-active {
+	background-color: #fd8907 !important;
 }
 
 #buy {
-	border-right: 1px solid #7C7C7C;
+	border-right: 1px solid #7c7c7c;
 }
 
 /* End of Style */
@@ -29,23 +29,23 @@
 }
 
 .search {
-  width: 115%;
-  position: relative;
-  display: flex;
+	width: 115%;
+	position: relative;
+	display: flex;
 }
 
 .searchTerm {
-  float: left;
-  width: 100%;
-  border: 1px solid #ced4da !important;
-  border-left-width: 0px !important;
-  padding: 5px;
-  font-size: 15px !important;
-  border-radius: 5px !important;
-  outline: none;
-  color: #999;
-  border-bottom-left-radius: 0 !important;
-  border-top-left-radius: 0 !important;
+	float: left;
+	width: 100%;
+	border: 1px solid #ced4da !important;
+	border-left-width: 0px !important;
+	padding: 5px;
+	font-size: 15px !important;
+	border-radius: 5px !important;
+	outline: none;
+	color: #999;
+	border-bottom-left-radius: 0 !important;
+	border-top-left-radius: 0 !important;
 }
 
 input#search-holder {
@@ -55,9 +55,9 @@ input#search-holder {
 }
 
 .type-home-select {
-	border: 1.3px solid #FD8907;
+	border: 1.3px solid #fd8907;
 	border-radius: 5px;
-	border-right: 1.3px solid #FD8907;
+	border-right: 1.3px solid #fd8907;
 	border-bottom-right-radius: 0;
 	border-top-right-radius: 0;
 	font-size: 15px;
@@ -68,18 +68,18 @@ input#search-holder {
 	margin-top: 0;
 }
 
-.inlineBlock{
+.inlineBlock {
 	display: inline-block;
 }
 
-#select-type{
+#select-type {
 	width: 150px !important;
 	height: calc(1.5em + 1rem + 2px);
 }
 
 .search_list-container {
-	text-align: center;  
-	border: 1px solid #7C7C7C;
+	text-align: center;
+	border: 1px solid #7c7c7c;
 	list-style: none;
 	margin: 0 auto;
 	padding: 0;
@@ -91,30 +91,30 @@ input#search-holder {
 
 option {
 	font-size: 15px;
-  }
-  
-.searchTerm:focus{
+}
+
+.searchTerm:focus {
 	color: #555;
 }
-  
+
 input#search-btn {
 	border: 0;
 	color: #fff;
 	height: calc(1.5em + 1rem + 2px);
 	width: 25%;
-	background-color: #FD8907;
+	background-color: #fd8907;
 	cursor: pointer;
 	border-radius: 5px;
 	outline: 0;
 	margin: 0 0 0 8px;
 	padding: 10px 12px;
 }
-  
+
 /* End of Style */
 
 /* Result Box Style */
 
-.results-container{
+.results-container {
 	width: 100%;
 	height: 50px;
 	margin-bottom: 10px;
@@ -124,7 +124,7 @@ input#search-btn {
 	border: 0;
 	color: #fff;
 	height: 35px;
-	background-color: #FD8907;
+	background-color: #fd8907;
 	cursor: pointer;
 	border-radius: 5px;
 	outline: 0;
@@ -140,7 +140,7 @@ input#search-btn {
 #res {
 	float: left;
 }
-  
+
 /* End of Style */
 
 /* Order By Style */
@@ -165,13 +165,13 @@ input#search-btn {
 
 #order-select {
 	margin: 30px 15px 0 8px;
-  	border: 1px solid #FD8907;
-  	border-radius: 5px;
-  	color: #555;
-  	font-family: inherit;
-  	font-size: inherit;
-    box-shadow: none;
-	width: 40%;	
+	border: 1px solid #fd8907;
+	border-radius: 5px;
+	color: #555;
+	font-family: inherit;
+	font-size: inherit;
+	box-shadow: none;
+	width: 40%;
 	float: right;
 	padding: 0 !important;
 	height: 30px;
@@ -215,18 +215,18 @@ input#search-btn {
 	height: 17px;
 	margin: 2px 6px 0 -5px !important;
 	border-radius: 9px;
-	border:none;
+	border: none;
 	background-color: #888;
 	color: #fff;
 	padding: 0;
 	font-size: 11px;
 	display: inline;
 	cursor: pointer;
-	text-align: center; 
+	text-align: center;
 }
 
 .delete-btn:focus {
-	outline:0;
+	outline: 0;
 }
 
 .apply-container {
@@ -262,7 +262,7 @@ h3 {
 #filters-title {
 	width: 100%;
 	height: auto;
-	border-bottom: 2px solid #ccc; 
+	border-bottom: 2px solid #ccc;
 }
 
 .filters-list-item {
@@ -270,25 +270,24 @@ h3 {
 	color: #777;
 	padding: 10px;
 	border-bottom: 1px solid #ccc;
-	
 }
 
 .filters-item-name {
-    background-color: Transparent;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-	outline:none;
+	background-color: Transparent;
+	background-repeat: no-repeat;
+	border: none;
+	cursor: pointer;
+	overflow: hidden;
+	outline: none;
 	text-align: left;
 	margin-left: 8px;
 	padding-left: 0 !important;
 	font-size: 14px;
-	color: #FD8907;
+	color: #fd8907;
 }
 
 .filters-item-name:focus {
-	outline:0;
+	outline: 0;
 }
 
 .filters-list-item-last {
@@ -322,11 +321,11 @@ h3 {
 	height: auto;
 	color: #777;
 	width: 100%;
-	display:none;
+	display: none;
 	border-bottom: 1px solid #ccc;
 }
 
-.show{
+.show {
 	display: block;
 }
 
@@ -339,16 +338,16 @@ h3 {
 }
 
 .filter-polaroid {
-  margin: 7px 0 15px 1%;
-  float: left;
-  width: 19%;
-  height: auto;
-  min-width: 170px;
-  background-color: #fff;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	margin: 7px 0 15px 1%;
+	float: left;
+	width: 19%;
+	height: auto;
+	min-width: 170px;
+	background-color: #fff;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.filter-polaroid-loader{
+.filter-polaroid-loader {
 	width: 100%;
 	height: 100%;
 }
@@ -362,14 +361,14 @@ h3 {
 }
 
 #content-container {
-	display:inline-block;
+	display: inline-block;
 	width: 100%;
 }
 
-@media screen and ( max-width: 935px ){
-    section {
-        margin-left: 180px;
-    }
+@media screen and (max-width: 935px) {
+	section {
+		margin-left: 180px;
+	}
 }
 
 /* End of style */
@@ -379,7 +378,7 @@ h3 {
 #no-results-title {
 	padding-top: 40px;
 	text-align: center;
-	color: #FD8907;
+	color: #fd8907;
 	font-size: 20px;
 }
 
@@ -391,7 +390,7 @@ h3 {
 
 /* Loader Style */
 
-.loader-container{
+.loader-container {
 	background-color: #fff;
 	float: left;
 	width: 100%;
@@ -399,12 +398,12 @@ h3 {
 	margin: 10px;
 }
 
-.loader-all-container{
+.loader-all-container {
 	width: 75%;
 	float: left;
 }
 
-.hidden{
+.hidden {
 	display: none;
 }
 

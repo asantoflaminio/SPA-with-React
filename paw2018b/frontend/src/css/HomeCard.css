@@ -1,6 +1,6 @@
 .polaroid {
-    background-color: #fff;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	background-color: #fff;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .arrows-div {
@@ -8,34 +8,34 @@
 }
 
 .polaroid-property-img-home {
-	width:230px;
+	width: 230px;
 	margin: 5px;
-	height:150px;
+	height: 150px;
 }
 
-.price{
+.price {
 	font-size: 18px !important;
 	color: #555;
 }
 
-.expenses{
+.expenses {
 	font-size: 15px !important;
-	color: #666;	
-	white-space: nowrap; 
-    overflow: hidden;
+	color: #666;
+	white-space: nowrap;
+	overflow: hidden;
 	text-overflow: ellipsis !important;
 }
 
 .more-info-home {
 	font-size: 15px;
-	color: #FD8907;
+	color: #fd8907;
 	margin-bottom: 2px;
-	width:90%;
+	width: 90%;
 	float: left;
-	text-align:right;
+	text-align: right;
 }
 
-.line_separator{
-    padding: 3px 0px 3px 0px;
-    border-bottom:1px solid #ADA59C;
+.line_separator {
+	padding: 3px 0px 3px 0px;
+	border-bottom: 1px solid #ada59c;
 }

@@ -1,43 +1,43 @@
 @charset "UTF-8";
 
 html {
-    position:relative; 
+	position: relative;
 }
 
 body {
 	margin: 0 0 100px 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    font-family: 'Rubik', sans-serif !important;
-    background-size:100% auto;
-    background-color: #eee !important;   
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	font-family: 'Rubik', sans-serif !important;
+	background-size: 100% auto;
+	background-color: #eee !important;
 }
 
 /* Header style */
 .header {
-    width: 100%;
-    height: 650px;
-	background-size:cover;
+	width: 100%;
+	height: 650px;
+	background-size: cover;
 	background-image: url('../resources/background5.png');
 }
 
-.title{
+.title {
 	color: #fff;
-	padding-top:100px;
-    font-size: 30px;
-    text-align: center;
-    text-shadow: 0 0 4px #666;
+	padding-top: 100px;
+	font-size: 30px;
+	text-align: center;
+	text-shadow: 0 0 4px #666;
 }
 
 /* Closing style */
 
 section {
-    text-align: center;  
+	text-align: center;
 }
 
 h1 {
-    font: bold 2em 'Rubik', sans-serif !important;
+	font: bold 2em 'Rubik', sans-serif !important;
 }
 
 /* Search style */
@@ -46,10 +46,10 @@ h1 {
 	margin-top: 70px;
 }
 
-.search_list-container-home {  
+.search_list-container-home {
 	text-align: center;
 	width: 25em !important;
-	border: 1px solid #7C7C7C;
+	border: 1px solid #7c7c7c;
 	list-style: none;
 	margin: 0 auto;
 	padding: 0;
@@ -60,7 +60,7 @@ h1 {
 .search_list-item {
 	float: left;
 	width: 50%;
-	color: #fff; 
+	color: #fff;
 	font-weight: 550;
 	background-color: #c8c8c8;
 	cursor: pointer;
@@ -76,23 +76,23 @@ h1 {
 	cursor: pointer;
 }
 
-.search_list-item input[type=radio] {
-  position: absolute;
-  visibility: hidden;
-  display: none;
- }
+.search_list-item input[type='radio'] {
+	position: absolute;
+	visibility: hidden;
+	display: none;
+}
 
- .selected{
-	background-color: #FD8907 !important
+.selected {
+	background-color: #fd8907 !important;
 }
 
 .search_list-item input:hover {
 	background-color: #fecc94;
-	cursor:pointer;
+	cursor: pointer;
 }
 
 #buy {
-	border-right: 1px solid #7C7C7C;
+	border-right: 1px solid #7c7c7c;
 }
 
 .card-body.row.no-gutters {
@@ -102,69 +102,71 @@ h1 {
 /* Closing style*/
 
 .rounded {
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 20px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
 }
 
 /* Search style */
 
-#msg_error_search{
-	width:100%;
-	color:red;
-	font-size:12px;
+#msg_error_search {
+	width: 100%;
+	color: red;
+	font-size: 12px;
 	padding: 5px 0 0 10px;
 	display: none;
 }
 
 #searchbutton {
-    background-color: #FD8907;
-	border-color: #FD8907;
+	background-color: #fd8907;
+	border-color: #fd8907;
 	margin: 0 0 0 10px;
-    font-size: 17px !important;
-	color:#fff;
+	font-size: 17px !important;
+	color: #fff;
 	height: calc(1.5em + 1rem + 2px);
 	padding: 9% 14%;
 	width: 5em;
 }
 
-#searchbutton a{
+#searchbutton a {
 	color: #fff;
 	text-decoration: none;
 }
-
 
 #input_search {
 	font-size: 16px !important;
 	border-left: none;
 	border-bottom-left-radius: 0;
-  	border-top-left-radius: 0;
+	border-top-left-radius: 0;
 }
 
-#card{
-    width: 110%;
-    display: table;
+#card {
+	width: 110%;
+	display: table;
 }
 
-#icons {    
-    margin-top: 10px;
+#icons {
+	margin-top: 10px;
 }
 
 div.card-body.row.no-gutters.align-items-center {
 	padding: 15px;
 }
 
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #aaa !important;
-    opacity: 1; /* Firefox */
+::placeholder {
+	/* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: #aaa !important;
+	opacity: 1; /* Firefox */
 }
 
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: #aaa !important;
+:-ms-input-placeholder {
+	/* Internet Explorer 10-11 */
+	color: #aaa !important;
 }
 
-::-ms-input-placeholder { /* Microsoft Edge */
-    color: #aaa !important;
+::-ms-input-placeholder {
+	/* Microsoft Edge */
+	color: #aaa !important;
 }
 
 .col {
@@ -172,7 +174,6 @@ div.card-body.row.no-gutters.align-items-center {
 }
 
 /* Closing style */
-
 
 /* Newest_homes style */
 
@@ -183,97 +184,96 @@ div.card-body.row.no-gutters.align-items-center {
 }
 
 .newest_homes h3 {
-    font-family: 'Rubik', sans-serif !important;
-    color: #666;
+	font-family: 'Rubik', sans-serif !important;
+	color: #666;
 	font-size: 22px;
 	padding: 30px 30px 10px 30px;
 	text-align: left;
 	margin-left: 20px;
 	text-shadow: 2px 2px 2px #fff;
-	
 }
 
 .newest-homes-list {
 	margin-bottom: 40px;
 	text-align: left;
-	display:flex;
+	display: flex;
 	overflow-y: hidden !important;
 }
 
 .newest_homes li {
- 	display: inline-block;
-	width:250px;
-	height:300px;
+	display: inline-block;
+	width: 250px;
+	height: 300px;
 	border-radius: 1px;
 	padding: 5px;
 	margin: 5px 3px 15px 3px;
 }
 
 .newest_homes ul {
- 	overflow: auto;
- 	white-space: nowrap;
-  	margin: 0 35px;
+	overflow: auto;
+	white-space: nowrap;
+	margin: 0 35px;
 	padding-left: 10px;
 }
 
 .polaroid-property-img {
-	width:230px;
+	width: 230px;
 	margin: 5px;
-	height:150px;
+	height: 150px;
 }
 
-.newest_homes .description_box{
-	width:100%;
-	height:120px;	
+.newest_homes .description_box {
+	width: 100%;
+	height: 120px;
 	padding: 0px;
 	margin: 10px;
 }
 
-.newest_homes .description_box label{
+.newest_homes .description_box label {
 	font-size: 14px;
 	color: #777;
 	margin-bottom: 2px;
-	width:90%;
-	float:left;
-	text-align:left;
+	width: 90%;
+	float: left;
+	text-align: left;
 }
 
-.newest_homes .description_box{
+.newest_homes .description_box {
 	font-size: 18px !important;
 	color: #555;
 }
 
-.newest_homes .description_box .expenses{
+.newest_homes .description_box .expenses {
 	font-size: 15px !important;
-	color: #666;	
-	white-space: nowrap; 
-    overflow: hidden;
+	color: #666;
+	white-space: nowrap;
+	overflow: hidden;
 	text-overflow: ellipsis !important;
 }
 
-.newest_homes ::-webkit-scrollbar-track{
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+.newest_homes ::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 	border-radius: 10px;
-	background-color: #F5F5F5;
+	background-color: #f5f5f5;
 }
 
-.newest_homes ::-webkit-scrollbar{
+.newest_homes ::-webkit-scrollbar {
 	width: 12px;
-	background-color: #F5F5F5;
+	background-color: #f5f5f5;
 }
 
-.newest_homes ::-webkit-scrollbar-thumb{
+.newest_homes ::-webkit-scrollbar-thumb {
 	border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 	background-color: #999;
 }
 
 #newest-homes-second {
-	padding-top:0;
+	padding-top: 0;
 }
 
 .more-info-home {
-	padding:10px 0 20px 50px;
+	padding: 10px 0 20px 50px;
 }
 
 /* Closing style */
@@ -296,8 +296,6 @@ div.card-body.row.no-gutters.align-items-center {
 	cursor: pointer;
 }
 
-.minWidth{
+.minWidth {
 	min-width: 250px !important;
 }
-
-

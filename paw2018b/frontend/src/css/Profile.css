@@ -1,25 +1,26 @@
 @charset "UTF-8";
 
 html {
-    position:relative; 
+	position: relative;
 }
 
 /* My Information Style */
 
-input[type=text], select {
-    width: 95%;
-    height: 35px;
-    padding: 12px 20px;
-    margin: 2px 0 0 5px;
-    display: inline-block;
-    border: 1px solid #aaa;
-    border-radius: 2px;
-    box-sizing: border-box;
-    color: #888;
+input[type='text'],
+select {
+	width: 95%;
+	height: 35px;
+	padding: 12px 20px;
+	margin: 2px 0 0 5px;
+	display: inline-block;
+	border: 1px solid #aaa;
+	border-radius: 2px;
+	box-sizing: border-box;
+	color: #888;
 }
 
-label{
-    margin-left: 1%;
+label {
+	margin-left: 1%;
 }
 
 h2 {
@@ -33,12 +34,12 @@ h2 {
 	margin-bottom: 45px !important;
 }
 
-.form{
-	display:block;
+.form {
+	display: block;
 }
 
 #editdata-submit {
-    margin: 5px 20px 0 0 !important;
+	margin: 5px 20px 0 0 !important;
 	float: right;
 }
 
@@ -52,10 +53,10 @@ h2 {
 /* My Favorites Style */
 
 .title_section {
-	padding-top:20px;
-	font-weight:580;
-	color:dimgrey;
-	font-size:23px;
+	padding-top: 20px;
+	font-weight: 580;
+	color: dimgrey;
+	font-size: 23px;
 	margin-top: 0 !important;
 }
 

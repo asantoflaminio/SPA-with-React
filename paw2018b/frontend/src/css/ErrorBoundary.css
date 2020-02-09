@@ -1,8 +1,8 @@
 @charset "UTF-8";
 
-html{
-    position:relative; 
-    min-height: 100%;
+html {
+	position: relative;
+	min-height: 100%;
 }
 
 #error-container {
@@ -11,7 +11,7 @@ html{
 }
 
 #error-title {
-	color: #FD8907;
+	color: #fd8907;
 }
 
 #error-message {
@@ -25,12 +25,12 @@ html{
 }
 
 #error-link1 {
-	color: #FD8907;
+	color: #fd8907;
 	font-style: italic;
 }
 
 #error-link2 {
-	color: #FD8907;
+	color: #fd8907;
 	font-style: italic;
 }
 
