@@ -10,11 +10,11 @@ import java.io.IOException;
 
 public class CacheConfig extends OncePerRequestFilter {
 
-    @Override
-    protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
-                                    final FilterChain chain) throws ServletException, IOException {
-        response.setHeader("Cache-Control", "public, max-age=31536000");
-        response.setHeader("Connection", "Keep-Alive");
-        chain.doFilter(request, response);
-    }
+	@Override
+	protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
+			final FilterChain chain) throws ServletException, IOException {
+		response.setHeader("Cache-Control", "public, max-age=31536000");
+		response.setHeader("Connection", "Keep-Alive");
+		chain.doFilter(request, response);
+	}
 }

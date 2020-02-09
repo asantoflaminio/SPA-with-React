@@ -10,16 +10,16 @@ import ar.edu.itba.paw.models.User;
 @Service
 public interface ResetPasswordDao {
 
-		ResetPassword createRequest(String token, long userId, String date);
+	ResetPassword createRequest(String token, long userId, String date);
 
-	    Optional<User> getUser(String token);
-	    
-	    Optional<ResetPassword> getRequest(String token);
+	Optional<User> getUser(String token);
 
-	    boolean checkToken(String token);
+	Optional<ResetPassword> getRequest(String token);
 
-	    void deleteRequest(Integer id);
-	    
-	    void deleteOldRequests(long userId);
-	    
+	boolean checkToken(String token);
+
+	void deleteRequest(Integer id);
+
+	void deleteOldRequests(long userId);
+
 }

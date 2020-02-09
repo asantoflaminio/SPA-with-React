@@ -15,7 +15,7 @@ import javax.ws.rs.HttpMethod;
  * @see HttpMethod
  * @since 2.1
  */
-@Target({ElementType.METHOD})
+@Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @HttpMethod("PATCH")
 @Documented

@@ -16,38 +16,38 @@ import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name = "cities")
 public class City {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cities_city_seq")
 	@SequenceGenerator(sequenceName = "cities_city_seq", name = "cities_city_seq", allocationSize = 1)
 	@Column(name = "cityid")
 	private long cityid;
-	
+
 	@Column(length = 40, nullable = false, unique = false)
 	private String city;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "province", nullable = false)
 	private Province province;
-	
+
 	@OneToMany(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@OrderBy("neighborhood ASC")
 	private List<Neighborhood> neighborhoods;
-	
-	public City() { }
-	
-	public City(String city) { 
+
+	public City() {
+	}
+
+	public City(String city) {
 		this.setCity(city);
 	}
-	
+
 	public long getCityid() {
 		return cityid;
 	}
-	
+
 	public void setCityid(long cityid) {
 		this.cityid = cityid;
 	}

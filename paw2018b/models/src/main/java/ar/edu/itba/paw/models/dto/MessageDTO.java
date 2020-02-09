@@ -1,16 +1,17 @@
 package ar.edu.itba.paw.models.dto;
 
 public class MessageDTO {
-	
-	public final static String MediaType ="application/vnd.meinHaus.message-v1.0+json";
-	
+
+	public final static String MediaType = "application/vnd.meinHaus.message-v1.0+json";
+
 	private String name;
 	private String email;
 	private String message;
 	private String ownerEmail;
 	private String title;
-	
-	public MessageDTO() {}
+
+	public MessageDTO() {
+	}
 
 	public String getMessage() {
 		return message;

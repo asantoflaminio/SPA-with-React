@@ -4,21 +4,20 @@ public class FilterCountQuery {
 	private Long count;
 	private Integer filterInt;
 	private String filterString;
-	
+
 	public FilterCountQuery() {
-		
+
 	}
-	
+
 	public FilterCountQuery(Long count, Integer filterInt) {
 		this.count = count;
 		this.filterInt = filterInt;
 	}
-	
+
 	public FilterCountQuery(Long count, String filterString) {
 		this.count = count;
 		this.filterString = filterString;
 	}
-	
 
 	public Long getCount() {
 		return count;

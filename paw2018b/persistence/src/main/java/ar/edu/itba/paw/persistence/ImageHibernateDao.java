@@ -16,14 +16,14 @@ import ar.edu.itba.paw.models.Publication;
 import ar.edu.itba.paw.models.UploadFile;
 
 @Repository
-public class ImageHibernateDao implements ImageDao{
-	
+public class ImageHibernateDao implements ImageDao {
+
 	@PersistenceContext
 	private EntityManager em;
-	
-	@Autowired 
+
+	@Autowired
 	private PublicationDao publicationDao;
-	
+
 	@Override
 	@Transactional
 	public UploadFile create(byte[] data, long publicationdid) {
@@ -42,12 +42,12 @@ public class ImageHibernateDao implements ImageDao{
 		final TypedQuery<Publication> query = em.createQuery(queryString, Publication.class);
 		query.setParameter("publicationid", publicationid);
 		final List<UploadFile> images = query.getResultList().get(0).getImages();
-		if(images.size() != 0 && index < images.size())
+		if (images.size() != 0 && index < images.size())
 			return images.get(index);
 		else
 			return null;
 	}
-	
+
 	@Override
 	@Transactional
 	public int getImagesCountByPublicationId(long publicationid) {
@@ -74,7 +74,5 @@ public class ImageHibernateDao implements ImageDao{
 		query.setParameter("publicationid", publicationid);
 		return query.getResultList().get(0).getImages();
 	}
-
-
 
 }

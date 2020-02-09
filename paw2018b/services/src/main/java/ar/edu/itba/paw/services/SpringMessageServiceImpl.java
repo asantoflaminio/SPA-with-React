@@ -14,29 +14,28 @@ import org.springframework.stereotype.Service;
 import ar.edu.itba.paw.interfaces.SpringMessageService;
 
 @Service
-public class SpringMessageServiceImpl implements SpringMessageService{
-
+public class SpringMessageServiceImpl implements SpringMessageService {
 
 	@Autowired
 	private MessageSource messageSource;
 
-    private MessageSourceAccessor accessor;
-    
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
-    
-    @PostConstruct
-	public void init() {
-		 
-	}
-    
-    @Override
-    public void setLocale(Locale locale) {
-    	accessor = new MessageSourceAccessor(messageSource, locale);
-    }
+	private MessageSourceAccessor accessor;
 
-    @Override
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+
+	@PostConstruct
+	public void init() {
+
+	}
+
+	@Override
+	public void setLocale(Locale locale) {
+		accessor = new MessageSourceAccessor(messageSource, locale);
+	}
+
+	@Override
 	public String get(String code) {
-    	 LOGGER.debug("Returning message with code {}", code);
-		 return accessor.getMessage(code);
+		LOGGER.debug("Returning message with code {}", code);
+		return accessor.getMessage(code);
 	}
 }

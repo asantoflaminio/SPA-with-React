@@ -19,23 +19,22 @@ import ar.edu.itba.paw.models.User;
 
 @Repository
 public class UserHibernateDao implements UserDao {
-	
+
 	@PersistenceContext
 	private EntityManager em;
-	
+
 	@Autowired
 	private PublicationDao publicationDao;
-	
+
 	@Transactional
-	public User create(final String firstName, final String lastName, final String email, final String password, 
-					final String phoneNumber, final String languaje,  String role) {
-		
+	public User create(final String firstName, final String lastName, final String email, final String password,
+			final String phoneNumber, final String languaje, String role) {
+
 		final User user = new User(firstName, lastName, email, password, phoneNumber, languaje, role);
 		em.persist(user);
 		return user;
 	}
-	
-	
+
 	@Override
 	@Transactional
 	public User findById(long id) {
@@ -54,9 +53,9 @@ public class UserHibernateDao implements UserDao {
 	@Override
 	@Transactional
 	public void editData(String firstName, String lastName, String email, String phoneNumber, long userid) {
-		final Query query =  em.createQuery("update User as u set u.firstName = :firstName, "
-													 + "u.lastName = :lastName, u.email = :email, u.phoneNumber = :phoneNumber " 
-													 + "where u.userid = :userid");
+		final Query query = em.createQuery("update User as u set u.firstName = :firstName, "
+				+ "u.lastName = :lastName, u.email = :email, u.phoneNumber = :phoneNumber "
+				+ "where u.userid = :userid");
 		query.setParameter("firstName", firstName);
 		query.setParameter("lastName", lastName);
 		query.setParameter("email", email);
@@ -64,49 +63,50 @@ public class UserHibernateDao implements UserDao {
 		query.setParameter("userid", userid);
 		query.executeUpdate();
 
-		
 	}
 
 	@Override
 	@Transactional
 	public void editPassword(String newPassword, long userid) {
-		final Query query =  em.createQuery("update User as u set u.password = :password where u.userid = :userid");
+		final Query query = em.createQuery("update User as u set u.password = :password where u.userid = :userid");
 		query.setParameter("password", newPassword);
 		query.setParameter("userid", userid);
 		query.executeUpdate();
-		
+
 	}
-	
+
 	@Override
 	@Transactional
 	public List<User> findAllUsers(int page, int limit) {
-		final TypedQuery<User> query = em.createQuery("select distinct u from User as u where u.role != :role Order by u.email ASC", User.class);
+		final TypedQuery<User> query = em
+				.createQuery("select distinct u from User as u where u.role != :role Order by u.email ASC", User.class);
 		query.setParameter("role", Constants.Role.ADMIN.getRole());
 		query.setFirstResult(page * limit);
 		query.setMaxResults(limit);
 		return query.getResultList();
 	}
-	
+
 	@Override
 	@Transactional
 	public int getAllUsersCount() {
-		final TypedQuery<Long> query = em.createQuery("select distinct COUNT(u) from User as u where u.role != :role", Long.class);
+		final TypedQuery<Long> query = em.createQuery("select distinct COUNT(u) from User as u where u.role != :role",
+				Long.class);
 		query.setParameter("role", Constants.Role.ADMIN.getRole());
 		return query.getResultList().get(0).intValue();
 	}
-	
+
 	@Override
 	@Transactional
 	public void lock(boolean lock, long userid) {
-		final Query query =  em.createQuery("update User as u set u.locked = :locked where u.userid = :userid");
+		final Query query = em.createQuery("update User as u set u.locked = :locked where u.userid = :userid");
 		query.setParameter("locked", lock);
 		query.setParameter("userid", userid);
 		query.executeUpdate();
-		
+
 		List<Publication> userPublications = publicationDao.findByUserId(userid, null, null);
-		for(Publication publication: userPublications) {
+		for (Publication publication : userPublications) {
 			publicationDao.updateLockUserPublications(lock, publication.getPublicationid(), userid);
 		}
-		
+
 	}
 }

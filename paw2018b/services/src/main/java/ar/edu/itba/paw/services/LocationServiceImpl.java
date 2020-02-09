@@ -18,11 +18,11 @@ import ar.edu.itba.paw.models.dto.NeighborhoodDTO;
 import ar.edu.itba.paw.models.dto.ProvinceDTO;
 
 @Service
-public class LocationServiceImpl implements LocationService{
-	
+public class LocationServiceImpl implements LocationService {
+
 	@Autowired
 	private LocationDao locationDao;
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Override
@@ -34,20 +34,20 @@ public class LocationServiceImpl implements LocationService{
 	@Override
 	public City createCity(String city, long provinceid) {
 		LOGGER.debug("Creating city with name {}", city);
-		return locationDao.createCity(city,provinceid);
+		return locationDao.createCity(city, provinceid);
 	}
 
 	@Override
 	public Neighborhood createNeighborhood(String neighborhood, long cityid) {
 		LOGGER.debug("Creating neighborhood with name {}", neighborhood);
-		return locationDao.createNeighborhood(neighborhood,cityid);
+		return locationDao.createNeighborhood(neighborhood, cityid);
 	}
 
 	@Override
 	public List<ProvinceDTO> getProvinces() {
 		List<ProvinceDTO> provinces = new ArrayList<ProvinceDTO>();
-		for(Province province: locationDao.getProvinces()) {
-			provinces.add(new ProvinceDTO(province.getProvince(),province.getProvinceid()));
+		for (Province province : locationDao.getProvinces()) {
+			provinces.add(new ProvinceDTO(province.getProvince(), province.getProvinceid()));
 		}
 		return provinces;
 	}
@@ -55,17 +55,17 @@ public class LocationServiceImpl implements LocationService{
 	@Override
 	public List<CityDTO> getCities(long provinceid) {
 		List<CityDTO> cities = new ArrayList<CityDTO>();
-		for(City city: locationDao.getCities(provinceid)) {
-			cities.add(new CityDTO(city.getCity(),city.getCityid()));
+		for (City city : locationDao.getCities(provinceid)) {
+			cities.add(new CityDTO(city.getCity(), city.getCityid()));
 		}
 		return cities;
 	}
-	
+
 	@Override
 	public List<NeighborhoodDTO> getNeighborhoods(long cityid) {
 		List<NeighborhoodDTO> neighborhoods = new ArrayList<NeighborhoodDTO>();
-		for(Neighborhood neighborhood: locationDao.getNeighborhoods(cityid)) {
-			neighborhoods.add(new NeighborhoodDTO(neighborhood.getNeighborhood(),neighborhood.getNeighborhoodid()));
+		for (Neighborhood neighborhood : locationDao.getNeighborhoods(cityid)) {
+			neighborhoods.add(new NeighborhoodDTO(neighborhood.getNeighborhood(), neighborhood.getNeighborhoodid()));
 		}
 		return neighborhoods;
 	}

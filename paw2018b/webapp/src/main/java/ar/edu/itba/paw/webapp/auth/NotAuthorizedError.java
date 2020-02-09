@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.auth;
 
-
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 
@@ -11,11 +10,9 @@ import java.io.IOException;
 
 public class NotAuthorizedError extends BasicAuthenticationEntryPoint {
 
-    @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response,
-                         AuthenticationException authenticationException) throws IOException, ServletException {
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authenticationException.getMessage());
-    }
+	@Override
+	public void commence(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException authenticationException) throws IOException, ServletException {
+		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authenticationException.getMessage());
+	}
 }
-
-

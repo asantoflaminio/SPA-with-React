@@ -17,12 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.paw.models.User;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Transactional
 public class UserHibernateDaoTest {
-	
+
 	private static final String FIRSTNAME = "TestFirstName";
 	private static final String LASTNAME = "TestLastName";
 	private static final String EMAIL = "test@mail.com";
@@ -33,18 +32,18 @@ public class UserHibernateDaoTest {
 
 	@PersistenceContext
 	private EntityManager em;
-	
+
 	@Autowired
-	private UserHibernateDao userDao; 
+	private UserHibernateDao userDao;
 	private long user_id;
-	
+
 	@Before
 	@Transactional
 	public void setUp() {
 
 		User u;
 		for (int i = 10; i < 50; i++) {
-			u = new User(i+FIRSTNAME, i+LASTNAME, i+EMAIL, PASSWORD, PHONENUMBER, ROLE, LANGUAGE);
+			u = new User(i + FIRSTNAME, i + LASTNAME, i + EMAIL, PASSWORD, PHONENUMBER, ROLE, LANGUAGE);
 			em.merge(u);
 			if (i == 10) {
 				this.user_id = u.getUserid();
@@ -52,42 +51,41 @@ public class UserHibernateDaoTest {
 
 		}
 	}
-	
-	
+
 	@Rollback
 	@Test
 	public void testCreate() {
-		
-		final User user =  userDao.create(FIRSTNAME, LASTNAME, EMAIL, PASSWORD, LANGUAGE, PHONENUMBER, ROLE);
+
+		final User user = userDao.create(FIRSTNAME, LASTNAME, EMAIL, PASSWORD, LANGUAGE, PHONENUMBER, ROLE);
 		assertNotNull(user);
 		assertEquals(LASTNAME, user.getLastName());
 		Query query = em.createQuery("SELECT COUNT(*) FROM User WHERE email = :email");
 		query.setParameter("email", EMAIL);
 		assertEquals(new Long(1), query.getSingleResult());
-		
+
 	}
-	
+
 	@Rollback
 	@Test
 	public void testFindById() {
-		
-		final User user =  userDao.create(FIRSTNAME, LASTNAME, EMAIL, PASSWORD, LANGUAGE, PHONENUMBER, ROLE);
+
+		final User user = userDao.create(FIRSTNAME, LASTNAME, EMAIL, PASSWORD, LANGUAGE, PHONENUMBER, ROLE);
 		final User actualUser = userDao.findById(user.getUserid());
 		final User nullUser = userDao.findById(10000);
 		assertNotNull(actualUser);
 		assertNull(nullUser);
-		
+
 	}
-	
+
 	@Rollback
 	@Test
 	public void testFindByUserAndId() {
 
 		for (int i = 11; i < 50; i++) {
-			final User user1 =  userDao.findByUsername(i + EMAIL);
+			final User user1 = userDao.findByUsername(i + EMAIL);
 			final User user2 = userDao.findById(user1.getUserid());
 			assertEquals(user1, user2);
 		}
 	}
-	
+
 }

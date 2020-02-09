@@ -23,7 +23,7 @@ import ar.edu.itba.paw.models.PersistentLogin;
 
 @Repository("persistentTokenRepository")
 public class PersistentLoginHibernateDao implements PersistentTokenRepository {
-	
+
 	@PersistenceContext
 	private EntityManager em;
 
@@ -31,24 +31,24 @@ public class PersistentLoginHibernateDao implements PersistentTokenRepository {
 	@Transactional
 	public void createNewToken(PersistentRememberMeToken token) {
 		PersistentLogin logins = new PersistentLogin();
-	    logins.setEmail(token.getUsername());
-	    logins.setSeries(token.getSeries());
-	    logins.setToken(token.getTokenValue());
-	    logins.setLastUsed(token.getDate());
-	    em.persist(logins);
-		
+		logins.setEmail(token.getUsername());
+		logins.setSeries(token.getSeries());
+		logins.setToken(token.getTokenValue());
+		logins.setLastUsed(token.getDate());
+		em.persist(logins);
+
 	}
 
 	@Override
 	@Transactional
 	public void updateToken(String series, String tokenValue, Date lastUsed) {
-		final Query query =  em.createQuery("update PersistentLogin as pl set pl.token = :token "
-										  + "AND pl.lastUsed = :lastUsed where pl.series = :series");
+		final Query query = em.createQuery("update PersistentLogin as pl set pl.token = :token "
+				+ "AND pl.lastUsed = :lastUsed where pl.series = :series");
 		query.setParameter("token", tokenValue);
 		query.setParameter("lastUsed", lastUsed);
 		query.setParameter("series", series);
 		query.executeUpdate();
-		
+
 	}
 
 	@Override
@@ -58,21 +58,22 @@ public class PersistentLoginHibernateDao implements PersistentTokenRepository {
 		final TypedQuery<PersistentLogin> query = em.createQuery(queryString, PersistentLogin.class);
 		query.setParameter("series", seriesId);
 		PersistentLogin logins = query.getResultList().get(0);
-	      
-	      if (logins != null) {
-			final Collection<? extends GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
-			Authentication auth = new UsernamePasswordAuthenticationToken (logins.getEmail(),null,authorities);
+
+		if (logins != null) {
+			final Collection<? extends GrantedAuthority> authorities = Arrays
+					.asList(new SimpleGrantedAuthority("ROLE_USER"));
+			Authentication auth = new UsernamePasswordAuthenticationToken(logins.getEmail(), null, authorities);
 			SecurityContextHolder.getContext().setAuthentication(auth);
-	        return new PersistentRememberMeToken(logins.getEmail(), 
-	            logins.getSeries(), logins.getToken(),logins.getLastUsed());
-	      }
-	      return null;
+			return new PersistentRememberMeToken(logins.getEmail(), logins.getSeries(), logins.getToken(),
+					logins.getLastUsed());
+		}
+		return null;
 	}
 
 	@Override
 	@Transactional
 	public void removeUserTokens(String email) {
-		final Query query =  em.createQuery("delete PersistentLogin as pl WHERE pl.email = :email");
+		final Query query = em.createQuery("delete PersistentLogin as pl WHERE pl.email = :email");
 		query.setParameter("email", email);
 		query.executeUpdate();
 	}

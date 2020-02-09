@@ -11,22 +11,25 @@ public class Filter {
 	private DataBaseFilterName dataBaseNameValue;
 	private QueryFilterName nameValue;
 	private QueryOperator operator;
-	
-	public Filter(Integer intValue, DataBaseFilterName dataBaseNameValue, QueryFilterName nameValue, QueryOperator operator) {
+
+	public Filter(Integer intValue, DataBaseFilterName dataBaseNameValue, QueryFilterName nameValue,
+			QueryOperator operator) {
 		this.setIntValue(intValue);
 		this.setOperator(operator);
 		this.setNameValue(nameValue);
 		this.setDataBaseNameValue(dataBaseNameValue);
 	}
-	
-	public Filter(String stringValue, DataBaseFilterName dataBaseNameValue, QueryFilterName nameValue, QueryOperator operator) {
+
+	public Filter(String stringValue, DataBaseFilterName dataBaseNameValue, QueryFilterName nameValue,
+			QueryOperator operator) {
 		this.setStringValue(stringValue);
 		this.setOperator(operator);
 		this.setNameValue(nameValue);
 		this.setDataBaseNameValue(dataBaseNameValue);
 	}
-	
-	public Filter(Boolean booleanValue, DataBaseFilterName dataBaseNameValue, QueryFilterName nameValue, QueryOperator operator) {
+
+	public Filter(Boolean booleanValue, DataBaseFilterName dataBaseNameValue, QueryFilterName nameValue,
+			QueryOperator operator) {
 		this.setBooleanValue(booleanValue);
 		this.setOperator(operator);
 		this.setNameValue(nameValue);

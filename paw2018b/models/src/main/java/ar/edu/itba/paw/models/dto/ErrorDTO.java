@@ -4,8 +4,9 @@ public class ErrorDTO {
 
 	private String error;
 	private String details;
-	
-	public ErrorDTO() {}
+
+	public ErrorDTO() {
+	}
 
 	public String getError() {
 		return error;
@@ -22,6 +23,5 @@ public class ErrorDTO {
 	public void setDetails(String details) {
 		this.details = details;
 	}
-	
-	
+
 }

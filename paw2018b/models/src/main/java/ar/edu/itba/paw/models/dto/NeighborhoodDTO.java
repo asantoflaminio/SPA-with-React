@@ -1,20 +1,21 @@
 package ar.edu.itba.paw.models.dto;
 
 public class NeighborhoodDTO {
-	
-	public final static String MediaType ="application/vnd.meinHaus.neighborhood-v1.0+json";
-	
+
+	public final static String MediaType = "application/vnd.meinHaus.neighborhood-v1.0+json";
+
 	private String neighborhood;
 	private long neighborhoodid;
 	private long cityid;
 	private long provinceid;
-	
+
 	public NeighborhoodDTO(String neighborhood, long neighborhoodid) {
 		this.setNeighborhood(neighborhood);
 		this.setNeighborhoodid(neighborhoodid);
 	}
-	
-	public NeighborhoodDTO() {}
+
+	public NeighborhoodDTO() {
+	}
 
 	public String getNeighborhood() {
 		return neighborhood;
@@ -23,7 +24,7 @@ public class NeighborhoodDTO {
 	public void setNeighborhood(String neighborhood) {
 		this.neighborhood = neighborhood;
 	}
-	
+
 	public long getCityid() {
 		return cityid;
 	}

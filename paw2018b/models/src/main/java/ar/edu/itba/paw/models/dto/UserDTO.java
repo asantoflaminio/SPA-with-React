@@ -1,10 +1,9 @@
 package ar.edu.itba.paw.models.dto;
 
 public class UserDTO {
-	
 
-    public final static String MediaType ="application/vnd.meinHaus.user-v1.0+json";
-	
+	public final static String MediaType = "application/vnd.meinHaus.user-v1.0+json";
+
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -13,7 +12,7 @@ public class UserDTO {
 	private String phoneNumber;
 	private Boolean locked;
 	private long id;
-	
+
 	public UserDTO(String firstName, String lastName, String email, String phoneNumber, String password) {
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -21,21 +20,22 @@ public class UserDTO {
 		this.phoneNumber = phoneNumber;
 		this.password = password;
 	}
-	
+
 	public UserDTO(String firstName, String lastName, String email, String phoneNumber) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 	}
-	
+
 	public UserDTO(String email, boolean locked, long id) {
 		this.email = email;
 		this.locked = locked;
 		this.id = id;
 	}
-	
-	public UserDTO() {} ;
+
+	public UserDTO() {
+	};
 
 	public String getPhoneNumber() {
 		return phoneNumber;
@@ -52,7 +52,7 @@ public class UserDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public String getCurrentPassword() {
 		return currentPassword;
 	}

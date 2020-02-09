@@ -15,15 +15,16 @@ import ar.edu.itba.paw.interfaces.FavPublicationsDao;
 import ar.edu.itba.paw.interfaces.PublicationDao;
 import ar.edu.itba.paw.interfaces.UserDao;
 import ar.edu.itba.paw.models.FavPublication;
+
 @Repository
-public class FavPublicationsHibernateDao implements FavPublicationsDao{
-	
+public class FavPublicationsHibernateDao implements FavPublicationsDao {
+
 	@Autowired
 	private UserDao userDao;
-	
+
 	@Autowired
 	private PublicationDao publicationDao;
-	
+
 	@PersistenceContext
 	private EntityManager em;
 
@@ -41,28 +42,29 @@ public class FavPublicationsHibernateDao implements FavPublicationsDao{
 	@Transactional
 	public boolean removeFavourite(long userid, long publicationid) {
 		final String queryString = "from FavPublication as fav where fav.publication.publicationid = :publicationid "
-				 + "AND fav.user.userid = :userid";
+				+ "AND fav.user.userid = :userid";
 		TypedQuery<FavPublication> query = em.createQuery(queryString, FavPublication.class);
-		query.setParameter("publicationid", publicationid); 
+		query.setParameter("publicationid", publicationid);
 		query.setParameter("userid", userid);
-		if(query.getResultList().size() == 0)
+		if (query.getResultList().size() == 0)
 			return false;
 		em.remove(query.getResultList().get(0));
 		return true;
 	}
-	
+
 	@Override
 	public void removeFavouriteByPublication(long publicationid) {
-		final Query query =  em.createQuery("delete FavPublication as fav WHERE fav.publication.publicationid = :publicationid");
+		final Query query = em
+				.createQuery("delete FavPublication as fav WHERE fav.publication.publicationid = :publicationid");
 		query.setParameter("publicationid", publicationid);
 		query.executeUpdate();
 	}
-	
+
 	@Override
 	@Transactional
 	public List<Long> getUserFavourites(long userid, Integer page, Integer limit) {
 		final String queryString = "select distinct favPub.publication.publicationid from FavPublication as favPub "
-								 + "WHERE favPub.user.userid = :userid AND favPub.publication.locked != true";
+				+ "WHERE favPub.user.userid = :userid AND favPub.publication.locked != true";
 		TypedQuery<Long> query = em.createQuery(queryString, Long.class);
 		query.setParameter("userid", userid);
 		query.setFirstResult(page * limit);
@@ -74,35 +76,34 @@ public class FavPublicationsHibernateDao implements FavPublicationsDao{
 	@Transactional
 	public int getCountUserFavourites(long userid) {
 		final String queryString = "select COUNT(favPub) from FavPublication as favPub "
-								+ "WHERE favPub.user.userid = :userid";
+				+ "WHERE favPub.user.userid = :userid";
 		TypedQuery<Long> query = em.createQuery(queryString, Long.class);
 		query.setParameter("userid", userid);
 		return query.getResultList().get(0).intValue();
 	}
-	
+
 	@Override
 	@Transactional
 	public List<Long> getUserAllFavourites(long userid) {
 		final String queryString = "select distinct favPub.publication.publicationid from FavPublication as favPub "
-								 + "WHERE favPub.user.userid = :userid AND favPub.publication.locked != true";
+				+ "WHERE favPub.user.userid = :userid AND favPub.publication.locked != true";
 		TypedQuery<Long> query = em.createQuery(queryString, Long.class);
 		query.setParameter("userid", userid);
 		return query.getResultList();
 	}
-	
+
 	@Override
 	@Transactional
 	public boolean isFavourite(long userid, long publicationid) {
 		final String queryString = "from FavPublication as fav where fav.publication.publicationid = :publicationid "
-				 + "AND fav.user.userid = :userid";
+				+ "AND fav.user.userid = :userid";
 		TypedQuery<FavPublication> query = em.createQuery(queryString, FavPublication.class);
-		query.setParameter("publicationid", publicationid); 
+		query.setParameter("publicationid", publicationid);
 		query.setParameter("userid", userid);
-		if(query.getResultList().size() > 0)
+		if (query.getResultList().size() > 0)
 			return true;
 		else
 			return false;
 	}
-
 
 }

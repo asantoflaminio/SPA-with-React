@@ -1,12 +1,12 @@
 package ar.edu.itba.paw.models;
 
 public class Mail {
-	
-    private String mailFrom;
-    
-    private String mailTo;
-    
-    private String mailContent;
+
+	private String mailFrom;
+
+	private String mailTo;
+
+	private String mailContent;
 
 	public String getMailFrom() {
 		return mailFrom;

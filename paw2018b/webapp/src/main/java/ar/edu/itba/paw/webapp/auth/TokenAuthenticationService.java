@@ -25,105 +25,106 @@ import ar.edu.itba.paw.models.dto.UserLoginDTO;
 
 @Component
 public class TokenAuthenticationService {
-    private static final String AUTH_HEADER = "Authorization";
-    private static final String ACCESS_HEADER = "Authorities";
-    private static final String USERNAME_HEADER = "username";
+	private static final String AUTH_HEADER = "Authorization";
+	private static final String ACCESS_HEADER = "Authorities";
+	private static final String USERNAME_HEADER = "username";
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+	@Autowired
+	private UserDetailsService userDetailsService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    
-    @Autowired
-    private UserService us;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-    private final TokenHandler tokenHandler;
+	@Autowired
+	private UserService us;
 
-    public TokenAuthenticationService() {
-        this.tokenHandler = new JWTTokenHandler();
-    }
-    
-    public Long getUserIdAuthentication(final HttpServletRequest request) {
-    	final String token = request.getHeader(AUTH_HEADER);
-    	
-    	if (token != null) {
-    		final String username = tokenHandler.getUsername(token);
-    		if(username != null)
-    			return us.findByUsername(username).getUserid();
-    	}
-    	
-    	return null;
-    }
-    
-    public String getUserAuthorities(final HttpServletRequest request) {
-    	final String token = request.getHeader(AUTH_HEADER);
-    	
-    	if (token != null) {
-    		final String username = tokenHandler.getUsername(token);
-    		if(username != null)
-    			return us.findByUsername(username).getRole();
-    	}
-    	
-    	return null;
-    }
-    
-    Authentication getAuthentication(final HttpServletRequest request) {
-        final String token = request.getHeader(AUTH_HEADER);
-        Authentication authentication = null;
-        if (token != null) {
-            final String username = tokenHandler.getUsername(token);
+	private final TokenHandler tokenHandler;
 
-            if (username != null) {
-                try {
-                    final UserDetails user = userDetailsService.loadUserByUsername(username);
-                    final Collection<GrantedAuthority> authorities = new HashSet<GrantedAuthority>(user.getAuthorities());
-                    authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),authorities);
-                } catch (UsernameNotFoundException e) {
-                    return null;
-                }
-            }
-        }
+	public TokenAuthenticationService() {
+		this.tokenHandler = new JWTTokenHandler();
+	}
 
-        return authentication;
-    }
-    
-    void addAuthentication(final HttpServletResponse response, final UserDetails userDetails) throws IOException, ServletException {
-        final String token = tokenHandler.createToken(userDetails.getUsername());
-        
-        response.setHeader(AUTH_HEADER, "Bearer " + token);
-        response.setHeader(ACCESS_HEADER, userDetails.getAuthorities().toString());
-        response.setHeader(USERNAME_HEADER, userDetails.getUsername());
-    }
-    
-    
-    Authentication getAuthenticationForLogin(final HttpServletRequest request){
-        try {
-            final UserLoginDTO user = new ObjectMapper().readValue(request.getInputStream(), UserLoginDTO.class);
-            
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
-            
-            if (userDetails != null) {
-                if (user.getEmail().equals(userDetails.getUsername()) && passwordEncoder.matches(user.getPassword(), userDetails.getPassword())) {
-                    return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
-                }
-            }
-        } catch (final IOException e) {
-            return null;
-        }
+	public Long getUserIdAuthentication(final HttpServletRequest request) {
+		final String token = request.getHeader(AUTH_HEADER);
 
-        return null;
-    }
-    
-    public Response refreshToken(String username)  {
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-    	final String token = tokenHandler.createToken(username);
-    	return Response.ok().header(AUTH_HEADER, "Bearer " + token)
-    			.header(ACCESS_HEADER, userDetails.getAuthorities().toString())
-    			.header(USERNAME_HEADER, userDetails.getUsername()).build();
-    }
-    
-    
-    
+		if (token != null) {
+			final String username = tokenHandler.getUsername(token);
+			if (username != null)
+				return us.findByUsername(username).getUserid();
+		}
+
+		return null;
+	}
+
+	public String getUserAuthorities(final HttpServletRequest request) {
+		final String token = request.getHeader(AUTH_HEADER);
+
+		if (token != null) {
+			final String username = tokenHandler.getUsername(token);
+			if (username != null)
+				return us.findByUsername(username).getRole();
+		}
+
+		return null;
+	}
+
+	Authentication getAuthentication(final HttpServletRequest request) {
+		final String token = request.getHeader(AUTH_HEADER);
+		Authentication authentication = null;
+		if (token != null) {
+			final String username = tokenHandler.getUsername(token);
+
+			if (username != null) {
+				try {
+					final UserDetails user = userDetailsService.loadUserByUsername(username);
+					final Collection<GrantedAuthority> authorities = new HashSet<GrantedAuthority>(
+							user.getAuthorities());
+					authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),
+							authorities);
+				} catch (UsernameNotFoundException e) {
+					return null;
+				}
+			}
+		}
+
+		return authentication;
+	}
+
+	void addAuthentication(final HttpServletResponse response, final UserDetails userDetails)
+			throws IOException, ServletException {
+		final String token = tokenHandler.createToken(userDetails.getUsername());
+
+		response.setHeader(AUTH_HEADER, "Bearer " + token);
+		response.setHeader(ACCESS_HEADER, userDetails.getAuthorities().toString());
+		response.setHeader(USERNAME_HEADER, userDetails.getUsername());
+	}
+
+	Authentication getAuthenticationForLogin(final HttpServletRequest request) {
+		try {
+			final UserLoginDTO user = new ObjectMapper().readValue(request.getInputStream(), UserLoginDTO.class);
+
+			final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
+
+			if (userDetails != null) {
+				if (user.getEmail().equals(userDetails.getUsername())
+						&& passwordEncoder.matches(user.getPassword(), userDetails.getPassword())) {
+					return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(),
+							userDetails.getAuthorities());
+				}
+			}
+		} catch (final IOException e) {
+			return null;
+		}
+
+		return null;
+	}
+
+	public Response refreshToken(String username) {
+		final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+		final String token = tokenHandler.createToken(username);
+		return Response.ok().header(AUTH_HEADER, "Bearer " + token)
+				.header(ACCESS_HEADER, userDetails.getAuthorities().toString())
+				.header(USERNAME_HEADER, userDetails.getUsername()).build();
+	}
+
 }
-

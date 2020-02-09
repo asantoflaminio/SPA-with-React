@@ -1,9 +1,9 @@
 package ar.edu.itba.paw.models.dto;
 
 public class PublicationDTO {
-	
-	public final static String MediaType ="application/vnd.meinHaus.publication-v1.0+json";
-	
+
+	public final static String MediaType = "application/vnd.meinHaus.publication-v1.0+json";
+
 	private String title;
 	private String provinceid;
 	private String cityid;
@@ -28,13 +28,11 @@ public class PublicationDTO {
 	private String userEmail;
 	private String phoneNumber;
 	private boolean isFavourite;
-	
-	
+
 	public PublicationDTO(long publicationid, String title, String provinceid, String cityid, String neighborhoodid,
-							String address, String operation, String price, String description,
-							String propertyType, String bedrooms, String bathrooms, String dimention,
-							String parking, String date,
-							String coveredFloorSize, String balconies, String amenities, String storage, String expenses) {
+			String address, String operation, String price, String description, String propertyType, String bedrooms,
+			String bathrooms, String dimention, String parking, String date, String coveredFloorSize, String balconies,
+			String amenities, String storage, String expenses) {
 		this.publicationid = publicationid;
 		this.title = title;
 		this.setProvinceid(provinceid);
@@ -57,8 +55,9 @@ public class PublicationDTO {
 		this.setDate(date);
 		this.setFavourite(false);
 	}
-	
-	public PublicationDTO() {} ;
+
+	public PublicationDTO() {
+	};
 
 	public String getTitle() {
 		return title;
@@ -115,7 +114,7 @@ public class PublicationDTO {
 	public void setBedrooms(String bedrooms) {
 		this.bedrooms = bedrooms;
 	}
-	
+
 	public String getBathrooms() {
 		return bathrooms;
 	}
@@ -131,7 +130,6 @@ public class PublicationDTO {
 	public void setDimention(String dimention) {
 		this.dimention = dimention;
 	}
-
 
 	public String getParking() {
 		return parking;

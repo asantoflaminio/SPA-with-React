@@ -17,22 +17,23 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "provinces")
 public class Province {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "provinces_province_seq")
 	@SequenceGenerator(sequenceName = "provinces_province_seq", name = "provinces_province_seq", allocationSize = 1)
 	@Column(name = "provinceid")
 	private long provinceid;
-	
+
 	@Column(length = 40, nullable = false, unique = false)
 	private String province;
-	
+
 	@OneToMany(mappedBy = "province", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@OrderBy("city ASC")
 	private List<City> cities;
-	
-	public Province() { }
-	
+
+	public Province() {
+	}
+
 	public Province(String province) {
 		this.province = province;
 	}

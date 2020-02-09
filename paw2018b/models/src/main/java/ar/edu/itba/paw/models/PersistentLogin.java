@@ -13,28 +13,29 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "persistentLogin")
 public class PersistentLogin {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "persistentLogins_persistentLogin_seq")
 	@SequenceGenerator(sequenceName = "persistentLogins_persistentLogin_seq", name = "persistentLogins_persistentLogin_seq", allocationSize = 1)
 	@Column(name = "persistentLoginid")
 	private long persistentLoginid;
-	
+
 	@Column(length = 250, nullable = false, unique = true)
 	private String email;
-	
+
 	@Column(length = 250, nullable = false, unique = true)
 	private String series;
-	
+
 	@Column(length = 250, nullable = false, unique = false)
 	private String token;
-	
+
 	@Column(nullable = false, unique = false)
 	private Date lastUsed;
-	
-	public PersistentLogin() { }
-	
-	public PersistentLogin(String email, String series, String token, Date lastUsed) { 
+
+	public PersistentLogin() {
+	}
+
+	public PersistentLogin(String email, String series, String token, Date lastUsed) {
 		this.setEmail(email);
 		this.setSeries(series);
 		this.setToken(token);

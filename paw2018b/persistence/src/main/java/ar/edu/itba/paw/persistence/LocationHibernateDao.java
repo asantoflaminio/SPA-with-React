@@ -15,8 +15,8 @@ import ar.edu.itba.paw.models.Neighborhood;
 import ar.edu.itba.paw.models.Province;
 
 @Repository
-public class LocationHibernateDao implements LocationDao{
-	
+public class LocationHibernateDao implements LocationDao {
+
 	@PersistenceContext
 	private EntityManager em;
 
@@ -62,7 +62,7 @@ public class LocationHibernateDao implements LocationDao{
 		query.setParameter("provinceid", provinceid);
 		return query.getResultList();
 	}
-	
+
 	@Override
 	@Transactional
 	public List<Neighborhood> getNeighborhoods(long cityid) {
@@ -71,7 +71,7 @@ public class LocationHibernateDao implements LocationDao{
 		query.setParameter("cityid", cityid);
 		return query.getResultList();
 	}
-	
+
 	@Override
 	@Transactional
 	public Province findByProvinceName(String province) {
@@ -81,7 +81,7 @@ public class LocationHibernateDao implements LocationDao{
 		final List<Province> list = query.getResultList();
 		return list.isEmpty() ? null : list.get(0);
 	}
-	
+
 	@Override
 	@Transactional
 	public City findByCityName(long provinceid, String city) {
@@ -92,7 +92,7 @@ public class LocationHibernateDao implements LocationDao{
 		final List<City> list = query.getResultList();
 		return list.isEmpty() ? null : list.get(0);
 	}
-	
+
 	@Override
 	@Transactional
 	public Neighborhood findByNeighborhoodName(long cityid, String neighborhood) {
@@ -103,7 +103,5 @@ public class LocationHibernateDao implements LocationDao{
 		final List<Neighborhood> list = query.getResultList();
 		return list.isEmpty() ? null : list.get(0);
 	}
-	
-
 
 }

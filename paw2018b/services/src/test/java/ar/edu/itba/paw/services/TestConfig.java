@@ -74,7 +74,7 @@ public class TestConfig {
 	public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
 		return new JpaTransactionManager(emf);
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();

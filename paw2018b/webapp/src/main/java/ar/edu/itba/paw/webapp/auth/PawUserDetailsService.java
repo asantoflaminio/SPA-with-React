@@ -16,28 +16,28 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-
 @Component
 public class PawUserDetailsService implements UserDetailsService {
-	
+
 	@Autowired
 	private UserService us;
-	
-	public UserDetails loadUserByUsername(final String username)throws UsernameNotFoundException {
+
+	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
 		final User user = us.findByUsername(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("No user by the name " + username);
 		}
 		final Collection<? extends GrantedAuthority> authorities;
-		
-		if(user.getRole().equals("USER")) {
-			if(user.isLocked())
-				authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_LOCKED"));
+
+		if (user.getRole().equals("USER")) {
+			if (user.isLocked())
+				authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"),
+						new SimpleGrantedAuthority("ROLE_LOCKED"));
 			else
 				authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
-		}
-		else
-			authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN"));
+		} else
+			authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"),
+					new SimpleGrantedAuthority("ROLE_ADMIN"));
 		return new org.springframework.security.core.userdetails.User(username, user.getPassword(), authorities);
 	}
 

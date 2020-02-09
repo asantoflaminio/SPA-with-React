@@ -26,7 +26,7 @@ import ar.edu.itba.paw.models.User;
 @ContextConfiguration(classes = TestConfig.class)
 @Transactional
 public class FavPublicationsHibernateDaoTest {
-	
+
 	private static final String FIRSTNAME = "TestFirstName";
 	private static final String LASTNAME = "TestLastName";
 	private static final String EMAIL = "test@mail.com";
@@ -34,7 +34,7 @@ public class FavPublicationsHibernateDaoTest {
 	private static final String PHONENUMBER = "1522334455";
 	private static final String ROLE = "USER";
 	private static final String LANGUAGE = "es-4";
-	
+
 	private static final String TITLE = "TestTitle";
 	private static final String ADDRESS = "TestAddress";
 	private static final String NEIGHBORHOOD = "TestNeighborhood";
@@ -56,82 +56,81 @@ public class FavPublicationsHibernateDaoTest {
 
 	@PersistenceContext
 	private EntityManager em;
-	
+
 	@Autowired
-	private UserHibernateDao userDao; 
-	
+	private UserHibernateDao userDao;
+
 	@Autowired
-	private PublicationHibernateDao publicationDao; 
-	
+	private PublicationHibernateDao publicationDao;
+
 	@Autowired
 	private LocationHibernateDao locationDao;
-	
+
 	@Autowired
-	private FavPublicationsHibernateDao favDao; 
-	
+	private FavPublicationsHibernateDao favDao;
+
 	private long user_id;
 	private long pub_id;
-	
+
 	@Before
 	@Transactional
 	public void setUp() {
-		
-		final User user =  userDao.create(FIRSTNAME, LASTNAME, EMAIL, PASSWORD, LANGUAGE, PHONENUMBER, ROLE);
+
+		final User user = userDao.create(FIRSTNAME, LASTNAME, EMAIL, PASSWORD, LANGUAGE, PHONENUMBER, ROLE);
 		em.persist(user);
 		this.user_id = user.getUserid();
-		
+
 		Province p = locationDao.createProvince(PROVINCE);
 		City c = locationDao.createCity(CITY, p.getProvinceid());
 		Neighborhood n = locationDao.createNeighborhood(NEIGHBORHOOD, c.getCityid());
 		em.persist(p);
 		em.persist(c);
 		em.persist(n);
-		
-		final Publication pub = publicationDao.create(TITLE, ADDRESS, String.valueOf(n.getNeighborhoodid()), String.valueOf(c.getCityid()), String.valueOf(p.getProvinceid()), OPERATION,
-				PRICE, DESCRIPTION, PROPERTYTYPE, BEDROOMS, BATHROOMS, FLOORSIZE, PARKING, COVEREDFLOORSIZE, 
-				BALCONIES, AMENITIES, STORAGE, EXPENSES, user_id);
+
+		final Publication pub = publicationDao.create(TITLE, ADDRESS, String.valueOf(n.getNeighborhoodid()),
+				String.valueOf(c.getCityid()), String.valueOf(p.getProvinceid()), OPERATION, PRICE, DESCRIPTION,
+				PROPERTYTYPE, BEDROOMS, BATHROOMS, FLOORSIZE, PARKING, COVEREDFLOORSIZE, BALCONIES, AMENITIES, STORAGE,
+				EXPENSES, user_id);
 		pub_id = pub.getPublicationid();
 		em.persist(pub);
 
 	}
-	
+
 	@Rollback
 	@Test
 	public void testAddFavourite() {
-		
+
 		final FavPublication fp = favDao.addFavourite(user_id, pub_id);
 		assertNotNull(fp);
 		assertEquals(user_id, fp.getUser().getUserid());
 		assertEquals(pub_id, fp.getPublication().getPublicationid());
-		
+
 		Query query = em.createQuery("SELECT COUNT(*) FROM FavPublication WHERE favpublicationid = :favpublicationid");
 		query.setParameter("favpublicationid", fp.getFavPublicationid());
 		assertEquals(new Long(1), query.getSingleResult());
-		
+
 	}
-	
+
 	@Rollback
 	@Test
 	public void testRemoveFavourite() {
-		
+
 		favDao.addFavourite(user_id, pub_id);
-		
+
 		boolean remove = favDao.removeFavourite(user_id, pub_id);
 		assertEquals(true, remove);
-		
+
 		Query query = em.createQuery("SELECT COUNT(*) FROM FavPublication WHERE userid = :userid");
 		query.setParameter("userid", user_id);
 		assertEquals(new Long(0), query.getSingleResult());
 	}
-	
+
 	@Rollback
 	@Test
 	public void testIsFavourite() {
-		
+
 		favDao.addFavourite(user_id, pub_id);
 		assertTrue(favDao.isFavourite(user_id, pub_id));
 	}
-	
-	
 
 }

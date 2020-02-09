@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.auth;
 
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -14,20 +13,19 @@ import java.io.IOException;
 
 public class StatelessAuthenticationFilter extends GenericFilterBean {
 
-    private final TokenAuthenticationService tokenAuthenticationService;
+	private final TokenAuthenticationService tokenAuthenticationService;
 
-    public StatelessAuthenticationFilter(TokenAuthenticationService tokenAuthenticationService) {
-        this.tokenAuthenticationService = tokenAuthenticationService;
-    }
+	public StatelessAuthenticationFilter(TokenAuthenticationService tokenAuthenticationService) {
+		this.tokenAuthenticationService = tokenAuthenticationService;
+	}
 
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
-        final Authentication authentication = tokenAuthenticationService
-                .getAuthentication((HttpServletRequest) request);
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		final Authentication authentication = tokenAuthenticationService
+				.getAuthentication((HttpServletRequest) request);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        chain.doFilter(request, response);
-    }
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		chain.doFilter(request, response);
+	}
 }
-

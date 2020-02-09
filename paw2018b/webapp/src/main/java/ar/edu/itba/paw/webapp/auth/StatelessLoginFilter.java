@@ -19,55 +19,54 @@ import java.io.IOException;
 
 public class StatelessLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-    private static final String USER_ID_HEADER = "User-Id";
+	private static final String USER_ID_HEADER = "User-Id";
 
-    private final TokenAuthenticationService tokenAuthenticationService;
-    private final UserDetailsService userDetailsService;
-    private final UserService userService;
+	private final TokenAuthenticationService tokenAuthenticationService;
+	private final UserDetailsService userDetailsService;
+	private final UserService userService;
 
-    public StatelessLoginFilter(String urlMapping, TokenAuthenticationService tokenAuthenticationService,
-                                UserDetailsService userDetailsService, UserService userService, AuthenticationManager authManager) {
-        super(new AntPathRequestMatcher(urlMapping));
-        this.userDetailsService = userDetailsService;
-        this.tokenAuthenticationService = tokenAuthenticationService;
-        this.userService = userService;
-        this.setAuthenticationManager(authManager);
-    }
+	public StatelessLoginFilter(String urlMapping, TokenAuthenticationService tokenAuthenticationService,
+			UserDetailsService userDetailsService, UserService userService, AuthenticationManager authManager) {
+		super(new AntPathRequestMatcher(urlMapping));
+		this.userDetailsService = userDetailsService;
+		this.tokenAuthenticationService = tokenAuthenticationService;
+		this.userService = userService;
+		this.setAuthenticationManager(authManager);
+	}
 
-    @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException, IOException, ServletException {
-        Authentication authentication;
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+			throws AuthenticationException, IOException, ServletException {
+		Authentication authentication;
 
-        authentication = tokenAuthenticationService.getAuthenticationForLogin(request);
+		authentication = tokenAuthenticationService.getAuthenticationForLogin(request);
 
-        if (authentication == null) {
-            throw new UserAuthenticationException("Authentication failed");
-        }
+		if (authentication == null) {
+			throw new UserAuthenticationException("Authentication failed");
+		}
 
-        return authentication;
-    }
+		return authentication;
+	}
 
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-                                            Authentication authentication) throws IOException, ServletException {
+	@Override
+	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+			Authentication authentication) throws IOException, ServletException {
 
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
-        final User user = userService.findByUsername(authentication.getName());
+		final UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
+		final User user = userService.findByUsername(authentication.getName());
 
-        tokenAuthenticationService.addAuthentication(response, userDetails);
-        if(user != null) {
-        	response.addHeader(USER_ID_HEADER, Long.toString(user.getUserid()));
-        }
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-    }
+		tokenAuthenticationService.addAuthentication(response, userDetails);
+		if (user != null) {
+			response.addHeader(USER_ID_HEADER, Long.toString(user.getUserid()));
+		}
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+	}
 
-    private class UserAuthenticationException extends AuthenticationException {
+	private class UserAuthenticationException extends AuthenticationException {
 		private static final long serialVersionUID = 1L;
 
 		UserAuthenticationException(String msg) {
-            super(msg);
-        }
-    }
+			super(msg);
+		}
+	}
 }
-

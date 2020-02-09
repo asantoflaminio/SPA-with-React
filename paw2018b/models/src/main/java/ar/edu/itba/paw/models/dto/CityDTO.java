@@ -1,19 +1,20 @@
 package ar.edu.itba.paw.models.dto;
 
 public class CityDTO {
-	
-	public final static String MediaType ="application/vnd.meinHaus.city-v1.0+json";
-	
+
+	public final static String MediaType = "application/vnd.meinHaus.city-v1.0+json";
+
 	private String city;
 	private long cityid;
 	private long provinceid;
-	
+
 	public CityDTO(String city, long cityid) {
 		this.setCity(city);
 		this.setCityid(cityid);
 	}
-	
-	public CityDTO(){}
+
+	public CityDTO() {
+	}
 
 	public String getCity() {
 		return city;
@@ -22,7 +23,7 @@ public class CityDTO {
 	public void setCity(String city) {
 		this.city = city;
 	}
-	
+
 	public long getProvinceid() {
 		return provinceid;
 	}
