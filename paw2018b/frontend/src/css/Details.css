@@ -226,10 +226,8 @@ label {
 /* Description Style */
 
 div.polaroid_des {
-  width: 64%;
+  width: 880px;
   margin: 0 auto;
-  margin-left: 22vw; 
-  max-width: 900px;
   background-color: white;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   margin-bottom: 40px;
@@ -270,16 +268,23 @@ div.container4 {
 	display: flex;
   width: 100vw;
   margin-top: 20px;
+  
 }
 
 #right-col {
-	width:50vw;
-  min-width: 700px;
+  width:50vw;
+  min-width: 500px;
 }
 
 #left-col {
-	width: 50vw;
-	min-width: 700px;
+  width: 50vw;
+  margin-left: 20px;
+  min-width: 500px;
+
+}
+
+.bottom_container {
+  min-width: 1020px;
 }
 
 /* End of style */

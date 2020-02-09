@@ -279,27 +279,29 @@ class Details extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div className="polaroid_des">
-                        <div className="container-list">
-                            <p className="polaroid_title">{this.state.publication.title}</p>
-                            <p className="agency_text">{this.state.publication.description}</p>
-                        </div>
-                    </div>  
-                    <div className="polaroid_des">
-                        <div className="container-list">
-                            <p className="polaroid_title">{t('details.location')}</p>
-                            <MapContainer 
-                            address = {this.state.publication.address}
-                            neighborhood = {this.state.publication.neighborhoodid}
-                            city = {this.state.publication.cityid}
-                            province = {this.state.publication.provinceid}
-                            googleMapURL= {mapURL}
-                            containerElement= {<div style={{height: '300px'}}/>}
-                            mapElement= {<div style={{height:'100%'}} />}
-                            loadingElement= {<p>t('details.loadingMap')</p>}
-                            />
-                        </div>
-                    </div>                               
+                    <div className="bottom_container">
+                        <div className="polaroid_des">
+                            <div className="container-list">
+                                <p className="polaroid_title">{this.state.publication.title}</p>
+                                <p className="agency_text">{this.state.publication.description}</p>
+                            </div>
+                        </div>  
+                        <div className="polaroid_des">
+                            <div className="container-list">
+                                <p className="polaroid_title">{t('details.location')}</p>
+                                <MapContainer 
+                                address = {this.state.publication.address}
+                                neighborhood = {this.state.publication.neighborhoodid}
+                                city = {this.state.publication.cityid}
+                                province = {this.state.publication.provinceid}
+                                googleMapURL= {mapURL}
+                                containerElement= {<div style={{height: '300px'}}/>}
+                                mapElement= {<div style={{height:'100%'}} />}
+                                loadingElement= {<p>t('details.loadingMap')</p>}
+                                />
+                            </div>
+                        </div>                               
+                    </div> 
                 </div> 
                     ) }
                 </div>

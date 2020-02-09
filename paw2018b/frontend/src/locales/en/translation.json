@@ -62,7 +62,7 @@
       "remember": "Remember me",
       "signIn": "Sign In",
       "signUp": "Sign Up",
-      "mail": "Correo electrónico",
+      "mail": "Email",
       "password": "Password",
       "recoverPass": "I forgot my password",
       "mailHolder": "Email address",
@@ -70,7 +70,7 @@
     },
     "forgottenPassword": {
       "title": "Forgot your password?",
-      "message": "Complete your email address and we'll send you an email to restablish your password.",
+      "message": "Complete your email address and we'll send you an email to re-establish your password.",
       "send": "Send",
       "emailSent": "An email was sent to you.",
       "emailNotSent": "An error ocurred. Make sure the email is valid."
