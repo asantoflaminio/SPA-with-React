@@ -130,9 +130,14 @@ h4 {
 	color: #FD8907 !important;
 }
 
-.delete {
+.delete  {
 	width:12px;
 	height:12px;
+	cursor: pointer
+}
+
+.delete-title {
+	cursor:pointer
 }
 
 .edit-title {
