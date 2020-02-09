@@ -4,7 +4,6 @@ package ar.edu.itba.paw.webapp.controller;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
-import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -159,39 +158,4 @@ public class PublicationController {
     	return rs.noContent();
     }
     
-    //SOLO DEVELOP, ESTA FUNCION SE DEBE BORRAR EN PRODUCCION!!!!!!!
-    @POST
-    @Path("/publications/random")
-    @Produces(value = { PublicationDTO.MediaType })
-    public Response createRandom() {
-    	Random random = new Random();
-    	PublicationDTO publicationDTO = new PublicationDTO();
-    	publicationDTO.setTitle("adwada");
-    	publicationDTO.setProvinceid("14");
-    	publicationDTO.setCityid("22");
-    	publicationDTO.setNeighborhoodid("13");
-    	publicationDTO.setAddress("asdasd");
-    	publicationDTO.setDescription("asdasd");
-    	publicationDTO.setAmenities("SADASDA");
-    	publicationDTO.setDimention(Integer.toString(random.nextInt(100 + 1 - 0) + 0));
-    	publicationDTO.setOperation(Constants.Operation.FSALE.getOperation());
-    	publicationDTO.setPropertyType(Constants.PropertyType.HOUSE.getPropertyType());
-    	publicationDTO.setCoveredFloorSize(Integer.toString(random.nextInt(100 + 1 - 0) + 0));
-    	publicationDTO.setPrice(Integer.toString(random.nextInt(500000 + 1 - 0) + 0));
-    	publicationDTO.setExpenses(Integer.toString(random.nextInt(5000 + 1 - 0) + 0));
-    	publicationDTO.setBedrooms(Integer.toString(random.nextInt(5 + 1 - 0) + 0));
-    	publicationDTO.setBathrooms(Integer.toString(random.nextInt(5 + 1 - 0) + 0));
-    	publicationDTO.setParking(Integer.toString(random.nextInt(5 + 1 - 0) + 0));
-    	publicationDTO.setCoveredFloorSize(Integer.toString(random.nextInt(5 + 1 - 0) + 0));
-    	publicationDTO.setBalconies(Integer.toString(random.nextInt(5 + 1 - 0) + 0));
-    	publicationDTO.setStorage("notCorresponding");
-    	ps.create(publicationDTO.getTitle(), publicationDTO.getAddress(), publicationDTO.getNeighborhoodid(), 
-    			publicationDTO.getCityid(), publicationDTO.getProvinceid(), publicationDTO.getOperation(), 
-    			publicationDTO.getPrice(), publicationDTO.getDescription(), publicationDTO.getPropertyType(), 
-    			publicationDTO.getBedrooms(), publicationDTO.getBathrooms(), publicationDTO.getDimention(), 
-    			publicationDTO.getParking(),
-    			publicationDTO.getCoveredFloorSize(), publicationDTO.getBalconies(),
-    			publicationDTO.getAmenities(), publicationDTO.getStorage(), publicationDTO.getExpenses(), 62);
-    	return rs.ok(publicationDTO);
-    }
 }

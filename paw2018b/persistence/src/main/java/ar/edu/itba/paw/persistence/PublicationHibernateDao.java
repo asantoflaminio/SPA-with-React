@@ -93,8 +93,7 @@ public class PublicationHibernateDao implements PublicationDao{
 		final String queryString = SELECT_STATEMENT_SEARCH + "where pub.user.userid = :userid" + " ORDER BY pub.publicationDate DESC";
 		final TypedQuery<Publication> query = em.createQuery(queryString, Publication.class);
 		query.setParameter("userid", userid);
-		query.setFirstResult(page * limit);
-		query.setMaxResults(limit);
+		setPagination(query,page,limit);
 		return query.getResultList();
 	}
 	
@@ -193,12 +192,9 @@ public class PublicationHibernateDao implements PublicationDao{
 	
 	@Override
 	@Transactional
-	public void lockUnlockPublication(boolean status, long publicationid) {
+	public void updateLockUserPublications(boolean lock, long publicationid, long userid) {
 		final Query query =  em.createQuery("update Publication as pub set pub.locked = :locked where pub.publicationid = :publicationid");
-		if(status == true)
-			query.setParameter("locked", false);
-		else
-			query.setParameter("locked", true);
+		query.setParameter("locked", lock);
 		query.setParameter("publicationid", publicationid);
 		query.executeUpdate();
 		

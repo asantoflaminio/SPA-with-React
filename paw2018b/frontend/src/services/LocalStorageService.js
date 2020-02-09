@@ -67,8 +67,10 @@ const LocalStorageService = (function(){
 
     function _getRole() {
       let cypherRole = localStorage.getItem(ACCESS_TOKEN)
-      let role = CryptoJS.AES.decrypt(cypherRole,KEY)
-      return role.toString(CryptoJS.enc.Utf8)
+      if(cypherRole !== null){
+        let role = CryptoJS.AES.decrypt(cypherRole,KEY)
+        return role.toString(CryptoJS.enc.Utf8)
+      }
     }
 
     function _getUsername(){

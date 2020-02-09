@@ -28,8 +28,6 @@ public interface PublicationService {
 			   String coveredFloorSize, String balconies, String amenities,
 			   String storage, String expenses, long publicationid);
 	
-	public void lockUnlockPublication(boolean status, long publicationid);
-	
 	public List<PublicationDTO> getPublications(String address, List<Filter> filters, Integer page, Integer limit, String order);
 	
 	public HashMap<Integer, Long> getSimpleFilter(List<Filter> filters, String address, String filterName);

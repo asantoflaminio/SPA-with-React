@@ -5,6 +5,7 @@ import { withRouter } from "react-router";
 import { withTranslation } from 'react-i18next';
 import { NavDropdown } from 'react-bootstrap';
 import LocalStorageService from '../services/LocalStorageService'
+import UserService from '../services/UserService'
 
 class UserNavbar extends React.Component {
     constructor(props) {
@@ -29,23 +30,32 @@ class UserNavbar extends React.Component {
             return
     }
 
+    isLocked(t){
+        if(! UserService.isLocked())
+            return(
+                <Link to={{pathname: "/Publish"}}>
+                    <p className="dropdown-item">{t('userNavbar.publish')}</p>
+                </Link>
+            )
+        else
+            return
+    }
+
     render(){
         const { t } = this.props;
         const adminOption = this.isAdmin(t);
-        
+        const unlockedOption = this.isLocked(t)
         return(
             <nav>
                 <Link to={{pathname: "/"}}>
                     <img src={logo} alt="Home" id="logo"/>
                 </Link>
-                <NavDropdown title={this.props.username} id="basic-nav-dropdown">
+                <NavDropdown title={this.props.username || ""} id="basic-nav-dropdown">
                     <Link to={{pathname: "/MyInformation"}}>
                         <p className="dropdown-item">{t('userNavbar.profile')}</p>
                     </Link>
-                    <Link to={{pathname: "/Publish"}}>
-                        <p className="dropdown-item">{t('userNavbar.publish')}</p>
-                    </Link>
                     {adminOption}
+                    {unlockedOption}
                     <NavDropdown.Divider/>
                         <button onClick={this.logout} className="dropdown-item">{t('userNavbar.logout')}</button>
                 </NavDropdown>

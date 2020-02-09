@@ -3,3 +3,7 @@
 .alertModal{
     background-color: red;
 }
+
+.backdrop{
+    background-color: transparent !important;
+}

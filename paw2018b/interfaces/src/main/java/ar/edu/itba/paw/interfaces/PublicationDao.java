@@ -32,7 +32,7 @@ public interface PublicationDao {
 			   String bathrooms, String floorSize, String parking,
 			   String coveredFloorSize, String balconies, String amenities, String storage, String expenses, long publicationid);
 	
-	public void lockUnlockPublication(boolean status, long publicationid);
+	public void updateLockUserPublications(boolean lock, long publicationid, long userid);
 	
 	public int getCountPublications(String address, List<Filter> filters);
 

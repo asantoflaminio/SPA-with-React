@@ -30,9 +30,6 @@ public class PublicationServiceImpl implements PublicationService {
 	private PublicationDao publicationDao;
 	
 	@Autowired
-	private ValidateServiceImpl vs;
-	
-	@Autowired
 	private UserDao userDao;
 	
 	@Autowired
@@ -139,12 +136,6 @@ public class PublicationServiceImpl implements PublicationService {
 	}
 	
 	@Override
-	public void lockUnlockPublication(boolean status, long publicationid) {
-		LOGGER.debug("Changing status of publication with id {} to {}", publicationid, ! status);
-		publicationDao.lockUnlockPublication(status, publicationid);
-	}
-	
-	@Override
 	public int getCountPublications(String address, List<Filter> filters){
 		return publicationDao.getCountPublications(address,filters);
 	}
@@ -208,8 +199,7 @@ public class PublicationServiceImpl implements PublicationService {
 		addIntegerFilter(filters,bedrooms,Constants.DataBaseFilterName.BEDROOMS,Constants.QueryFilterName.BEDROOMS,Constants.QueryOperator.EQUAL);
 		addIntegerFilter(filters,bathrooms,Constants.DataBaseFilterName.BATHROOMS,Constants.QueryFilterName.BATHROOMS,Constants.QueryOperator.EQUAL);
 		addIntegerFilter(filters,parking,Constants.DataBaseFilterName.PARKING,Constants.QueryFilterName.PARKING,Constants.QueryOperator.EQUAL);
-		
-		if(!locked)
+		if(! locked)
 			addBooleanFilter(filters,locked,Constants.DataBaseFilterName.LOCKED,Constants.QueryFilterName.LOCKED,Constants.QueryOperator.EQUAL);
 		
 		return filters;
@@ -225,7 +215,6 @@ public class PublicationServiceImpl implements PublicationService {
 	
 	public void addIntegerFilter(List<Filter> filters, Integer value, DataBaseFilterName dataBaseName, QueryFilterName name, QueryOperator operator) {
 		if(value != null) {
-			//System.out.println("Filter: " + name + " Value:" + value);
 			Filter filter = new Filter(value,dataBaseName,name,operator);
 			filters.add(filter);
 		}

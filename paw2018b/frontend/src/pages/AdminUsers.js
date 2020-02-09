@@ -65,8 +65,11 @@ class AdminUsers extends React.Component {
         queryParameters.lock = event.target.checked;
         let userid = event.target.id;
         let newList = this.state.usersList
+        let switchInput = event.target
         newList[index].locked = event.target.checked;
+        switchInput.disabled = true;
         UserService.lockUser(userid,queryParameters).then(function (response){
+            switchInput.disabled = false;
             if(response.status !== StatusCode.OK){
                 ErrorService.logError(currentComponent.props,response)
                 return;

@@ -50,6 +50,16 @@ const AdminRoute = ({component: Component, ...rest}) => {
     );
 };
 
+const NotLockedRoute = ({component: Component, ...rest}) => {
+  return (
+        <Route {...rest} render={props => (
+          UserService.isLogged() && ! UserService.isLocked() ?
+                <Component {...props} />
+            : <Redirect to="/" />
+        )} />
+    );
+};
+
 const OnlyPublicRoute =  ({component: Component, componentProps, ...rest}) => {
   if(componentProps) {
     return (
@@ -99,7 +109,7 @@ class App extends Component {
               <Route exact path="/List" component={List} />
               <Route exact path="/publications" component={Details} />
               <Route exact path="/error" component={ErrorBoundary} />
-              <PrivateRoute exact path="/Publish" component={Publish} />
+              <NotLockedRoute exact path="/Publish" component={Publish} />
               <AdminRoute exact path="/AdminGenerator" component={AdminGenerator} />
               <AdminRoute exact path="/AdminUsers" component={AdminUsers} />
               <AdminRoute exact path="/AdminPublications" component={AdminPublications} />

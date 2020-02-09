@@ -7,11 +7,14 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import ar.edu.itba.paw.interfaces.PublicationDao;
 import ar.edu.itba.paw.interfaces.UserDao;
 import ar.edu.itba.paw.models.Constants;
+import ar.edu.itba.paw.models.Publication;
 import ar.edu.itba.paw.models.User;
 
 @Repository
@@ -20,6 +23,8 @@ public class UserHibernateDao implements UserDao {
 	@PersistenceContext
 	private EntityManager em;
 	
+	@Autowired
+	private PublicationDao publicationDao;
 	
 	@Transactional
 	public User create(final String firstName, final String lastName, final String email, final String password, 
@@ -97,6 +102,11 @@ public class UserHibernateDao implements UserDao {
 		query.setParameter("locked", lock);
 		query.setParameter("userid", userid);
 		query.executeUpdate();
+		
+		List<Publication> userPublications = publicationDao.findByUserId(userid, null, null);
+		for(Publication publication: userPublications) {
+			publicationDao.updateLockUserPublications(lock, publication.getPublicationid(), userid);
+		}
 		
 	}
 }

@@ -67,6 +67,7 @@ class List extends React.Component {
             this.setState({loadingPublications: true})
         LocalStorageService.deleteCounter();
         LocalStorageService.initializeCounter()
+        this.disableButtons()
         PublicationService.getPublications(queryParameters).then(function (response){
             if(CancelTokenService.isCancel(response))
                 return;
@@ -94,9 +95,10 @@ class List extends React.Component {
             })
             if(response.headers["x-total-count"] === "0")
                 currentComponent.setState({loadingPublications: false})
-            if(updateFilters === true){
+            if(updateFilters === true)
                 currentComponent.updateFilters(queryParameters)
-            }
+            
+            currentComponent.enableButtons()
                 
             currentComponent.pushParameters(names,values);
         })
@@ -235,11 +237,13 @@ class List extends React.Component {
             this.checkFilterExistance(this.state.maxFloorSize) || this.checkFilterExistance(this.state.bedrooms) ||
             this.checkFilterExistance(this.state.bathrooms) || this.checkFilterExistance(this.state.parking)){
             return(               
-                    <div className="clean-all" onClick={() => this.deleteAllFilters(t)}> {t('list.cleanAll')} </div>
+                    <button id="delete-filters-button" className="clean-all" onClick={() => this.deleteAllFilters(t)}> {t('list.cleanAll')} </button>
                 )
             }
 
-        return;       
+        return (
+            <><button id="delete-filters-button" className="clean-all hidden" onClick={() => this.deleteAllFilters(t)}> {t('list.cleanAll')} </button></>
+        )      
     }
 
     createFiltersNotes(){
@@ -262,12 +266,14 @@ class List extends React.Component {
         }
         return(
             <li className="applied-filters-list-item" key={stateName}>
-                <input readOnly value="x" className="delete-btn" onClick={() => this.deleteFilter(stateName)}/>
+                <input value="x" className="delete-btn" onChange={this.noOp} onClick={() => this.deleteFilter(stateName)}/>
                 <p className="applied-filter-text">{value} {utilFunction.decidePlural(t(singularInformation),t(pluralInformation),value)}</p>{additionalInformation}    
             </li>
             
         )
     }
+
+    noOp(){}
 
     createFilterFields(field,singularInformation,pluralInformation,t,stateName){
         if(this.state.filters === null)
@@ -308,6 +314,9 @@ class List extends React.Component {
     }
 
     handleOperation(operation){
+        if(this.state.loadingPublications || this.state.loadingFilters){
+            return
+        }
         let names = ["operation","page"]
         let values = [operation,0]
         this.selectOperation(operation);
@@ -417,6 +426,28 @@ class List extends React.Component {
             )
         }
         return pubComponents;
+    }
+
+    disableButtons(){
+        var deleteButtons = document.getElementsByClassName("delete-btn");
+        document.getElementById("delete-filters-button").disabled = true
+        document.getElementById("search-btn").disabled = true
+        document.getElementById("select-type").disabled = true
+        document.getElementById("order-select").disabled = true
+        for (var i = 0; i < deleteButtons.length; i++) {
+            deleteButtons[i].disabled = true
+        }
+    }
+
+    enableButtons(){
+        var deleteButtons = document.getElementsByClassName("delete-btn");
+        document.getElementById("delete-filters-button").disabled = false
+        document.getElementById("search-btn").disabled = false
+        document.getElementById("select-type").disabled = false
+        document.getElementById("order-select").disabled = false
+        for (var i = 0; i < deleteButtons.length; i++) {
+            deleteButtons[i].disabled = false
+        }
     }
 
     componentWillUnmount(){

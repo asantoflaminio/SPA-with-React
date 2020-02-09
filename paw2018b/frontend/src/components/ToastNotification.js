@@ -73,7 +73,7 @@ class ToastNotification extends React.Component{
       <Modal 
         show={this.state.show && this.state.oneTimeShow} 
         onHide={this.handleClose} 
-        backdrop={false}
+        backdropClassName={"backdrop"}
         onShow={this.handleShow}
       >
         <Modal.Header closeButton>

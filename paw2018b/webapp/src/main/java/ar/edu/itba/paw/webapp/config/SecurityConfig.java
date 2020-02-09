@@ -99,7 +99,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(final WebSecurity http) throws Exception {
      http.ignoring()
-     .antMatchers("/**.js", "/**.css", "/**.jpg", "/**.png", "/**.gif", "/**.ico")
+     .antMatchers("/**.js", "/**.css", "/**.jpg", "/**.png", "/**.gif", "/**.ico", "/**.svg")
      .antMatchers(HttpMethod.PATCH, "/meinHaus/users-management/users/password-reset");
     }
     

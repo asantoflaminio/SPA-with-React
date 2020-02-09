@@ -7,6 +7,7 @@ const UserService = (function(){
 
     const USERS_PATH = process.env.PUBLIC_URL + '/meinHaus/users-management'
     const ROLE_ADMIN = "ROLE_ADMIN"
+    const ROLE_LOCKED = "ROLE_LOCKED"
 
     function _isLogged(){
         if(LocalStorageService.getAuthorization() != null)
@@ -16,7 +17,16 @@ const UserService = (function(){
     }
 
     function _isAdmin(){
-      if(LocalStorageService.getRole().includes(ROLE_ADMIN))
+      let role = LocalStorageService.getRole()
+      if(role.includes(ROLE_ADMIN))
+        return true;
+      else
+        return false;
+    }
+
+    function _isLocked(){
+      let role = LocalStorageService.getRole()
+      if(role !== undefined && role.includes(ROLE_LOCKED))
         return true;
       else
         return false;
@@ -225,6 +235,7 @@ const UserService = (function(){
    return {
         isLogged : _isLogged,
         isAdmin: _isAdmin,
+        isLocked : _isLocked,
         getUsers : _getUsers,
         getUser: _getUser,
         signUp : _signUp,

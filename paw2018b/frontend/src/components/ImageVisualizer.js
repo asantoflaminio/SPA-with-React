@@ -109,11 +109,11 @@ class ImageVisualizer extends React.Component {
         let favIcon;
         if(this.state.isFavourite) {
             if(this.props.page !== "MyFavorites") 
-                favIcon = <img className="favorite-icon" src={heartFilled} onClick={this.removeFavourite} alt="Fave" />
+                favIcon = <input className="favorite-icon" id={"favourite-" + this.props.publicationid} type="image" src={heartFilled} alt="Fave" onClick={this.removeFavourite}/>
             else 
-                favIcon = <img className="favorite-icon" src={heartFilled} onClick={() => this.props.showModal(this.props.publicationid)} alt="Fave" />
+                favIcon = <input className="favorite-icon" id={"favourite-" + this.props.publicationid} type="image" src={heartFilled} alt="Fave" onClick={() => this.props.showModal(this.props.publicationid)}/>
         } else if(this.state.isFavourite === false)
-            favIcon = <img className="favorite-icon" src={heartEmpty} onClick={this.addFavourite} alt="Fave" />
+            favIcon = <input className="favorite-icon" id={"favourite-" + this.props.publicationid} type="image" src={heartEmpty} alt="Fave" onClick={this.addFavourite}/>
         return favIcon
     }
 
@@ -121,30 +121,32 @@ class ImageVisualizer extends React.Component {
         let currentComponent = this;
         let userid = LocalStorageService.getUserid();
         let favPublicationDTO = {}
+        let favIcon = document.getElementById("favourite-" + this.props.publicationid)
+        favIcon.disabled = true;
         favPublicationDTO.publicationid = this.props.publicationid
+        currentComponent.setState({ isFavourite : true })
         UserService.addFavourite(userid,favPublicationDTO).then(function (response){
+            favIcon.disabled = false;
             if(response.status !== StatusCode.CREATED){
                 ErrorService.logError(currentComponent.props,response)
                 return;
             }
-            currentComponent.setState({
-                isFavourite : true
-            })
         })
     }
 
     removeFavourite(){
         let currentComponent = this;
         let userid = LocalStorageService.getUserid();
-        let publicationid = this.props.publicationid
+        let publicationid = this.props.publicationid;
+        let favIcon = document.getElementById("favourite-" + this.props.publicationid)
+        favIcon.disabled = true;
+        currentComponent.setState({ isFavourite : false })
         UserService.removeFavourite(userid,publicationid).then(function (response){
+            favIcon.disabled = false;
             if(response.status !== StatusCode.NO_CONTENT){
                 ErrorService.logError(currentComponent.props,response)
                 return;
             }
-            currentComponent.setState({
-                isFavourite : false
-            })
         })
     }
 
