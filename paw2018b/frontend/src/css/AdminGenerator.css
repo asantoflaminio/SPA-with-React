@@ -2,9 +2,7 @@
 	font-size: 20px;
 	color: #777;
   padding: 20px 10px;
-  border-style: solid;
-  border-color: #ccc;
-  border-width: 2px;
+  border: 2px solid #ccc;
   margin-top: 20px;
 }
 
@@ -72,8 +70,7 @@ div.polaroid {
   margin: 5px 10px 5px 0;
   background-color: #fff;
   color: #888;
-  border: 1px solid;
-  border-color:#aaa;
+  border: 1px solid #aaa;
   border-radius: 2px;
   box-sizing: border-box;
   width: 250px !important;
