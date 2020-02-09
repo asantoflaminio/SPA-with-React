@@ -102,7 +102,6 @@ class MyInformation extends React.Component {
         const { t } = this.props;
         let currentComponent = this;
         let emailError = document.getElementById("emailTakenError")
-        this.checkEmail(event.target[2].value)
         let userDTO = JsonService.getJSONParsed(event.target);
         let userid = LocalStorageService.getUserid();
         this.updateState(event);
