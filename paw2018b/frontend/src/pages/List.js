@@ -78,6 +78,7 @@ class List extends React.Component {
 		this.selectOperation(query.operation);
 		this.selectPropertyType(query.propertyType);
 		document.getElementById("search-holder").addEventListener('keydown', this.onKeyPressed);
+		this.openFilters();
 	}
 
 	updatePublications(names, values, updateFilters) {
@@ -133,7 +134,6 @@ class List extends React.Component {
 			currentComponent.setState({
 				filters: response.data,
 			});
-			currentComponent.openFilters();
 			currentComponent.hideEmptyFilters(response.data, 'locations', 'filterLocationHeader');
 			currentComponent.hideEmptyFilters(response.data, 'bedrooms', 'filterBedroomsHeader');
 			currentComponent.hideEmptyFilters(response.data, 'bathrooms', 'filterBathroomsHeader');
@@ -211,8 +211,12 @@ class List extends React.Component {
 
 
 	hideEmptyFilters(filters, field, id) {
-		if (Object.keys(filters[field]).length <= 1) document.getElementById(id).style.display = 'none';
-		else document.getElementById(id).style.display = 'block';
+		if (Object.keys(filters[field]).length <= 1){
+			document.getElementById(id).style.display = 'none';
+			this.hideFilter(field);
+		} else {
+			document.getElementById(id).style.display = 'block';
+		}
 	}
 
 	getResults(t) {
@@ -356,6 +360,7 @@ class List extends React.Component {
 		];
 		let values = [addressValue, '', '', '', '', '', '', '', 0];
 		this.updatePublications(names, values, true);
+		this.openFilters();
 	}
 
 	deleteFilter(stateName) {
@@ -371,9 +376,29 @@ class List extends React.Component {
 	}
 
 	handleFilter(stateName, value) {
+		this.hideFilter(stateName);
 		let names = [stateName, 'page'];
 		let values = [value, 0];
 		this.updatePublications(names, values, true);
+	}
+
+	hideFilter(stateName) {
+		switch(stateName) {
+			case 'bedrooms':
+				let filterBedrooms = document.getElementById('filterBedrooms');
+				filterBedrooms.classList.remove('show');
+				break;
+			case 'parking':
+				let filterParking = document.getElementById('filterParking');
+				filterParking.classList.remove('show');
+				break;
+			case 'bathrooms':
+				let filterBathrooms = document.getElementById('filterBathrooms');
+				filterBathrooms.classList.remove('show');
+				break;
+			default:
+			  	break;
+		}
 	}
 
 	handleOperation(operation) {
@@ -499,7 +524,7 @@ class List extends React.Component {
 		if (LocalStorageService.getCounter() === this.state.publications.length) {
 			LocalStorageService.deleteCounter();
 			this.setState({loadingPublications: false});
-		}
+		} 
 	}
 
 	loadingContainers() {
