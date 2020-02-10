@@ -98,7 +98,7 @@ class List extends React.Component {
 			currentComponent.setState({
 				publications: response.data,
 				resultsQuantity: response.headers['x-total-count'],
-				pagesQuantity: Math.ceil(response.headers['x-total-count'] / Constants.PUBLICATIONS_PAGE_LIMIT),
+				pagesQuantity: Math.ceil(response.headers['x-total-count'] / Constants.LIST_MAX_PUBLICATIONS),
 				page: queryParameters.page,
 				operation: queryParameters['operation'],
 				propertyType: queryParameters['propertyType'],
@@ -155,7 +155,7 @@ class List extends React.Component {
 			parking: this.state.parking,
 			order: this.state.order,
 			page: this.state.page,
-			limit: Constants.PUBLICATIONS_PAGE_LIMIT,
+			limit: Constants.LIST_MAX_PUBLICATIONS,
 		};
 		return query;
 	}
@@ -456,7 +456,7 @@ class List extends React.Component {
 
 	loadingContainers() {
 		let pubComponents = [];
-		for (let i = 0; i < Constants.PUBLICATIONS_PAGE_LIMIT; i++) {
+		for (let i = 0; i < Constants.LIST_MAX_PUBLICATIONS; i++) {
 			pubComponents.push(
 				<div className='loader-container' key={i + '-loader'}>
 					<PublicationLoader />

@@ -193,8 +193,8 @@ public class UserController {
 		Optional<ResetPassword> resetPassword = rps.getRequest(token.toString());
 		if (rps.isTokenExpired(token, resetPassword))
 			return rs.unauthorized("The token for reset password has expired");
-		User userRequesting = us.findById(resetPassword.get().getUserRequesting().getUserid());
-		us.setPassword(resetPasswordDTO.getNewPassword(), userRequesting.getEmail());
+		Optional<User> userRequesting = rps.getUser(token.toString());
+		us.setPassword(resetPasswordDTO.getNewPassword(), userRequesting.get().getEmail());
 		rps.deleteRequest(resetPassword.get().getRequestId());
 
 		return rs.ok();
