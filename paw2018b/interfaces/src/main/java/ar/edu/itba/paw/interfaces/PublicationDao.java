@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.interfaces;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.TypedQuery;
 
@@ -35,11 +35,11 @@ public interface PublicationDao {
 	public List<Publication> getPublications(String address, List<Filter> filters, Integer page, Integer limit,
 			String order);
 
-	public HashMap<Integer, Long> getSimpleFilter(List<Filter> filters, String address, String filterName);
+	public Map<Integer, Long> getSimpleFilter(List<Filter> filters, String address, String filterName);
 
-	public HashMap<String, Long> getLocationFilter(List<Filter> filters, String address);
+	public Map<String, Long> getLocationFilter(List<Filter> filters, String address);
 
-	public void addLocationFilter(List<Filter> filters, String address, HashMap<String, Long> locationMap,
+	public void addLocationFilter(List<Filter> filters, String address, Map<String, Long> locationMap,
 			String location);
 
 	public String addFiltersStatement(String query, List<Filter> filters, String address);

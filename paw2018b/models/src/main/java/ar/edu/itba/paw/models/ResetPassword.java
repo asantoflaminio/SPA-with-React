@@ -12,7 +12,7 @@ public class ResetPassword {
 	@Column(name = "requestId")
 	private Integer requestId;
 
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	private User userRequesting;
 
 	@Column(length = 20)

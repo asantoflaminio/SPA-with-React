@@ -86,6 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.access("! hasRole('ROLE_LOCKED')")
 				.antMatchers(HttpMethod.POST, "/meinHaus/users-management/users/messages").permitAll()
 				.antMatchers(HttpMethod.GET, "/meinHaus/users-management/users/{userid}/publications").authenticated()
+				.antMatchers(HttpMethod.GET, "/meinHaus/users-management/users/{userid}/publications/{publicationid}").authenticated()
 				.antMatchers(HttpMethod.PUT, "/meinHaus/users-management/users/{userid}/publications/{publicationid}")
 				.authenticated()
 				.antMatchers(HttpMethod.DELETE,

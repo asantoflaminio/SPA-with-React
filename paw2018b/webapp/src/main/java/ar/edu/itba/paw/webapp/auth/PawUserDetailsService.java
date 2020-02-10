@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.Constants;
 import ar.edu.itba.paw.models.User;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -29,15 +30,15 @@ public class PawUserDetailsService implements UserDetailsService {
 		}
 		final Collection<? extends GrantedAuthority> authorities;
 
-		if (user.getRole().equals("USER")) {
+		if (user.getRole().equals(Constants.Role.USER.getRole())) {
 			if (user.isLocked())
-				authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"),
-						new SimpleGrantedAuthority("ROLE_LOCKED"));
+				authorities = Arrays.asList(new SimpleGrantedAuthority(Constants.Authority.USER.getAuthority()),
+						new SimpleGrantedAuthority(Constants.Authority.LOCKED.getAuthority()));
 			else
-				authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+				authorities = Arrays.asList(new SimpleGrantedAuthority(Constants.Authority.USER.getAuthority()));
 		} else
-			authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"),
-					new SimpleGrantedAuthority("ROLE_ADMIN"));
+			authorities = Arrays.asList(new SimpleGrantedAuthority(Constants.Authority.USER.getAuthority()),
+					new SimpleGrantedAuthority(Constants.Authority.ADMIN.getAuthority()));
 		return new org.springframework.security.core.userdetails.User(username, user.getPassword(), authorities);
 	}
 

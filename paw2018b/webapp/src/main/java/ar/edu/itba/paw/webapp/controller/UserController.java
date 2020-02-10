@@ -87,7 +87,6 @@ public class UserController {
 		return rs.ok(users);
 	}
 
-	// Deberia mejorarse el errotDTO para que diga que campos estan mal
 	@POST
 	@Path("/users")
 	@Consumes(value = { UserDTO.MediaType })
@@ -194,8 +193,7 @@ public class UserController {
 		Optional<ResetPassword> resetPassword = rps.getRequest(token.toString());
 		if (rps.isTokenExpired(token, resetPassword))
 			return rs.unauthorized("The token for reset password has expired");
-
-		User userRequesting = resetPassword.get().getUserRequesting();
+		User userRequesting = us.findById(resetPassword.get().getUserRequesting().getUserid());
 		us.setPassword(resetPasswordDTO.getNewPassword(), userRequesting.getEmail());
 		rps.deleteRequest(resetPassword.get().getRequestId());
 

@@ -35,6 +35,7 @@ public class UserHibernateDaoTest {
 
 	@Autowired
 	private UserHibernateDao userDao;
+	
 	private long user_id;
 
 	@Before

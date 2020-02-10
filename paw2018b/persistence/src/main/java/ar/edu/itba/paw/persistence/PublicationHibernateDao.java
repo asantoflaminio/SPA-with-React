@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -102,10 +103,7 @@ public class PublicationHibernateDao implements PublicationDao {
 		queryString = setOrderFilter(queryString, order);
 		TypedQuery<Publication> query = em.createQuery(queryString, Publication.class);
 		addFiltersValues(query, filters, address);
-		// System.out.println(queryString);
-		// System.out.println(page+ " " + limit);
 		setPagination(query, page, limit);
-		// System.out.println(query.getResultList().size());
 		return query.getResultList();
 	}
 
@@ -178,7 +176,7 @@ public class PublicationHibernateDao implements PublicationDao {
 		if (publication == null)
 			return false;
 		em.remove(publication);
-		favPublicationsDao.removeFavouriteByPublication(publicationid); // ver q onda esto en deploy
+		favPublicationsDao.removeFavouriteByPublication(publicationid);
 		return true;
 	}
 
@@ -195,7 +193,7 @@ public class PublicationHibernateDao implements PublicationDao {
 
 	@Override
 	@Transactional
-	public HashMap<Integer, Long> getSimpleFilter(List<Filter> filters, String address, String filterName) {
+	public Map<Integer, Long> getSimpleFilter(List<Filter> filters, String address, String filterName) {
 		String whereStatement = "";
 		final String countClause;
 		final String groupByClause;
@@ -217,7 +215,7 @@ public class PublicationHibernateDao implements PublicationDao {
 	}
 
 	@Override
-	public HashMap<String, Long> getLocationFilter(List<Filter> filters, String address) {
+	public Map<String, Long> getLocationFilter(List<Filter> filters, String address) {
 		HashMap<String, Long> hashMap = new HashMap<String, Long>();
 		addLocationFilter(filters, address, hashMap, "province");
 		addLocationFilter(filters, address, hashMap, "city");
@@ -227,7 +225,7 @@ public class PublicationHibernateDao implements PublicationDao {
 
 	@Override
 	@Transactional
-	public void addLocationFilter(List<Filter> filters, String address, HashMap<String, Long> locationMap,
+	public void addLocationFilter(List<Filter> filters, String address, Map<String, Long> locationMap,
 			String location) {
 		String whereStatement = "";
 		final String countClause;

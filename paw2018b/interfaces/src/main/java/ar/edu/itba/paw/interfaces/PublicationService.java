@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.interfaces;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ar.edu.itba.paw.models.Filter;
 import ar.edu.itba.paw.models.Publication;
@@ -33,9 +33,9 @@ public interface PublicationService {
 	public List<PublicationDTO> getPublications(String address, List<Filter> filters, Integer page, Integer limit,
 			String order);
 
-	public HashMap<Integer, Long> getSimpleFilter(List<Filter> filters, String address, String filterName);
+	public Map<Integer, Long> getSimpleFilter(List<Filter> filters, String address, String filterName);
 
-	public HashMap<String, Long> getLocationFilter(List<Filter> filters, String address);
+	public Map<String, Long> getLocationFilter(List<Filter> filters, String address);
 
 	public int getCountPublications(String address, List<Filter> filters);
 

@@ -1,8 +1,8 @@
 package ar.edu.itba.paw.services;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -169,12 +169,12 @@ public class PublicationServiceImpl implements PublicationService {
 	}
 
 	@Override
-	public HashMap<Integer, Long> getSimpleFilter(List<Filter> filters, String address, String filterName) {
+	public Map<Integer, Long> getSimpleFilter(List<Filter> filters, String address, String filterName) {
 		return publicationDao.getSimpleFilter(filters, address, filterName);
 	}
 
 	@Override
-	public HashMap<String, Long> getLocationFilter(List<Filter> filters, String address) {
+	public Map<String, Long> getLocationFilter(List<Filter> filters, String address) {
 		return publicationDao.getLocationFilter(filters, address);
 	}
 
@@ -213,7 +213,6 @@ public class PublicationServiceImpl implements PublicationService {
 			QueryFilterName name, QueryOperator operator) {
 		if (value != null && value != "") {
 			Filter filter = new Filter(value, dataBaseName, name, operator);
-			// System.out.println("Filter: " + name + " Value:" + value);
 			filters.add(filter);
 		}
 	}
@@ -231,7 +230,6 @@ public class PublicationServiceImpl implements PublicationService {
 	public void addBooleanFilter(List<Filter> filters, Boolean value, DataBaseFilterName dataBaseName,
 			QueryFilterName name, QueryOperator operator) {
 		if (value != null) {
-			// System.out.println("Filter: " + name + " Value:" + value);
 			Filter filter = new Filter(value, dataBaseName, name, operator);
 			filters.add(filter);
 		}

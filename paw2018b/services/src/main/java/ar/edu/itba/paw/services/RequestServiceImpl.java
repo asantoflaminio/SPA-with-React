@@ -18,7 +18,7 @@ public class RequestServiceImpl implements RequestService {
 
 	@Override
 	public Locale getLocale(String languaje) {
-		if (languaje.indexOf("es") == 0) {
+		if (languaje.indexOf(SPANISH) == 0) {
 			return new Locale(SPANISH);
 		} else {
 			return new Locale(ENGLISH);

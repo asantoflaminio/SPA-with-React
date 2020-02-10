@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import ar.edu.itba.paw.models.Constants;
 import ar.edu.itba.paw.models.PersistentLogin;
 
 @Repository("persistentTokenRepository")
@@ -61,7 +62,7 @@ public class PersistentLoginHibernateDao implements PersistentTokenRepository {
 
 		if (logins != null) {
 			final Collection<? extends GrantedAuthority> authorities = Arrays
-					.asList(new SimpleGrantedAuthority("ROLE_USER"));
+					.asList(new SimpleGrantedAuthority(Constants.Role.USER.getRole()));
 			Authentication auth = new UsernamePasswordAuthenticationToken(logins.getEmail(), null, authorities);
 			SecurityContextHolder.getContext().setAuthentication(auth);
 			return new PersistentRememberMeToken(logins.getEmail(), logins.getSeries(), logins.getToken(),

@@ -3,8 +3,6 @@ package ar.edu.itba.paw.models;
 public class Constants {
 
 	public static final Integer MAX_LANGUAJE = 4;
-	public static final Integer MAX_RESULTS_USERS = 7;
-
 	public static final String COUNT_HEADER = "X-Total-Count";
 
 	public static enum Operation {
@@ -46,6 +44,22 @@ public class Constants {
 
 		public String getRole() {
 			return role;
+		}
+	}
+	
+	public static enum Authority{
+		USER("ROLE_USER"), 
+		ADMIN("ROLE_ADMIN"), 
+		LOCKED("ROLE_LOCKED");
+
+		private final String authority;
+
+		Authority(String authority) {
+			this.authority = authority;
+		}
+
+		public String getAuthority() {
+			return authority;
 		}
 	}
 
