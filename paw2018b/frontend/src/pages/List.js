@@ -6,6 +6,7 @@ import Publication from '../components/Publication';
 import PublicationLoader from '../components/PublicationLoader';
 import FilterLoader from '../components/FilterLoader';
 import arrowDown from '../resources/arrow_down.png';
+import arrowUp from '../resources/arrow_up.png';
 import PublicationService from '../services/PublicationService';
 import ErrorService from '../services/ErrorService';
 import LocalStorageService from '../services/LocalStorageService';
@@ -132,7 +133,7 @@ class List extends React.Component {
 			currentComponent.setState({
 				filters: response.data,
 			});
-			currentComponent.closeFilters();
+			currentComponent.openFilters();
 			currentComponent.hideEmptyFilters(response.data, 'locations', 'filterLocationHeader');
 			currentComponent.hideEmptyFilters(response.data, 'bedrooms', 'filterBedroomsHeader');
 			currentComponent.hideEmptyFilters(response.data, 'bathrooms', 'filterBathroomsHeader');
@@ -192,6 +193,22 @@ class List extends React.Component {
 		filterBathrooms.classList.remove('show');
 		filterParking.classList.remove('show');
 	}
+
+	openFilters() {
+		let filterLocation = document.getElementById('filterLocation');
+		let filterPrice = document.getElementById('filterPrice');
+		let filterFloorSize = document.getElementById('filterFloorSize');
+		let filterBedrooms = document.getElementById('filterBedrooms');
+		let filterBathrooms = document.getElementById('filterBathrooms');
+		let filterParking = document.getElementById('filterParking');
+		filterLocation.classList.add('show');
+		filterPrice.classList.add('show');
+		filterFloorSize.classList.add('show');
+		filterBedrooms.classList.add('show');
+		filterBathrooms.classList.add('show');
+		filterParking.classList.add('show');
+	}
+
 
 	hideEmptyFilters(filters, field, id) {
 		if (Object.keys(filters[field]).length <= 1) document.getElementById(id).style.display = 'none';
@@ -443,8 +460,39 @@ class List extends React.Component {
 
 	expand(id) {
 		let filter = document.getElementById(id);
-		if (filter.classList.contains('show')) filter.classList.remove('show');
-		else filter.classList.add('show');
+		var filterArrow;
+
+		switch(id) {
+			case 'filterParking':
+				filterArrow = document.getElementById('parkingArrow');
+				break;
+			case 'filterLocation':
+				filterArrow = document.getElementById('locationArrow');
+				break;
+			case 'filterPrice':
+				filterArrow = document.getElementById('priceArrow');
+				break;
+			case 'filterFloorSize':
+				filterArrow = document.getElementById('floorSizeArrow');
+				break;
+			case 'filterBedrooms':
+				filterArrow = document.getElementById('bedroomsArrow');
+				break;
+			case 'filterBathrooms':
+				filterArrow = document.getElementById('bathroomsArrow');
+				break;
+			default:
+			  	break;
+		  }
+
+		if (filter.classList.contains('show')){
+			filterArrow.src = arrowUp;
+			filter.classList.remove('show');
+		} 
+		else{
+			filterArrow.src = arrowDown;
+			filter.classList.add('show');
+		}
 	}
 
 	setReady() {
@@ -619,6 +667,7 @@ class List extends React.Component {
 												<img
 													src={arrowDown}
 													alt='Arrow Up'
+													id='locationArrow'
 													onClick={() => this.expand('filterLocation')}
 													className='arrow-up-filters'></img>
 											</div>
@@ -631,6 +680,7 @@ class List extends React.Component {
 												<img
 													src={arrowDown}
 													alt='Arrow Up'
+													id='priceArrow'
 													onClick={() => this.expand('filterPrice')}
 													className='arrow-up-filters'></img>
 											</div>
@@ -658,6 +708,7 @@ class List extends React.Component {
 												<img
 													src={arrowDown}
 													alt='Arrow Up'
+													id='floorSizeArrow'
 													onClick={() => this.expand('filterFloorSize')}
 													className='arrow-up-filters'></img>
 											</div>
@@ -686,6 +737,7 @@ class List extends React.Component {
 												<img
 													src={arrowDown}
 													alt='Arrow Up'
+													id='bedroomsArrow'
 													onClick={() => this.expand('filterBedrooms')}
 													className='arrow-up-filters'></img>
 											</div>
@@ -697,6 +749,7 @@ class List extends React.Component {
 												<img
 													src={arrowDown}
 													alt='Arrow Up'
+													id='bathroomsArrow'
 													onClick={() => this.expand('filterBathrooms')}
 													className='arrow-up-filters'></img>
 											</div>
@@ -708,6 +761,7 @@ class List extends React.Component {
 												<img
 													src={arrowDown}
 													alt='Arrow Up'
+													id='parkingArrow'
 													onClick={() => this.expand('filterParking')}
 													className='arrow-up-filters'></img>
 											</div>
