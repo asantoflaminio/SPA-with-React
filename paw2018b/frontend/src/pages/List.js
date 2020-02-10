@@ -73,7 +73,7 @@ class List extends React.Component {
 			query.parking,
 			this.setInitialPage(),
 		];
-
+		document.getElementById("search-holder").value = query.address;
 		this.updatePublications(names, values, true);
 		this.selectOperation(query.operation);
 		this.selectPropertyType(query.propertyType);
