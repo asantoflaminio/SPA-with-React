@@ -40,6 +40,7 @@ class List extends React.Component {
 			filters: null,
 		};
 		this.setReady = this.setReady.bind(this);
+		this.handleSearch = this.handleSearch.bind(this);
 	}
 
 	componentDidMount() {
@@ -75,7 +76,7 @@ class List extends React.Component {
 		this.updatePublications(names, values, true);
 		this.selectOperation(query.operation);
 		this.selectPropertyType(query.propertyType);
-		document.addEventListener('keydown', this.onKeyPressed.bind(this));
+		document.getElementById("search-holder").addEventListener('keydown', this.onKeyPressed);
 	}
 
 	updatePublications(names, values, updateFilters) {
@@ -491,14 +492,14 @@ class List extends React.Component {
 		CancelTokenService.getSource().cancel();
 		CancelTokenService.refreshToken();
 		LocalStorageService.deleteCounter();
-		document.removeEventListener('keydown', this.onKeyPressed.bind(this));
+		document.getElementById("search-holder").removeEventListener('keydown', this.onKeyPressed);
 	}
 
-	onKeyPressed(e) {
+	onKeyPressed = (e) => {
 		if (e.keyCode === 13) {
 			this.handleSearch();
-		}
-	}
+		} 
+	};
 
 	render() {
 		const {t} = this.props;
