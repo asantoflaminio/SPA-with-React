@@ -32,7 +32,7 @@ class Details extends React.Component {
 			publication: null,
 			loading: false,
 			circleloading: false,
-			showModal: false,
+			showModal: false
 		};
 		this.setReady = this.setReady.bind(this);
 	}
@@ -86,14 +86,15 @@ class Details extends React.Component {
 				}
 				currentComponent.setState({
 					loading: false,
-					showModal: true,
+					showModal: true, 
 				});
+				
 			});
 		}
 	}
 
 	setReady() {
-		this.setState({circleloading: false});
+		this.setState({circleloading: false, showModal: false});
 		LocalStorageService.deleteCounter();
 	}
 
