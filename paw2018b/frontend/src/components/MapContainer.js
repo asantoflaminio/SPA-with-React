@@ -49,7 +49,6 @@ class MapContainer extends React.Component {
 		} else {
 			return (
 				<GoogleMap defaultZoom={4} defaultCenter={{lat: -34.208, lng: -64.7}}>
-					>
 				</GoogleMap>
 			);
 		}
