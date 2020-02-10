@@ -26,6 +26,7 @@ public class UserHibernateDao implements UserDao {
 	@Autowired
 	private PublicationDao publicationDao;
 
+	@Override
 	@Transactional
 	public User create(final String firstName, final String lastName, final String email, final String password,
 			final String phoneNumber, final String languaje, String role) {

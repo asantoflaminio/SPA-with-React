@@ -158,14 +158,6 @@ public class PublicationServiceImpl implements PublicationService {
 		return publicationDTO;
 	}
 
-	public Integer getMaxResultProfile() {
-		return publicationDao.getMaxResultProfile();
-	}
-
-	public Integer getMaxResultList() {
-		return publicationDao.getMaxResultList();
-	}
-
 	@Override
 	public List<PublicationDTO> getPublications(String address, List<Filter> filters, Integer page, Integer limit,
 			String order) {
@@ -216,6 +208,7 @@ public class PublicationServiceImpl implements PublicationService {
 		return filters;
 	}
 
+	@Override
 	public void addStringFilter(List<Filter> filters, String value, DataBaseFilterName dataBaseName,
 			QueryFilterName name, QueryOperator operator) {
 		if (value != null && value != "") {
@@ -225,6 +218,7 @@ public class PublicationServiceImpl implements PublicationService {
 		}
 	}
 
+	@Override
 	public void addIntegerFilter(List<Filter> filters, Integer value, DataBaseFilterName dataBaseName,
 			QueryFilterName name, QueryOperator operator) {
 		if (value != null) {
@@ -233,6 +227,7 @@ public class PublicationServiceImpl implements PublicationService {
 		}
 	}
 
+	@Override
 	public void addBooleanFilter(List<Filter> filters, Boolean value, DataBaseFilterName dataBaseName,
 			QueryFilterName name, QueryOperator operator) {
 		if (value != null) {

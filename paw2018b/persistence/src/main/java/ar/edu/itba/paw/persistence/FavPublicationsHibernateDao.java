@@ -53,6 +53,7 @@ public class FavPublicationsHibernateDao implements FavPublicationsDao {
 	}
 
 	@Override
+	@Transactional
 	public void removeFavouriteByPublication(long publicationid) {
 		final Query query = em
 				.createQuery("delete FavPublication as fav WHERE fav.publication.publicationid = :publicationid");

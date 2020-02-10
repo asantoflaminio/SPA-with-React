@@ -37,9 +37,6 @@ public class PublicationHibernateDao implements PublicationDao {
 	@Autowired
 	private FavPublicationsDao favPublicationsDao;
 
-	private static Integer MAX_RESULTS_PROFILE = 3;
-	private static Integer MAX_RESULTS_LIST = 3;
-
 	private static String SELECT_STATEMENT_SEARCH = "select distinct pub from Publication as pub "
 			+ "left join fetch pub.province " + "left join fetch pub.city " + "left join fetch pub.neighborhood ";
 
@@ -196,14 +193,6 @@ public class PublicationHibernateDao implements PublicationDao {
 
 	}
 
-	public Integer getMaxResultProfile() {
-		return MAX_RESULTS_PROFILE;
-	}
-
-	public Integer getMaxResultList() {
-		return MAX_RESULTS_LIST;
-	}
-
 	@Override
 	@Transactional
 	public HashMap<Integer, Long> getSimpleFilter(List<Filter> filters, String address, String filterName) {
@@ -237,6 +226,7 @@ public class PublicationHibernateDao implements PublicationDao {
 	}
 
 	@Override
+	@Transactional
 	public void addLocationFilter(List<Filter> filters, String address, HashMap<String, Long> locationMap,
 			String location) {
 		String whereStatement = "";

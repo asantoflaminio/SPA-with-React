@@ -2,7 +2,6 @@ package ar.edu.itba.paw.services;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertSame;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -32,9 +31,6 @@ public class FavPublicationsServiceImplTest {
 	private static final long PUBLICATIONID = 1;
 	private static final String TITLE = "TestTitle";
 	private static final String ADDRESS = "TestAddress";
-	private static final String NEIGHBORHOOD = "TestNeighborhood";
-	private static final String CITY = "TestCity";
-	private static final String PROVINCE = "TestProvince";
 	private static final String OPERATION = "TestOperation";
 	private static final String PRICE = "4242412";
 	private static final String DESCRIPTION = "TestDescription";

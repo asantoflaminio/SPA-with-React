@@ -18,8 +18,8 @@ public class ResetPasswordHibernateDao implements ResetPasswordDao {
 	@PersistenceContext
 	private EntityManager em;
 
-	@Transactional
 	@Override
+	@Transactional
 	public ResetPassword createRequest(String token, long userId, String date) {
 		User user = em.find(User.class, userId);
 		ResetPassword rp = new ResetPassword(user, date, token);
@@ -28,6 +28,7 @@ public class ResetPasswordHibernateDao implements ResetPasswordDao {
 	}
 
 	@Override
+	@Transactional
 	public Optional<User> getUser(String token) {
 		final TypedQuery<User> queryString = em
 				.createQuery("SELECT rp.userRequesting FROM ResetPassword rp " + "WHERE rp.token = :token", User.class);
@@ -42,6 +43,7 @@ public class ResetPasswordHibernateDao implements ResetPasswordDao {
 	}
 
 	@Override
+	@Transactional
 	public boolean checkToken(String token) {
 		final TypedQuery<ResetPassword> queryString = em
 				.createQuery("FROM ResetPassword rp " + "WHERE rp.token = :token", ResetPassword.class);
@@ -56,8 +58,8 @@ public class ResetPasswordHibernateDao implements ResetPasswordDao {
 		}
 	}
 
-	@Transactional
 	@Override
+	@Transactional
 	public void deleteRequest(Integer id) {
 		ResetPassword token = em.find(ResetPassword.class, id);
 		if (token != null) {
@@ -66,6 +68,7 @@ public class ResetPasswordHibernateDao implements ResetPasswordDao {
 	}
 
 	@Override
+	@Transactional
 	public Optional<ResetPassword> getRequest(String token) {
 		final TypedQuery<ResetPassword> queryString = em
 				.createQuery("FROM ResetPassword rp " + "WHERE rp.token = :token", ResetPassword.class);

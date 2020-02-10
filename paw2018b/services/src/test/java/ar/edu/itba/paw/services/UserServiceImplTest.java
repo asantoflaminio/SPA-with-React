@@ -2,7 +2,6 @@ package ar.edu.itba.paw.services;
 
 import static org.junit.Assert.assertSame;
 
-import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,7 +18,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

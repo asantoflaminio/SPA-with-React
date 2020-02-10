@@ -5,12 +5,9 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
-import org.springframework.stereotype.Service;
-
 import ar.edu.itba.paw.models.Publication;
 import ar.edu.itba.paw.models.Filter;
 
-@Service
 public interface PublicationDao {
 
 	public Publication findById(final long publicationid);
@@ -34,10 +31,6 @@ public interface PublicationDao {
 	public void updateLockUserPublications(boolean lock, long publicationid, long userid);
 
 	public int getCountPublications(String address, List<Filter> filters);
-
-	public Integer getMaxResultProfile();
-
-	public Integer getMaxResultList();
 
 	public List<Publication> getPublications(String address, List<Filter> filters, Integer page, Integer limit,
 			String order);

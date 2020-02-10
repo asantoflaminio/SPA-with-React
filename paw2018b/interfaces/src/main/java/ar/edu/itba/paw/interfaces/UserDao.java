@@ -2,11 +2,8 @@ package ar.edu.itba.paw.interfaces;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import ar.edu.itba.paw.models.User;
 
-@Service
 public interface UserDao {
 
 	public User findById(final long id);

@@ -2,24 +2,21 @@ package ar.edu.itba.paw.interfaces;
 
 import java.util.Optional;
 
-import org.springframework.stereotype.Service;
-
 import ar.edu.itba.paw.models.ResetPassword;
 import ar.edu.itba.paw.models.User;
 
-@Service
 public interface ResetPasswordDao {
 
-	ResetPassword createRequest(String token, long userId, String date);
+	public ResetPassword createRequest(String token, long userId, String date);
 
-	Optional<User> getUser(String token);
+	public Optional<User> getUser(String token);
 
-	Optional<ResetPassword> getRequest(String token);
+	public Optional<ResetPassword> getRequest(String token);
 
-	boolean checkToken(String token);
+	public boolean checkToken(String token);
 
-	void deleteRequest(Integer id);
+	public void deleteRequest(Integer id);
 
-	void deleteOldRequests(long userId);
+	public void deleteOldRequests(long userId);
 
 }

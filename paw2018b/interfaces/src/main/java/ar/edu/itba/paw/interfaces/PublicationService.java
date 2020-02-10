@@ -5,6 +5,9 @@ import java.util.List;
 
 import ar.edu.itba.paw.models.Filter;
 import ar.edu.itba.paw.models.Publication;
+import ar.edu.itba.paw.models.Constants.DataBaseFilterName;
+import ar.edu.itba.paw.models.Constants.QueryFilterName;
+import ar.edu.itba.paw.models.Constants.QueryOperator;
 import ar.edu.itba.paw.models.dto.PublicationDTO;
 
 public interface PublicationService {
@@ -38,12 +41,17 @@ public interface PublicationService {
 
 	public PublicationDTO transform(Publication publication);
 
-	public Integer getMaxResultProfile();
-
-	public Integer getMaxResultList();
-
 	public List<Filter> generateFilters(String operation, String propertyType, Integer minPrice, Integer maxPrice,
 			Integer minFloorSize, Integer maxFloorSize, Integer bedrooms, Integer bathrooms, Integer parking,
 			Boolean locked);
+	
+	public void addStringFilter(List<Filter> filters, String value, DataBaseFilterName dataBaseName,
+			QueryFilterName name, QueryOperator operator);
+	
+	public void addIntegerFilter(List<Filter> filters, Integer value, DataBaseFilterName dataBaseName,
+			QueryFilterName name, QueryOperator operator);
+	
+	public void addBooleanFilter(List<Filter> filters, Boolean value, DataBaseFilterName dataBaseName,
+			QueryFilterName name, QueryOperator operator);
 
 }
