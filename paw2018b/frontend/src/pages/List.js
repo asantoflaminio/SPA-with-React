@@ -9,13 +9,14 @@ import arrowDown from '../resources/arrow_down.png';
 import arrowUp from '../resources/arrow_up.png';
 import PublicationService from '../services/PublicationService';
 import ErrorService from '../services/ErrorService';
-import LocalStorageService from '../services/LocalStorageService';
 import CancelTokenService from '../services/CancelRequestService';
+import LocalStorageService from '../services/LocalStorageService';
 import * as utilFunction from '../util/function';
 import * as Constants from '../util/Constants';
 import * as StatusCode from '../util/StatusCode';
 import '../css/list.css';
 import '../css/Pagination.css';
+
 
 class List extends React.Component {
 	constructor(props) {
@@ -25,6 +26,7 @@ class List extends React.Component {
 			loadingPublications: false,
 			loadingFilters: false,
 			publications: [],
+			readyPublications: 0,
 			operation: '',
 			propertyType: '',
 			address: '',
@@ -87,9 +89,8 @@ class List extends React.Component {
 		let currentComponent = this;
 		if (updateFilters === true) this.setState({loadingPublications: true, loadingFilters: true});
 		else this.setState({loadingPublications: true});
-		LocalStorageService.deleteCounter();
-		LocalStorageService.initializeCounter();
 		this.disableButtons();
+		LocalStorageService.initializeCounter()
 		PublicationService.getPublications(queryParameters).then(function(response) {
 			if (CancelTokenService.isCancel(response)) return;
 			if (response.status !== StatusCode.OK) {
@@ -113,6 +114,7 @@ class List extends React.Component {
 				bathrooms: queryParameters['bathrooms'],
 				parking: queryParameters['parking'],
 				order: queryParameters['order'],
+				readyPublications: 0
 			});
 			if (response.headers['x-total-count'] === '0') currentComponent.setState({loadingPublications: false});
 			if (updateFilters === true) currentComponent.updateFilters(queryParameters);
@@ -133,6 +135,7 @@ class List extends React.Component {
 			}
 			currentComponent.setState({
 				filters: response.data,
+				loadingPublications: false
 			});
 			currentComponent.hideEmptyFilters(response.data, 'locations', 'filterLocationHeader');
 			currentComponent.hideEmptyFilters(response.data, 'bedrooms', 'filterBedroomsHeader');
@@ -171,7 +174,8 @@ class List extends React.Component {
 		for (let i = 0; i < prevPublications.length; i++) {
 			for (let j = 0; j < newPublications.length; j++) {
 				if (prevPublications[i].publicationid === newPublications[j].publicationid) {
-					LocalStorageService.incrementCounter();
+					let currentReady = this.state.readyPublications
+					this.setState({readyPublications: currentReady + 1})
 					equals++;
 				}
 			}
@@ -521,9 +525,11 @@ class List extends React.Component {
 	}
 
 	setReady() {
-		if (LocalStorageService.getCounter() === this.state.publications.length) {
-			LocalStorageService.deleteCounter();
+		let currentReady = this.state.readyPublications;
+		this.setState({ readyPublications: currentReady + 1 })
+		if (this.state.readyPublications === this.state.publications.length) {
 			this.setState({loadingPublications: false});
+			LocalStorageService.deleteCounter()
 		} 
 	}
 
@@ -564,7 +570,7 @@ class List extends React.Component {
 	componentWillUnmount() {
 		CancelTokenService.getSource().cancel();
 		CancelTokenService.refreshToken();
-		LocalStorageService.deleteCounter();
+		LocalStorageService.deleteCounter()
 		document.getElementById("search-holder").removeEventListener('keydown', this.onKeyPressed);
 	}
 

@@ -10,16 +10,17 @@ import ImageVisualizer from '../components/ImageVisualizer';
 import MapContainer from '../components/MapContainer';
 import credentials from '../components/credentials';
 import PublicationService from '../services/PublicationService';
+import LocalStorageService from '../services/LocalStorageService';
 import UserService from '../services/UserService';
 import JsonService from '../services/JsonService';
 import ErrorService from '../services/ErrorService';
-import LocalStorageService from '../services/LocalStorageService';
 import CancelTokenService from '../services/CancelRequestService';
 import * as yup from 'yup';
 import * as Constants from '../util/Constants';
 import * as StatusCode from '../util/StatusCode';
 import 'toasted-notes/src/styles.css';
 import '../css/Details.css';
+
 
 const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credentials.mapsKey}`;
 
@@ -46,11 +47,10 @@ class Details extends React.Component {
 		const queryString = require('query-string');
 		const query = queryString.parse(this.props.location.search);
 		const currentComponent = this;
+		LocalStorageService.initializeCounter()
 		this.setState({
 			circleloading: true,
 		});
-		LocalStorageService.deleteCounter();
-		LocalStorageService.initializeCounter();
 		PublicationService.getPublication(query.publicationid).then(function(response) {
 			if (CancelTokenService.isCancel(response)) return;
 			if (response.status !== StatusCode.OK) {
@@ -95,13 +95,13 @@ class Details extends React.Component {
 
 	setReady() {
 		this.setState({circleloading: false, showModal: false});
-		LocalStorageService.deleteCounter();
+		LocalStorageService.deleteCounter()
 	}
 
 	componentWillUnmount() {
 		CancelTokenService.getSource().cancel();
 		CancelTokenService.refreshToken();
-		LocalStorageService.deleteCounter();
+		LocalStorageService.deleteCounter()
 	}
 
 	render() {

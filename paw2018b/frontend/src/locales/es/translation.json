@@ -130,7 +130,8 @@
 		"Yes": "Sí",
 		"No": "No",
 		"unsuccesfullSubmitMore": "No se pudo publicar la propiedad ya que existen {{n}} errores en el formulario",
-		"unsuccesfullSubmitOne": "No se pudo publicar la propiedad ya que existe un error en el formulario"
+		"unsuccesfullSubmitOne": "No se pudo publicar la propiedad ya que existe un error en el formulario",
+		"notSupportedType": "no es una extensión de archivo soportada"
 	},
 	"admin": {
 		"locations": "UBICACIONES",

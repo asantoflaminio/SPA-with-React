@@ -647,6 +647,7 @@ class Publish extends React.Component {
 									onChange={this.onDrop}
 									imgExtension={['.jpg']}
 									maxFileSize={5242880}
+									fileTypeError={t('publish.notSupportedType')}
 								/>
 								<Button type='submit' id='submitButton' disabled={isSubmitting} onClick={handleChange}>
 									{t('publish.submit')}

@@ -130,7 +130,8 @@
 		"Yes": "Yes",
 		"No": "No",
 		"unsuccesfullSubmitMore": "The property couldn't be published as there are {{n}} errors in the form",
-		"unsuccesfullSubmitOne": "The property couldn't be published as there is an error in the form"
+		"unsuccesfullSubmitOne": "The property couldn't be published as there is an error in the form",
+		"notSupportedType": "is not supported file extension"
 	},
 	"admin": {
 		"locations": "LOCATIONS",
