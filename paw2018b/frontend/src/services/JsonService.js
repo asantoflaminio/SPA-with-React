@@ -26,7 +26,7 @@ const JsonService = (function() {
 	function _createJSONArray(names, values) {
 		let array = [];
 
-		if (names.length !== values.length) alert('PROBLEM! --- DEBERIA LANZAR EXCEPCION');
+		if (names.length !== values.length);
 
 		for (let i = 0; i < names.length; i++) {
 			array.push(new JsonObject(names[i], values[i]));

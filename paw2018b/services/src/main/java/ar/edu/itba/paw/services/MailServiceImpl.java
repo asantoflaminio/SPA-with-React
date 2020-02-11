@@ -38,6 +38,7 @@ public class MailServiceImpl implements MailService {
 	@Autowired
 	public MessageSource messageSource;
 
+	@Override
 	public void sendEmail(Mail mail) {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom(mail.getMailFrom());
