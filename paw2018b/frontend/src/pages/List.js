@@ -117,10 +117,11 @@ class List extends React.Component {
 				readyPublications: 0
 			});
 			if (response.headers['x-total-count'] === '0') currentComponent.setState({loadingPublications: false});
-			if (updateFilters === true) currentComponent.updateFilters(queryParameters);
-
-			currentComponent.enableButtons();
-
+			if (updateFilters === true){
+				currentComponent.updateFilters(queryParameters);
+			}else{
+				currentComponent.enableButtons();
+			} 
 			currentComponent.pushParameters(names, values);
 		});
 	}
@@ -133,6 +134,7 @@ class List extends React.Component {
 				ErrorService.logError(currentComponent.props, response);
 				return;
 			}
+			currentComponent.enableButtons();
 			currentComponent.setState({
 				filters: response.data,
 				loadingPublications: false
@@ -376,7 +378,7 @@ class List extends React.Component {
 	handleSelect(event, stateName) {
 		let names = [stateName];
 		let values = [event.target.value];
-		this.updatePublications(names, values, false);
+		this.updatePublications(names, values, true);
 	}
 
 	handleFilter(stateName, value) {
