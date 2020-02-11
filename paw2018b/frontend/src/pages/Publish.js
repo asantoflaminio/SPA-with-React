@@ -178,12 +178,17 @@ class Publish extends React.Component {
 							ErrorService.logError(currentComponent.props, response);
 							return;
 						}
+						currentComponent.props.history.push({
+							pathname: '/publications',
+							search: '?publicationid=' + publicationid,
+						});
+					});
+				}else{
+					currentComponent.props.history.push({
+						pathname: '/publications',
+						search: '?publicationid=' + publicationid,
 					});
 				}
-				currentComponent.props.history.push({
-					pathname: '/publications',
-					search: '?publicationid=' + publicationid,
-				});
 			});
 		} else {
 			this.showErrorInForm(Object.keys(errors).length);

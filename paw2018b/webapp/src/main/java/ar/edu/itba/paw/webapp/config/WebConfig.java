@@ -64,11 +64,23 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		return multipartResolver;
 	}
 
-	/* Just modified resource location and set up cache control */
+
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/**").addResourceLocations("classpath:static/")
-				.setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS));
+        registry
+        .addResourceHandler("/static/js/**")
+        .addResourceLocations("/static/js/")
+        .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS));
+        
+        registry
+        .addResourceHandler("/static/css/**")
+        .addResourceLocations("/static/css/")
+        .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS));
+		
+        registry
+        .addResourceHandler("/static/media/**")
+        .addResourceLocations("/static/media/")
+        .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS));
 	}
 
 	@Bean
